@@ -1,122 +1,48 @@
 "use client";
-
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
-import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
-
-export const metadata: ArticleMetadata = {
-  id: "article-lld-offline-form-sync-system",
-  title: "Design Offline Form Sync System",
-  description:
-    "Production-grade offline form handling with local persistence, conflict resolution, and synchronization on reconnect.",
-  category: "low-level-design",
-  subcategory: "real-world-scenario-lld",
-  slug: "offline-form-sync-system",
-  wordCount: 5200,
-  readingTime: 31,
-  lastUpdated: "2026-05-06",
-  tags: ["lld", "offline", "forms", "synchronization", "conflict-resolution"],
-  relatedTopics: ["debounced-auto-save-system", "background-sync"],
-};
-
-export default function OfflineFormSyncSystemArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">Field workers, healthcare professionals, and users in areas with intermittent connectivity frequently need to fill out and submit forms without a reliable network connection. A construction site inspector fills out a safety checklist offline; a field sales rep fills out a customer visit report in a dead zone; a healthcare worker records patient observations in a hospital basement with poor signal. The form data must be preserved, the user must be able to continue working, and the data must sync to the server reliably when connectivity is restored—without data loss and without duplicates.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The design problem extends beyond simple offline storage. The form may reference data that itself changes while the user is offline (a product price updates, a patient record is modified by another care provider). When the user submits, the server may need to detect that the form references stale data and present a conflict resolution UI rather than silently overwriting. The system must also handle multiple forms queued for submission, submitting them in dependency order, and surfacing partial failures without losing the submitted ones.</HighlightBlock>
-        <HighlightBlock as="p" tier="important"><strong>Explicit assumptions:</strong> The form references external data (records, IDs) that may change while offline. Conflicts are detected via optimistic concurrency control (If-Unmodified-Since or ETag). The offline queue is stored in IndexedDB (not localStorage, because forms may be large and IndexedDB has a higher storage quota). The Service Worker intercepts form submissions and queues them when offline. Network reconnection is detected via the online event and a probe request.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Offline form filling:</strong> All form fields work without a network connection. Validation runs client-side. The form auto-saves to IndexedDB as the user types.</HighlightBlock>
-          <li><strong>Submission queuing:</strong> When submit is attempted offline, the form is queued. The user sees "Saved locally. Will submit when online." and can continue to other forms.</li>
-          <li><strong>Automatic sync on reconnect:</strong> When network is detected, queued submissions attempt to sync in order. Progress is shown to the user.</li>
-          <HighlightBlock as="li" tier="important"><strong>Conflict detection and resolution:</strong> If the referenced record changed while offline, the server returns a conflict response. The UI presents the before/after state and lets the user decide how to proceed.</HighlightBlock>
-          <li><strong>Draft persistence:</strong> Incomplete forms (not yet submitted) are persisted to IndexedDB and restored on next app load.</li>
-          <HighlightBlock as="li" tier="important"><strong>Queue management:</strong> User can see the pending submission queue, reorder, remove individual items, or retry failed items manually.</HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Storage:</strong> IndexedDB handles large forms (photos, attachments) up to device quota; graceful degradation when quota is approached.</li>
-          <HighlightBlock as="li" tier="crucial"><strong>Sync reliability:</strong> Queued submissions retry with exponential backoff; permanent failures are surfaced to the user without losing data.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Idempotency:</strong> Each queued submission has a unique idempotency key; retries cannot create duplicate records on the server.</HighlightBlock>
-          <li><strong>Conflict resolution UX:</strong> Conflict presentation is understandable to non-technical users; field-level diff with clear "keep mine" / "use server version" options.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="important">The offline form system has three layers: the draft layer (IndexedDB auto-save of in-progress form data), the submission queue (IndexedDB records of complete forms awaiting server submission), and the sync engine (Service Worker or application-level code that processes the queue on network restoration).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Draft layer: as the user types, the form state is written to IndexedDB under a draft key (draftId keyed by formType + entityId + userId). On re-opening the app, drafts are restored into the form UI with a notification "Unsaved draft from [timestamp] restored." The user can discard the draft (clear it) or continue editing.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">Queue layer: when the user submits a complete form offline, the draft is promoted to a queued submission: a queue record with the full form data, the idempotency key (UUID generated at submission time), the form type, the target entity ID and its last-seen version (for conflict detection), and a status (pending, retrying, failed). The draft is cleared once the queue record is created.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Sync engine: on detecting connectivity (online event + probe request), the sync engine dequeues records in FIFO order and submits them. Each submission includes the idempotency key and the If-Unmodified-Since header set to the entity's last-seen version. On 200 success, the queue record is deleted. On 412 Conflict, the queue record is updated with conflictDetails and status = conflict_resolution_required. On 5xx or network error, the queue record increments retryCount and a backoff timer is set for the next attempt.</HighlightBlock>
-      </section>
-
-      <section>
-                <h2>Diagram Walkthrough</h2>
-
-<ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/real-world-scenario-lld/offline-form-sync-system.svg"
-          alt="Offline form sync system showing draft auto-save to IndexedDB, submission queue, network reconnection detection, sync with idempotency keys and If-Unmodified-Since conflict detection, and conflict resolution merge UI"
-          caption="Offline form sync system showing draft auto-save to IndexedDB, submission queue, network reconnection detection, sync with idempotency keys and If-Unmodified-Since conflict detection, and conflict resolution merge UI"
-        />
-
-        <HighlightBlock as="p" tier="crucial">
-          Interview signal: the diagram captures the end-to-end flow for <strong>Design Offline Form Sync System</strong>. You should be able to explain the happy path and the failure paths (retries, cancellation, backpressure), not just the API surface.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Look for the &ldquo;control points&rdquo; where correctness is enforced: idempotency keys, monotonic request/version tokens, single-flight coordination, and durable persistence boundaries.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          In interviews, call out observability and operability: what you log/measure (p95 latency, error rates, retries/queue depth) and how you keep degraded modes user-safe (read-only, queued, or cached fallbacks).
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">IndexedDB Schema</h3>
-        <HighlightBlock as="p" tier="important">The IndexedDB database has two object stores. The drafts store: draftId (primary key), formType, entityId, userId, formData (JSON), lastModified (timestamp), syncStatus ("local"). The queue store: queueId (primary key), idempotencyKey (UUID), formType, entityId, formData (JSON), entityVersion (the If-Unmodified-Since value), status (pending | retrying | failed | conflict_resolution_required), retryCount, nextRetryAt, conflictDetails (populated on 412), createdAt.</HighlightBlock>
-        <p>Indexes on the queue store: status (to efficiently find pending items for sync), entityId (to find all queued submissions for a specific record), nextRetryAt (to find items whose backoff timer has expired). IndexedDB cursor queries against these indexes allow the sync engine to efficiently find work without scanning all queue records.</p>
-        <p>For forms with file attachments (photos, documents), storing binary data directly in IndexedDB is possible but can exhaust IndexedDB's storage quota. Better: store binary files in a separate Cache Storage bucket (higher quota, designed for binary data) and store only a reference URL in IndexedDB. The sync engine retrieves the binary from Cache Storage when submitting the form. After successful submission, both the IndexedDB record and the Cache Storage binary are deleted to free space.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Draft Auto-Save</h3>
-        <p>Draft auto-save runs on every form change event (onChange for each field), debounced at 500ms. The save is: serialize the current form state to JSON, write to IndexedDB under the draftId. This is fast (IndexedDB writes are async and don't block the main thread) and reliable (IndexedDB persists across page refreshes and browser restarts).</p>
-        <p>On form mount, the system checks for an existing draft for the current (formType, entityId, userId) combination. If found, the draft's lastModified timestamp is compared to the entity's server-side updatedAt (fetched on mount). If the draft is newer than the server record (the user was editing offline), restore the draft and show a banner: "Unsaved changes from [timestamp] restored." If the draft is older (the server was updated after the draft was saved, meaning another user changed the record), show a conflict warning: "This record was updated while you were offline. Your draft and the current record differ." Offer to discard the draft and load the server version.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Conflict Resolution UI</h3>
-        <p>When the server returns a 412 Conflict, the sync engine stores the server's current version in the queue record's conflictDetails field. The UI shows the queue item as "Conflict requires your attention" with a "Resolve" button. Clicking opens a field-by-field comparison view: left side shows the user's submitted values, right side shows the server's current values, with differences highlighted. Fields without differences are collapsed (show "No change"). For each differing field, the user selects "keep my value" or "use server value." For complex nested objects, a JSON diff is shown for technical users with an option to edit the final JSON directly.</p>
-        <p>After the user resolves all conflicting fields, the resolved form data is sent as a new submission with a fresh If-Unmodified-Since value (the server version's timestamp, signaling "I've seen the server version and I'm intentionally overriding it with this merge"). The server accepts this as an authoritative merge submission. If the record changed again on the server between the conflict display and the user's resolution, a second 412 can occur—the system should detect this and repeat the resolution flow (rare but possible in high-contention scenarios).</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Sync Engine and Retry Logic</h3>
-        <HighlightBlock as="p" tier="important">The sync engine runs as a Web Worker or Service Worker background process. On startup (or on the online event), it queries the queue store for items with status = pending or (status = retrying AND nextRetryAt &lt;= now()). Items are processed in FIFO order (sorted by createdAt). For each item, it assembles the HTTP request (POST or PATCH to the appropriate API endpoint, with the idempotency key as Idempotency-Key header and the entityVersion as If-Unmodified-Since), submits it, and handles the response.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Retry backoff schedule: first retry immediately on reconnect, second retry 30 seconds later, third 2 minutes, fourth 10 minutes, fifth 30 minutes, cap at 1 hour. After 10 retries over 24+ hours, the item is moved to status = failed and the user is notified: "A form submission from [timestamp] could not be sent after multiple attempts. Please review and resubmit manually." The form data is preserved in IndexedDB so the user can inspect it and resubmit with a fresh submission if needed.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Idempotency is enforced by the server: if the same idempotency key is submitted twice (due to a retry after a network error where the first submission actually succeeded), the server returns the result of the original submission without creating a duplicate record. The client uses the idempotency key generated at queue-time, not at retry-time. This key must be stored in IndexedDB alongside the queue record to survive app restarts between retries.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Network Detection</h3>
-        <HighlightBlock as="p" tier="crucial">The browser's online/offline events (window.ononline, window.onoffline) indicate whether the browser has any network connection, but not whether the application server is reachable. A device may be connected to a WiFi network with no internet access (offline in terms of the application, but online in terms of the browser). The sync engine uses a two-stage check: (1) listen for the online event as a trigger; (2) on online event, send a lightweight HEAD request to a known-good application endpoint (GET /health); (3) if the probe returns 200, the server is reachable and sync begins; if the probe fails, schedule a retry in 10 seconds. This ensures syncs only begin when the server is confirmed reachable, not just when the device is connected to any network.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="crucial">IndexedDB versus localStorage for the queue: localStorage is simpler but limited to ~5MB and synchronous reads/writes (blocking the main thread). IndexedDB is async, supports larger storage, and is queryable with indexes—essential for a queue with many records. For offline form systems, IndexedDB is the correct choice. The only trade-off is API complexity (mitigated by libraries like idb or Dexie.js).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Service Worker versus application-level sync: Service Worker-based sync can run even when the app is not open (the browser can wake the Service Worker on network reconnection using the Background Sync API). Application-level sync only runs when the user has the app open. For field workers who may close the app and return hours later, Service Worker sync is significantly better—the submission queue drains in the background without requiring the user to reopen the app. The trade-off is Service Worker complexity and limited browser support for Background Sync (primarily Chrome).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Conflict resolution at field level versus full document: field-level conflict resolution (which field has the conflict?) is more user-friendly but requires the server to return a per-field diff on 412. Full document conflict resolution (server version versus user version, user resolves all differences) is simpler to implement. For most form types, field-level resolution is worth the extra implementation effort because it narrows the user's attention to the specific fields that differ.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Idempotency keys prevent duplicate submissions on retry. Binary file attachments use Cache Storage (higher quota) with IndexedDB references. The</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">Service Worker Background Sync API enables queue draining when the app is closed. The defining principle: user data is never lost—even failed submissions are preserved in IndexedDB for manual review and resubmission, and the system surfaces failure clearly rather than silently discarding submissions.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+export const metadata: ArticleMetadata = { id:"article-lld-offline-form-sync-system", title:"Design Offline Form Sync", description:"Implementation-heavy low-level design guide for design offline form sync.", category:"low-level-design", subcategory:"real-world-scenario-lld", slug:"offline-form-sync-system", wordCount:4700, readingTime:28, lastUpdated:"2026-05-30", tags:["lld","real-world","principal-engineer"], relatedTopics:["state-management","reliability","observability"] };
+export default function OfflineFormSyncSystemArticle(){ return <ArticleLayout metadata={metadata}>
+<section><h1>Design Offline Form Sync</h1><h2>Definition &amp; Context</h2>
+<p>Design Offline Form Sync is a low-level design problem about building a production-grade durable form draft synchronizer. The answer must move beyond screen composition and define public methods, internal state, persistence boundaries, concurrency rules, recovery, and telemetry. The facade is saveDraft, enqueuePatch, sync, resolveConflict, discardLocal. Runtime states are clean, dirty, queued, syncing, conflicted, saved, rejected.</p>
+<p>The governing invariant is: Form edits must survive reload and reconnect without silently overwriting newer server data. The edge case to defend is when a long form is edited offline after another device changed the same fields. This forces the implementation to distinguish user intent from server authority and to expose honest pending, blocked, stale, conflicted, and recovered states.</p>
+<ArticleImage src="/diagrams/system-design-problems/low-level-design/real-world-scenario-lld/offline-form-sync-system-runtime.svg" alt="Design Offline Form Sync runtime" caption="Runtime model: product intent enters a guarded coordinator, durable state is versioned, and user-visible snapshots remain honest under failure." /></section>
+<section><h2>Core Concepts</h2>
+<p>Start with a narrow aggregate boundary. The coordinator owns legal transitions and the structures required to defend them: field patches, local draft, server revision, outbox, conflict map, migration version. UI components request operations and render snapshots; they should not scatter validation, deduplication, permissions, timers, and retries across event handlers.</p>
+<p>Separate optimistic projection from authoritative confirmation. Fast UI may show local intent immediately, but the snapshot must retain pending identity, base revision, and rollback information until the authoritative boundary accepts the operation. That makes ambiguous timeouts, retries, cross-tab races, and external updates explainable.</p>
+<h3>Implementation contract</h3><p>Each public method returns a typed outcome: accepted, pending, rejected, conflicted, degraded, or completed. Each mutation carries operation id, scope, revision, and idempotency key where repeated delivery is possible. Every state transition records a reason and leaves enough evidence for debugging without logging private payloads.</p>
+<p>Classify operations by risk. Cosmetic preferences can converge eventually. Destructive, authorization-sensitive, inventory-sensitive, or payment-adjacent operations need stronger confirmation or fail-closed behavior. This operation-level consistency decision is more credible than claiming one policy for the whole feature.</p></section>
+<section><h2>Architecture &amp; Flow</h2>
+<p>The architecture has six layers: component facade, validator, state machine, effect runner, durable adapter, and observer layer. The facade normalizes intent. The validator checks schema, permission, scope, and revision. The state machine commits the next snapshot. The effect runner performs network, storage, SDK, or worker work after commit. The durable adapter preserves evidence. The observer layer publishes selector-scoped snapshots and metrics.</p>
+<p>A normal mutation validates input, captures rollback state, assigns identity, applies the local projection, invokes the effect, and settles only if operation identity and revision still match. Late responses are ignored or reconciled; they must not overwrite newer intent. Cleanup on navigation, tenant switch, unmount, or cancellation is idempotent.</p>
+<h3>Data model and failure matrix</h3><p>The model should include entity or aggregate id, actor scope, tenant scope when relevant, operation id, base revision, current revision, pending state, last error, timestamps, and trace fields. Store only the payload needed for recovery. Sensitive fields belong behind tokenization, redaction, or server-owned boundaries.</p>
+<p>Define a failure matrix before coding. Validation failure blocks locally. Permission change fails closed. Timeout preserves pending identity for reconciliation. Version mismatch enters merge, refresh, or review. Partial batch failure records per-item outcomes. External dependency outage trips degradation or a circuit breaker. Duplicate delivery returns the prior idempotent result.</p>
+<h3>Lifecycle and concurrency</h3><p>Concurrency is normal input, not an exceptional corner case. Users click twice, navigate during a request, open several tabs, switch accounts, and return after background throttling. Server pushes, SDK callbacks, timers, and network settlements may arrive after the UI intent has changed. Accept a settlement only when operation id, actor scope, tenant scope, and revision still match the active snapshot.</p>
+<p>Lifecycle events need explicit handlers: bootstrap, hydrate, mount, unmount, focus, blur, reconnect, tenant switch, logout, and rollout disablement. A coordinator that only handles button clicks will leak work or display stale data. Cleanup must cancel active effects, detach listeners, invalidate scoped caches, and preserve only the minimum recovery evidence needed for the next safe transition.</p>
+<ArticleImage src="/diagrams/system-design-problems/low-level-design/real-world-scenario-lld/offline-form-sync-system-failure.svg" alt="Design Offline Form Sync failure handling" caption="Failure model: stale revisions, ambiguous results, authorization changes, and partial failures route through explicit recovery decisions." /></section>
+<section><h2>Trade offs &amp; Comparison</h2>
+<p>Local component state is cheaper for a small page, but it breaks when multiple components, tabs, routes, or teams depend on the same invariant. A domain coordinator adds code and tests, but centralizes revision checks, cancellation, rollback, persistence, and observability.</p>
+<p>Optimistic UX improves perceived latency but creates rollback and reconciliation work. Pessimistic confirmation is easier to reason about but can feel slow. Choose per operation: use optimistic projection for reversible low-risk actions and authoritative confirmation for destructive or externally constrained actions.</p>
+<p>Normalization improves deduplication and partial updates, while snapshots simplify reads and rollback. Durable history improves recovery and auditability, but costs storage and compaction work. The interview answer should tie these choices to latency, correctness, privacy, support burden, and rollout risk.</p>
+<p>There is also a build-versus-platform trade-off. A feature-local implementation moves quickly when the workflow is genuinely isolated. A shared runtime becomes worthwhile when several flows need revision guards, typed errors, permission checks, audit evidence, or rollout controls. The principal-level answer should avoid both extremes: do not create a framework for one button, and do not let high-risk invariants fragment across teams.</p>
+<p>Fail-open and fail-closed choices must be explicit. A stale feed badge can degrade gracefully. A tenant switch, payment attempt, authorization rule, kill switch, or audit export should fail closed when scope or authority is uncertain. This is where implementation details connect directly to abuse prevention and privacy.</p></section>
+<section><h2>Best practices</h2>
+<p>Make illegal states unrepresentable with explicit status unions and guarded transitions. Add operation identity and revision checks at settlement boundaries. Keep effect adapters injectable so timeouts, retries, SDK failures, server errors, and browser lifecycle changes can be tested deterministically.</p>
+<p>Build observability into the coordinator: rejected transitions, stale settlements, retry count, pending age, conflict rate, partial failure count, queue depth, rollback count, and slow subscribers. Add feature flags and kill switches for risky flows. Scope caches and persisted state by user and tenant, and clear them on identity changes.</p>
+<p>Test rapid interaction, duplicate delivery, navigation mid-flight, permission changes, stale revisions, empty states, large datasets, retry exhaustion, and recovery after reload. These cases reveal whether the abstraction protects the product or merely organizes happy-path code.</p>
+<p>Prefer selector-based subscriptions and immutable snapshots so unrelated UI does not re-render. Bound retained history, cached entities, retry ledgers, and debug events. Provide support-friendly evidence such as correlation id, operation phase, revision gap, and sanitized failure reason. These practices reduce mean time to recovery without leaking customer data.</p></section>
+<section><h2>Common Pitfalls</h2><p>Do not model the workflow as unrelated booleans. That permits impossible combinations and ordering bugs. Do not silently swallow stale responses or partial failures. Do not let observers mutate coordinator internals. Do not log sensitive payloads in telemetry.</p>
+<p>Avoid unbounded queues, histories, selections, markers, feed entities, or retries. Add compaction, pagination, virtualization, batching, and backpressure where volume can grow. Treat accessibility, privacy, and degraded UX as runtime behavior, not documentation notes.</p>
+<p>Another pitfall is treating server success as the only settlement state. Timeouts create ambiguous outcomes: the server may have committed while the client saw failure. Reconciliation and idempotency are required whenever repeating the operation could create duplicate side effects or overwrite newer state.</p></section>
+<section><h2>Real-world use cases</h2><p>This pattern appears in high-traffic consumer products and enterprise tools where a seemingly small UI feature crosses network, permission, identity, or external-service boundaries. Platform ownership is useful when several teams need the same transition safety, recovery, and metrics.</p>
+<p>For a principal interview, connect the local implementation to the wider system: server idempotency, authorization, versioning, audit logs, rollout controls, SLOs, and support tooling. The UI runtime is not isolated; it is the final consistency and trust boundary visible to the user.</p>
+<p>Operational ownership should be explicit: define alerts, dashboards, runbooks, rollback controls, and the team responsible for resolving stuck or ambiguous states.</p></section>
+<section><h2>Common interview question with detailed answer</h2>
+<h3>How would you design this end to end?</h3><p>I would define the facade, state machine, data model, effect adapters, and observer snapshots. Every mutation carries identity and revision, every effect settles through guards, and every failure maps to a typed user-visible recovery path.</p>
+<h3>Why this architecture over local state?</h3><p>Local state duplicates invariants and fails under races. The coordinator makes Form edits must survive reload and reconnect without silently overwriting newer server data. enforceable and testable across components.</p>
+<h3>What breaks at scale?</h3><p>Pending work, memory retention, stale responses, partial failures, permission drift, and observability gaps become bottlenecks. Use bounds, compaction, pagination, backpressure, metrics, and rollout controls.</p>
+<h3>What consistency model applies?</h3><p>Use operation-level consistency: optimistic eventual convergence for reversible work, stronger confirmation for destructive or authority-sensitive work, and explicit conflict states when intent is ambiguous.</p>
+<h3>How do you defend failure, rollback, abuse, privacy, and cost?</h3><p>Use typed errors, inverse patches or refresh, idempotency, authorization checks, rate limits, data minimization, redacted telemetry, bounded retention, and kill switches. Then walk through a long form is edited offline after another device changed the same fields.</p></section>
+<section><h2>References</h2><ul><li><a href="https://react.dev/learn/managing-state" target="_blank" rel="noreferrer">React: Managing State</a></li><li><a href="https://redux.js.org/style-guide/" target="_blank" rel="noreferrer">Redux Style Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://web.dev/articles/vitals" target="_blank" rel="noreferrer">web.dev Web Vitals</a></li></ul></section>
+</ArticleLayout>;}

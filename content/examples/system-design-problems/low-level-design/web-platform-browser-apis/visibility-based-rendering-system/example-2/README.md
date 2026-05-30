@@ -1,6 +1,3 @@
-# Visibility-based Rendering System — Example 2
+# Design Visibility-Based Rendering example 2
 
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+Concrete browser API runtime example for Design Visibility-Based Rendering. It covers capability gates, lifecycle-safe execution, fallback decisions, and privacy-safe telemetry.

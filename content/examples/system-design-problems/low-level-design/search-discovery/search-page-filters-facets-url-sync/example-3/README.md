@@ -1,6 +1,3 @@
-# Search Page (Filters/Facets/URL Sync) — Example 3
+# Design Search Filters Facets and URL Sync example 3
 
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+Concrete search implementation exercise.

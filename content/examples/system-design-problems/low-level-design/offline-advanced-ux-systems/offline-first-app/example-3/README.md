@@ -1,6 +1,3 @@
-# Offline-first App — Example 3
+# Design an Offline-First App example 3
 
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+Concrete low-level implementation exercise for Design an Offline-First App. It models durable offline state, capability classification, conflict handling, and edge cases that align with the article.

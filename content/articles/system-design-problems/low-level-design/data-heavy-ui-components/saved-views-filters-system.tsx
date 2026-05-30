@@ -32,11 +32,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function SavedViewsFiltersSystemArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function SavedViewsFiltersSystemArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Saved Views and Filters System</h1><h2>Definition &amp; Context</h2><p>Design a Saved Views and Filters System is an implementation-heavy low-level design problem covering filter AST, URL serialization, saved-view persistence, schema migration, permission filtering, sharing, defaults, and conflict handling. A principal-level answer must define state ownership, consistency, lifecycle cleanup, scale limits, rollback, privacy, cost, and observability.</p><p>Represent filters as a typed AST rather than ad hoc query strings. Saved views reference stable field ids and must reconcile against the current schema and authorization policy. The core structures are filter AST, operator registry, URL codec, saved-view id, schema version, allowed-field set, migration result, default-view pointer, and dirty state.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/saved-views-filters-system-runtime.svg" alt="Design a Saved Views and Filters System runtime" caption="Topic-specific data flow from input or payload through guarded projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -99,7 +98,7 @@ export default function SavedViewsFiltersSystemArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -139,7 +138,7 @@ export default function SavedViewsFiltersSystemArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -183,12 +182,8 @@ export default function SavedViewsFiltersSystemArticle() {
       </section>
 
       <section>
-        <h2>🧠 Solution Approach</h2>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/saved-views-filters-system-architecture.svg"
-          alt="Saved views and filters system architecture showing filter definition model, filter state, filter bar UI, advanced filter panel, saved view persistence, load and apply, URL serialization, and sharing"
-          caption="Architecture Overview"
-        />
+        <h3>🧠 Solution Approach</h3>
+        
         <HighlightBlock as="p" tier="important">
           The system is structured as a <strong>view
           schema</strong> (declares what dimensions a view
@@ -282,7 +277,7 @@ export default function SavedViewsFiltersSystemArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important"><strong>ViewProvider</strong></Highlight> instantiates the
           view store, capture/apply logic, and URL bridge.
           <strong> ViewStore</strong> holds the user&rsquo;s
@@ -300,7 +295,7 @@ export default function SavedViewsFiltersSystemArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">View list and active view live in an external
           store. Active view&rsquo;s ad-hoc overrides
           (changes</HighlightBlock>
@@ -313,7 +308,7 @@ export default function SavedViewsFiltersSystemArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="crucial">
           The contract must be versioned and migratable: a saved view payload should carry a schema
           version so older clients can still render and newer clients can repair/migrate safely.
@@ -330,7 +325,7 @@ export default function SavedViewsFiltersSystemArticle() {
       </section>
 
       <section>
-        <h2>⚡ Rendering &amp; Performance</h2>
+        <h3>⚡ Rendering &amp; Performance</h3>
         <HighlightBlock as="p" tier="crucial">View list is small (typically dozens of views);
           loading is fast. Apply</HighlightBlock>
 <HighlightBlock as="p" tier="important">happens in one
@@ -341,7 +336,7 @@ export default function SavedViewsFiltersSystemArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">The view picker is a dropdown or sidebar
           listing views, with a Save button to capture
           current state. Active view shows a checkmark.
@@ -356,7 +351,7 @@ export default function SavedViewsFiltersSystemArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">View picker is keyboard-navigable
           (arrow keys, Enter to select). Save</HighlightBlock>
 <HighlightBlock as="p" tier="important">dialog has
@@ -367,7 +362,7 @@ export default function SavedViewsFiltersSystemArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="crucial">
           Saved views are data with access control: the server must enforce who can read/write/share a view,
           and scopes must match the underlying dataset permissions.
@@ -383,7 +378,7 @@ export default function SavedViewsFiltersSystemArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="crucial">
           Capture/apply must be round-trip safe: applying a saved view and then capturing should produce an
           equivalent payload (modulo versioning/normalization).
@@ -398,7 +393,7 @@ export default function SavedViewsFiltersSystemArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="important">A view references a filter dimension that no longer exists: migrator drops it;</HighlightBlock>
 <HighlightBlock as="p" tier="important">user is informed via a banner. A shared view is edited concurrently by two users:</HighlightBlock>
 <HighlightBlock as="p" tier="important">optimistic locking surfaces a conflict; the second saver chooses to merge or overwrite.</HighlightBlock>
@@ -413,7 +408,7 @@ export default function SavedViewsFiltersSystemArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="crucial">The system is generic over the captured
           dimensions. Adding a new dimension</HighlightBlock>
 <HighlightBlock as="p" tier="important">(e.g.
@@ -424,7 +419,7 @@ export default function SavedViewsFiltersSystemArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="crucial">
           All UI strings (Save, Save As, Modified, Sharing scopes) come from i18n and must be consistent across
           surfaces (table header, picker, dialogs).
@@ -440,7 +435,7 @@ export default function SavedViewsFiltersSystemArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Versioned schema vs free-form</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -477,7 +472,7 @@ export default function SavedViewsFiltersSystemArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">AI-suggested views based on observed usage
           patterns. View templates marketplace where
           teams share well-curated views.</HighlightBlock>
@@ -485,93 +480,12 @@ export default function SavedViewsFiltersSystemArticle() {
           views (apply the same filter set to multiple
           tables). Real-time collaborative editing of
           shared views. Versioning of views with rollback.</Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <p>
-          <strong>1. What does a view capture?</strong>{" "}
-          Filters, sort, column configuration, density —
-          everything that affects presentation. Captured
-          via subsystem APIs into a single serializable
-          payload.
-        </p>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>2. How do you handle schema
-          evolution?</strong> Versioned views with
-          migrations. On load, migrators upgrade old
-          versions to current; orphan references (filters
-          for removed dimensions) drop gracefully with
-          user notification.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>3. How is sharing implemented?</strong>{" "}
-          Per-view sharing flag (private, team, org).
-          Server enforces access on read. Shared views
-          show a &ldquo;Shared&rdquo; badge. Non-owners
-          can apply and clone but not edit unless
-          permissions allow.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. How is the active view
-          URL-synced?</strong> View id in URL; ad-hoc
-          overrides since last save also serialize.
-          Sharing the URL takes recipients to the same
-          state. Saving overrides back to the view
-          simplifies the URL to just the id.
-        </HighlightBlock>
-
-        <p>
-          <strong>5. What happens with concurrent edits
-          to a shared view?</strong> Optimistic locking
-          with version checks; the second saver gets a
-          conflict and chooses to merge or overwrite.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>6. How do role defaults fit in?</strong>{" "}
-          Admins set a default per role. New users in
-          that role mount the table with that view.
-          User can change and save their own default,
-          which then takes precedence.
-        </HighlightBlock>
-
-        <p>
-          <strong>7. How is the modified state
-          tracked?</strong> Compare current subsystem
-          state to the captured view state. Differences
-          → modified. Subscribers re-render the
-          modified indicator.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>8. How does this integrate with the
-          Data Table?</strong> Through stable APIs on the
-          subsystems (filters, sort, column config). The
-          views system reads via getter, writes via
-          setter; subsystems don&rsquo;t know about views.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A saved-views system is a{" "}
-          <strong>versioned, capturable preset model</strong>{" "}
-          for presentation state. Capture and apply
-          gather and push state through stable subsystem
-          APIs; URL sync makes views shareable; schema
-          migration keeps views resilient to evolution;
-          sharing semantics support private, team, and
-          role-default views.</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">The result turns ad-hoc
-          table use into repeatable workflows — power
-          users curate their library; new users land on
-          sensible defaults; teams share what works.</Highlight></HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate canonical data, user intent, transient projection, remote effects, and bounded telemetry. Every cursor, subscription, cache entry, request, timer, observer, and worker requires an explicit owner and cleanup path. Stable ids are mandatory because indexes and DOM nodes are disposable views.</p><p>Represent filters as a typed AST rather than ad hoc query strings. Saved views reference stable field ids and must reconcile against the current schema and authorization policy. Commit durable changes only after applying the current policy and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/saved-views-filters-system-recovery.svg" alt="Design a Saved Views and Filters System recovery" caption="Recovery flow: validate versions, contain scale pressure, preserve stable truth, and explain the result." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Raw query parameters are simple; a typed AST is justified for composable filters, sharing, migrations, and secure server translation.</p><p>Server policy determines allowed fields and persisted shared views. URL state is a portable local projection that must be parsed defensively and migrated. Scale pressure comes from complex filters, stale shared URLs, removed fields, permission drift, incompatible operators, large payloads, and concurrent view edits. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic projection only where rollback is deterministic and visible. Keep authorization and conflict-sensitive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit versions, cursor validation, generation guards, bounded caches, semantic HTML, and idempotent cleanup. Test keyboard use, accessibility output, stale responses, reconnects, retries, scroll restoration, and large datasets.</p><p>Measure interaction latency, render cost, cache pressure, stale drops, conflicts, retries, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include confusing visible data with complete data, trusting arrival order, leaking subscriptions, accepting stale completion, using indexes as identity, and hiding rollback.</p><p>For this topic, drop forbidden clauses, validate operators, preserve valid filters during migration, surface removed conditions, version saved views, and avoid silently broadening queries. Validate untrusted inputs, authorize durable actions server-side, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to operational interfaces where users manipulate large, changing datasets under partial failure. Reuse the controller shape while injecting query, authorization, persistence, and fallback policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Represent filters as a typed AST rather than ad hoc query strings. Saved views reference stable field ids and must reconcile against the current schema and authorization policy.</p><h3>What breaks at scale?</h3><p>complex filters, stale shared URLs, removed fields, permission drift, incompatible operators, large payloads, and concurrent view edits. I would bound expensive work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>Server policy determines allowed fields and persisted shared views. URL state is a portable local projection that must be parsed defensively and migrated.</p><h3>How do you recover?</h3><p>I would drop forbidden clauses, validate operators, preserve valid filters during migration, surface removed conditions, version saved views, and avoid silently broadening queries.</p><h3>Why this architecture?</h3><p>Raw query parameters are simple; a typed AST is justified for composable filters, sharing, migrations, and secure server translation.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

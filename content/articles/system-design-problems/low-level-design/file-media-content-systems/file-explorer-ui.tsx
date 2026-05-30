@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function FileExplorerUIArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function FileExplorerUIArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a File Explorer UI</h1><h2>Definition &amp; Context</h2><p>Design a File Explorer UI is an implementation-heavy low-level design problem covering lazy directory loading, stable node identity, breadcrumbs, selection, keyboard traversal, rename, move validation, upload integration, and conflict recovery. A principal-level answer must explain state ownership, browser or worker boundaries, scale limits, consistency, rollback, privacy, cost, and observability.</p><p>Model nodes by stable id, not mutable path. Expansion, selection, and mutation journals remain separate so rename or move does not invalidate descendant identity. The core structures are node map, parent-child index, loaded cursors, expanded set, selection anchor, breadcrumb projection, mutation journal, version etag, and pending requests.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/file-media-content-systems/file-explorer-ui-runtime.svg" alt="Design a File Explorer UI runtime" caption="Topic-specific runtime from source intake through guarded projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -97,7 +96,7 @@ export default function FileExplorerUIArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -139,7 +138,7 @@ export default function FileExplorerUIArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -184,14 +183,10 @@ export default function FileExplorerUIArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/file-explorer-ui-architecture.svg"
-        alt="File Explorer UI Architecture"
-        caption="Folder source → Item cache → View renderer (list / grid / gallery) with virtualization → Thumbnail loader (IntersectionObserver) → Multi-select model → Drag-and-drop with auto-expand on hover → Context menu with action registry."
-      />
+      
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <p>
           The explorer composes <strong>folder source
           adapter</strong>, <strong>view renderer</strong>{" "}
@@ -296,7 +291,7 @@ export default function FileExplorerUIArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial"><strong> SelectionModel</strong> tracks selected
           ids. <strong>DragDropPlugin</strong> handles
           drag mechanics. <strong>ContextMenu</strong>{" "}
@@ -308,7 +303,7 @@ export default function FileExplorerUIArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">Folder content cache, selection state, view
           mode, sort, filter, drag</HighlightBlock>
 <HighlightBlock as="p" tier="important">state — all in
@@ -318,7 +313,7 @@ export default function FileExplorerUIArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important">
           <Highlight tier="crucial">Folder source contract:</Highlight>{" "}
           <Highlight tier="important">
@@ -330,7 +325,7 @@ export default function FileExplorerUIArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="crucial">Virtualization scopes mounted DOM. Memoized
           item cards. Thumbnail lazy load with</HighlightBlock>
 <HighlightBlock as="p" tier="important">IntersectionObserver; failed thumbnails fall
@@ -341,7 +336,7 @@ export default function FileExplorerUIArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">Drag preview shows a stack of
           thumbnails for multi-select drags. Empty
           folder state with</HighlightBlock>
@@ -351,7 +346,7 @@ export default function FileExplorerUIArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">Items render as a list or grid with proper
           roles. Selection state via</HighlightBlock>
 <HighlightBlock as="p" tier="important"><code> aria-selected</code>. Context menu
@@ -363,7 +358,7 @@ export default function FileExplorerUIArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Server-enforced permissions; UI reflects.
           Filenames <Highlight tier="important">render as text. Bulk operations
@@ -372,7 +367,7 @@ export default function FileExplorerUIArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="crucial">Unit tests for selection model (range, multi,
           rubber-band intersection math). Integration</HighlightBlock>
 <HighlightBlock as="p" tier="important">tests: drag a multi-selection, verify all
@@ -384,7 +379,7 @@ export default function FileExplorerUIArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">Concurrent edits (another user moves an item
           out from under you): refresh banner and
           re-fetch. Item with very long name: truncate
@@ -396,7 +391,7 @@ export default function FileExplorerUIArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Generic over folder source. The explorer powers
           <Highlight tier="important">internal file managers, customer-facing file
@@ -406,7 +401,7 @@ export default function FileExplorerUIArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           UI strings via i18n. Filenames as <Highlight tier="important">text.
           File sizes via Intl. Sort</Highlight> uses
@@ -416,7 +411,7 @@ export default function FileExplorerUIArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>List vs grid vs gallery views</h3>
         <HighlightBlock as="p" tier="important">
@@ -454,7 +449,7 @@ export default function FileExplorerUIArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">Smart folders (saved searches with
           auto-update). Tagging and tag-based filters.
           Recent files surface.</HighlightBlock>
@@ -462,91 +457,12 @@ export default function FileExplorerUIArticle() {
           multi-select via a dragged-out tray.
           Offline mode with sync. AI-suggested
           organization (auto-rename, auto-tag).</Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. How are thumbnails lazy-loaded?</strong>{" "}
-          IntersectionObserver per item: when in
-          viewport, set the image src. Until then,
-          placeholder icon based on file type.
-          <code> loading=&quot;lazy&quot;</code> as
-          fallback for older browsers.
-        </HighlightBlock>
-
-        <p>
-          <strong>2. How does multi-select work?</strong>{" "}
-          Set of selected ids. Click replaces; ctrl-
-          click toggles; shift-click ranges. Rubber-band
-          selects items intersecting a drawn box on
-          empty space.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>3. How does drag-and-drop into folders
-          work?</strong> Drag selected items; targets in
-          breadcrumb/tree highlight when valid; hover-
-          on-folder for 500 ms auto-expands. Drop
-          optimistically moves; server confirms;
-          rollback on failure.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. How do bulk operations report
-          progress?</strong> Each operation shows
-          per-item progress (or summary for batch APIs).
-          Partial failures list specifics with Retry.
-          User can cancel mid-operation.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>5. How does this handle large folders
-          (10k items)?</strong> Server-side pagination
-          (cursor-based). Virtualization keeps DOM
-          bounded. Filter via server search. Sort
-          server-side when needed.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>6. How is keyboard accessibility handled
-          in grid view?</strong> Arrow keys move focus
-          across the grid (down/right forward, up/left
-          back). Enter activates; Space toggles select.
-          Context menu via Shift-F10. Cut/Paste for
-          drag alternative.
-        </HighlightBlock>
-
-        <p>
-          <strong>7. How does the context menu adapt to
-          selection?</strong> Action registry filters by
-          selection context. Single selection shows
-          per-file actions (rename, download); multi
-          shows bulk actions (move, delete). Permissions
-          hide unauthorized actions.
-        </p>
-
-        <p>
-          <strong>8. How does this differ from Tree
-          View?</strong> Tree View is the folder
-          hierarchy navigator (left side). File
-          Explorer UI is the content area (right side)
-          showing files within a selected folder. They
-          compose to form the full file browsing
-          experience.
-        </p>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="important">Composing it
-          with the Tree View on the left produces the
-          full file browsing</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="crucial">experience users expect
-          from desktop file managers — fast, accessible,
-          familiar.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate durable source data, transient interaction state, derived render state, remote or worker effects, and bounded telemetry. Every object URL, request, worker, listener, timer, cache entry, and decoder task needs an explicit owner and cleanup path.</p><p>Model nodes by stable id, not mutable path. Expansion, selection, and mutation journals remain separate so rename or move does not invalidate descendant identity. Commit durable changes only after policy validation and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/file-media-content-systems/file-explorer-ui-recovery.svg" alt="Design a File Explorer UI recovery" caption="Recovery flow: classify failure, preserve stable state, and degrade predictably." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>A flat file list is simple for shallow storage; a lazy explorer is justified for hierarchy, bulk actions, and repeated management.</p><p>The server file model is authoritative. Local mutations are optimistic only with stable ids, versions, and deterministic rollback. Scale pressure comes from deep trees, huge directories, path changes, recursive moves, permission drift, partial loading, and concurrent rename. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic projection only when rollback is deterministic and visible. Keep authorization, validation, and destructive actions server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed states, generation guards, bounded queues, abortable effects, semantic HTML, and idempotent cleanup. Test accessibility, stale work, retries, unmount, constrained devices, large files, and corrupted input.</p><p>Measure latency, memory, queue pressure, stale drops, retries, fallbacks, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include treating rendered output as durable truth, leaking resources, accepting stale worker completion, unbounded prefetch, and hiding degraded behavior.</p><p>For this topic, dedupe child loads, reject recursive moves, rollback failed rename, refresh affected branches, retain focus by id, and hide restricted nodes. Validate untrusted content, authorize durable mutations, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to content-heavy product surfaces where browser APIs, workers, networks, and remote policy fail independently. Reuse the controller boundary while injecting product-specific fallback and retention policy.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Model nodes by stable id, not mutable path. Expansion, selection, and mutation journals remain separate so rename or move does not invalidate descendant identity.</p><h3>What breaks at scale?</h3><p>deep trees, huge directories, path changes, recursive moves, permission drift, partial loading, and concurrent rename. I would bound work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>The server file model is authoritative. Local mutations are optimistic only with stable ids, versions, and deterministic rollback.</p><h3>How do you recover?</h3><p>I would dedupe child loads, reject recursive moves, rollback failed rename, refresh affected branches, retain focus by id, and hide restricted nodes.</p><h3>Why this architecture?</h3><p>A flat file list is simple for shallow storage; a lazy explorer is justified for hierarchy, bulk actions, and repeated management.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API" target="_blank" rel="noreferrer">MDN Web Workers API</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

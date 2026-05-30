@@ -1,6 +1,1 @@
-# Activity Feed System — Example 3
-
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+# Design an Activity Feed System example 3\n\nConcrete low-level implementation exercise for Design an Activity Feed System.\n

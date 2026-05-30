@@ -1,6 +1,1 @@
-# Feature Rollout System — Example 1
-
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+# Design a Feature Rollout System example 1\n\nConcrete low-level implementation exercise for Design a Feature Rollout System.\n

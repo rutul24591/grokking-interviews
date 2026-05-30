@@ -20,10 +20,9 @@ export const metadata: ArticleMetadata = {
   relatedTopics: ["rich-text-editor", "dashboard-builder", "form-builder"],
 };
 
-export default function WYSIWYGEmailTemplateBuilderArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <p>
+export default function ArticlePage(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a WYSIWYG Email Builder</h1><h2>Definition &amp; Context</h2><p>Design a WYSIWYG Email Builder is an implementation-heavy low-level design problem covering block schema editing, drag layout, template versioning, variable substitution, HTML compilation, email-client compatibility, preview, and test-send. A principal-level answer must define state ownership, durable boundaries, lifecycle cleanup, degraded behavior, privacy, cost, and observability.</p><p>Treat the block schema as the durable source. Editor canvas DOM, generated HTML, plaintext fallback, and client previews are disposable projections from a validated template version. The core structures are block tree, stable block ids, style whitelist, variable registry, schema version, undo journal, renderer target, compatibility warnings, preview cache, and test-send receipt.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/wysiwyg-email-builder-runtime.svg" alt="Design a WYSIWYG Email Builder runtime" caption="Topic-specific runtime stages from user intent through durable projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><p>
         Email template builders occupy a unique architectural niche: the visual editor
         runs as a modern React SPA, but the output must be rendered correctly by email
         clients whose HTML/CSS support ranges from Gmail's inline-style-only model to
@@ -39,7 +38,7 @@ export default function WYSIWYGEmailTemplateBuilderArticle() {
         caption="Email builder architecture: block schema, template store, MJML rendering, variable engine and preview"
       />
 
-      <h2>Clarifying the Requirements</h2>
+      <h3>Clarifying the Requirements</h3>
       <p>
         The scope of an email template builder varies from a simple text editor with
         color options to a full drag-and-drop block editor with multi-column layouts,
@@ -68,7 +67,7 @@ export default function WYSIWYGEmailTemplateBuilderArticle() {
         template in multiple simulated clients catches issues before sending.
       </p>
 
-      <h2>The Block Schema</h2>
+      <h3>The Block Schema</h3>
       <p>
         The template is stored as a tree of block objects — a JSON document that is
         the source of truth for both the editor's visual representation and the HTML
@@ -98,7 +97,7 @@ export default function WYSIWYGEmailTemplateBuilderArticle() {
         Without this, old templates become unrenderable as the schema evolves.
       </HighlightBlock>
 
-      <h2>The Editor Canvas</h2>
+      <h3>The Editor Canvas</h3>
       <p>
         The editor canvas renders the block tree as an interactive layout. Each block
         is represented by a React component in the canvas with hover and selection
@@ -130,7 +129,7 @@ export default function WYSIWYGEmailTemplateBuilderArticle() {
         with a font-face fallback chain).
       </p>
 
-      <h2>Email HTML Rendering</h2>
+      <h3>Email HTML Rendering</h3>
       <p>
         Converting the block JSON to email-safe HTML is the most technically challenging
         part of the builder. Email clients do not support: CSS flexbox or grid, CSS
@@ -156,7 +155,7 @@ export default function WYSIWYGEmailTemplateBuilderArticle() {
         Background images in sections also require VML for Outlook.
       </p>
 
-      <h2>Outlook Compatibility</h2>
+      <h3>Outlook Compatibility</h3>
       <p>
         Outlook on Windows (2013–2019) uses the Microsoft Word HTML renderer, which
         is approximately a decade behind web standards. The key quirks:
@@ -182,7 +181,7 @@ export default function WYSIWYGEmailTemplateBuilderArticle() {
         leading.
       </p>
 
-      <h2>Variable Substitution Engine</h2>
+      <h3>Variable Substitution Engine</h3>
       <p>
         Variables in email templates are placeholders replaced at send time by the
         email platform with recipient-specific values. Common syntax: Handlebars-style
@@ -213,7 +212,7 @@ export default function WYSIWYGEmailTemplateBuilderArticle() {
         preview data is not persisted with the template; it is session-scoped.
       </HighlightBlock>
 
-      <h2>Template Store and Versioning</h2>
+      <h3>Template Store and Versioning</h3>
       <p>
         Templates are persisted to a backend store (a database record with the block
         JSON, metadata, and schema version). The builder auto-saves on a debounced
@@ -234,7 +233,7 @@ export default function WYSIWYGEmailTemplateBuilderArticle() {
         renderer). Users can duplicate templates to use as starting points.
       </p>
 
-      <h2>Multi-Client Preview</h2>
+      <h3>Multi-Client Preview</h3>
       <p>
         Rendering the template in multiple email clients requires either actual email
         client rendering (using a service like Litmus or Email on Acid that sends the
@@ -256,84 +255,12 @@ export default function WYSIWYGEmailTemplateBuilderArticle() {
         the preview iframe, showing how the template will look for dark mode users.
         Email templates should include explicit @media dark mode overrides for key
         colors rather than relying on client-specific inversion.
-      </p>
-
-      <h2>Interview Q&A</h2>
-
-      <h3>Q: Why use a JSON block schema as the intermediate representation rather than editing HTML directly?</h3>
-      <p>
-        Direct HTML editing exposes all the complexity of email HTML constraints to
-        the user (table layouts, inline styles, VML for Outlook). A block schema
-        abstracts these constraints: the user works with semantic blocks (text, image,
-        button), and the renderer handles translating those to email-safe HTML. The
-        schema is also easier to validate, version, and migrate than arbitrary HTML.
-        It enables future renderers — the same schema could render to SMS templates,
-        push notification content, or a different HTML format — without changing the
-        editor. It also makes undo/redo straightforward: each edit is a mutation to
-        the JSON tree, and undo is reversing that mutation.
-      </p>
-
-      <h3>Q: How do you handle the Outlook VML fallback for background images in the block renderer?</h3>
-      <p>
-        The section block renders conditional comments (only visible to Outlook's HTML
-        parser) containing VML markup. The VML consists of a v:rect element with a
-        v:fill child specifying the image source, sized to match the section dimensions.
-        The actual HTML content (the inner table) is nested inside the VML using an
-        absolute-positioned div. Non-Outlook clients see only the CSS background-image
-        property on the outer td or div. The HTML output structure is: opening Outlook
-        conditional comment, VML rectangle opening, inner content table, VML rectangle
-        closing, end conditional comment, then the same inner content wrapped in a non-
-        Outlook conditional comment (so Outlook does not render it twice). MJML
-        generates all this boilerplate automatically from the section's backgroundUrl
-        property.
-      </p>
-
-      <h3>Q: How would you implement real-time collaborative editing in the email builder?</h3>
-      <p>
-        The block tree JSON is well-suited for operational transforms (OT) or CRDT
-        merging. Each operation on the tree is a typed command: insertBlock(parentId,
-        index, blockData), removeBlock(id), updateBlockProperty(id, propertyPath,
-        value), and reorderBlock(id, newIndex). These operations are designed to be
-        commutative where possible (two users editing different blocks have independent
-        changes that merge cleanly). Conflicts (two users editing the same text block
-        simultaneously) are resolved using Yjs — a CRDT library that handles concurrent
-        text edits with character-level granularity. The Yjs document represents the
-        text content of each text block; the block tree structure is managed with
-        simpler last-write-wins semantics for non-text properties. Real-time sync
-        is delivered via WebSocket; the server broadcasts operations to all connected
-        collaborators.
-      </p>
-
-      <h3>Q: How do you validate that the exported HTML will render correctly in Gmail?</h3>
-      <p>
-        Gmail strips all CSS styles that are not inlined. It also strips head elements
-        and external stylesheets. The HTML renderer must inline all styles before export:
-        walk the generated HTML, for each element collect all applicable CSS rules
-        (from head styles, if any), and merge them into the element's style attribute
-        as inline styles. Libraries like juice (Node.js) automate this. After inlining,
-        run the output through a validator that checks for known Gmail-incompatible
-        patterns: CSS properties not supported by Gmail (border-radius on table cells —
-        stripped by Gmail), id attributes (Gmail prefixes them, breaking any CSS id
-        selectors), and JavaScript (always stripped). The validator produces a report
-        of issues with suggested fixes — shown in the preview panel before the user
-        exports.
-      </p>
-
-      <h3>Q: How would you support multi-language email templates in the builder?</h3>
-      <p>
-        Multi-language templates can be implemented at two levels: separate templates
-        per language (simplest, but hard to keep in sync across languages when the
-        design changes) or a single template with language-conditional blocks. The
-        conditional approach uses a "show if" condition on each block:
-        condition: "recipient.language === 'es'" shows a block only for Spanish recipients.
-        The variable substitution engine evaluates these conditions at render time using
-        the recipient's data. In the editor, a language toggle switches the preview
-        language and shows/hides blocks accordingly. The template stores all language
-        variants in the same block tree, with language-conditional visibility properties.
-        This keeps the design in sync across languages — changing a button color updates
-        all language variants — while allowing language-specific text content in each
-        visible block.
-      </p>
-    </ArticleLayout>
-  );
-}
+      </p></section>
+<section><h2>Architecture &amp; Flow</h2><p>Normalize input before applying typed transitions. Separate draft, preview, committed state, derived projection, integration effects, and bounded telemetry. Every timer, listener, observer, request, worker, and persisted preference needs an explicit owner and cleanup path.</p><p>Treat the block schema as the durable source. Editor canvas DOM, generated HTML, plaintext fallback, and client previews are disposable projections from a validated template version. Commit only after the current policy gate succeeds and retain enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/wysiwyg-email-builder-recovery.svg" alt="Design a WYSIWYG Email Builder recovery decisions" caption="Recovery flow: invalidate obsolete work, preserve recoverable state, and explain the outcome." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>A raw HTML editor is flexible but unsafe; a block schema is justified when non-technical users need predictable output across hostile email clients.</p><p>Published template versions are immutable. Draft schemas are versioned; HTML compilation is deterministic per renderer version, while provider delivery remains an external effect. The scale risks are large templates, nested layout, Outlook quirks, unsafe HTML, missing variables, schema migration, image loading, and rendering differences across clients. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic transitions only when rollback is deterministic and understandable. Keep authorization and conflict-sensitive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit state unions, versioned persistence, generation guards, SSR-safe feature checks, semantic HTML, and idempotent cleanup. Test keyboard use, accessibility output, stale responses, retries, restoration, and constrained devices.</p><p>Measure transition latency, blocked actions, stale drops, rollbacks, cache pressure, retry exhaustion, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing draft and commit, trusting arrival order, leaking resources, accepting obsolete async completion, and hiding rollback from the user.</p><p>For this topic, reject unsupported nesting, sanitize pasted markup, preserve the last valid draft, surface compatibility warnings, require variable defaults, and roll back publication by template version. Validate untrusted input, authorize durable mutations server-side, and bound resource usage.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to repeated workflows where browser, persistence, and policy boundaries can fail independently. Reuse the controller structure while injecting product-specific policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Treat the block schema as the durable source. Editor canvas DOM, generated HTML, plaintext fallback, and client previews are disposable projections from a validated template version.</p><h3>What breaks at scale?</h3><p>large templates, nested layout, Outlook quirks, unsafe HTML, missing variables, schema migration, image loading, and rendering differences across clients. I would bound expensive work and cancel obsolete effects.</p><h3>What consistency model applies?</h3><p>Published template versions are immutable. Draft schemas are versioned; HTML compilation is deterministic per renderer version, while provider delivery remains an external effect.</p><h3>How do you recover?</h3><p>I would reject unsupported nesting, sanitize pasted markup, preserve the last valid draft, surface compatibility warnings, require variable defaults, and roll back publication by template version.</p><h3>Why this architecture?</h3><p>A raw HTML editor is flexible but unsafe; a block schema is justified when non-technical users need predictable output across hostile email clients.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li></ul></section>
+</ArticleLayout>}

@@ -1,6 +1,3 @@
-# RAG-based Search UI — Example 2
+# Design a RAG-based Search UI example 2
 
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+Concrete search implementation exercise.

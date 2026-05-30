@@ -34,12 +34,11 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function FileUploadWidgetArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      {/* Section 1: Problem Clarification */}
+export default function FileUploadWidgetArticle() { return <ArticleLayout metadata={metadata}>
+<section><h1>Design a File Upload Widget</h1><h2>Definition &amp; Context</h2><p>Design a File Upload Widget is an implementation-heavy low-level design problem covering validation, drag intake, multipart chunking, bounded concurrency, retry, pause-resume, progress aggregation, checksum verification, and completion. A principal-level answer must define state ownership, local structures, lifecycle cleanup, browser semantics, server reconciliation, observability, privacy, and rollback.</p><p>Represent each file as a state machine with immutable identity, upload session id, chunk ledger, retry budget, and abort handles. Aggregate progress from confirmed bytes, not optimistic request starts. The important structures are file queue, upload session, chunk ledger, checksum, concurrency semaphore, retry schedule, abort controllers, validation result, and completion receipt.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/file-upload-widget-runtime.svg" alt="Design a File Upload Widget runtime" caption="Runtime flow from intent through guarded state, semantic projection, and recovery." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the component-specific mechanics that an implementation discussion must defend.</p>{/* Section 1: Problem Clarification */}
       <section>
-        <h2>Problem Clarification</h2>
+        <h3>Problem Clarification</h3>
         <HighlightBlock as="p" tier="crucial">
           We need to design a reusable file upload widget for a large-scale web
           application. The widget must allow users to upload files via drag-and-drop
@@ -82,7 +81,7 @@ export default function FileUploadWidgetArticle() {
 
       {/* Section 2: Requirements */}
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
@@ -213,7 +212,7 @@ export default function FileUploadWidgetArticle() {
 
       {/* Section 3: High-Level Approach */}
       <section>
-        <h2>High-Level Approach</h2>
+        <h3>High-Level Approach</h3>
         <HighlightBlock as="p" tier="important">
           The core idea is to separate the <strong>upload state management</strong>
           from the <strong>upload UI rendering</strong> using a global store (Zustand)
@@ -260,7 +259,7 @@ export default function FileUploadWidgetArticle() {
 
       {/* Section 4: System Design (LLD) */}
       <section>
-        <h2>System Design</h2>
+        <h3>System Design</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module Architecture</h3>
         <p>The system consists of seven modules:</p>
@@ -447,7 +446,7 @@ export default function FileUploadWidgetArticle() {
 
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
-        <h2>Data Flow / Execution Flow</h2>
+        <h3>Data Flow / Execution Flow</h3>
         <HighlightBlock as="p" tier="important">
           The execution flow follows a unidirectional data flow pattern. All state
           mutations flow through the Zustand store, and all rendering flows from store
@@ -548,7 +547,7 @@ export default function FileUploadWidgetArticle() {
 
       {/* Section 6: Implementation */}
       <section>
-        <h2>Implementation</h2>
+        <h3>Implementation</h3>
         <HighlightBlock as="p" tier="important">
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
@@ -650,7 +649,7 @@ export default function FileUploadWidgetArticle() {
 
       {/* Section 7: Performance & Scalability */}
       <section>
-        <h2>Performance &amp; Scalability</h2>
+        <h3>Performance &amp; Scalability</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Time and Space Complexity</h3>
         <div className="my-4 overflow-x-auto">
@@ -763,7 +762,7 @@ export default function FileUploadWidgetArticle() {
 
       {/* Section 8: Security Considerations */}
       <section>
-        <h2>Security Considerations</h2>
+        <h3>Security Considerations</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">File Type Validation</h3>
         <HighlightBlock as="p" tier="important">
@@ -861,7 +860,7 @@ export default function FileUploadWidgetArticle() {
 
       {/* Section 9: Testing Strategy */}
       <section>
-        <h2>Testing Strategy</h2>
+        <h3>Testing Strategy</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
@@ -942,7 +941,7 @@ export default function FileUploadWidgetArticle() {
 
       {/* Section 10: Interview-Focused Insights */}
       <section>
-        <h2>Interview-Focused Insights</h2>
+        <h3>Interview-Focused Insights</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Common Mistakes Candidates Make</h3>
         <ul className="space-y-3">
@@ -1124,74 +1123,12 @@ export default function FileUploadWidgetArticle() {
             </p>
           </div>
         </div>
-      </section>
-
-      {/* Section 11: References */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://uppy.io/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Uppy — Open-Source File Upload Framework
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              AWS S3 Multipart Upload — Documentation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              MDN — IndexedDB API Reference
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developer.mozilla.org/en-US/docs/Web/API/Blob/slice"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              MDN — Blob.slice() API Reference
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://web.dev/articles/upload-files-with-the-file-api"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Web.dev — File Upload Patterns and Best Practices
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.w3.org/WAI/ARIA/apg/patterns/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              WAI-ARIA — Accessible Progress Indicators
-            </a>
-          </li>
-        </ul>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Use five boundaries: an input adapter, a typed state controller, a projection layer, an integration adapter, and an observability adapter. Normalize events before they enter state. Keep previews separate from commits. Release timers, observers, listeners, abort controllers, workers, and pointer capture idempotently on cancel and unmount.</p><p>Represent each file as a state machine with immutable identity, upload session id, chunk ledger, retry budget, and abort handles. Aggregate progress from confirmed bytes, not optimistic request starts. For durable changes, validate the latest intent and record enough evidence to rollback deterministically.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/file-upload-widget-scale-recovery.svg" alt="Design a File Upload Widget scale and recovery" caption="Scale defense: bound pressure, validate policy, reconcile failures, and emit reasoned evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Single-request upload is simplest for small files; multipart resumable upload is justified when file size and unreliable networks make restart cost unacceptable.</p><p>Chunk confirmation is server-authoritative and idempotent. The client may resume from the acknowledged ledger; completion is valid only after the server verifies all chunks and final checksum. The dominant scale risks are multi-gigabyte files, flaky networks, duplicate selection, expired sessions, browser refresh, checksum mismatch, and server backpressure. Control them with bounded work, stable ids, cancellation, generation guards, measured caching, and explicit degraded behavior.</p><p>Optimistic UI is appropriate only when rollback is deterministic and understandable. Authorization, destructive effects, and conflict-sensitive truth stay server-authoritative.</p></section>
+<section><h2>Best practices</h2><p>Use typed state unions, stable identities, idempotency keys, versioned writes, SSR-safe browser feature detection, abortable async work, bounded caches, and semantic HTML. Test keyboard-only use, screen-reader output, slow networks, stale completion, retries, unmount during work, and large datasets.</p><p>Measure blocked transitions, stale drops, rollback rates, latency percentiles, cache pressure, retry exhaustion, and accessibility regressions. Keep telemetry small and free of sensitive content.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing preview and committed state, trusting arrival order, leaking resources after unmount, accepting stale completion, assuming visible data is the complete dataset, and implementing custom controls without accessible semantics.</p><p>For this topic, pause without losing confirmed chunks, refresh expired sessions, retry bounded transient failures with jitter, surface permanent rejection, and persist resumable metadata safely. Security and privacy require the design to validate size and type server-side, scan uploads, use signed session-scoped URLs, sanitize names, cap concurrency, protect quotas, and never trust client checksums alone.</p></section>
+<section><h2>Real-world use cases</h2><p>This design appears in production surfaces where repeated interaction, large datasets, asynchronous completion, and partial failure are normal. Reuse the runtime shell, but inject product policy explicitly: authorization, latency budget, persistence boundary, fallback, and telemetry.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Represent each file as a state machine with immutable identity, upload session id, chunk ledger, retry budget, and abort handles. Aggregate progress from confirmed bytes, not optimistic request starts. I would name preview, commit, derived projection, async generation, and rollback evidence separately.</p><h3>What breaks at scale?</h3><p>multi-gigabyte files, flaky networks, duplicate selection, expired sessions, browser refresh, checksum mismatch, and server backpressure. I would bound each expensive operation and cancel work that no longer affects the visible committed result.</p><h3>What consistency model applies?</h3><p>Chunk confirmation is server-authoritative and idempotent. The client may resume from the acknowledged ledger; completion is valid only after the server verifies all chunks and final checksum.</p><h3>How do you recover from failure?</h3><p>I would pause without losing confirmed chunks, refresh expired sessions, retry bounded transient failures with jitter, surface permanent rejection, and persist resumable metadata safely.</p><h3>How do you defend the architecture?</h3><p>Single-request upload is simplest for small files; multipart resumable upload is justified when file size and unreliable networks make restart cost unacceptable. The added complexity is acceptable only when the required behavior and operational evidence justify it.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API" target="_blank" rel="noreferrer">MDN Intersection Observer API</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>; }

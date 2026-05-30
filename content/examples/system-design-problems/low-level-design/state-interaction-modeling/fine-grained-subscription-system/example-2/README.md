@@ -1,6 +1,3 @@
-# Fine-grained Subscription System — Example 2
+# Design a Fine-Grained Subscription System example 2
 
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+Concrete implementation exercise for Design a Fine-Grained Subscription System. This example covers runtime state, transition validation, and debugging or edge-case behavior rather than a placeholder snippet.

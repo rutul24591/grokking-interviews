@@ -1,89 +1,65 @@
-export type backgroundSyncSystemSignal = {
-  permissionDenied: number;
-  visibilityAgeMs: number;
-  workerQueueDepth: number;
-  fallbackCount: number;
-};
+export type BackgroundSyncSystemTaskState = "queued" | "running" | "completed" | "failed" | "cancelled" | "timed-out";
 
-export type backgroundSyncSystemEvent = {
+export interface BackgroundSyncSystemTask {
   id: string;
-  topic: "background-sync-system";
-  actorId: string;
-  sequence: number;
-  receivedAtMs: number;
-  expectedVersion: number;
-  currentVersion: number;
-  payloadSize: number;
-  signal: backgroundSyncSystemSignal;
-};
-
-export type backgroundSyncSystemDecision = {
-  accepted: boolean;
-  action: "use-progressive-fallback" | "pause-background-work" | "request-permission-lazily" | "commit";
-  nextVersion: number;
-  reasons: string[];
-  audit: string[];
-};
-
-const topicInvariant = "Browser APIs must degrade predictably when permission, lifecycle, or support changes.";
-
-export function evaluateBackgroundSyncSystemEvent(event: backgroundSyncSystemEvent): backgroundSyncSystemDecision {
-  const reasons: string[] = [];
-
-  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
-  if (event.sequence <= 0) reasons.push("invalid-sequence");
-  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
-  if (event.signal.permissionDenied > 2_000) reasons.push("permissionDenied-outside-slo");
-  if (event.signal.workerQueueDepth > 0.2) reasons.push("workerQueueDepth-requires-guardrail");
-
-  let action: backgroundSyncSystemDecision["action"] = "commit";
-  if (reasons.includes("version-mismatch")) action = "use-progressive-fallback";
-  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "pause-background-work";
-  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "request-permission-lazily";
-
-  return {
-    accepted: reasons.length === 0,
-    action,
-    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
-    reasons,
-    audit: [
-      "topic:Background Sync System",
-      "subcategory:web-platform-browser-apis",
-      "entity:browser capability event",
-      "state:capability permission state",
-      "operation:progressive platform action",
-      "invariant:" + topicInvariant,
-      "actor:" + event.actorId,
-      "event:" + event.id,
-    ],
-  };
+  scope: string;
+  priority: number;
+  deadlineMs: number;
+  startedAtMs?: number;
+  state: BackgroundSyncSystemTaskState;
+  attempts: number;
 }
 
-export function runBackgroundSyncSystemContractScenario() {
-  const base = Date.parse("2026-05-29T09:00:00.000Z");
-  const accepted = evaluateBackgroundSyncSystemEvent({
-    id: "background-sync-system-evt-1",
-    topic: "background-sync-system",
-    actorId: "user-42",
-    sequence: 7,
-    receivedAtMs: base,
-    expectedVersion: 12,
-    currentVersion: 12,
-    payloadSize: 18_500,
-    signal: { permissionDenied: 180, visibilityAgeMs: 0, workerQueueDepth: 0.01, fallbackCount: 1 },
-  });
+export class BackgroundSyncSystemRuntimeQueue {
+  private tasks: BackgroundSyncSystemTask[] = [];
+  private cancelled = new Set<string>();
 
-  const guarded = evaluateBackgroundSyncSystemEvent({
-    id: "background-sync-system-evt-late",
-    topic: "background-sync-system",
-    actorId: "user-42",
-    sequence: 8,
-    receivedAtMs: base + 4_000,
-    expectedVersion: 12,
-    currentVersion: 14,
-    payloadSize: 310_000,
-    signal: { permissionDenied: 2_700, visibilityAgeMs: 3, workerQueueDepth: 0.34, fallbackCount: 2 },
-  });
+  enqueue(task: Omit<BackgroundSyncSystemTask, "state" | "attempts">): BackgroundSyncSystemTask {
+    const queued: BackgroundSyncSystemTask = { ...task, state: "queued", attempts: 0 };
+    this.tasks.push(queued);
+    this.tasks.sort((a, b) => b.priority - a.priority || a.deadlineMs - b.deadlineMs);
+    return queued;
+  }
 
-  return { accepted, guarded };
+  cancel(id: string): boolean {
+    this.cancelled.add(id);
+    const task = this.tasks.find((candidate) => candidate.id === id);
+    if (!task) return false;
+    task.state = "cancelled";
+    return true;
+  }
+
+  drain(nowMs: number, budget: number): BackgroundSyncSystemTask[] {
+    const completed: BackgroundSyncSystemTask[] = [];
+    for (const task of this.tasks) {
+      if (budget <= 0) break;
+      if (this.cancelled.has(task.id)) {
+        task.state = "cancelled";
+        continue;
+      }
+      if (task.deadlineMs < nowMs) {
+        task.state = "timed-out";
+        continue;
+      }
+      task.state = "running";
+      task.startedAtMs = nowMs;
+      task.attempts += 1;
+      task.state = "completed";
+      completed.push(task);
+      budget -= 1;
+    }
+    this.tasks = this.tasks.filter((task) => task.state === "queued" || task.state === "running");
+    return completed;
+  }
+
+  snapshot() {
+    return { queued: this.tasks.length, cancelled: this.cancelled.size, ids: this.tasks.map((task) => task.id) };
+  }
+}
+
+export function runBackgroundSyncSystemQueueScenario() {
+  const queue = new BackgroundSyncSystemRuntimeQueue();
+  queue.enqueue({ id: "background-sync-system-primary", scope: "article", priority: 10, deadlineMs: Date.now() + 5_000 });
+  queue.enqueue({ id: "background-sync-system-secondary", scope: "article", priority: 1, deadlineMs: Date.now() + 50 });
+  return { completed: queue.drain(Date.now() + 100, 3), snapshot: queue.snapshot() };
 }

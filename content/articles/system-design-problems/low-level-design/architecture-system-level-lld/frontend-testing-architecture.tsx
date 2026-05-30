@@ -1,368 +1,165 @@
 "use client";
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
-import { HighlightBlock } from "@/components/articles/HighlightBlock";
+import { ArticleImage } from "@/components/articles/ArticleImage";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-lld-frontend-testing-architecture",
-  title: "Frontend Testing Architecture",
-  description:
-    "Production-grade frontend testing strategy: unit tests with Vitest, component testing with Testing Library, visual regression with Playwright, E2E with Cypress, contract testing, performance budgets in CI, and test coverage governance.",
+  title: "Design Frontend Testing Architecture",
+  description: "Implementation-heavy architecture-level low-level design guide for design frontend testing architecture.",
   category: "low-level-design",
   subcategory: "architecture-system-level-lld",
   slug: "frontend-testing-architecture",
-  wordCount: 5200,
-  readingTime: 31,
-  lastUpdated: "2026-05-16",
-  tags: ["lld", "testing", "vitest", "playwright", "cypress", "testing-library", "ci", "visual-regression"],
-  relatedTopics: ["component-library-system", "micro-frontend-architecture"],
+  wordCount: 4700,
+  readingTime: 28,
+  lastUpdated: "2026-05-30",
+  tags: ["lld", "architecture", "platform-engineering", "principal-engineer"],
+  relatedTopics: ["component-library-system", "frontend-performance-architecture", "frontend-testing-architecture"],
 };
 
 export default function FrontendTestingArchitectureArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      <p>
-        Frontend testing is poorly understood at the architectural level. Most teams
-        accumulate tests reactively — unit tests written to fix bugs, a Cypress suite
-        added when QA complaints become too frequent, visual regression added after a
-        design regression incident. The result is a test suite that is expensive to
-        maintain, slow to run, and poorly correlated with the defects that actually
-        reach production. A testing architecture approaches this as a systems design
-        problem: what failure modes need to be caught, at what stage of the development
-        cycle, with what tools, at what maintenance cost? The outcome is a deliberate
-        portfolio of test types rather than an accidental accumulation.
-      </p>
+      <section>
+        <h1>Design Frontend Testing Architecture</h1>
+        <h2>Definition &amp; Context</h2>
+        <p>
+          Design Frontend Testing Architecture is an architecture-level low-level design problem about implementing a risk-based frontend verification platform. The design must be concrete enough that platform and product teams can integrate with it safely: public APIs, state model, artifact formats, ownership rules, compatibility contracts, failure isolation, rollout, and observability all belong in the answer.
+        </p>
+        <p>
+          The facade is registerSuite, runChangedTests, captureVisuals, auditA11y, quarantineFlake, gateRelease. Runtime or lifecycle states are idle, selecting, running, flaky, failed, passed, blocked. The governing invariant is: Test coverage must catch user-visible regressions without making every change slow or flaky. The pressure-test case is when a visual diff, intermittent browser test, and accessibility failure disagree during release gating. A principal-ready answer should explain how local implementation decisions become organization-wide reliability, velocity, and migration outcomes.
+        </p>
+        <ArticleImage src="/diagrams/system-design-problems/low-level-design/architecture-system-level-lld/frontend-testing-architecture-runtime.svg" alt="Design Frontend Testing Architecture runtime architecture" caption="Architecture runtime: consumer intent flows through contract validation, versioned artifacts, rollout controls, and observable delivery." />
+      </section>
 
-      <h2>The Testing Pyramid for Frontend</h2>
-      <p>
-        The classic testing pyramid (many unit tests, fewer integration tests, few E2E
-        tests) applies to frontend with modifications. Frontend unit tests (testing pure
-        functions and hooks in isolation) are fast and cheap but miss the integration
-        failures that actually reach users: a component that functions correctly in unit
-        tests but fails when rendered in its parent layout context, a form that validates
-        correctly but submits with the wrong field names, an animation that works in
-        isolation but causes layout shift in the page context.
-      </p>
-      <p>
-        The practical frontend pyramid: unit tests for utility functions, custom hooks,
-        and pure transformation logic (the smallest, cheapest, fastest layer); component
-        tests with Testing Library for individual components rendered in realistic context
-        (the largest and highest-value middle layer); visual regression tests for UI
-        appearance across themes and breakpoints (catches design regressions without
-        requiring human visual review on every PR); and E2E tests for critical user
-        journeys only (checkout, authentication, data-destructive actions) where failure
-        is highest-consequence and the full browser environment matters.
-      </p>
-      <HighlightBlock as="p" tier="crucial">
-        The most common frontend testing mistake is inverting the pyramid: many brittle
-        E2E tests that are slow (30+ minutes), fragile (fail on any timing variation),
-        and hard to debug (no indication of which component failed), with few component
-        tests that would catch the same failures faster and more precisely. If your E2E
-        suite takes longer than 10 minutes, covers behaviors testable at the component
-        level, or fails more than 2% of the time without code changes, it needs to be
-        restructured.
-      </HighlightBlock>
+      <section>
+        <h2>Core Concepts</h2>
+        <p>
+          The first concept is an explicit platform contract. A platform is not just shared code; it is a promise about interfaces, compatibility, support windows, ownership, and operational response. The core structures are test pyramid policy, affected graph, browser matrix, visual baseline, a11y report, flake ledger, release gate. These structures make changes reviewable and let consuming teams understand what is stable, what is experimental, and what requires migration.
+        </p>
+        <p>
+          The second concept is separation of policy from mechanism. Mechanism loads modules, compiles artifacts, runs tasks, gathers measurements, aggregates responses, or publishes packages. Policy decides compatibility, rollout, performance budgets, accessibility thresholds, partial degradation, cache scope, and support windows. Keeping those layers separate prevents urgent exceptions from becoming permanent architecture.
+        </p>
+        <h3>Implementation contract</h3>
+        <p>
+          Each public method should return a typed result with version, status, evidence, and recovery action. Artifacts need deterministic identities and provenance: source revision, compiler or build version, dependency versions, environment inputs, owner, and rollout cohort. Consumers should never need to inspect platform internals to know whether an artifact is compatible or a fallback was used.
+        </p>
+        <p>
+          Compatibility must be designed before adoption grows. Define semantic versioning, deprecation, migration, rollback, feature flags, and support windows. Fail closed for security, tenant isolation, or incompatible contracts. Degrade gracefully for optional capabilities when a stable baseline exists.
+        </p>
+        <h3>Governance and ownership</h3>
+        <p>
+          Platform ownership is part of the implementation contract. Every shared artifact needs a responsible team, contribution path, review policy, support window, and escalation route. RFC review is appropriate for stable public contracts; experimental extensions can move faster behind explicit status markers. Adoption metrics should reveal whether consumers are upgrading, bypassing the platform, or accumulating deprecated usage.
+        </p>
+        <p>
+          Escape hatches should be narrow and temporary. Record who requested the exception, why the supported path was insufficient, which consumers use it, and when it should be reviewed. Without that evidence, a platform slowly becomes a collection of permanent one-off behaviors that cannot evolve safely.
+        </p>
+      </section>
 
-      <h2>Unit Testing: Vitest for Modern React Projects</h2>
-      <p>
-        Vitest has replaced Jest as the standard unit test runner for Vite-based and
-        modern TypeScript projects. Its key advantages: native ES module support (no
-        transform step for modern code), shared configuration with the production Vite
-        build (import aliases, environment variables, and plugins work identically in
-        tests and production), and dramatically faster startup time (3–5x vs Jest for
-        large test suites) due to on-demand compilation rather than full upfront transform.
-      </p>
-      <p>
-        What belongs in unit tests: pure functions (date formatting, currency conversion,
-        input validation logic), custom React hooks (using renderHook from Testing Library),
-        data transformation utilities (API response normalization, selector functions),
-        and state machine logic (reducer functions, XState machine definitions). These
-        are deterministic (same input always produces same output), have no DOM dependencies,
-        and are fast to run (milliseconds per test).
-      </p>
-      <HighlightBlock as="p" tier="important">
-        Avoid mocking in unit tests whenever possible. A test that mocks 5 dependencies
-        to test 3 lines of code tells you nothing about whether the code works in context.
-        If a function is genuinely hard to test without extensive mocking, it's likely
-        doing too much — extract the testable logic from the I/O boundary and test that.
-        Mock at the network boundary (MSW for fetch mocks, not Jest.mock of individual
-        modules), not at internal module boundaries.
-      </HighlightBlock>
+      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          The implementation has six layers: consumer facade, contract validator, dependency graph, execution engine, artifact or response store, and observability layer. The facade normalizes intent. Validation checks schema, compatibility, ownership, and policy. The graph determines affected work. The engine executes deterministic tasks. The store publishes versioned outputs. Observability records latency, adoption, failures, and rollback evidence.
+        </p>
+        <p>
+          A normal change enters through the facade with identity and version. Validation rejects unsafe input before expensive work. The graph selects affected packages, routes, consumers, or downstream dependencies. Execution produces an immutable candidate artifact or response. Verification gates check correctness, accessibility, performance, compatibility, and rollout policy. Publish updates a versioned pointer only after the candidate passes gates.
+        </p>
+        <h3>Data model and lifecycle</h3>
+        <p>
+          A practical model stores artifact id, semantic version, source revision, owner, dependency digest, policy version, rollout status, validation reports, metrics, and rollback pointer. Mutable aliases such as latest or stable should resolve to immutable versions. That makes rollback a pointer change rather than an emergency rebuild.
+        </p>
+        <p>
+          Lifecycle transitions need explicit ownership: draft, validate, canary, publish, observe, deprecate, migrate, and retire. Cleanup matters too: expire caches, revoke bad artifacts, disconnect remotes, retire unsupported versions, and remove stale documentation. Platform systems fail slowly when lifecycle work is left manual.
+        </p>
+        <h3>Failure isolation and recovery</h3>
+        <p>
+          The platform should define a blast-radius boundary. A broken component version, remote module, cached artifact, test baseline, performance rule, or downstream response must be attributable to version and cohort. Canary release, scoped feature flags, error boundaries, circuit breakers, and rollback pointers reduce the number of consumers affected before the platform team understands the fault.
+        </p>
+        <p>
+          Recovery should be practiced before an incident. Roll back a pointer to a previous immutable artifact, disable a remote, restore a known-good cache namespace, or degrade a partial response. Then confirm metrics recover. A rollback process that requires a fresh build, coordinated consumer releases, or manual cache clearing is too fragile for a widely adopted platform.
+        </p>
+        <ArticleImage src="/diagrams/system-design-problems/low-level-design/architecture-system-level-lld/frontend-testing-architecture-failure.svg" alt="Design Frontend Testing Architecture failure isolation and rollout" caption="Failure model: compatibility gaps, stale artifacts, dependency faults, and budget regressions route through canary, rollback, or degradation." />
+      </section>
 
-      <h2>Component Testing with React Testing Library</h2>
-      <p>
-        Component tests render components in a JSDOM environment and interact with them
-        through accessible roles and labels — the same way a user or assistive technology
-        would. React Testing Library (RTL) enforces this philosophy: it provides no
-        way to access component internals (state, instance methods) and discourages
-        accessing by CSS class or implementation detail. Tests written this way survive
-        refactors and clearly test behavior rather than implementation.
-      </p>
-      <p>
-        What belongs in component tests: form submission and validation (fill fields,
-        submit, verify error messages and API calls), data display (render with different
-        data props, verify correct content appears), interaction flows (click a button,
-        verify the modal opens, click cancel, verify it closes), loading and error states
-        (provide pending and rejected API responses, verify skeleton and error UI),
-        and accessibility (verify accessible names, roles, keyboard navigation).
-      </p>
-      <p>
-        Network mocking with MSW (Mock Service Worker): MSW intercepts fetch requests
-        at the network layer (not at the fetch module level), making tests more realistic.
-        Define handlers that return realistic response payloads and error scenarios. MSW
-        runs in both the browser (for Storybook and manual testing) and Node.js (for
-        component tests), sharing the same handler definitions — write the mock once,
-        use it everywhere.
-      </p>
-      <HighlightBlock as="p" tier="important">
-        Test what the user sees, not what the code does. "Renders a button" is not a
-        useful assertion — the button was obviously rendered, the test suite ran without
-        throwing. Useful assertions: "submitting the form with an empty email field shows
-        an error message", "clicking the delete button shows a confirmation dialog and
-        calling delete on the API when confirmed", "the component shows a skeleton while
-        the data is loading and replaces it with the list when loading completes". Each
-        test tells a story of user intent and expected outcome.
-      </HighlightBlock>
+      <section>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>
+          Centralization improves consistency and enables cross-product fixes, but it can become a bottleneck. Decentralization lets teams move independently, but duplicates solutions and fragments contracts. The useful middle ground is a stable platform core with documented extension points, contribution governance, and escape hatches that are observable and time-bounded.
+        </p>
+        <p>
+          Build-time decisions produce deterministic, cacheable artifacts but slow feedback and cannot respond to runtime context. Runtime decisions support themes, targeting, degradation, and tenant context but add latency and failure modes. Use build time for immutable compilation and runtime for narrowly scoped policy decisions backed by versioned snapshots.
+        </p>
+        <p>
+          Strong release gates prevent regressions but increase lead time. Weak gates move quickly but shift cost to incidents and migrations. A principal answer should propose risk-based gates: strict checks for shared contracts, accessibility, security, and performance budgets; lighter checks for experimental extensions behind flags.
+        </p>
+        <p>
+          Cost also shifts with adoption. Shared infrastructure saves repeated engineering time but introduces CI minutes, artifact storage, documentation upkeep, support rotations, migration work, and platform staffing. Track whether the platform reduces duplicated implementation and incident rate enough to justify that ongoing investment.
+        </p>
+      </section>
 
-      <h2>Visual Regression Testing</h2>
-      <p>
-        Visual regression testing captures screenshots of UI components and compares
-        them pixel-by-pixel against baseline screenshots. When a UI change occurs (a
-        designer changes a button's border radius, a font update changes line heights,
-        a CSS refactor changes spacing), visual regression tests fail with a diff image
-        showing exactly what changed. This catches design regressions before they reach
-        production without requiring a human to visually review every component on every PR.
-      </p>
-      <p>
-        Storybook-based visual regression: Chromatic (Storybook's visual testing service)
-        captures snapshots of every story in the Storybook and runs visual comparisons
-        on every PR. Changes require approval from a reviewer who can see the diff inline
-        in GitHub. Stories serve double duty: documentation of component states and visual
-        regression test cases. Every variant that should be tested (disabled state,
-        loading state, error state, dark mode, RTL layout, various content lengths)
-        needs a story.
-      </p>
-      <p>
-        Playwright-based visual regression: for page-level visual regression (testing
-        entire page layouts, not just individual components), Playwright's expect(page).toHaveScreenshot()
-        captures full-page screenshots with a configurable pixel difference threshold.
-        Page-level snapshots are more brittle than component snapshots (any content
-        change breaks the snapshot) but catch layout issues that component-level snapshots
-        miss (header overlapping content, sidebar pushing body content incorrectly).
-        Use component snapshots as the default; use page snapshots only for critical
-        layout views (landing page, checkout flow).
-      </p>
-      <HighlightBlock as="p" tier="important">
-        Visual regression tests must be stable across environments. Flaky visual tests
-        (failing due to font rendering differences between macOS and Linux CI, anti-aliasing
-        differences between GPU contexts, or animation timing) erode trust and lead teams
-        to disable them. Mitigate: use Docker containers in CI to ensure consistent
-        rendering environments, disable animations in visual test contexts (add a CSS
-        class that sets animation-duration to 0), use a pixel difference threshold
-        (1–2%) to absorb minor rendering variance, and run visual tests on dedicated
-        infrastructure rather than shared CI workers.
-      </HighlightBlock>
+      <section>
+        <h2>Best practices</h2>
+        <p>
+          Publish immutable artifacts and keep rollback pointers. Track owners and support windows. Require migration guides and codemods for mechanical breaking changes. Add canary rollout and emergency disablement for risky runtime paths. Scope caches by artifact version, tenant, environment, and policy digest.
+        </p>
+        <p>
+          Build observability into the platform: publish success, cache hit rate, affected graph size, consumer adoption, old-version usage, validation failures, performance regression, partial degradation, rollback count, and mean time to repair. Metrics should be attributable to source revision and rollout cohort.
+        </p>
+        <p>
+          Test contracts, not only implementation. Run consumer fixtures, SSR checks, browser matrices, visual regression, accessibility audits, bundle budgets, dependency-failure simulation, cache invalidation, canary rollback, and migration tests. A platform that only tests its own repository misses integration failures.
+        </p>
+        <p>
+          Keep the dependency graph observable and bounded. Measure affected package count, fan-out, critical-path duration, cache correctness, and the number of consumers on unsupported versions. Partition work where possible and prioritize deterministic inputs. A cache hit is valuable only when the key includes every input that can change output behavior.
+        </p>
+      </section>
 
-      <h2>End-to-End Testing with Playwright</h2>
-      <p>
-        Playwright has replaced Cypress as the E2E testing tool of choice for most teams
-        due to its multi-browser support (Chromium, Firefox, WebKit — testing Safari
-        behavior without macOS), its superior handling of async behavior (auto-waiting
-        for elements to be visible and actionable eliminates most timing flakiness),
-        and its first-class TypeScript support.
-      </p>
-      <p>
-        E2E tests should cover only the highest-consequence user journeys that cannot be
-        adequately tested at a lower level: user authentication flow (login, logout,
-        session expiry), checkout and payment (the flow where bugs directly cost revenue),
-        data-destructive actions (account deletion, bulk delete), and cross-page state
-        transitions that depend on browser storage, cookies, or URL state.
-      </p>
-      <p>
-        Test isolation is the primary engineering challenge in E2E testing. Each test
-        must start from a known state and not depend on other tests' side effects. The
-        most common approach: each test creates its own test user via API calls in a
-        beforeEach hook and deletes the user in afterEach. This guarantees clean state
-        but adds latency (2–5 seconds per test for API setup). For read-only tests
-        (checking that a page renders correctly with a specific data configuration),
-        use pre-seeded fixture data rather than creating it per test.
-      </p>
-      <HighlightBlock as="p" tier="important">
-        Page Object Model (POM) for maintainable E2E tests: encapsulate each page's
-        selectors and interactions in a Page Object class. Instead of repeating
-        "page.locator('[data-testid=email]').fill(email)" across 20 tests, the LoginPage
-        class has a login(email, password) method. When the login form's implementation
-        changes, only the LoginPage class changes — not every test that uses login as
-        a setup step. POMs also naturally enforce the principle that selectors should
-        be centralized, not scattered across test files.
-      </HighlightBlock>
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>
+          Avoid hidden global state, mutable latest artifacts, unversioned contracts, and undocumented escape hatches. Do not let one team bypass validation permanently because a deadline is urgent. Temporary exceptions need owner, reason, expiry, and telemetry.
+        </p>
+        <p>
+          Do not treat documentation and migration as secondary work. Adoption fails when the correct path is hard to discover or upgrades are expensive. Do not assume caches are correct without complete keys. Do not assume a successful publish means consumers are healthy; observe rollout cohorts and provide rollback.
+        </p>
+        <p>
+          Avoid platform APIs that expose internal implementation details as public contracts. Once many teams depend on a private directory layout, token name, remote loading trick, or test-runner quirk, replacing that mechanism becomes a breaking migration. Publish intentional interfaces and keep internals replaceable.
+        </p>
+      </section>
 
-      <h2>Contract Testing for API Integration</h2>
-      <p>
-        Frontend teams often discover API breaking changes in E2E tests or production,
-        which is too late. Contract testing verifies that the frontend's expectations
-        of the API (the "consumer contract") match what the API actually provides (the
-        "provider contract") without requiring a running backend.
-      </p>
-      <p>
-        Pact is the standard contract testing tool. The frontend (consumer) writes tests
-        that describe its expectations: "when I call GET /api/users/123 with a valid auth
-        token, the response has this shape." Pact generates a contract file (JSON) from
-        these consumer tests. The backend (provider) runs Pact's provider verification
-        against this contract to confirm it satisfies all consumer expectations. If the
-        backend changes the API response shape, the contract verification fails — catching
-        the breaking change before integration.
-      </p>
-      <p>
-        Contract testing is particularly valuable in micro-frontend architectures where
-        multiple teams independently develop frontend shells and API consumers. Without
-        contract testing, API changes silently break frontend consumers until E2E tests
-        or production catch the failures. With contract testing, the breaking change
-        is detected at the PR stage.
-      </p>
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          Architecture-level LLD appears in large organizations where frontend teams share components, tooling, performance policy, test infrastructure, deployment boundaries, and experience-specific APIs. These platforms reduce repeated work only when their contracts are stable and their integration path is easier than local reinvention.
+        </p>
+        <p>
+          Principal engineers should connect implementation details to organizational scale: ownership, migration cost, consumer autonomy, rollout risk, support load, and deprecation. The design succeeds when teams can adopt it incrementally, debug failures quickly, and recover without coordinated emergency rebuilds.
+        </p>
+      </section>
 
-      <h2>Performance Budgets in CI</h2>
-      <p>
-        Performance regressions are indistinguishable from functional regressions in
-        their impact on users but are rarely gated in CI. Adding performance budget
-        enforcement to CI ensures that bundle size increases, LCP regressions, and
-        INP degradations are caught before they reach production.
-      </p>
-      <p>
-        Bundle size budgets: Bundlesize or size-limit run as a CI step after the production
-        build, comparing each bundle's gzipped size against a configurable budget. If
-        any bundle exceeds its budget, CI fails with a report showing which bundle
-        exceeded its limit and by how much. Teams reviewing the PR must explicitly decide
-        to increase the budget (a deliberate choice) rather than silently shipping a
-        larger bundle. Set separate budgets for the main bundle, vendor chunks, and
-        route-level lazy chunks.
-      </p>
-      <HighlightBlock as="p" tier="crucial">
-        Lighthouse CI automates Core Web Vitals measurement in CI. It runs Lighthouse
-        (the Chrome performance auditing tool) against key pages of the application and
-        compares metrics against configurable thresholds: LCP under 2.5 seconds,
-        INP under 200ms, CLS under 0.1. Failed thresholds fail the CI check. The Lighthouse
-        CI server stores historical run data, enabling tracking of performance trends
-        over time and detecting gradual regressions (not just single-PR regressions).
-        A PR that introduces a 500ms LCP regression is caught before it reaches the main
-        branch.
-      </HighlightBlock>
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you design the system end to end?</h3>
+        <p>I would define the facade, versioned artifact model, dependency graph, validation gates, immutable publish flow, rollout controls, rollback pointer, and metrics. Then I would walk one change from authoring through consumer adoption.</p>
+        <h3>Why this architecture over team-local implementations?</h3>
+        <p>Shared invariants need a shared enforcement point. The platform makes Test coverage must catch user-visible regressions without making every change slow or flaky. enforceable while retaining extension points for product-specific policy.</p>
+        <h3>What breaks at scale?</h3>
+        <p>Dependency graphs grow, caches become stale, consumers lag versions, gates slow delivery, and platform teams become bottlenecks. Use affected analysis, deterministic cache keys, support windows, codemods, canaries, adoption metrics, and delegated ownership.</p>
+        <h3>How do you handle failure, rollback, abuse, privacy, cost, and observability?</h3>
+        <p>Use immutable artifacts, validation, scoped caches, permission checks, redacted metrics, bounded retention, canary release, rollback pointers, owner metadata, and SLO dashboards. Then defend the edge case: a visual diff, intermittent browser test, and accessibility failure disagree during release gating.</p>
+        <h3>How would you defend the trade-offs under pressure?</h3>
+        <p>I would narrow centralization to shared invariants, keep policy explicit, show how consumers migrate incrementally, and explain which failures degrade safely versus fail closed.</p>
+      </section>
 
-      <h2>Test Coverage Governance</h2>
-      <p>
-        Code coverage is a lagging indicator: it tells you which lines of code were
-        executed by tests, not whether the tests are meaningful. A 90% coverage figure
-        can coexist with a test suite that never asserts anything meaningful — just
-        renders components to get the lines to execute. Nevertheless, coverage thresholds
-        serve as a useful floor for preventing obvious testing gaps.
-      </p>
-      <p>
-        Vitest's coverage reporting (using v8 or Istanbul instrumentation) integrates
-        with CI to block PRs that drop coverage below the configured threshold. Set
-        the threshold based on the codebase's current coverage (to prevent regression)
-        rather than an aspirational target (to avoid creating pressure toward meaningless
-        tests). The threshold is typically set at 80% line coverage with the understanding
-        that coverage measures execution, not correctness.
-      </p>
-      <p>
-        Critical path coverage: rather than a global coverage threshold, identify the
-        code paths that are most consequential (payment processing, authentication,
-        data mutation) and require higher coverage standards for those modules. Vitest
-        supports per-module coverage thresholds via its configuration. This focuses
-        coverage investment where it provides the most value.
-      </p>
-
-      <h2>Testing AI-Powered UI Components</h2>
-      <p>
-        AI-powered UI introduces new testing challenges: the LLM output is non-deterministic
-        (the same input produces different text each run), streaming responses must be
-        handled in tests, and the streaming state machine (idle → sending → streaming →
-        complete) has many states to cover.
-      </p>
-      <p>
-        Testing streaming components: use MSW to return a streaming response in tests.
-        Create a ReadableStream response that yields mock tokens at configurable intervals.
-        Test each state of the streaming state machine: verify that the typing indicator
-        appears during "sending", that tokens render as they arrive during "streaming",
-        that the cursor disappears and copy button appears on "complete", and that the
-        partial text is preserved and an error message is shown on "error". None of these
-        require an actual LLM API call.
-      </p>
-      <HighlightBlock as="p" tier="important">
-        For non-deterministic AI responses (variable text content), test behavior not
-        content. Instead of "the response contains the word 'quantum'", test "the response
-        renders in the message list with the correct styling", "the stop button is active
-        during generation", and "the thumbs up/down buttons appear after generation
-        completes." These structural and behavioral assertions are stable regardless of
-        what the LLM generates. For responses that must have specific characteristics
-        (a structured JSON output that must parse correctly), use MSW to return a
-        deterministic mock response.
-      </HighlightBlock>
-
-      <h2>Interview Q&A</h2>
-
-      <h3>Q: How do you prevent test flakiness from becoming a team-level problem?</h3>
-      <p>
-        Flaky tests (tests that sometimes pass and sometimes fail without code changes)
-        are insidious: they erode trust in the test suite (developers start ignoring
-        red CI runs), they slow down CI (flaky E2E tests require re-runs, doubling or
-        tripling CI time), and they mask real failures. Prevention: E2E tests use
-        Playwright's auto-waiting rather than explicit sleep calls; tests are isolated
-        (no shared state between tests); animation is disabled in test environments;
-        network mocks return immediately without simulated delays (use the mock's built-in
-        delay feature deliberately, not as a default). Detection: track the pass rate
-        of each test over time using a test analytics platform (GitHub Actions has built-in
-        test result tracking; Jest/Vitest can output XML reports to any CI platform).
-        Tests with pass rates below 95% are quarantined (not run in the main CI gate)
-        and fixed or removed.
-      </p>
-
-      <h3>Q: How do you test complex drag-and-drop interactions in components?</h3>
-      <p>
-        JSDOM (the DOM environment used by Vitest/Jest) doesn't support drag-and-drop
-        events reliably — drag events don't propagate correctly and there's no layout
-        engine for computing drop target positions. For unit and component-level testing
-        of drag behavior, test the underlying logic (the drop position calculation function,
-        the state update that occurs when an item is dropped) separately from the pointer
-        event handling. For the full drag-and-drop interaction (pick up an item, move
-        it over another item, release), use Playwright E2E tests: Playwright's mouse API
-        supports precise pointer move simulation, and Playwright tests run in a real
-        browser with a real layout engine. The component test verifies the logic; the
-        E2E test verifies the complete interaction.
-      </p>
-
-      <h3>Q: How do you approach testing in a micro-frontend architecture where components are owned by different teams?</h3>
-      <p>
-        Each micro-frontend team owns its component-level and unit tests independently.
-        Contract tests define the interface between shell and micro-frontends: the shell
-        expects each MFE to expose a specific API (mount function, event emitter interface,
-        required props). The MFE team's contract tests verify they fulfill this API. The
-        shell team's contract tests verify they consume the MFE API correctly. Integration
-        testing (loading all MFEs together in the shell) runs in a separate integration
-        environment, not in each team's PR CI. This separation allows teams to merge
-        independently without requiring cross-team integration tests to pass. The
-        integration environment catches runtime composition failures (two MFEs sharing
-        a global variable that collides, CSS specificity conflicts between MFE styles)
-        that component-level tests cannot.
-      </p>
-
-      <h3>Q: What's the right test-to-production ratio for a data table component with sorting, filtering, and pagination?</h3>
-      <p>
-        The data table is a good example of a component that is primarily testable at
-        the component level, not E2E. Unit tests: the sort comparator function (test
-        with numbers, strings, dates, nulls, and mixed types), the filter predicate
-        (test each filter operator: equals, contains, starts-with, range), and the
-        pagination offset calculator. Component tests: render with sample data and verify
-        the correct rows appear; click a column header and verify rows re-sort; type
-        in the filter box and verify the result count changes; click page 2 and verify
-        the correct row range renders. Visual regression: one story per significant visual
-        state (empty table, loading skeleton, error state, normal populated state, dense
-        row variant). E2E: only if the table is the primary UI for a critical workflow
-        (e.g., the admin user management table where deleting a user is a high-consequence
-        action). The majority of the test value comes from component tests that run in
-        under 100ms each.
-      </p>
+      <section>
+        <h2>References</h2>
+        <ul>
+          <li><a href="https://semver.org/" target="_blank" rel="noreferrer">Semantic Versioning</a></li>
+          <li><a href="https://nodejs.org/api/packages.html#package-entry-points" target="_blank" rel="noreferrer">Node.js package entry points</a></li>
+          <li><a href="https://www.w3.org/WAI/standards-guidelines/wcag/" target="_blank" rel="noreferrer">W3C WCAG overview</a></li>
+          <li><a href="https://web.dev/articles/vitals" target="_blank" rel="noreferrer">web.dev Web Vitals</a></li>
+        </ul>
+      </section>
     </ArticleLayout>
   );
 }

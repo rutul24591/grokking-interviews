@@ -24,11 +24,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function LargeFormPerformanceArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function ArticlePage(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Large Form Performance System</h1><h2>Definition &amp; Context</h2><p>Design a Large Form Performance System is an implementation-heavy low-level design problem covering subscription granularity, uncontrolled inputs, section virtualization, dependency-aware validation, autosave batching, profiling, and memory control. A principal-level answer must explain state ownership, durable boundaries, lifecycle cleanup, failure recovery, privacy, cost, and observability.</p><p>Avoid a monolithic form render loop. Field subscriptions, validation dependencies, and persistence dirtiness should update only affected consumers. The core structures are field registry, value store, selector subscriptions, visible section map, dependency graph, dirty set, save queue, render metrics, and memory budget.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/forms-input-systems/large-form-performance-runtime.svg" alt="Design a Large Form Performance System runtime" caption="Topic-specific runtime from input intent through validated durable state." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -138,7 +137,7 @@ export default function LargeFormPerformanceArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -187,7 +186,7 @@ export default function LargeFormPerformanceArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -251,14 +250,10 @@ export default function LargeFormPerformanceArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/large-form-performance-architecture.svg"
-        alt="Large Form Performance Architecture"
-        caption="Five reinforcing techniques: external store with selector subscriptions + uncontrolled-during-typing for independent fields + sectional virtualization (content-visibility / IntersectionObserver) + deferred validation scheduling + stable references everywhere. Goal: keystroke latency under 16 ms at 1000 fields."
-      />
+      
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <p>
           The architecture rests on five reinforcing techniques:
           <strong> external store with selector subscriptions</strong>,
@@ -447,7 +442,7 @@ export default function LargeFormPerformanceArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <p>
           <strong>FieldStore</strong> is the external store,
           scoped per form, exposing per-field selectors. It
@@ -544,7 +539,7 @@ export default function LargeFormPerformanceArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="important">
           External store, not React Context, for form values
           and errors. The store is created in
@@ -584,7 +579,7 @@ export default function LargeFormPerformanceArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important">Inputs to the runtime are the same as the Form
           Builder: schema, defaultValues, mode, callbacks. The
           performance layer is invisible at the API boundary;
@@ -612,7 +607,7 @@ export default function LargeFormPerformanceArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance Strategy in Practice</h2>
+        <h3>⚡ Performance Strategy in Practice</h3>
         <HighlightBlock as="p" tier="important">
           Concretely, on a 500-field form: typing into an
           independent text field costs the user one DOM event
@@ -658,7 +653,7 @@ export default function LargeFormPerformanceArticle() {
       </section>
 
       <section>
-        <h2>🎨 UI/UX Considerations</h2>
+        <h3>🎨 UI/UX Considerations</h3>
         <HighlightBlock as="p" tier="important">Skeleton placeholders for off-screen virtualized
           sections retain scroll position so the page does not
           jump when sections lazy-mount. Save / submit
@@ -690,7 +685,7 @@ export default function LargeFormPerformanceArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="important">Off-screen sections must remain in the accessibility
           tree. <code>content-visibility: auto</code> per spec
           keeps content accessible even when paint is skipped.
@@ -719,7 +714,7 @@ export default function LargeFormPerformanceArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security Considerations</h2>
+        <h3>🔐 Security Considerations</h3>
         <HighlightBlock as="p" tier="important">Uncontrolled inputs are still subject to XSS guards on display: a value typed into a text field is rendered as text,</HighlightBlock>
 <HighlightBlock as="p" tier="important">not as HTML. The submit-time ref flush is a plain DOM read, no security surface change. Browser autofill writing to</HighlightBlock>
 <HighlightBlock as="p" tier="important">DOM is explicitly handled by input event listeners; we never trust values that bypass the runtime&rsquo;s setValue path.</HighlightBlock>
@@ -731,7 +726,7 @@ export default function LargeFormPerformanceArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing Strategy</h2>
+        <h3>🧪 Testing Strategy</h3>
         <HighlightBlock as="p" tier="important">Render benchmarks in CI assert that typing into
           field N triggers exactly one component update. We
           use React DevTools Profiler in headless mode for
@@ -758,7 +753,7 @@ export default function LargeFormPerformanceArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases &amp; Failure Handling</h2>
+        <h3>🚨 Edge Cases &amp; Failure Handling</h3>
         <HighlightBlock as="p" tier="important">A field with cross-field dependencies declared as
           reactive must commit early enough; we use a shorter
           debounce (50–100 ms) for reactive fields so
@@ -797,21 +792,21 @@ export default function LargeFormPerformanceArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability &amp; Extensibility</h2>
+        <h3>🔁 Reusability &amp; Extensibility</h3>
         <HighlightBlock as="p" tier="crucial">The selector hook pattern is reusable for any form-adjacent state (e.g. a side panel that needs</HighlightBlock>
 <HighlightBlock as="p" tier="important">to read the current values without re-rendering on every change). The store implementation can</HighlightBlock>
 <HighlightBlock as="p" tier="important">be swapped (Zustand, Jotai, custom) as long as it conforms to the useSyncExternalStore contract.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="crucial">RTL flips via CSS logical properties as in the Form Builder. Number and date</HighlightBlock>
 <HighlightBlock as="p" tier="important">parsing in input handlers honors the active locale via Intl , which handles</HighlightBlock>
 <HighlightBlock as="p" tier="important">locale-specific decimal separators and date formats correctly without per-field code.</HighlightBlock>
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs &amp; Design Decisions</h2>
+        <h3>⚖️ Trade-offs &amp; Design Decisions</h3>
 
         <h3>Uncontrolled-during-typing vs fully controlled</h3>
         <HighlightBlock as="p" tier="important">
@@ -914,7 +909,7 @@ export default function LargeFormPerformanceArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="important">A Web Worker for heavy validation across thousands of fields could move synchronous CPU off the main thread entirely, leaving room for richer per-keystroke logic without risking</HighlightBlock>
 <HighlightBlock as="p" tier="important">jank. Streaming render of sections via React Server Components could reduce initial render cost for huge forms, though the interactive nature of forms limits how much we can move</HighlightBlock>
 <HighlightBlock as="p" tier="important">server-side. The React Compiler should automate some of the memoization we now do by hand; when it&rsquo;s widely adopted, the field wrappers can shed their explicit React.memo incantations.</HighlightBlock>
@@ -929,114 +924,12 @@ export default function LargeFormPerformanceArticle() {
           but aren&rsquo;t declared.</HighlightBlock>
       </section>
 
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>1. Why does Context-based form state break at 300
-          fields?</strong> Context value changes re-render every
-          consumer. With one consumer per field, a single
-          keystroke triggers 300 component renders. The
-          render work scales linearly with field count, and
-          at 300+ fields keystroke latency exceeds the 16 ms
-          budget. An external store with per-field selector
-          subscriptions fires only the subscribers whose slice
-          changed, which is one subscriber per keystroke.
-        </HighlightBlock>
-
-        <p>
-          <strong>2. When would you use uncontrolled inputs and how
-          do you reconcile state at submit?</strong> Use
-          uncontrolled-during-typing for independent fields
-          where per-keystroke React work isn&rsquo;t needed.
-          Reconcile at submit via a one-shot ref flush:
-          iterate registered refs, read each input&rsquo;s
-          <code> value</code>, batch-dispatch into the store,
-          then validate. Reactive fields stay fully controlled
-          so dependents see fresh values.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>3. How does content-visibility help and what are
-          its caveats?</strong> It tells the browser to skip
-          layout and paint for content marked as such, until
-          that content enters the viewport. It&rsquo;s
-          essentially free for consumers and preserves the
-          accessibility tree. Caveats: requires a reserved
-          intrinsic size to avoid layout shifts; doesn&rsquo;t
-          help if the section is fully populated with heavy
-          components in the accessibility tree (the cost of
-          those components on mount is unaffected — for that
-          you need lazy-mount). Cross-browser support is
-          broad now but worth verifying for your target
-          matrix.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. How do you handle cross-field rules with
-          uncontrolled inputs?</strong> Fields with
-          cross-field dependencies are declared reactive in
-          the schema and opt back into per-keystroke commit.
-          The runtime treats reactive fields as fully
-          controlled so dependents see fresh values;
-          independent fields stay uncontrolled-during-typing.
-          The schema declaration makes this explicit so
-          it&rsquo;s never a surprise.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>5. How do you measure and budget keystroke latency
-          in CI?</strong> Render benchmarks in CI exercise
-          typing on a representative schema and assert that
-          the long-task duration stays under the budget.
-          Production pages emit Long Task and Event Timing
-          entries to telemetry; we alert on regressions across
-          percentile dimensions, not averages, because tail
-          latency is what users feel.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>6. What does <code>useSyncExternalStore</code>{" "}
-          solve here?</strong> It provides tear-free reads
-          under concurrent rendering. Without it, a render
-          that&rsquo;s partway through can read inconsistent
-          slices of the store as updates land in the middle.
-          With it, the store maintains a snapshot semantics
-          that React can read consistently across a render
-          pass.
-        </HighlightBlock>
-
-        <p>
-          <strong>7. How does autofill interact with this design?</strong>{" "}
-          Autofill writes directly to the DOM, bypassing
-          React state. We listen for <code>input</code>
-          events on every control and reconcile the store
-          with whatever the DOM now holds. This catches
-          autofill (which dispatches input events) and any
-          other DOM-direct mutation source. Without this
-          listener, autofilled values would silently disagree
-          with the store and submission would miss them.
-        </p>
-
-        <p>
-          <strong>8. How would you parallelize validation
-          safely?</strong> Move pure validation rules into a
-          Web Worker; pass values via structured clone,
-          receive errors back, merge into the store. Async
-          validators that hit the network can already run in
-          parallel — they&rsquo;re IO, not CPU. The
-          combination — CPU rules off the main thread, IO
-          rules in flight — keeps the main thread free for
-          input even during full-form validation passes.
-        </p>
       </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">Measure relentlessly, guard budgets in CI, and bias toward the simpler technique ( content-visibility , deferred</HighlightBlock>
-<HighlightBlock as="p" tier="important">validation) before reaching for the heavier one (lazy mount, Web Worker validation). Performance debt accumulates fast in</HighlightBlock>
-<HighlightBlock as="p" tier="important">form runtimes; the only defense is a fast feedback loop and the discipline to keep renders surgical even as schemas grow.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+<section><h2>Architecture &amp; Flow</h2><p>Separate field input, typed state transitions, derived projections, persistence effects, and bounded telemetry. Draft, preview, validated, and submitted states must not collapse into one mutable object. Every debounce timer, request, storage write, worker, and subscription needs an explicit owner and cleanup path.</p><p>Avoid a monolithic form render loop. Field subscriptions, validation dependencies, and persistence dirtiness should update only affected consumers. Commit only after the current policy gate succeeds and retain enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/forms-input-systems/large-form-performance-recovery.svg" alt="Design a Large Form Performance System recovery" caption="Recovery flow: reject obsolete work, preserve recoverable drafts, and explain the outcome." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>A simple controlled form is easiest to reason about; fine-grained subscriptions are justified when measured latency shows broad rerenders are the bottleneck.</p><p>Live edits are local. Autosave persists versioned snapshots in batches; validation projections are recalculated only for affected dependencies. Scale pressure comes from hundreds of fields, conditional sections, expensive validation, autosave storms, slow devices, and accessibility issues from virtualization. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic transitions only when rollback is deterministic and understandable. Authorization and final validation remain server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable field ids, typed events, explicit state unions, schema versions, generation guards, SSR-safe feature checks, semantic HTML, and idempotent cleanup. Test keyboard use, screen-reader output, stale responses, offline recovery, retries, restoration, and constrained devices.</p><p>Measure field latency, blocked actions, stale drops, save conflicts, retries, storage pressure, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing drafts and committed values, trusting client validation, leaking resources, accepting stale async completion, and hiding rollback from the user.</p><p>For this topic, measure rerender counts, isolate subscriptions, debounce persistence, virtualize sections cautiously, retain accessible navigation, and degrade expensive validation. Validate untrusted input, authorize durable mutations server-side, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to high-value forms where users expect responsive input while browser, persistence, validation, and policy boundaries can fail independently. Reuse the controller structure while injecting product policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Avoid a monolithic form render loop. Field subscriptions, validation dependencies, and persistence dirtiness should update only affected consumers.</p><h3>What breaks at scale?</h3><p>hundreds of fields, conditional sections, expensive validation, autosave storms, slow devices, and accessibility issues from virtualization. I would bound expensive work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>Live edits are local. Autosave persists versioned snapshots in batches; validation projections are recalculated only for affected dependencies.</p><h3>How do you recover?</h3><p>I would measure rerender counts, isolate subscriptions, debounce persistence, virtualize sections cautiously, retain accessible navigation, and degrade expensive validation.</p><h3>Why this architecture?</h3><p>A simple controlled form is easiest to reason about; fine-grained subscriptions are justified when measured latency shows broad rerenders are the bottleneck.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank" rel="noreferrer">MDN localStorage</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

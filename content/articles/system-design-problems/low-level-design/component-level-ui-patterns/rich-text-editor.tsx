@@ -34,12 +34,11 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function RichTextEditorArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      {/* Section 1: Problem Clarification */}
+export default function RichTextEditorArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Rich Text Editor</h1><h2>Definition &amp; Context</h2><p>Design a Rich Text Editor is an implementation-heavy low-level design problem covering document schema, transactions, selection mapping, undo grouping, paste sanitization, plugin isolation, serialization, and collaboration boundaries. A principal-level answer must make state ownership, data structures, lifecycle, failure containment, consistency, privacy, cost, and observability explicit.</p><p>The structured document is authoritative. DOM selection and rendered nodes are projections mapped through transactions; never treat arbitrary pasted HTML as trusted state. The implementation structures are document tree, schema, transaction log, selection bookmark, undo groups, plugin registry, sanitizer policy, serialization format, and collaboration version.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/rich-text-editor-runtime.svg" alt="Design a Rich Text Editor runtime" caption="Topic-specific runtime stages from user intent through durable projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below contains the topic-specific implementation mechanics.</p>{/* Section 1: Problem Clarification */}
       <section>
-        <h2>Problem Clarification</h2>
+        <h3>Problem Clarification</h3>
         <HighlightBlock as="p" tier="crucial">
           We need to design a reusable rich text editor component for a large-scale
           React application. The editor must support standard formatting operations
@@ -92,7 +91,7 @@ export default function RichTextEditorArticle() {
 
       {/* Section 2: Requirements */}
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
@@ -204,7 +203,7 @@ export default function RichTextEditorArticle() {
 
       {/* Section 3: High-Level Approach */}
       <section>
-        <h2>High-Level Approach</h2>
+        <h3>High-Level Approach</h3>
         <HighlightBlock as="p" tier="important">
           The core idea is to separate the <strong>document model</strong> (a structured
           tree of blocks, inlines, and text leaves) from the <strong>rendering surface</strong>
@@ -259,7 +258,7 @@ export default function RichTextEditorArticle() {
 
       {/* Section 4: System Design (LLD) */}
       <section>
-        <h2>System Design</h2>
+        <h3>System Design</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module Architecture</h3>
         <p>The system consists of eleven modules:</p>
@@ -473,7 +472,7 @@ export default function RichTextEditorArticle() {
 
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
-        <h2>Data Flow / Execution Flow</h2>
+        <h3>Data Flow / Execution Flow</h3>
         <HighlightBlock as="p" tier="important">
           The execution flow follows a unidirectional data flow pattern. User interactions
           (typing, clicking toolbar, dropping images, selecting mentions) are captured by
@@ -528,7 +527,7 @@ export default function RichTextEditorArticle() {
 
       {/* Section 6: Implementation */}
       <section>
-        <h2>Implementation</h2>
+        <h3>Implementation</h3>
         <HighlightBlock as="p" tier="important">
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
@@ -661,7 +660,7 @@ export default function RichTextEditorArticle() {
 
       {/* Section 7: Performance & Scalability */}
       <section>
-        <h2>Performance &amp; Scalability</h2>
+        <h3>Performance &amp; Scalability</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Time and Space Complexity</h3>
         <div className="my-4 overflow-x-auto">
@@ -788,7 +787,7 @@ export default function RichTextEditorArticle() {
 
       {/* Section 8: Security Considerations */}
       <section>
-        <h2>Security Considerations</h2>
+        <h3>Security Considerations</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">XSS Prevention</h3>
         <HighlightBlock as="p" tier="important">
@@ -873,7 +872,7 @@ export default function RichTextEditorArticle() {
 
       {/* Section 9: Testing Strategy */}
       <section>
-        <h2>Testing Strategy</h2>
+        <h3>Testing Strategy</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
@@ -959,7 +958,7 @@ export default function RichTextEditorArticle() {
 
       {/* Section 10: Interview-Focused Insights */}
       <section>
-        <h2>Interview-Focused Insights</h2>
+        <h3>Interview-Focused Insights</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Common Mistakes Candidates Make</h3>
         <ul className="space-y-3">
@@ -1165,94 +1164,12 @@ export default function RichTextEditorArticle() {
             </HighlightBlock>
           </div>
         </div>
-      </section>
-
-      {/* Section 11: References */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://docs.slatejs.org/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Slate.js — Extensible Rich Text Editor Framework
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://prosemirror.net/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              ProseMirror — Toolkit for Building Rich Text Editors
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://tiptap.dev/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              TipTap — Headless Rich Text Editor Built on ProseMirror
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://docs.yjs.dev/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Yjs — CRDT Framework for Collaborative Editing
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://zustand-demo.pmnd.rs/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Zustand — State Management Library Documentation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Editable_content"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              MDN — Editable Content (contentEditable) Specification
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.w3.org/WAI/ARIA/apg/patterns/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              WAI-ARIA Authorable Practices — Accessibility Patterns
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://github.com/cure53/DOMPurify"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              DOMPurify — HTML Sanitization Library
-            </a>
-          </li>
-        </ul>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate input normalization, typed state transitions, derived projection, integration effects, and bounded telemetry. Preview state must not silently become durable state. Every timer, listener, observer, worker, request, pointer capture, and cache entry needs an explicit lifetime.</p><p>The structured document is authoritative. DOM selection and rendered nodes are projections mapped through transactions; never treat arbitrary pasted HTML as trusted state. Commit only after applying the latest policy and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/rich-text-editor-recovery.svg" alt="Design a Rich Text Editor recovery map" caption="Recovery decisions: contain pressure, retain committed truth, reconcile safely, and emit evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>A textarea or Markdown editor is cheaper; a structured editor is justified for rich semantics, controlled output, extensibility, and collaboration.</p><p>Local transactions are ordered against a document version. Persistence and collaboration reconcile versioned operations; derived HTML is output, not the durable source of truth. The scale pressure is large documents, malformed paste, IME input, plugin conflicts, selection drift, undo memory, and collaborative transforms. Bound work, cancel stale effects, cap memory, and degrade predictably.</p><p>Use optimistic UI only where rollback is deterministic and understandable. Keep authorization and destructive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit state unions, idempotency keys, generation guards, SSR-safe feature checks, and deterministic cleanup. Test keyboard use, accessibility output, stale responses, retries, unmount, constrained devices, and large datasets.</p><p>Measure interaction latency, blocked transitions, stale drops, rollbacks, cache pressure, retries, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing preview and commit, trusting arrival order, leaking resources, accepting stale async work, and implementing custom interaction without semantic fallbacks.</p><p>For this topic, sanitize paste, reject unsupported nodes, isolate plugin errors, map selections through transforms, bound undo history, and retain plain-text fallback. Security and privacy require the design to validate untrusted input, authorize durable mutations server-side, minimize sensitive telemetry, and bound resource consumption.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies where users repeatedly manipulate state while network, browser, and authorization boundaries can fail independently. Reuse the controller shell, but inject product-specific policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>The structured document is authoritative. DOM selection and rendered nodes are projections mapped through transactions; never treat arbitrary pasted HTML as trusted state.</p><h3>What breaks at scale?</h3><p>large documents, malformed paste, IME input, plugin conflicts, selection drift, undo memory, and collaborative transforms. I would bound expensive work and cancel obsolete effects.</p><h3>What consistency model applies?</h3><p>Local transactions are ordered against a document version. Persistence and collaboration reconcile versioned operations; derived HTML is output, not the durable source of truth.</p><h3>How do you recover?</h3><p>I would sanitize paste, reject unsupported nodes, isolate plugin errors, map selections through transforms, bound undo history, and retain plain-text fallback.</p><h3>Why this architecture?</h3><p>A textarea or Markdown editor is cheaper; a structured editor is justified for rich semantics, controlled output, extensibility, and collaboration. The implementation cost is justified only when the required behavior needs it.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li></ul></section>
+</ArticleLayout>}

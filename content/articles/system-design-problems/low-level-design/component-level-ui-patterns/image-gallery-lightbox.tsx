@@ -37,9 +37,19 @@ export const metadata: ArticleMetadata = {
 export default function ImageGalleryLightboxArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      {/* Section 1: Problem Clarification */}
       <section>
-        <h2>Problem Clarification</h2>
+        <h1>Design an Image Gallery Lightbox</h1>
+        <h2>Definition &amp; Context</h2>
+        <p>Design an Image Gallery Lightbox is a low-level design problem about implementing thumbnail virtualization, image decode, responsive source selection, modal focus ownership, prefetch budgeting, zoom gestures, and navigation. A principal-level interview answer must define ownership boundaries, browser and accessibility semantics, local data structures, lifecycle cleanup, server reconciliation, and explicit degraded behavior.</p>
+        <p>Keep gallery selection, lightbox visibility, decoded asset status, zoom transform, and prefetch queue separate so failed media never corrupts navigation. The central structures are asset manifest, active index, decoded cache, prefetch queue, responsive source candidates, zoom transform, focus return target, and failure placeholder. The implementation is not complete until cancellation, stale work, SSR behavior, privacy, metrics, and rollback are deliberate rather than incidental.</p>
+        <ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/image-gallery-lightbox-runtime.svg" alt="Design an Image Gallery Lightbox runtime flow" caption="Runtime flow: input becomes a guarded state transition, a semantic projection, and a recoverable outcome." />
+      </section>
+      <section>
+        <h2>Core Concepts</h2>
+        <p>The following deep dive preserves the component-specific mechanics and browser constraints that determine the implementation.</p>
+        {/* Section 1: Problem Clarification */}
+      <section>
+        <h3>Problem Clarification</h3>
         <HighlightBlock as="p" tier="crucial">
           We need to design a reusable image gallery and lightbox system for a
           large-scale React application. The gallery displays a responsive grid of
@@ -93,7 +103,7 @@ export default function ImageGalleryLightboxArticle() {
 
       {/* Section 2: Requirements */}
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
@@ -199,7 +209,7 @@ export default function ImageGalleryLightboxArticle() {
 
       {/* Section 3: High-Level Approach */}
       <section>
-        <h2>High-Level Approach</h2>
+        <h3>High-Level Approach</h3>
         <HighlightBlock as="p" tier="crucial">
           The core idea is to separate the <strong>gallery rendering</strong> from the
           <strong>lightbox state management</strong> using a global store (Zustand) and
@@ -245,7 +255,7 @@ export default function ImageGalleryLightboxArticle() {
 
       {/* Section 4: System Design (LLD) */}
       <section>
-        <h2>System Design</h2>
+        <h3>System Design</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module Architecture</h3>
         <p>The system consists of seven modules:</p>
@@ -459,7 +469,7 @@ export default function ImageGalleryLightboxArticle() {
 
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
-        <h2>Data Flow / Execution Flow</h2>
+        <h3>Data Flow / Execution Flow</h3>
         <HighlightBlock as="p" tier="important">
           The execution flow follows a unidirectional data flow pattern. Gallery rendering
           flows from the images array prop through IntersectionObserver-triggered lazy
@@ -504,7 +514,7 @@ export default function ImageGalleryLightboxArticle() {
 
       {/* Section 6: Implementation */}
       <section>
-        <h2>Implementation</h2>
+        <h3>Implementation</h3>
         <HighlightBlock as="p" tier="important">
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
@@ -632,7 +642,7 @@ export default function ImageGalleryLightboxArticle() {
 
       {/* Section 7: Performance & Scalability */}
       <section>
-        <h2>Performance &amp; Scalability</h2>
+        <h3>Performance &amp; Scalability</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Time and Space Complexity</h3>
         <div className="my-4 overflow-x-auto">
@@ -751,7 +761,7 @@ export default function ImageGalleryLightboxArticle() {
 
       {/* Section 8: Security Considerations */}
       <section>
-        <h2>Security Considerations</h2>
+        <h3>Security Considerations</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Image URL Validation</h3>
         <HighlightBlock as="p" tier="important">
@@ -843,7 +853,7 @@ export default function ImageGalleryLightboxArticle() {
 
       {/* Section 9: Testing Strategy */}
       <section>
-        <h2>Testing Strategy</h2>
+        <h3>Testing Strategy</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
@@ -924,7 +934,7 @@ export default function ImageGalleryLightboxArticle() {
 
       {/* Section 10: Interview-Focused Insights */}
       <section>
-        <h2>Interview-Focused Insights</h2>
+        <h3>Interview-Focused Insights</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Common Mistakes Candidates Make</h3>
         <ul className="space-y-3">
@@ -1112,71 +1122,48 @@ export default function ImageGalleryLightboxArticle() {
           </div>
         </div>
       </section>
-
-      {/* Section 11: References */}
+      </section>
       <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://photoswipe.com/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              PhotoSwipe — Reference Lightbox Implementation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://wavedeck.net/blurhash/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Blurhash — Compact Image Placeholder Algorithm
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              MDN — Intersection Observer API Documentation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              WAI-ARIA Dialog (Modal) Pattern — Accessibility Guidelines
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://web.dev/articles/fast-loading-images"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Web.dev — Fast Loading Images and Optimization Strategies
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://zustand-demo.pmnd.rs/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Zustand — State Management Library Documentation
-            </a>
-          </li>
+        <h2>Architecture &amp; Flow</h2>
+        <p>Implement the component as a small runtime with five boundaries. The input adapter normalizes keyboard, pointer, touch, browser, and async events. The state controller applies guards and separates preview state from committed state. The projection layer derives semantic DOM and ARIA relationships. The integration adapter owns server requests, URL synchronization, or browser APIs. The observability adapter emits bounded evidence for failures and slow paths.</p>
+        <p>For this topic, the critical state rule is: Keep gallery selection, lightbox visibility, decoded asset status, zoom transform, and prefetch queue separate so failed media never corrupts navigation. During interaction, record enough context to cancel safely. On commit, validate the latest intent, update the durable projection, and release temporary listeners, timers, observers, pointer capture, and abort controllers. On unmount, cleanup must be idempotent.</p>
+        <ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/image-gallery-lightbox-edge-cases.svg" alt="Design an Image Gallery Lightbox edge-case defense map" caption="Edge-case map: validate intent, contain scale pressure, recover from failure, reconcile committed state, and emit evidence." />
+      </section>
+      <section>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>a simple linked image is cheaper; a managed lightbox is justified for keyboard navigation, zoom, responsive sources, protected assets, and predictable focus restoration. The custom design should still lean on native semantics and browser primitives where they remain correct. Replacing them creates testing obligations for keyboard behavior, focus ownership, reduced motion, touch interaction, zoom, SSR hydration, and assistive technology.</p>
+        <p>Asset metadata may be eventually consistent, while the active index is local and deterministic. Prefetch completion is advisory and must not reorder the gallery. At scale, the failure pressure is thousands of assets, high-resolution images, constrained mobile memory, rapid navigation, signed URL expiry, and orientation metadata. Defend the latency budget by batching measurement, aborting stale async work, bounding caches and prefetch, and emitting analytics only for committed outcomes.</p>
+        <p>A principal answer should distinguish local responsiveness from durable correctness. Optimistic UI is appropriate when the rollback is deterministic and visible. It is inappropriate when the client cannot validate authorization, inventory, resource conflicts, or destructive side effects.</p>
+      </section>
+      <section>
+        <h2>Best practices</h2>
+        <p>Use explicit state unions, typed events, idempotent cleanup, stable ids, native semantics, SSR-safe feature detection, abortable requests, and deterministic tests. Exercise keyboard-only use, touch cancellation, screen-reader output, high zoom, reduced motion, slow network, stale responses, unmount during work, and browser back-forward behavior where relevant.</p>
+        <p>Observe blocked transitions, rollback frequency, stale-response drops, slow interaction latency, cache pressure, retry count, and accessibility regression results. Keep telemetry small and avoid sensitive payloads. Publish the public behavior contract before changing shared component semantics.</p>
+      </section>
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>Common failures include mixing draft and committed state, treating rendering state as the source of truth for browser-owned behavior, leaving listeners or timers active after unmount, accepting stale async completion, trusting client-side authorization, and producing inaccessible custom controls.</p>
+        <p>For this component specifically, the failure policy is to render a stable placeholder, retry signed URL refresh once, cancel obsolete prefetch, evict decoded assets under memory pressure, and always preserve close navigation. Security and privacy require the implementation to sanitize captions, enforce allowed media origins, avoid leaking private asset URLs in telemetry, and cap decode and prefetch concurrency.</p>
+      </section>
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>Representative deployments include an ecommerce product gallery, a private photo workspace, and a moderation console reviewing many high-resolution assets. In each case, the same component shell may be reused, but the policy layer changes: latency budget, permissions, persistence, fallback, and telemetry should be injected explicitly instead of hidden in presentation code.</p>
+      </section>
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you model component state?</h3><p>I would separate committed state, transient interaction state, derived presentation, and async request generations. For this component, Keep gallery selection, lightbox visibility, decoded asset status, zoom transform, and prefetch queue separate so failed media never corrupts navigation. That model makes cancellation and rollback explicit.</p>
+        <h3>What breaks at scale?</h3><p>The dominant pressures are thousands of assets, high-resolution images, constrained mobile memory, rapid navigation, signed URL expiry, and orientation metadata. I would bound work per interaction, virtualize or cache only where measured, and cancel work that is no longer relevant.</p>
+        <h3>What consistency model applies?</h3><p>Asset metadata may be eventually consistent, while the active index is local and deterministic. Prefetch completion is advisory and must not reorder the gallery. The interview answer must state which layer is authoritative and how stale completion is rejected.</p>
+        <h3>How do you handle failure and rollback?</h3><p>I would render a stable placeholder, retry signed URL refresh once, cancel obsolete prefetch, evict decoded assets under memory pressure, and always preserve close navigation. I would also emit a reason code so product metrics distinguish expected cancellation from defects and provider failures.</p>
+        <h3>How do you defend the architecture over alternatives?</h3><p>a simple linked image is cheaper; a managed lightbox is justified for keyboard navigation, zoom, responsive sources, protected assets, and predictable focus restoration. I would choose the smallest design that satisfies the required behavior and explicitly accept the testing and operability cost of custom interaction.</p>
+      </section>
+      <section>
+        <h2>References</h2>
+        <ul>
+          <li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events" target="_blank" rel="noreferrer">MDN Pointer events</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li>
+          <li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React: Sharing State Between Components</a></li>
         </ul>
       </section>
     </ArticleLayout>

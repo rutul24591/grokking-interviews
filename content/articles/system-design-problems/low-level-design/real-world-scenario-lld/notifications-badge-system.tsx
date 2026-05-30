@@ -1,126 +1,48 @@
 "use client";
-
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
-import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
-
-export const metadata: ArticleMetadata = {
-  id: "article-lld-notifications-badge-system",
-  title: "Design Notifications Badge System",
-  description:
-    "Production-grade notification badges with real-time updates, mark-as-read, filtering, and multi-device sync.",
-  category: "low-level-design",
-  subcategory: "real-world-scenario-lld",
-  slug: "notifications-badge-system",
-  wordCount: 5400,
-  readingTime: 33,
-  lastUpdated: "2026-05-06",
-  tags: ["lld", "notifications", "badges", "real-time", "synchronization"],
-  relatedTopics: ["activity-feed-system", "push-notification-ux"],
-};
-
-export default function NotificationsBadgeSystemArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">The notification badge—that small red number on a bell icon—is one of the most engagement-critical UI elements in a web application. It answers the user's implicit question "has anything happened since I last looked?" without requiring them to navigate away from their current task. Done well, it surfaces exactly the right information: a count that is accurate across devices, updates in real-time, and clears immediately when content is read. Done poorly, it becomes a source of anxiety (a perpetually wrong count) or noise (notifying for low-priority events the user doesn't care about).</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The technical challenges center on distributed read state: if the user reads a notification on their phone, the badge on their desktop browser should clear immediately. If a new notification arrives while the user's desktop tab is in the background, the badge should increment when they switch back. If the user marks all notifications read, the server must atomically update a potentially large set of records and confirm success before the client zeros the badge. Each of these requirements has specific implementation patterns with trade-offs between consistency, latency, and complexity.</HighlightBlock>
-        <HighlightBlock as="p" tier="important"><strong>Explicit assumptions:</strong> Notifications are user-specific (not broadcast). The badge shows the unread notification count. Read state is stored server-side for cross-device sync. Real-time delivery uses WebSocket for active sessions. Push notifications for inactive sessions are out of scope for this article. The notification panel (expanded list of notifications) is distinct from the badge but driven by the same data.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Badge count:</strong> Show the number of unread notifications. Update in real-time when new notifications arrive or existing ones are read.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Notification panel:</strong> On badge click, show a list of recent notifications with metadata (actor, action, target, timestamp). Paginated for large counts.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Mark as read:</strong> Reading a notification (clicking it to navigate) marks it read and decrements the badge. "Mark all read" zeros the badge.</HighlightBlock>
-          <li><strong>Multi-device sync:</strong> Reading on one device clears the badge on all other active devices within seconds.</li>
-          <li><strong>Notification types:</strong> Support filtering by type (mentions, comments, approvals) within the panel.</li>
-          <li><strong>Persistence:</strong> Notifications persist; re-opening the app shows historical notifications (not just those from the current session).</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Accuracy:</strong> Badge count must match actual unread count server-side; stale counts create user distrust.</li>
-          <HighlightBlock as="li" tier="crucial"><strong>Latency:</strong> New notification appears in badge within 1 second of creation. Mark-as-read reflects immediately (optimistic update).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Cross-device propagation:</strong> Read state sync across devices within 3 seconds.</HighlightBlock>
-          <li><strong>Scalability:</strong> Works correctly for users with thousands of notifications without loading all of them.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="crucial">The system maintains the unread count as a server-side integer per user (not computed by counting unread records on each request). This counter is the source of truth for the badge display. On session start, the client fetches the current count in the initial data load. A WebSocket subscription receives increments (new notifications) and decrements (read events) as delta messages. The client applies deltas to the local count state rather than refetching the full count on every change.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">When the user opens the notification panel, the first page of notifications is fetched from the server (most recent N, with read/unread status). Scrolling loads older pages. Clicking a notification marks it read optimistically in the client (mark UI as read, decrement local count) and sends a PATCH to the server. "Mark all read" sends a single server request with a timestamp cutoff; the server marks everything read and returns the new count (should be 0).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Cross-device sync works via the same WebSocket channel. When the user reads a notification on Device A, the server publishes a read event to all of the user's active WebSocket connections. Device B receives this event and decrements its local count. This is the same mechanism as real-time delivery—a single pub/sub channel handles both new notifications and read state changes.</HighlightBlock>
-      </section>
-
-      <section>
-                <h2>Diagram Walkthrough</h2>
-
-<ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/real-world-scenario-lld/notifications-badge-system.svg"
-          alt="Notifications badge system showing delivery pipeline from server event through notification service and WebSocket to badge increment, read state flow with optimistic decrement, and multi-device BroadcastChannel sync"
-          caption="Notifications badge system showing delivery pipeline from server event through notification service and WebSocket to badge increment, read state flow with optimistic decrement, and multi-device BroadcastChannel sync"
-        />
-
-        <HighlightBlock as="p" tier="crucial">
-          Interview signal: the diagram captures the end-to-end flow for <strong>Design Notifications Badge System</strong>. You should be able to explain the happy path and the failure paths (retries, cancellation, backpressure), not just the API surface.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Look for the &ldquo;control points&rdquo; where correctness is enforced: idempotency keys, monotonic request/version tokens, single-flight coordination, and durable persistence boundaries.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          In interviews, call out observability and operability: what you log/measure (p95 latency, error rates, retries/queue depth) and how you keep degraded modes user-safe (read-only, queued, or cached fallbacks).
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Unread Count as a Counter, Not a Query</h3>
-        <HighlightBlock as="p" tier="important">Computing the unread count by querying SELECT COUNT(*) WHERE userId = ? AND isRead = false on every badge render would be expensive at scale and add database latency to page loads. Instead, maintain a dedicated counter in a fast store (Redis or a single database column on the user record). When a new notification is created for a user, atomically increment their counter (Redis INCR). When a notification is marked read, atomically decrement (Redis DECR, clamped to minimum 0). When "mark all read" runs, set the counter to 0.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The counter can drift from the actual count (if notifications are deleted, or if a system error occurs during update). Periodic reconciliation (once per day, or on user login) re-computes the true count from the notifications table and corrects the counter if it differs. This reconciliation is a background job, not in the critical request path. The counter is the display source of truth; the notifications table is the historical source of truth.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-Time Delta Protocol</h3>
-        <p>Rather than pushing full notification payloads for every badge update, the WebSocket protocol uses delta messages. A new notification event contains the full notification payload plus a badgeDelta: +1 field. A read event contains the notificationId(s) and a badgeDelta: -N. The client applies the delta to its local count state. This means the badge can update without the notification panel being open—the count increments from 3 to 4 without loading the new notification's full data.</p>
-        <p>When the notification panel is open (the user clicked the bell), incoming new notification events also prepend the notification to the visible list. This requires the panel to subscribe to the same WebSocket events and apply them to the notification list state. If the panel is closed, incoming events are queued; when the panel opens, queued events are applied to the initial page of notifications (checking for duplicates by notificationId before prepending).</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Optimistic Mark-as-Read</h3>
-        <HighlightBlock as="p" tier="important">When the user clicks a notification, the UI should immediately reflect the read state (notification loses its unread styling, badge decrements) without waiting for the server acknowledgment. The optimistic update is: (1) decrement local badge count; (2) set the notification's isRead: true in local state; (3) fire an async PATCH /notifications/:id/read to the server; (4) on server success, do nothing (already updated); (5) on server error, revert—increment badge count and set isRead: false. Reverts are rare but must be handled to maintain badge accuracy.</HighlightBlock>
-        <p>For "mark all read," the optimistic update is: (1) set local badge count to 0; (2) mark all loaded notifications as isRead: true in local state; (3) fire PATCH /notifications/read-all with a cutoff timestamp; (4) on error, revert by re-fetching the true count from the server and restoring the previous read states. The revert on "mark all" is complex enough that the application should show a brief loading indicator during the server call rather than optimistically zeroing and risking a confusing revert for the user.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Multi-Device Synchronization via BroadcastChannel</h3>
-        <p>When the user has the application open in multiple tabs of the same browser, read state changes should propagate between tabs without a server round-trip. The BroadcastChannel API enables message passing between same-origin browser contexts (tabs, iframes, service workers). When Tab A marks a notification read, it broadcasts a read event on the notification channel. Tab B receives it and applies the same delta to its local state.</p>
-        <p>BroadcastChannel is a supplement to, not a replacement for, server-side sync. Cross-device sync (phone and desktop) still requires the WebSocket channel. Same-browser multi-tab sync via BroadcastChannel is a UX improvement—without it, the user might switch tabs and see a stale badge count until the next WebSocket event arrives. With BroadcastChannel, the sync is instantaneous for same-browser cases.</p>
-        <HighlightBlock as="p" tier="important">The message format for BroadcastChannel should match the WebSocket delta format for consistency: {"{"}type: "notification_read", notificationIds: ["uuid-1"], badgeDelta: -1{"}"}. The receiving tab applies the same handler as for WebSocket events. This allows the notification state management code to be written once and handle both transport channels.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Notification Panel Pagination</h3>
-        <HighlightBlock as="p" tier="crucial">The notification panel displays the most recent notifications first. On open, the first page (20 items) is fetched. Scrolling to the bottom of the panel triggers the next page using cursor-based pagination (same as the activity feed). The panel tracks cursor state separately from the badge count state.</HighlightBlock>
-        <p>When the user opens the panel and has 47 unread notifications, only the first 20 are displayed. As they scroll and load more pages, notifications are marked read progressively. The badge count decrements as notifications are marked read (either by clicking or by "mark all"). The panel's read state and the badge count are kept in sync via the same local state management.</p>
-        <p>For users who have accumulated thousands of unread notifications (common for accounts that were inactive for long periods), the initial count fetch and "mark all read" must be efficient. The count fetch returns a number (not a list). "Mark all read" executes a single UPDATE with a timestamp cutoff. The panel then shows all notifications as read without individually updating each one in the local list—the list state is updated by setting a "markAllReadBefore" timestamp and rendering notifications before that timestamp as read.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Browser Tab Title and Favicon Badging</h3>
-        <p>Beyond the in-app badge, the browser tab title can reflect the unread count: "(3) Dashboard" versus "Dashboard". This is updated whenever the local badge count changes. The format should match the application's convention and be cleared when the count reaches zero.</p>
-        <p>The Web App Badging API (navigator.setAppBadge(count)) allows setting a badge on the application's icon in the OS taskbar (for PWAs installed on the device). This extends the notification badge beyond the browser tab to the OS level, similar to native app badge counts. Calling navigator.clearAppBadge() when the count reaches zero removes the badge. Browser support is limited to Chromium-based browsers for the Badging API, so it should be used as progressive enhancement with feature detection.</p>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="crucial">Counter-based versus query-based badge count: the counter approach (Redis INCR/DECR) provides O(1) badge reads but introduces a consistency gap—the counter can diverge from the true count. The query approach (COUNT(*) on every load) is always accurate but adds database load and latency. For applications where badge accuracy is critical (a wrong count erodes user trust quickly), use the counter with periodic reconciliation. For low-traffic applications, the query approach is simpler and avoids the reconciliation complexity.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">WebSocket versus polling for real-time delivery: WebSocket provides true real-time updates (under 1 second) but requires persistent connections that consume server resources. Polling (every 30 seconds) is simpler and more compatible with serverless or CDN-cached architectures but introduces up to 30-second delays in badge updates. For notification badges, real-time is a UX expectation in most applications; polling delays are noticeable and frustrating. WebSocket is the correct choice for notification systems.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Notification retention and storage: how long should notifications be retained? Indefinitely (full history) is expensive for high-volume users. A rolling 90-day window is typical. Archiving old notifications (move to cold storage, exclude from default pagination) keeps the active table small while preserving history for users who need it. The badge count should only reflect notifications within the retention window—it makes no sense to show unread counts for notifications too old to be actionable.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">The badge count is display state driven by the server counter; the notification list is separate data fetched on panel open with cursor pagination. The</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">defining challenge is maintaining count accuracy across distributed read events: the counter approach with periodic reconciliation balances performance and accuracy. Multi-device sync requires server-side pub/sub (the server notifies all of a user's active connections when read events occur on any one of them).</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+export const metadata: ArticleMetadata = { id:"article-lld-notifications-badge-system", title:"Design a Notifications Badge System", description:"Implementation-heavy low-level design guide for design a notifications badge system.", category:"low-level-design", subcategory:"real-world-scenario-lld", slug:"notifications-badge-system", wordCount:4700, readingTime:28, lastUpdated:"2026-05-30", tags:["lld","real-world","principal-engineer"], relatedTopics:["state-management","reliability","observability"] };
+export default function NotificationsBadgeSystemArticle(){ return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Notifications Badge System</h1><h2>Definition &amp; Context</h2>
+<p>Design a Notifications Badge System is a low-level design problem about building a production-grade unread count reconciliation runtime. The answer must move beyond screen composition and define public methods, internal state, persistence boundaries, concurrency rules, recovery, and telemetry. The facade is incrementLocal, acknowledgeRead, applyServerCount, reconcile, clear. Runtime states are unknown, current, optimistic, reconciling, stale, hidden.</p>
+<p>The governing invariant is: Badge counts must converge without distracting flicker or cross-account leakage. The edge case to defend is when a read acknowledgement races with a server push event and account switching. This forces the implementation to distinguish user intent from server authority and to expose honest pending, blocked, stale, conflicted, and recovered states.</p>
+<ArticleImage src="/diagrams/system-design-problems/low-level-design/real-world-scenario-lld/notifications-badge-system-runtime.svg" alt="Design a Notifications Badge System runtime" caption="Runtime model: product intent enters a guarded coordinator, durable state is versioned, and user-visible snapshots remain honest under failure." /></section>
+<section><h2>Core Concepts</h2>
+<p>Start with a narrow aggregate boundary. The coordinator owns legal transitions and the structures required to defend them: server unread count, local read cursor, optimistic delta, last event id, scope key, badge snapshot. UI components request operations and render snapshots; they should not scatter validation, deduplication, permissions, timers, and retries across event handlers.</p>
+<p>Separate optimistic projection from authoritative confirmation. Fast UI may show local intent immediately, but the snapshot must retain pending identity, base revision, and rollback information until the authoritative boundary accepts the operation. That makes ambiguous timeouts, retries, cross-tab races, and external updates explainable.</p>
+<h3>Implementation contract</h3><p>Each public method returns a typed outcome: accepted, pending, rejected, conflicted, degraded, or completed. Each mutation carries operation id, scope, revision, and idempotency key where repeated delivery is possible. Every state transition records a reason and leaves enough evidence for debugging without logging private payloads.</p>
+<p>Classify operations by risk. Cosmetic preferences can converge eventually. Destructive, authorization-sensitive, inventory-sensitive, or payment-adjacent operations need stronger confirmation or fail-closed behavior. This operation-level consistency decision is more credible than claiming one policy for the whole feature.</p></section>
+<section><h2>Architecture &amp; Flow</h2>
+<p>The architecture has six layers: component facade, validator, state machine, effect runner, durable adapter, and observer layer. The facade normalizes intent. The validator checks schema, permission, scope, and revision. The state machine commits the next snapshot. The effect runner performs network, storage, SDK, or worker work after commit. The durable adapter preserves evidence. The observer layer publishes selector-scoped snapshots and metrics.</p>
+<p>A normal mutation validates input, captures rollback state, assigns identity, applies the local projection, invokes the effect, and settles only if operation identity and revision still match. Late responses are ignored or reconciled; they must not overwrite newer intent. Cleanup on navigation, tenant switch, unmount, or cancellation is idempotent.</p>
+<h3>Data model and failure matrix</h3><p>The model should include entity or aggregate id, actor scope, tenant scope when relevant, operation id, base revision, current revision, pending state, last error, timestamps, and trace fields. Store only the payload needed for recovery. Sensitive fields belong behind tokenization, redaction, or server-owned boundaries.</p>
+<p>Define a failure matrix before coding. Validation failure blocks locally. Permission change fails closed. Timeout preserves pending identity for reconciliation. Version mismatch enters merge, refresh, or review. Partial batch failure records per-item outcomes. External dependency outage trips degradation or a circuit breaker. Duplicate delivery returns the prior idempotent result.</p>
+<h3>Lifecycle and concurrency</h3><p>Concurrency is normal input, not an exceptional corner case. Users click twice, navigate during a request, open several tabs, switch accounts, and return after background throttling. Server pushes, SDK callbacks, timers, and network settlements may arrive after the UI intent has changed. Accept a settlement only when operation id, actor scope, tenant scope, and revision still match the active snapshot.</p>
+<p>Lifecycle events need explicit handlers: bootstrap, hydrate, mount, unmount, focus, blur, reconnect, tenant switch, logout, and rollout disablement. A coordinator that only handles button clicks will leak work or display stale data. Cleanup must cancel active effects, detach listeners, invalidate scoped caches, and preserve only the minimum recovery evidence needed for the next safe transition.</p>
+<ArticleImage src="/diagrams/system-design-problems/low-level-design/real-world-scenario-lld/notifications-badge-system-failure.svg" alt="Design a Notifications Badge System failure handling" caption="Failure model: stale revisions, ambiguous results, authorization changes, and partial failures route through explicit recovery decisions." /></section>
+<section><h2>Trade offs &amp; Comparison</h2>
+<p>Local component state is cheaper for a small page, but it breaks when multiple components, tabs, routes, or teams depend on the same invariant. A domain coordinator adds code and tests, but centralizes revision checks, cancellation, rollback, persistence, and observability.</p>
+<p>Optimistic UX improves perceived latency but creates rollback and reconciliation work. Pessimistic confirmation is easier to reason about but can feel slow. Choose per operation: use optimistic projection for reversible low-risk actions and authoritative confirmation for destructive or externally constrained actions.</p>
+<p>Normalization improves deduplication and partial updates, while snapshots simplify reads and rollback. Durable history improves recovery and auditability, but costs storage and compaction work. The interview answer should tie these choices to latency, correctness, privacy, support burden, and rollout risk.</p>
+<p>There is also a build-versus-platform trade-off. A feature-local implementation moves quickly when the workflow is genuinely isolated. A shared runtime becomes worthwhile when several flows need revision guards, typed errors, permission checks, audit evidence, or rollout controls. The principal-level answer should avoid both extremes: do not create a framework for one button, and do not let high-risk invariants fragment across teams.</p>
+<p>Fail-open and fail-closed choices must be explicit. A stale feed badge can degrade gracefully. A tenant switch, payment attempt, authorization rule, kill switch, or audit export should fail closed when scope or authority is uncertain. This is where implementation details connect directly to abuse prevention and privacy.</p></section>
+<section><h2>Best practices</h2>
+<p>Make illegal states unrepresentable with explicit status unions and guarded transitions. Add operation identity and revision checks at settlement boundaries. Keep effect adapters injectable so timeouts, retries, SDK failures, server errors, and browser lifecycle changes can be tested deterministically.</p>
+<p>Build observability into the coordinator: rejected transitions, stale settlements, retry count, pending age, conflict rate, partial failure count, queue depth, rollback count, and slow subscribers. Add feature flags and kill switches for risky flows. Scope caches and persisted state by user and tenant, and clear them on identity changes.</p>
+<p>Test rapid interaction, duplicate delivery, navigation mid-flight, permission changes, stale revisions, empty states, large datasets, retry exhaustion, and recovery after reload. These cases reveal whether the abstraction protects the product or merely organizes happy-path code.</p>
+<p>Prefer selector-based subscriptions and immutable snapshots so unrelated UI does not re-render. Bound retained history, cached entities, retry ledgers, and debug events. Provide support-friendly evidence such as correlation id, operation phase, revision gap, and sanitized failure reason. These practices reduce mean time to recovery without leaking customer data.</p></section>
+<section><h2>Common Pitfalls</h2><p>Do not model the workflow as unrelated booleans. That permits impossible combinations and ordering bugs. Do not silently swallow stale responses or partial failures. Do not let observers mutate coordinator internals. Do not log sensitive payloads in telemetry.</p>
+<p>Avoid unbounded queues, histories, selections, markers, feed entities, or retries. Add compaction, pagination, virtualization, batching, and backpressure where volume can grow. Treat accessibility, privacy, and degraded UX as runtime behavior, not documentation notes.</p>
+<p>Another pitfall is treating server success as the only settlement state. Timeouts create ambiguous outcomes: the server may have committed while the client saw failure. Reconciliation and idempotency are required whenever repeating the operation could create duplicate side effects or overwrite newer state.</p></section>
+<section><h2>Real-world use cases</h2><p>This pattern appears in high-traffic consumer products and enterprise tools where a seemingly small UI feature crosses network, permission, identity, or external-service boundaries. Platform ownership is useful when several teams need the same transition safety, recovery, and metrics.</p>
+<p>For a principal interview, connect the local implementation to the wider system: server idempotency, authorization, versioning, audit logs, rollout controls, SLOs, and support tooling. The UI runtime is not isolated; it is the final consistency and trust boundary visible to the user.</p>
+<p>Operational ownership should be explicit: define alerts, dashboards, runbooks, rollback controls, and the team responsible for resolving stuck or ambiguous states.</p></section>
+<section><h2>Common interview question with detailed answer</h2>
+<h3>How would you design this end to end?</h3><p>I would define the facade, state machine, data model, effect adapters, and observer snapshots. Every mutation carries identity and revision, every effect settles through guards, and every failure maps to a typed user-visible recovery path.</p>
+<h3>Why this architecture over local state?</h3><p>Local state duplicates invariants and fails under races. The coordinator makes Badge counts must converge without distracting flicker or cross-account leakage. enforceable and testable across components.</p>
+<h3>What breaks at scale?</h3><p>Pending work, memory retention, stale responses, partial failures, permission drift, and observability gaps become bottlenecks. Use bounds, compaction, pagination, backpressure, metrics, and rollout controls.</p>
+<h3>What consistency model applies?</h3><p>Use operation-level consistency: optimistic eventual convergence for reversible work, stronger confirmation for destructive or authority-sensitive work, and explicit conflict states when intent is ambiguous.</p>
+<h3>How do you defend failure, rollback, abuse, privacy, and cost?</h3><p>Use typed errors, inverse patches or refresh, idempotency, authorization checks, rate limits, data minimization, redacted telemetry, bounded retention, and kill switches. Then walk through a read acknowledgement races with a server push event and account switching.</p></section>
+<section><h2>References</h2><ul><li><a href="https://react.dev/learn/managing-state" target="_blank" rel="noreferrer">React: Managing State</a></li><li><a href="https://redux.js.org/style-guide/" target="_blank" rel="noreferrer">Redux Style Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://web.dev/articles/vitals" target="_blank" rel="noreferrer">web.dev Web Vitals</a></li></ul></section>
+</ArticleLayout>;}

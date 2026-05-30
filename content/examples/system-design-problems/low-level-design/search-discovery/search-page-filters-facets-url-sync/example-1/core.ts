@@ -1,48 +1,12 @@
-export type SearchParams = Record<string, string | string[]>;
-
-export type SearchUiState = {
-  q: string;
-  filters: Record<string, string[]>; // facetKey -> selected values
-  sort: { key: string; dir: "asc" | "desc" } | null;
-};
-
-export function encodeState(state: SearchUiState): URLSearchParams {
-  const p = new URLSearchParams();
-  if (state.q.trim()) p.set("q", state.q.trim());
-  if (state.sort) p.set("sort", `${state.sort.key}:${state.sort.dir}`);
-  for (const [k, vals] of Object.entries(state.filters)) {
-    for (const v of vals) p.append(`f.${k}`, v);
-  }
-  return p;
+export type SearchPageFiltersFacetsUrlSyncStatus = "closed" | "debouncing" | "loading" | "open" | "empty" | "failed";
+export interface SearchPageFiltersFacetsUrlSyncSnapshot { status: SearchPageFiltersFacetsUrlSyncStatus; query: string; focused: boolean; requestToken: number; suggestions: string[]; highlightedIndex: number; }
+export class SearchPageFiltersFacetsUrlSyncCoordinator {
+  private snapshot: SearchPageFiltersFacetsUrlSyncSnapshot = { status: "closed", query: "", focused: false, requestToken: 0, suggestions: [], highlightedIndex: -1 };
+  focus() { this.snapshot = { ...this.snapshot, focused: true, status: this.snapshot.suggestions.length ? "open" : "closed" }; return this.get(); }
+  blur() { this.snapshot = { ...this.snapshot, focused: false, status: "closed", highlightedIndex: -1 }; return this.get(); }
+  query(value: string) { this.snapshot = { ...this.snapshot, query: value, requestToken: this.snapshot.requestToken + 1, status: value ? "debouncing" : "closed" }; return this.get(); }
+  settle(token: number, suggestions: string[]) { if (token !== this.snapshot.requestToken || !this.snapshot.focused) return this.get(); this.snapshot = { ...this.snapshot, suggestions, status: suggestions.length ? "open" : "empty", highlightedIndex: suggestions.length ? 0 : -1 }; return this.get(); }
+  move(delta: number) { if (!this.snapshot.suggestions.length) return this.get(); const n=this.snapshot.suggestions.length; this.snapshot={...this.snapshot,highlightedIndex:(this.snapshot.highlightedIndex+delta+n)%n}; return this.get(); }
+  get(){ return {...this.snapshot,suggestions:[...this.snapshot.suggestions]}; }
 }
-
-export function decodeState(params: URLSearchParams): SearchUiState {
-  const q = params.get("q") ?? "";
-  const sortRaw = params.get("sort");
-  const sort = sortRaw
-    ? (() => {
-        const [key, dir] = sortRaw.split(":");
-        return key && (dir === "asc" || dir === "desc") ? { key, dir } : null;
-      })()
-    : null;
-
-  const filters: Record<string, string[]> = {};
-  for (const [k, v] of params.entries()) {
-    if (!k.startsWith("f.")) continue;
-    const facet = k.slice(2);
-    (filters[facet] ??= []).push(v);
-  }
-
-  // Deterministic ordering (important for stable URLs and caching)
-  for (const k of Object.keys(filters)) filters[k] = [...new Set(filters[k])].sort();
-
-  return { q, filters, sort };
-}
-
-export function canonicalize(params: URLSearchParams) {
-  const entries = [...params.entries()].sort((a, b) => (a[0] === b[0] ? a[1].localeCompare(b[1]) : a[0].localeCompare(b[0])));
-  const out = new URLSearchParams();
-  for (const [k, v] of entries) out.append(k, v);
-  return out;
-}
-
+export function runSearchPageFiltersFacetsUrlSyncFocusScenario(){const c=new SearchPageFiltersFacetsUrlSyncCoordinator();c.focus();const pending=c.query("rea");c.blur();const ignored=c.settle(pending.requestToken,["react","reason"]);return{invariant:"URL state, visible filters, and backend query state must remain equivalent and shareable.",ignored};}

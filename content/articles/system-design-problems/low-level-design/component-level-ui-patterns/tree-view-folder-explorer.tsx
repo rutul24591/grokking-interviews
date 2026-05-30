@@ -34,12 +34,11 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function TreeViewFolderExplorerArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      {/* Section 1: Problem Clarification */}
+export default function ArticlePage(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Tree View Folder Explorer</h1><h2>Definition &amp; Context</h2><p>Design a Tree View Folder Explorer is an implementation-heavy low-level design problem covering lazy child loading, expansion state, keyboard traversal, selection, virtualized flattening, rename, move validation, and focus restoration. A principal-level answer must define state ownership, durable boundaries, lifecycle cleanup, degraded behavior, privacy, cost, and observability.</p><p>Store nodes by stable id and derive a visible flattened preorder list from expanded branches. Paths and labels can change without invalidating identity. The core structures are node map, parent-child index, expanded set, loaded-child cursors, visible preorder list, focused id, selected ids, mutation journal, version etag, and pending request map.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/tree-view-folder-explorer-runtime.svg" alt="Design a Tree View Folder Explorer runtime" caption="Topic-specific runtime stages from user intent through durable projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p>{/* Section 1: Problem Clarification */}
       <section>
-        <h2>Problem Clarification</h2>
+        <h3>Problem Clarification</h3>
         <HighlightBlock as="p" tier="crucial">
           We need to design a reusable tree view / folder explorer component for a
           large-scale React application. The component must display hierarchical data
@@ -88,7 +87,7 @@ export default function TreeViewFolderExplorerArticle() {
 
       {/* Section 2: Requirements */}
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
@@ -206,7 +205,7 @@ export default function TreeViewFolderExplorerArticle() {
 
       {/* Section 3: High-Level Approach */}
       <section>
-        <h2>High-Level Approach</h2>
+        <h3>High-Level Approach</h3>
         <HighlightBlock as="p" tier="important">
           The core idea is to separate the <strong>tree state management</strong> from
           the <strong>tree rendering</strong> using a global store (Zustand) and a
@@ -252,7 +251,7 @@ export default function TreeViewFolderExplorerArticle() {
 
       {/* Section 4: System Design (LLD) */}
       <section>
-        <h2>System Design</h2>
+        <h3>System Design</h3>
 
         <ArticleImage
           src="/diagrams/system-design-problems/low-level-design/tree-view-folder-explorer-architecture.svg"
@@ -466,7 +465,7 @@ export default function TreeViewFolderExplorerArticle() {
 
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
-        <h2>Data Flow / Execution Flow</h2>
+        <h3>Data Flow / Execution Flow</h3>
         <HighlightBlock as="p" tier="important">
           The execution flow follows a unidirectional data flow pattern. All state
           mutations flow through the Zustand store, and all rendering flows from store
@@ -535,7 +534,7 @@ export default function TreeViewFolderExplorerArticle() {
 
       {/* Section 6: Implementation */}
       <section>
-        <h2>Implementation</h2>
+        <h3>Implementation</h3>
         <HighlightBlock as="p" tier="important">
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
@@ -609,7 +608,7 @@ export default function TreeViewFolderExplorerArticle() {
 
       {/* Section 7: Performance & Scalability */}
       <section>
-        <h2>Performance &amp; Scalability</h2>
+        <h3>Performance &amp; Scalability</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Time and Space Complexity</h3>
         <div className="my-4 overflow-x-auto">
@@ -725,7 +724,7 @@ export default function TreeViewFolderExplorerArticle() {
 
       {/* Section 8: Security Considerations */}
       <section>
-        <h2>Security Considerations</h2>
+        <h3>Security Considerations</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Validation</h3>
         <HighlightBlock as="p" tier="important">
@@ -798,7 +797,7 @@ export default function TreeViewFolderExplorerArticle() {
 
       {/* Section 9: Testing Strategy */}
       <section>
-        <h2>Testing Strategy</h2>
+        <h3>Testing Strategy</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
@@ -875,7 +874,7 @@ export default function TreeViewFolderExplorerArticle() {
 
       {/* Section 10: Interview-Focused Insights */}
       <section>
-        <h2>Interview-Focused Insights</h2>
+        <h3>Interview-Focused Insights</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Common Mistakes Candidates Make</h3>
         <ul className="space-y-3">
@@ -1043,74 +1042,12 @@ export default function TreeViewFolderExplorerArticle() {
             </HighlightBlock>
           </div>
         </div>
-      </section>
-
-      {/* Section 11: References */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://www.w3.org/WAI/ARIA/apg/patterns/treeview/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              WAI-ARIA Tree View Pattern — Accessibility Guidelines
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.w3.org/WAI/ARIA/apg/patterns/treegrid/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              WAI-ARIA Tree Grid Pattern — Tabular Hierarchical Data
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://tanstack.com/virtual/latest"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              TanStack Virtual — Virtualization Library for Large Trees
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://zustand-demo.pmnd.rs/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Zustand — State Management Library Documentation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              MDN — HTML Drag and Drop API Specification
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://fusejs.io/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Fuse.js — Lightweight Fuzzy Search Library
-            </a>
-          </li>
-        </ul>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Normalize input before applying typed transitions. Separate draft, preview, committed state, derived projection, integration effects, and bounded telemetry. Every timer, listener, observer, request, worker, and persisted preference needs an explicit owner and cleanup path.</p><p>Store nodes by stable id and derive a visible flattened preorder list from expanded branches. Paths and labels can change without invalidating identity. Commit only after the current policy gate succeeds and retain enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/tree-view-folder-explorer-recovery.svg" alt="Design a Tree View Folder Explorer recovery decisions" caption="Recovery flow: invalidate obsolete work, preserve recoverable state, and explain the outcome." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Rendering a nested list is enough for small trees; a normalized lazy tree is justified for large hierarchies, mutations, keyboard traversal, and virtualization.</p><p>The server tree is authoritative. Expansion and focus are local projections; node mutations are optimistic only with stable ids, versions, and deterministic rollback. The scale risks are deep trees, huge folders, lazy branches, rapid expansion, recursive move hazards, permission changes, and concurrent rename. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic transitions only when rollback is deterministic and understandable. Keep authorization and conflict-sensitive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit state unions, versioned persistence, generation guards, SSR-safe feature checks, semantic HTML, and idempotent cleanup. Test keyboard use, accessibility output, stale responses, retries, restoration, and constrained devices.</p><p>Measure transition latency, blocked actions, stale drops, rollbacks, cache pressure, retry exhaustion, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing draft and commit, trusting arrival order, leaking resources, accepting obsolete async completion, and hiding rollback from the user.</p><p>For this topic, dedupe child loads, cancel collapsed-branch requests, reject recursive moves, preserve focus after refresh, retain tombstones when needed, and reload affected parents on conflict. Validate untrusted input, authorize durable mutations server-side, and bound resource usage.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to repeated workflows where browser, persistence, and policy boundaries can fail independently. Reuse the controller structure while injecting product-specific policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Store nodes by stable id and derive a visible flattened preorder list from expanded branches. Paths and labels can change without invalidating identity.</p><h3>What breaks at scale?</h3><p>deep trees, huge folders, lazy branches, rapid expansion, recursive move hazards, permission changes, and concurrent rename. I would bound expensive work and cancel obsolete effects.</p><h3>What consistency model applies?</h3><p>The server tree is authoritative. Expansion and focus are local projections; node mutations are optimistic only with stable ids, versions, and deterministic rollback.</p><h3>How do you recover?</h3><p>I would dedupe child loads, cancel collapsed-branch requests, reject recursive moves, preserve focus after refresh, retain tombstones when needed, and reload affected parents on conflict.</p><h3>Why this architecture?</h3><p>Rendering a nested list is enough for small trees; a normalized lazy tree is justified for large hierarchies, mutations, keyboard traversal, and virtualization.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li></ul></section>
+</ArticleLayout>}

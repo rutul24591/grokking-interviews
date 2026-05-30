@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function WizardArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function ArticlePage(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Wizard Multi-Step Form System</h1><h2>Definition &amp; Context</h2><p>Design a Wizard Multi-Step Form System is an implementation-heavy low-level design problem covering step graph, per-step validation, async gates, autosave, resumability, conditional routing, URL recovery, and idempotent submission. A principal-level answer must explain state ownership, durable boundaries, lifecycle cleanup, failure recovery, privacy, cost, and observability.</p><p>Treat the wizard as a directed workflow. Field values, reachable steps, active step, validation generations, draft version, and final submit state are distinct. The core structures are step graph, field map, reachable route, active step id, validation map, async generations, draft version, autosave timer, idempotency key, and receipt.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/forms-input-systems/wizard-multi-step-form-runtime.svg" alt="Design a Wizard Multi-Step Form System runtime" caption="Topic-specific runtime from input intent through validated durable state." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -136,7 +135,7 @@ export default function WizardArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -190,7 +189,7 @@ export default function WizardArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -275,14 +274,10 @@ export default function WizardArticle() {
         </p>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/wizard-multi-step-form-architecture.svg"
-        alt="Wizard / Multi-step Form Architecture"
-        caption="URL ↔ StepRouter ↔ Wizard Provider (state machine) ↔ shared form store ↔ StepShell. The state machine is the single authority for current step; the URL reconciles into it on mount and on browser back/forward; the form store accumulates values across all steps so Back is lossless."
-      />
+      
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <p>
           The wizard is modeled as a finite state machine layered on
           top of a single shared form store. Three architectural
@@ -460,7 +455,7 @@ export default function WizardArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="important">
           <strong>WizardProvider</strong> instantiates the state
           machine and the shared form store and exposes them
@@ -561,7 +556,7 @@ export default function WizardArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management Strategy</h2>
+        <h3>🔄 State Management Strategy</h3>
         <HighlightBlock as="p" tier="important">
           State splits into four planes that coexist without
           overlapping. <strong>Machine state</strong> — current
@@ -626,7 +621,7 @@ export default function WizardArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="crucial">
           Inputs to the wizard are: an array of step descriptors
           (<code>{` { id, component, validate, next?, sensitive? } `}</code>),
@@ -666,7 +661,7 @@ export default function WizardArticle() {
       </section>
 
       <section>
-        <h2>⚡ Rendering &amp; Performance Strategy</h2>
+        <h3>⚡ Rendering &amp; Performance Strategy</h3>
         <HighlightBlock as="p" tier="important">
           Only one step is mounted at a time. Step components are
           lazy-loaded via <code>React.lazy</code>; the wizard
@@ -710,7 +705,7 @@ export default function WizardArticle() {
       </section>
 
       <section>
-        <h2>🎨 UI/UX &amp; Interaction Design</h2>
+        <h3>🎨 UI/UX &amp; Interaction Design</h3>
         <HighlightBlock as="p" tier="crucial">
           A persistent Stepper sits at the top of the wizard on
           desktop, condensed to a &ldquo;Step 2 of 5&rdquo; chip
@@ -754,7 +749,7 @@ export default function WizardArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">
           The Stepper is rendered as
           <code> {`<ol>`}</code> with each item as
@@ -785,7 +780,7 @@ export default function WizardArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security Considerations</h2>
+        <h3>🔐 Security Considerations</h3>
         <HighlightBlock as="p" tier="important">Steps marked sensitive: true are excluded from local draft persistence; their values live only in memory and, if a server-side encrypted draft endpoint is</HighlightBlock>
 <HighlightBlock as="p" tier="important">configured, are sent there directly. On logout, the wizard listens for a session-end event and clears all in-memory state plus any local draft entries it</HighlightBlock>
 <HighlightBlock as="p" tier="important">owns. Submit endpoints attach CSRF tokens at the fetch layer (handled outside the wizard) and use the idempotency key generated by the wizard on submit entry.</HighlightBlock>
@@ -801,7 +796,7 @@ export default function WizardArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing Strategy</h2>
+        <h3>🧪 Testing Strategy</h3>
         <HighlightBlock as="p" tier="important">Unit tests cover the machine: every transition, every
           guard, every branching resolver under representative
           value permutations. The machine is a pure reducer plus
@@ -832,7 +827,7 @@ export default function WizardArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases &amp; Failure Handling</h2>
+        <h3>🚨 Edge Cases &amp; Failure Handling</h3>
         <HighlightBlock as="p" tier="important">Editing a prior step changes branching: the machine
           detects the diverging future path on the next
           transition and surfaces an explicit warning, clearing
@@ -876,21 +871,21 @@ export default function WizardArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability &amp; Extensibility</h2>
+        <h3>🔁 Reusability &amp; Extensibility</h3>
         <HighlightBlock as="p" tier="crucial">Theming is design-token-driven; the Stepper component can be replaced wholesale via the registry. The wizard exposes</HighlightBlock>
 <HighlightBlock as="p" tier="important">hooks for analytics, telemetry, and AI assistance to subscribe without modifying internals — the onStepChange callback</HighlightBlock>
 <HighlightBlock as="p" tier="important">fires with from , to , and reason so subscribers can build a complete funnel picture without instrumenting per-step code.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="crucial">Date and currency fields inside steps follow the same rules as elsewhere in the form runtime: format via Intl, store</HighlightBlock>
 <HighlightBlock as="p" tier="important">canonical, never rely on string concatenation. For server-bound steps (e.g. a step that validates an address against a postal</HighlightBlock>
 <HighlightBlock as="p" tier="important">service), the server response carries locale-aware error messages that map to the same i18n key system as client validators.</HighlightBlock>
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs &amp; Design Decisions</h2>
+        <h3>⚖️ Trade-offs &amp; Design Decisions</h3>
 
         <h3>State machine vs imperative routing</h3>
         <HighlightBlock as="p" tier="important">
@@ -988,119 +983,18 @@ export default function WizardArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">A visual flow editor for product managers would democratize wizard authoring further. Cross-device cursor (showing where the user left</HighlightBlock>
 <HighlightBlock as="p" tier="important">off when they open the wizard on a different device) is a modest extension on top of server drafts. CRDT-based merge of concurrent edits</HighlightBlock>
 <HighlightBlock as="p" tier="important">across devices is interesting but probably overkill for most wizard use cases — wizards aren&rsquo;t typically a multi-user experience.</HighlightBlock>
       </section>
 
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. Why model navigation as a state machine instead
-          of an integer step counter?</strong> A counter handles
-          linear flows and breaks at the first branch. The
-          machine encodes guarded transitions, branching
-          resolvers, deep-link reconciliation, and history
-          exhaustively, with transitions that are unit-testable
-          in isolation. The one-time setup cost is repaid the
-          first time a branching requirement appears, and it
-          keeps paying off as the flow grows.
-        </HighlightBlock>
-
-        <p>
-          <strong>2. How do you handle deep links to step 3 when step
-          2 is invalid?</strong> The runtime asks the machine
-          <code>canEnter(stepId)</code> on mount; if any prior
-          step fails its validate predicate against the
-          rehydrated values, the machine redirects to the
-          earliest invalid step and emits an analytics event
-          noting the redirect. The destination renders an
-          explanatory banner. We never silently land users on a
-          step they can&rsquo;t complete.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>3. What happens when a user edits a prior answer
-          that changes the remaining branch?</strong> The machine
-          recomputes the future path on the next forward
-          transition and compares it to the recorded path. On
-          divergence, it surfaces an explicit warning and
-          clears values for orphaned steps so submitted
-          payloads do not contain stale answers from a dead
-          branch. Doing this implicitly would silently lose
-          work; doing it not at all would silently submit
-          inconsistent data.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. How do you preserve scroll position and focus
-          across step transitions?</strong> The StepShell records
-          a checkpoint (<code>scrollTop</code>, focused element
-          id) on unmount and restores it on remount. Without
-          checkpointing, mount-only-active rendering would feel
-          disorienting because Back would always return the user
-          to the top of the previous step.
-        </HighlightBlock>
-
-        <p>
-          <strong>5. How would you make the wizard resumable across
-          devices?</strong> Pair the local draft with a
-          server-side draft endpoint keyed by user id. On mount,
-          fetch the server draft, merge with any local draft,
-          take the newer one or surface an explicit conflict if
-          both have changed since last sync. Sensitive steps go
-          server-only and encrypted; non-sensitive go to both.
-        </p>
-
-        <p>
-          <strong>6. Why is the URL the source of truth for the
-          current step?</strong> Because users expect URLs to
-          behave: share, refresh, back, forward, deep link.
-          Owning step state in memory only would break all of
-          those. Reconciliation logic on mount and browser
-          navigation is the small cost we pay for behaving like
-          a webpage rather than a desktop app.
-        </p>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>7. How do you prevent double submission on slow
-          networks?</strong> A UUID v7 idempotency key generated
-          when the wizard enters <code>submitting</code>; the
-          same key is reused for all retries. The server
-          dedupes by key. Tab-level locking via
-          BroadcastChannel prevents the double-tab variant of
-          the same problem.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>8. How do you support A/B testing of step
-          ordering?</strong> Treat step descriptors as data. The
-          wizard already accepts an array of descriptors; an
-          experiment service can return different orderings per
-          variant. The descriptor format is serializable so
-          this works for hard-coded, CMS-fetched, and
-          experiment-driven graphs identically.
-        </HighlightBlock>
       </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="important">A robust wizard treats navigation as a guarded finite state machine sitting on top of a single shared form store, with the</HighlightBlock>
-<HighlightBlock as="p" tier="important">URL as the reconciliation source of truth. Mount-only-active rendering keeps performance flat regardless of step count;</HighlightBlock>
-<HighlightBlock as="p" tier="important">branching is encoded explicitly so divergence detection becomes tractable; resumability comes from a local-plus-server draft pair.</HighlightBlock>
-<HighlightBlock as="p" tier="crucial">The machine, the store,
-          and the URL are three small ideas that, applied
-          consistently, produce wizards that feel native to the
-          web: deep-linkable, refresh-safe, accessible, and
-          resilient to interruption. The hardest correctness
-          concerns — edit-and-branch divergence, deep-link
-          guards, reload reconciliation — are handled by the
-          backbone in one place, so per-step code stays simple
-          and product teams can ship new wizards in days rather
-          than weeks.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+<section><h2>Architecture &amp; Flow</h2><p>Separate field input, typed state transitions, derived projections, persistence effects, and bounded telemetry. Draft, preview, validated, and submitted states must not collapse into one mutable object. Every debounce timer, request, storage write, worker, and subscription needs an explicit owner and cleanup path.</p><p>Treat the wizard as a directed workflow. Field values, reachable steps, active step, validation generations, draft version, and final submit state are distinct. Commit only after the current policy gate succeeds and retain enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/forms-input-systems/wizard-multi-step-form-recovery.svg" alt="Design a Wizard Multi-Step Form System recovery" caption="Recovery flow: reject obsolete work, preserve recoverable drafts, and explain the outcome." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Independent forms are simpler for loosely related tasks; a wizard runtime is justified when sequencing, draft recovery, and final atomic submission matter.</p><p>Draft persistence is versioned and eventually synchronized. Navigation is local but gated; final submission is server-authoritative and idempotent. Scale pressure comes from long workflows, dynamic paths, autosave races, abandoned sessions, stale URLs, async checks, hidden values, and duplicate submit. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic transitions only when rollback is deterministic and understandable. Authorization and final validation remain server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable field ids, typed events, explicit state unions, schema versions, generation guards, SSR-safe feature checks, semantic HTML, and idempotent cleanup. Test keyboard use, screen-reader output, stale responses, offline recovery, retries, restoration, and constrained devices.</p><p>Measure field latency, blocked actions, stale drops, save conflicts, retries, storage pressure, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing drafts and committed values, trusting client validation, leaking resources, accepting stale async completion, and hiding rollback from the user.</p><p>For this topic, recompute reachable paths, redirect stale URLs, abort stale validation, preserve values after save conflicts, resume the latest valid step, and dedupe submission. Validate untrusted input, authorize durable mutations server-side, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to high-value forms where users expect responsive input while browser, persistence, validation, and policy boundaries can fail independently. Reuse the controller structure while injecting product policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Treat the wizard as a directed workflow. Field values, reachable steps, active step, validation generations, draft version, and final submit state are distinct.</p><h3>What breaks at scale?</h3><p>long workflows, dynamic paths, autosave races, abandoned sessions, stale URLs, async checks, hidden values, and duplicate submit. I would bound expensive work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>Draft persistence is versioned and eventually synchronized. Navigation is local but gated; final submission is server-authoritative and idempotent.</p><h3>How do you recover?</h3><p>I would recompute reachable paths, redirect stale URLs, abort stale validation, preserve values after save conflicts, resume the latest valid step, and dedupe submission.</p><h3>Why this architecture?</h3><p>Independent forms are simpler for loosely related tasks; a wizard runtime is justified when sequencing, draft recovery, and final atomic submission matter.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank" rel="noreferrer">MDN localStorage</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

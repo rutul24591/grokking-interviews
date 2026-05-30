@@ -1,6 +1,1 @@
-# Saved Views Persistence System — Example 3
-
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+# Design Saved Views Persistence example 3\n\nConcrete low-level implementation exercise for Design Saved Views Persistence.\n

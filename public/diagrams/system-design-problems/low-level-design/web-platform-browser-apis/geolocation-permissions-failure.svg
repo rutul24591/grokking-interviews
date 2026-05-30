@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Geolocation Permissions UX failure model</title>
+  <desc id="desc">Browser API runtime with capability detection, permission gates, lifecycle cleanup, fallback, and observability.</desc>
+  <defs>
+    <marker id="arrow-geolocation-permissions-failure" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#dc2626"/></marker>
+    <filter id="shadow-geolocation-permissions-failure" x="-10%" y="-10%" width="120%" height="120%"><feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#0f172a" flood-opacity="0.16"/></filter>
+  </defs>
+  <rect width="1200" height="720" rx="28" fill="#fff7ed"/>
+  <rect x="42" y="38" width="1116" height="642" rx="24" fill="#ffffff" stroke="#fed7aa" stroke-width="2"/>
+  <text x="76" y="88" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700" fill="#0f172a">Geolocation Permissions UX: fallback and failure routing</text>
+  <text x="76" y="122" font-family="Inter, Arial, sans-serif" font-size="16" fill="#475569">Denied, unsupported, hidden-tab, and expensive callback paths become typed states rather than surprises.</text>
+  <g filter="url(#shadow-geolocation-permissions-failure)">
+    <path d="M96 226 C138 154, 258 146, 316 214 C374 282, 320 374, 224 390 C136 406, 58 324, 96 226" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+    <text x="128" y="246" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="700" fill="#1e3a8a">Product intent</text>
+    <text x="126" y="280" font-family="Inter, Arial, sans-serif" font-size="15" fill="#1d4ed8">operation id</text>
+    <text x="126" y="306" font-family="Inter, Arial, sans-serif" font-size="15" fill="#1d4ed8">caller scope</text>
+    <text x="126" y="332" font-family="Inter, Arial, sans-serif" font-size="15" fill="#1d4ed8">user gesture</text>
+  </g>
+  <path d="M326 292 L450 292" stroke="#dc2626" stroke-width="4" marker-end="url(#arrow-geolocation-permissions-failure)"/>
+  <g filter="url(#shadow-geolocation-permissions-failure)">
+    <rect x="454" y="184" width="270" height="216" rx="18" fill="#ecfeff" stroke="#0891b2" stroke-width="3"/>
+    <text x="486" y="226" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="700" fill="#164e63">Capability gate</text>
+    <text x="486" y="260" font-family="Inter, Arial, sans-serif" font-size="15" fill="#155e75">support + secure context</text>
+    <text x="486" y="286" font-family="Inter, Arial, sans-serif" font-size="15" fill="#155e75">permission + activation</text>
+    <text x="486" y="312" font-family="Inter, Arial, sans-serif" font-size="15" fill="#155e75">visibility + lifecycle</text>
+    <text x="486" y="354" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700" fill="#164e63">Location access must be purpose-bound, revocable, and degraded safely when precision or permission is unavailable.</text>
+  </g>
+  <path d="M724 250 C798 204, 824 172, 900 168" stroke="#dc2626" stroke-width="4" fill="none" marker-end="url(#arrow-geolocation-permissions-failure)"/>
+  <g filter="url(#shadow-geolocation-permissions-failure)">
+    <rect x="900" y="118" width="222" height="132" rx="18" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/>
+    <text x="930" y="160" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="700" fill="#14532d">Native path</text>
+    <text x="930" y="194" font-family="Inter, Arial, sans-serif" font-size="15" fill="#166534">adapter call</text>
+    <text x="930" y="220" font-family="Inter, Arial, sans-serif" font-size="15" fill="#166534">abort + timeout</text>
+  </g>
+  <path d="M724 342 C800 394, 822 448, 900 470" stroke="#dc2626" stroke-width="4" fill="none" marker-end="url(#arrow-geolocation-permissions-failure)"/>
+  <g filter="url(#shadow-geolocation-permissions-failure)">
+    <rect x="900" y="420" width="222" height="142" rx="18" fill="#fee2e2" stroke="#dc2626" stroke-width="3"/>
+    <text x="930" y="462" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="700" fill="#7f1d1d">Fallback path</text>
+    <text x="930" y="496" font-family="Inter, Arial, sans-serif" font-size="15" fill="#991b1b">typed reason</text>
+    <text x="930" y="522" font-family="Inter, Arial, sans-serif" font-size="15" fill="#991b1b">accessible recovery</text>
+  </g>
+  <g>
+    <rect x="136" y="506" width="628" height="88" rx="18" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+    <text x="166" y="540" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" fill="#0f172a">Runtime evidence</text>
+    <text x="166" y="570" font-family="Inter, Arial, sans-serif" font-size="15" fill="#334155">permission state, accuracy policy, watcher registry, timeout budget, privacy scope, stale location cache</text>
+  </g>
+  <path d="M590 400 C572 454, 514 490, 430 506" stroke="#64748b" stroke-width="3" stroke-dasharray="8 8" fill="none" marker-end="url(#arrow-geolocation-permissions-failure)"/>
+</svg>

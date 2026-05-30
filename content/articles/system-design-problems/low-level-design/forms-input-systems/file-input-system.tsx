@@ -21,11 +21,10 @@ export const metadata: ArticleMetadata = {
   relatedTopics: ["form-builder", "form-validation-engine"],
 };
 
-export default function FileInputArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function ArticlePage(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a File Input System</h1><h2>Definition &amp; Context</h2><p>Design a File Input System is an implementation-heavy low-level design problem covering selection intake, drag-drop, validation, preview, multipart upload, pause-resume, retry, progress aggregation, checksum, and completion. A principal-level answer must explain state ownership, durable boundaries, lifecycle cleanup, failure recovery, privacy, cost, and observability.</p><p>Represent each selected file as a state machine with stable identity, upload session, chunk ledger, retry budget, and abort handles. The core structures are file queue, validation result, preview URL, upload session, chunk ledger, checksum, concurrency semaphore, retry schedule, abort controllers, and receipt.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/forms-input-systems/file-input-system-runtime.svg" alt="Design a File Input System runtime" caption="Topic-specific runtime from input intent through validated durable state." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -92,7 +91,7 @@ export default function FileInputArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -131,7 +130,7 @@ export default function FileInputArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -184,7 +183,7 @@ export default function FileInputArticle() {
       </section>
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <p>
           The control is structured around four phases:
           <strong> ingest</strong>, <strong>validate</strong>,
@@ -300,14 +299,10 @@ export default function FileInputArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/file-input-system-architecture.svg"
-        alt="File Input System Architecture"
-        caption="Four-phase pipeline: Ingest (drop / picker / paste / capture / folder) → Validate → Preview (off-main workers) → Handoff to uploader. The control owns ingestion; transport is a separate subsystem."
-      />
+      
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <p>
           <strong>FileInput</strong> is the outer control,
           responsible for label/error association, integration with
@@ -371,7 +366,7 @@ export default function FileInputArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">
           Model file selection as a lifecycle state machine (ingested → validated → previewing → ready → uploading → uploaded/failed)
           so UI, retry, and dedupe logic stay deterministic.
@@ -393,7 +388,7 @@ export default function FileInputArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="crucial">
           The contract must be explicit about validation and partial failure: the control should report accepted files and rejected issues together so forms can render
           correct, actionable error UI.
@@ -417,7 +412,7 @@ export default function FileInputArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance Strategy</h2>
+        <h3>⚡ Performance Strategy</h3>
         <HighlightBlock as="p" tier="important">Image previews use createObjectURL for immediate display; for files above a threshold</HighlightBlock>
 <HighlightBlock as="p" tier="important">(say, 5 MB), we generate a smaller bitmap via createImageBitmap with explicit</HighlightBlock>
 <HighlightBlock as="p" tier="important">resizeWidth and resizeHeight options so the browser decodes at thumbnail size, never at full size.</HighlightBlock>
@@ -434,7 +429,7 @@ export default function FileInputArticle() {
       </section>
 
       <section>
-        <h2>🎨 UI/UX Considerations</h2>
+        <h3>🎨 UI/UX Considerations</h3>
         <HighlightBlock as="p" tier="important">The DropZone has distinct visual states for
           drag-over, drag-rejecting (e.g. wrong file type),
           drop-active. Empty state lists active constraints
@@ -460,7 +455,7 @@ export default function FileInputArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="important">The drop zone is a button reachable by Tab; Enter or Space invokes the native picker via</HighlightBlock>
 <HighlightBlock as="p" tier="important">ref.current.click() . Drag-over visual state is decorative; the live announcement</HighlightBlock>
 <HighlightBlock as="p" tier="important">happens only on drop with a summary (&ldquo;3 files added; 1 rejected: file too large&rdquo;).</HighlightBlock>
@@ -476,7 +471,7 @@ export default function FileInputArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important">Client validation is UX; the server is the security
           boundary. We do not trust extension or MIME from the
           client. Filenames render as text — a filename
@@ -501,21 +496,21 @@ export default function FileInputArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing Strategy</h2>
+        <h3>🧪 Testing Strategy</h3>
         <HighlightBlock as="p" tier="crucial">We run keyboard-only flows: Tab to drop zone, Enter to open picker, select files, verify focus returns</HighlightBlock>
 <HighlightBlock as="p" tier="important">appropriately. We test the worker code paths (hash, preview) in isolation. End-to-end tests in real</HighlightBlock>
 <HighlightBlock as="p" tier="important">browsers verify drag-and-drop correctness because synthetic drag events in jsdom are notoriously unfaithful.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🚨 Edge Cases &amp; Failure Handling</h2>
+        <h3>🚨 Edge Cases &amp; Failure Handling</h3>
         <HighlightBlock as="p" tier="crucial">Very large image previews exhaust memory: cap thumbnail dimension and release the original blob from JS reference once the thumbnail is generated. User removes a file</HighlightBlock>
 <HighlightBlock as="p" tier="important">mid-upload: notify the uploader to abort that file&rsquo;s in-flight request. Drag-leave fires when entering a child element of the drop zone (the dragenter/dragleave</HighlightBlock>
 <HighlightBlock as="p" tier="important">bubbling quirk): track entered targets in a Set to determine real leave. Pasting an image from a screenshot (no filename): synthesize a name from the timestamp and MIME.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🔁 Reusability &amp; Extensibility</h2>
+        <h3>🔁 Reusability &amp; Extensibility</h3>
         <HighlightBlock as="p" tier="crucial">The PreviewRegistry is the primary extension point —
           new MIME types plug in with a single registration.
           Custom validators add via the validator chain. The
@@ -531,7 +526,7 @@ export default function FileInputArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important">Constraint messages and error text resolve through the
           host&rsquo;s i18n function. File sizes format via
           </Highlight><code> Intl.NumberFormat</code> with byte units
@@ -544,7 +539,7 @@ export default function FileInputArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs &amp; Design Decisions</h2>
+        <h3>⚖️ Trade-offs &amp; Design Decisions</h3>
 
         <h3>Hidden native input vs fully custom drop zone</h3>
         <HighlightBlock as="p" tier="important">
@@ -608,7 +603,7 @@ export default function FileInputArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="important">OPFS-backed staging would let us write incoming files to a private origin file system before</HighlightBlock>
 <HighlightBlock as="p" tier="important">upload, handling truly massive files (multi-GB) without memory pressure. Service-Worker-driven</HighlightBlock>
 <HighlightBlock as="p" tier="important">background processing would let hashing and preview generation continue even after a tab is backgrounded.</HighlightBlock>
@@ -623,107 +618,12 @@ export default function FileInputArticle() {
           native apps.</HighlightBlock>
       </section>
 
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>1. How is the drop zone made keyboard accessible?</strong>{" "}
-          Render it as a button reachable by Tab; Enter or
-          Space activates it; activation invokes a hidden
-          native <code>{`<input type="file">`}</code> via
-          <code> ref.current.click()</code>. The native input
-          provides platform-correct picker accessibility for
-          free; the visible button is just a styled trigger.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. Why hide the native input but keep it in the
-          DOM?</strong> Hiding (via <code>display:none</code> or
-          <code> visibility:hidden</code>) is fine because we
-          activate it imperatively. Keeping it in the DOM gives
-          us the platform&rsquo;s file picker dialog and all its
-          accessibility integration, which would be very hard to
-          re-implement. Removing it and rebuilding the picker
-          UX is a common mistake.
-        </HighlightBlock>
-
-        <p>
-          <strong>3. How do you generate previews without freezing the
-          main thread?</strong>
-          <code> createImageBitmap</code> with explicit
-          resizeWidth / resizeHeight off-main via a worker for
-          large images. For small images, we use
-          <code> URL.createObjectURL</code> directly. We cap
-          thumbnail dimensions and release original blob
-          references once the thumbnail is in hand.
-        </p>
-
-        <p>
-          <strong>4. How do you dedupe files that the user drops
-          twice?</strong> Name+size is the default — cheap and
-          catches the common case. Hash-based dedup is opt-in
-          for forms that genuinely need it; it runs in a worker
-          using SubtleCrypto. Hash dedup costs CPU for large
-          files, so it&rsquo;s not the default.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>5. What client validation do you trust, and what do
-          you defer to server?</strong> Trust nothing
-          authoritatively from the client. Client validation is
-          UX — fast feedback, save bandwidth — but the server
-          re-validates everything. Files passing client
-          validation may still be rejected server-side after
-          virus scan or content inspection.
-        </HighlightBlock>
-
-        <p>
-          <strong>6. How do you handle folder drops?</strong>{" "}
-          Use <code>DataTransferItem.webkitGetAsEntry</code>
-          recursively with depth and total file count caps to
-          prevent DoS. Surface a polite warning when the cap
-          triggers so users understand why some files were
-          ignored. Gate folder upload behind a feature flag
-          because cross-browser support varies.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>7. How is memory leak prevented with object URLs?</strong>{" "}
-          Track URLs in a Map keyed by file entry id; revoke on
-          remove or unmount. Without explicit revocation, object
-          URLs persist for the lifetime of the document, which
-          accumulates leaks proportional to file count. The
-          control owns this lifecycle so consumers
-          don&rsquo;t have to remember.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>8. How does this integrate into a Form Builder&rsquo;s
-          value model?</strong> The control registers as a custom
-          field type. Its emitted value is an array of
-          <code> FileEntry</code>; the form runtime carries this
-          value in its store. The uploader (separately) reads
-          the entries, transports the bytes, and writes status
-          back through the form runtime; the file input
-          subscribes to status changes and renders accordingly.
-          The clean separation between ingestion and transport
-          is what keeps both components coherent.
-        </HighlightBlock>
       </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="important">The file input is a headless ingestion control that turns user intent (pick, drop,</HighlightBlock>
-<HighlightBlock as="p" tier="important">paste, capture) into a clean, validated list of file references. The four-phase pipeline —</HighlightBlock>
-<HighlightBlock as="p" tier="important">ingest, validate, preview, handoff — keeps responsibilities sharp and the UI predictable.</HighlightBlock>
-<HighlightBlock as="p" tier="crucial">The hidden native input pattern delivers
-          accessibility for free; off-main preview and hash
-          generation keep the main thread free; clean handoff to
-          a separate upload subsystem keeps both components
-          coherent. The control should feel boring and reliable
-          in any form, leaving the interesting work to whichever
-          subsystem actually does something with the bytes.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+<section><h2>Architecture &amp; Flow</h2><p>Separate field input, typed state transitions, derived projections, persistence effects, and bounded telemetry. Draft, preview, validated, and submitted states must not collapse into one mutable object. Every debounce timer, request, storage write, worker, and subscription needs an explicit owner and cleanup path.</p><p>Represent each selected file as a state machine with stable identity, upload session, chunk ledger, retry budget, and abort handles. Commit only after the current policy gate succeeds and retain enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/forms-input-systems/file-input-system-recovery.svg" alt="Design a File Input System recovery" caption="Recovery flow: reject obsolete work, preserve recoverable drafts, and explain the outcome." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Single-request upload is simplest for small files; multipart resume is justified when file size and unreliable networks make restart cost unacceptable.</p><p>Chunk acknowledgements are server-authoritative and idempotent. The client resumes from confirmed chunks; completion requires server verification. Scale pressure comes from large files, duplicate selection, flaky networks, expired sessions, refresh recovery, checksum mismatch, and server backpressure. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic transitions only when rollback is deterministic and understandable. Authorization and final validation remain server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable field ids, typed events, explicit state unions, schema versions, generation guards, SSR-safe feature checks, semantic HTML, and idempotent cleanup. Test keyboard use, screen-reader output, stale responses, offline recovery, retries, restoration, and constrained devices.</p><p>Measure field latency, blocked actions, stale drops, save conflicts, retries, storage pressure, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing drafts and committed values, trusting client validation, leaking resources, accepting stale async completion, and hiding rollback from the user.</p><p>For this topic, revoke preview URLs, bound concurrency, refresh expired sessions, retry transient chunks with jitter, surface permanent rejection, and preserve resumable metadata. Validate untrusted input, authorize durable mutations server-side, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to high-value forms where users expect responsive input while browser, persistence, validation, and policy boundaries can fail independently. Reuse the controller structure while injecting product policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Represent each selected file as a state machine with stable identity, upload session, chunk ledger, retry budget, and abort handles.</p><h3>What breaks at scale?</h3><p>large files, duplicate selection, flaky networks, expired sessions, refresh recovery, checksum mismatch, and server backpressure. I would bound expensive work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>Chunk acknowledgements are server-authoritative and idempotent. The client resumes from confirmed chunks; completion requires server verification.</p><h3>How do you recover?</h3><p>I would revoke preview URLs, bound concurrency, refresh expired sessions, retry transient chunks with jitter, surface permanent rejection, and preserve resumable metadata.</p><h3>Why this architecture?</h3><p>Single-request upload is simplest for small files; multipart resume is justified when file size and unreliable networks make restart cost unacceptable.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank" rel="noreferrer">MDN localStorage</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

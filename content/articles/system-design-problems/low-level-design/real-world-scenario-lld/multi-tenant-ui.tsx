@@ -1,126 +1,48 @@
 "use client";
-
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
-import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
-
-export const metadata: ArticleMetadata = {
-  id: "article-lld-multi-tenant-ui",
-  title: "Design Multi-Tenant UI",
-  description:
-    "Production-grade multi-tenant interface with organization switching, role-based access, white-label theming, and data isolation.",
-  category: "low-level-design",
-  subcategory: "real-world-scenario-lld",
-  slug: "multi-tenant-ui",
-  wordCount: 5200,
-  readingTime: 31,
-  lastUpdated: "2026-05-06",
-  tags: ["lld", "multi-tenant", "organization", "rbac", "data-isolation"],
-  relatedTopics: ["settings-page-system", "audit-log-viewer-ui"],
-};
-
-export default function MultiTenantUIArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">Multi-tenancy is the architecture where a single application instance serves multiple customers (organizations, teams, companies), each isolated from one another. From the user's perspective, they log in to their organization's workspace and see only their organization's data, users, and configuration. A user who belongs to two organizations (e.g., a consultant who works with multiple clients) must be able to switch between organization contexts without logging out and back in—and the switch must be complete: all data, navigation, and permissions change to reflect the new organization.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The frontend challenges in multi-tenancy are: organization context is a first-class part of the application state that affects every API call, every permission check, and every UI element. Switching organizations must clear all cached data from the previous organization to prevent leakage. The URL structure must include the organization context (so bookmarks and shared links work correctly). Role-based access within an organization (admin, member, viewer) must be enforced in the UI to show or hide features and actions that the user is not authorized to use in the current organization. White-label customers may expect custom branding (logo, colors, domain) that changes with the organization context.</HighlightBlock>
-        <HighlightBlock as="p" tier="important"><strong>Explicit assumptions:</strong> Users can belong to multiple organizations. Organization context is stored in the JWT (orgId claim) for the active session. Switching organizations requires re-authentication (a new JWT with the new orgId). URL structure is /org/:orgSlug/* for all organization-scoped routes. Role-based access is enforced both server-side (API authorization) and client-side (UI visibility). Custom branding (logo, primary color) is configurable per organization.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Organization switcher:</strong> A UI element (typically in the top-left corner) shows the current organization and allows switching to other organizations the user belongs to.</li>
-          <li><strong>URL-scoped routing:</strong> All organization-specific routes include the orgSlug in the URL path. Navigation within an organization preserves the orgSlug.</li>
-          <li><strong>Role-based access control:</strong> UI elements (buttons, nav items, entire pages) are shown or hidden based on the user's role in the current organization.</li>
-          <HighlightBlock as="li" tier="important"><strong>Complete context switch:</strong> Switching organizations clears all cached data from the previous organization and re-fetches data for the new organization.</HighlightBlock>
-          <li><strong>White-label branding:</strong> Organization-specific logo, primary color, and custom domain are applied to the UI for the current organization context.</li>
-          <li><strong>Cross-organization navigation:</strong> Users can deep-link to a specific resource in a specific organization (/org/acme/projects/123); the app resolves the organization context from the URL.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Data isolation:</strong> Switching organizations must guarantee that no data from the previous organization is accessible in the new context—no cached queries, no leaked state.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Switch speed:</strong> Organization switch must complete (new data loaded, new branding applied) within 2 seconds.</HighlightBlock>
-          <HighlightBlock as="li" tier="crucial"><strong>Security:</strong> The orgId in the JWT must be validated server-side on every API call; the client-side orgId is untrusted for authorization decisions.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Consistency:</strong> All UI elements (headers, breadcrumbs, sidebar) must reflect the current organization consistently throughout the session.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="crucial">Organization context is a top-level application state that wraps all other state. When the application initializes, it reads the orgSlug from the URL, fetches the organization's details (name, branding, the user's role in this organization), and stores them in a global organization context. All API calls include the current orgId (from the JWT or as a URL path segment). All RBAC checks read from the organization context's role data.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Organization switching is implemented as a full context reset: when the user selects a different organization, the application requests a new JWT for that organization (server issues a new token with the new orgId claim), clears all organization-specific cache (React Query cache, Zustand store slices, localStorage cached data), updates the URL to the new organization's base path (/org/new-org-slug/), and re-fetches the new organization's context data.</HighlightBlock>
-<HighlightBlock as="p" tier="important">This is equivalent to a page navigation to a different site, just without a full browser reload.</HighlightBlock>
-      </section>
-
-      <section>
-                <h2>Diagram Walkthrough</h2>
-
-<ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/real-world-scenario-lld/multi-tenant-ui.svg"
-          alt="Multi-tenant UI showing orgId in JWT claims, organization switcher with cache clear and re-auth, URL scoping at /org/:slug, RBAC role hierarchy, white-label CSS variable theming, and server-side data isolation"
-          caption="Multi-tenant UI showing orgId in JWT claims, organization switcher with cache clear and re-auth, URL scoping at /org/:slug, RBAC role hierarchy, white-label CSS variable theming, and server-side data isolation"
-        />
-
-        <HighlightBlock as="p" tier="crucial">
-          Interview signal: the diagram captures the end-to-end flow for <strong>Design Multi-Tenant UI</strong>. You should be able to explain the happy path and the failure paths (retries, cancellation, backpressure), not just the API surface.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Look for the &ldquo;control points&rdquo; where correctness is enforced: idempotency keys, monotonic request/version tokens, single-flight coordination, and durable persistence boundaries.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          In interviews, call out observability and operability: what you log/measure (p95 latency, error rates, retries/queue depth) and how you keep degraded modes user-safe (read-only, queued, or cached fallbacks).
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Organization Context and JWT Design</h3>
-        <HighlightBlock as="p" tier="important">The JWT issued after login includes: userId, email, orgId (the organization the token is scoped to), orgSlug (for URL construction), role (the user's role in this organization: owner, admin, member, viewer), and standard JWT claims (iss, exp, iat). The orgId in the JWT is the authoritative source for server-side authorization—every API endpoint that operates on organization data validates that the requested organization's data matches the orgId in the JWT. A user cannot access another organization's data by changing the URL slug—the server rejects requests where the URL org doesn't match the JWT's orgId.</HighlightBlock>
-        <p>For users who belong to multiple organizations, the auth server issues organization-specific JWTs. Switching organizations requires exchanging the current JWT for a new one scoped to the target organization. The exchange endpoint authenticates the request with the current JWT and returns a new JWT if the user is a member of the target organization. This re-authentication step is explicit and logged (for audit purposes: switching organizations is a significant context change that should be visible in audit logs).</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">URL Structure and Routing</h3>
-        <p>The URL structure for multi-tenant applications follows the pattern /org/:orgSlug/* for all organization-scoped routes. The orgSlug is the human-readable identifier for the organization (e.g., "acme-corp", "beta-team"). This makes URLs shareable within an organization (copy the URL, send to a colleague, they open the same resource in the same organization context) and allows bookmarking specific resources.</p>
-        <p>On navigation to an organization-scoped URL, the router extracts the orgSlug from the URL and compares it to the current organization context. If they match, no context switch is needed. If they differ (the user navigated directly to a URL for a different organization), the router triggers a context switch to the new organization (requesting a new JWT for that organization, if the user is a member). If the user is not a member of the URL's organization, they see a "You don't have access to this organization" error page with a link to their own organizations.</p>
-        <p>Deep links to specific resources within an organization (e.g., /org/acme/projects/123) must work correctly even when the user's current session is scoped to a different organization. The router handles this: detect the organization mismatch, switch context to the linked organization, then navigate to the specific resource. The user sees a brief loading state during the context switch before arriving at the linked resource.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Organization Switcher UI</h3>
-        <p>The organization switcher is typically a dropdown in the top-left corner, showing the current organization's logo and name. Clicking opens a list of organizations the user belongs to. The list shows organization name, logo, and the user's role in that organization. Searching is available for users belonging to many organizations (power users at large companies may have 10+ organization memberships).</p>
-        <p>Switching flow: user clicks the target organization → confirmation is not required (switching is low-stakes; the user can switch back) → loading indicator appears while the JWT exchange and data fetch complete → once loaded, the new organization's data and branding are applied, the URL updates to the new org's base path. The previous organization's data is entirely cleared from client state. If the switch fails (network error, the user is no longer a member), an error toast is shown and the current organization context is preserved.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">RBAC Enforcement in the UI</h3>
-        <p>The organization context includes the current user's role (owner, admin, member, viewer) and the organization's feature flags. A permission system maps (role, action) pairs to boolean values: can(role, "invite_members"), can(role, "delete_project"), can(role, "view_billing"). These permission checks are evaluated throughout the UI: the "Invite Members" button is rendered only if can(currentRole, "invite_members") is true; the Billing nav item is shown only if can(currentRole, "view_billing") is true.</p>
-        <HighlightBlock as="p" tier="crucial">UI-level RBAC is a UX improvement, not a security control. The server must independently authorize every request. A user who manually navigates to /org/acme/settings/billing will see the page only if the server returns data for it; the server checks the JWT's role claim against the billing resource's required role, regardless of whether the UI showed the billing nav link. "Security through obscurity" (hiding UI elements) is never sufficient—the server authorization is the real gate.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The permission system should be centralized (a single permissionsForRole(role) function that returns all allowed actions) rather than scattered (individual if (role === 'admin') checks throughout the codebase). Centralization ensures consistency (the billing nav and the billing API check the same permission definition) and simplifies auditing (the full permission matrix is visible in one place). Permissions change over time (new features require new permissions); centralization makes these changes safe.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">White-Label Branding</h3>
-        <HighlightBlock as="p" tier="important">Organization-specific branding (logo, primary color, font) is applied via CSS custom properties (CSS variables). On organization context load, the application fetches the organization's branding configuration and sets CSS variables on the root element: document.documentElement.style.setProperty('--color-primary', org.brandColor). All themed UI elements reference --color-primary (and other defined tokens) rather than hardcoded hex values. This allows the entire application's color scheme to change with a single JavaScript operation on organization switch.</HighlightBlock>
-        <p>Custom domains (acme.yoursaas.com) require DNS-level configuration and server-side certificate provisioning (Let's Encrypt wildcard certificates or per-tenant certificates). The application server resolves the tenant from the subdomain or custom domain and issues a JWT pre-scoped to that organization. The frontend doesn't need to handle custom domain resolution—it just uses the organization context from the JWT. Custom domain support is primarily a server and infrastructure concern, not a frontend one; the frontend only needs to display the correct branding.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Cache Invalidation on Organization Switch</h3>
-        <HighlightBlock as="p" tier="important">When the organization context changes, all cached organization-specific data must be invalidated. In React Query (or SWR), queries are keyed with the orgId: ["projects", orgId], ["members", orgId]. When orgId changes, these cache keys become stale. Calling queryClient.clear() removes all cached queries; alternatively, queryClient.invalidateQueries() marks all queries as stale without removing them (they'll refetch on next use). The difference: clear() produces loading states everywhere on switch; invalidateQueries() produces stale-while-revalidating states (the old data is briefly shown, then replaced with the new organization's data). For multi-tenant switches, clear() is safer to avoid showing wrong-organization data even briefly—the user should see a clean loading state, not flashes of the previous organization's content.</HighlightBlock>
-        <p>Zustand stores with organization-specific state (e.g., selectedProjectId, which is meaningless after an organization switch) must reset their organization-specific slices on context switch. A convention: organize the store's organization-specific state into a nested slice and call a resetOrgState() action on switch. This action resets only the organization-scoped slices, leaving user-level state (theme, UI preferences) intact.</p>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="crucial">JWT per organization versus a single JWT with organization claims list: a single JWT that includes the user's full organization membership list (orgIds: ["org-1", "org-2", "org-3"]) allows the server to authorize cross-organization operations without a token exchange. The trade-off is JWT size (large organizations may have users in dozens of orgs, making the JWT very large) and staleness (organization membership changes require re-issuing the JWT). Per-organization JWTs are smaller and more current but require a token exchange on every switch. Most multi-tenant SaaS applications use per-organization tokens because the organization membership change case is important for security (a user who is removed from an organization should lose access immediately on the next API call, not after their multi-org JWT expires).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Path-based versus subdomain-based tenant routing: path-based routing (/org/acme/*) works on any domain and requires no DNS configuration per tenant. Subdomain routing (acme.yoursaas.com) provides stronger isolation appearance, enables custom domains easily, and is expected by enterprise customers. Path-based is simpler to implement and appropriate for smaller products. Subdomain routing is worth the complexity for enterprise SaaS where customers expect (and sometimes require) branded subdomains.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Permission granularity: coarse-grained permissions (owner/admin/member/viewer) are simple to implement and reason about. Fine-grained permissions (each action independently controlled) are more flexible but exponentially more complex to manage and audit. Most applications start coarse-grained and add fine-grained permissions (custom roles, per-resource access controls) only when driven by specific customer requirements. Avoid over-engineering the permission model before those requirements are clearly understood.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">White-label branding via CSS variables allows the entire application theme to change with a single document.documentElement.style.setProperty call on</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">organization switch. Deep links to cross-organization resources trigger a context switch before navigation. The defining invariant: the current orgId in the JWT must match the current URL's orgSlug at all times; any mismatch is detected by the router and triggers a context switch or authorization error.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+export const metadata: ArticleMetadata = { id:"article-lld-multi-tenant-ui", title:"Design a Multi-tenant UI", description:"Implementation-heavy low-level design guide for design a multi-tenant ui.", category:"low-level-design", subcategory:"real-world-scenario-lld", slug:"multi-tenant-ui", wordCount:4700, readingTime:28, lastUpdated:"2026-05-30", tags:["lld","real-world","principal-engineer"], relatedTopics:["state-management","reliability","observability"] };
+export default function MultiTenantUiArticle(){ return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Multi-tenant UI</h1><h2>Definition &amp; Context</h2>
+<p>Design a Multi-tenant UI is a low-level design problem about building a production-grade tenant-scoped application context. The answer must move beyond screen composition and define public methods, internal state, persistence boundaries, concurrency rules, recovery, and telemetry. The facade is switchTenant, loadTenantState, authorize, clearScopedCaches, render. Runtime states are bootstrapping, ready, switching, unauthorized, failedClosed.</p>
+<p>The governing invariant is: Tenant switching must never reuse data, permissions, or caches from another tenant. The edge case to defend is when a user switches tenants while requests and optimistic updates are still in flight. This forces the implementation to distinguish user intent from server authority and to expose honest pending, blocked, stale, conflicted, and recovered states.</p>
+<ArticleImage src="/diagrams/system-design-problems/low-level-design/real-world-scenario-lld/multi-tenant-ui-runtime.svg" alt="Design a Multi-tenant UI runtime" caption="Runtime model: product intent enters a guarded coordinator, durable state is versioned, and user-visible snapshots remain honest under failure." /></section>
+<section><h2>Core Concepts</h2>
+<p>Start with a narrow aggregate boundary. The coordinator owns legal transitions and the structures required to defend them: tenant id, permission snapshot, cache namespace, route scope, feature snapshot, audit context. UI components request operations and render snapshots; they should not scatter validation, deduplication, permissions, timers, and retries across event handlers.</p>
+<p>Separate optimistic projection from authoritative confirmation. Fast UI may show local intent immediately, but the snapshot must retain pending identity, base revision, and rollback information until the authoritative boundary accepts the operation. That makes ambiguous timeouts, retries, cross-tab races, and external updates explainable.</p>
+<h3>Implementation contract</h3><p>Each public method returns a typed outcome: accepted, pending, rejected, conflicted, degraded, or completed. Each mutation carries operation id, scope, revision, and idempotency key where repeated delivery is possible. Every state transition records a reason and leaves enough evidence for debugging without logging private payloads.</p>
+<p>Classify operations by risk. Cosmetic preferences can converge eventually. Destructive, authorization-sensitive, inventory-sensitive, or payment-adjacent operations need stronger confirmation or fail-closed behavior. This operation-level consistency decision is more credible than claiming one policy for the whole feature.</p></section>
+<section><h2>Architecture &amp; Flow</h2>
+<p>The architecture has six layers: component facade, validator, state machine, effect runner, durable adapter, and observer layer. The facade normalizes intent. The validator checks schema, permission, scope, and revision. The state machine commits the next snapshot. The effect runner performs network, storage, SDK, or worker work after commit. The durable adapter preserves evidence. The observer layer publishes selector-scoped snapshots and metrics.</p>
+<p>A normal mutation validates input, captures rollback state, assigns identity, applies the local projection, invokes the effect, and settles only if operation identity and revision still match. Late responses are ignored or reconciled; they must not overwrite newer intent. Cleanup on navigation, tenant switch, unmount, or cancellation is idempotent.</p>
+<h3>Data model and failure matrix</h3><p>The model should include entity or aggregate id, actor scope, tenant scope when relevant, operation id, base revision, current revision, pending state, last error, timestamps, and trace fields. Store only the payload needed for recovery. Sensitive fields belong behind tokenization, redaction, or server-owned boundaries.</p>
+<p>Define a failure matrix before coding. Validation failure blocks locally. Permission change fails closed. Timeout preserves pending identity for reconciliation. Version mismatch enters merge, refresh, or review. Partial batch failure records per-item outcomes. External dependency outage trips degradation or a circuit breaker. Duplicate delivery returns the prior idempotent result.</p>
+<h3>Lifecycle and concurrency</h3><p>Concurrency is normal input, not an exceptional corner case. Users click twice, navigate during a request, open several tabs, switch accounts, and return after background throttling. Server pushes, SDK callbacks, timers, and network settlements may arrive after the UI intent has changed. Accept a settlement only when operation id, actor scope, tenant scope, and revision still match the active snapshot.</p>
+<p>Lifecycle events need explicit handlers: bootstrap, hydrate, mount, unmount, focus, blur, reconnect, tenant switch, logout, and rollout disablement. A coordinator that only handles button clicks will leak work or display stale data. Cleanup must cancel active effects, detach listeners, invalidate scoped caches, and preserve only the minimum recovery evidence needed for the next safe transition.</p>
+<ArticleImage src="/diagrams/system-design-problems/low-level-design/real-world-scenario-lld/multi-tenant-ui-failure.svg" alt="Design a Multi-tenant UI failure handling" caption="Failure model: stale revisions, ambiguous results, authorization changes, and partial failures route through explicit recovery decisions." /></section>
+<section><h2>Trade offs &amp; Comparison</h2>
+<p>Local component state is cheaper for a small page, but it breaks when multiple components, tabs, routes, or teams depend on the same invariant. A domain coordinator adds code and tests, but centralizes revision checks, cancellation, rollback, persistence, and observability.</p>
+<p>Optimistic UX improves perceived latency but creates rollback and reconciliation work. Pessimistic confirmation is easier to reason about but can feel slow. Choose per operation: use optimistic projection for reversible low-risk actions and authoritative confirmation for destructive or externally constrained actions.</p>
+<p>Normalization improves deduplication and partial updates, while snapshots simplify reads and rollback. Durable history improves recovery and auditability, but costs storage and compaction work. The interview answer should tie these choices to latency, correctness, privacy, support burden, and rollout risk.</p>
+<p>There is also a build-versus-platform trade-off. A feature-local implementation moves quickly when the workflow is genuinely isolated. A shared runtime becomes worthwhile when several flows need revision guards, typed errors, permission checks, audit evidence, or rollout controls. The principal-level answer should avoid both extremes: do not create a framework for one button, and do not let high-risk invariants fragment across teams.</p>
+<p>Fail-open and fail-closed choices must be explicit. A stale feed badge can degrade gracefully. A tenant switch, payment attempt, authorization rule, kill switch, or audit export should fail closed when scope or authority is uncertain. This is where implementation details connect directly to abuse prevention and privacy.</p></section>
+<section><h2>Best practices</h2>
+<p>Make illegal states unrepresentable with explicit status unions and guarded transitions. Add operation identity and revision checks at settlement boundaries. Keep effect adapters injectable so timeouts, retries, SDK failures, server errors, and browser lifecycle changes can be tested deterministically.</p>
+<p>Build observability into the coordinator: rejected transitions, stale settlements, retry count, pending age, conflict rate, partial failure count, queue depth, rollback count, and slow subscribers. Add feature flags and kill switches for risky flows. Scope caches and persisted state by user and tenant, and clear them on identity changes.</p>
+<p>Test rapid interaction, duplicate delivery, navigation mid-flight, permission changes, stale revisions, empty states, large datasets, retry exhaustion, and recovery after reload. These cases reveal whether the abstraction protects the product or merely organizes happy-path code.</p>
+<p>Prefer selector-based subscriptions and immutable snapshots so unrelated UI does not re-render. Bound retained history, cached entities, retry ledgers, and debug events. Provide support-friendly evidence such as correlation id, operation phase, revision gap, and sanitized failure reason. These practices reduce mean time to recovery without leaking customer data.</p></section>
+<section><h2>Common Pitfalls</h2><p>Do not model the workflow as unrelated booleans. That permits impossible combinations and ordering bugs. Do not silently swallow stale responses or partial failures. Do not let observers mutate coordinator internals. Do not log sensitive payloads in telemetry.</p>
+<p>Avoid unbounded queues, histories, selections, markers, feed entities, or retries. Add compaction, pagination, virtualization, batching, and backpressure where volume can grow. Treat accessibility, privacy, and degraded UX as runtime behavior, not documentation notes.</p>
+<p>Another pitfall is treating server success as the only settlement state. Timeouts create ambiguous outcomes: the server may have committed while the client saw failure. Reconciliation and idempotency are required whenever repeating the operation could create duplicate side effects or overwrite newer state.</p></section>
+<section><h2>Real-world use cases</h2><p>This pattern appears in high-traffic consumer products and enterprise tools where a seemingly small UI feature crosses network, permission, identity, or external-service boundaries. Platform ownership is useful when several teams need the same transition safety, recovery, and metrics.</p>
+<p>For a principal interview, connect the local implementation to the wider system: server idempotency, authorization, versioning, audit logs, rollout controls, SLOs, and support tooling. The UI runtime is not isolated; it is the final consistency and trust boundary visible to the user.</p>
+<p>Operational ownership should be explicit: define alerts, dashboards, runbooks, rollback controls, and the team responsible for resolving stuck or ambiguous states.</p></section>
+<section><h2>Common interview question with detailed answer</h2>
+<h3>How would you design this end to end?</h3><p>I would define the facade, state machine, data model, effect adapters, and observer snapshots. Every mutation carries identity and revision, every effect settles through guards, and every failure maps to a typed user-visible recovery path.</p>
+<h3>Why this architecture over local state?</h3><p>Local state duplicates invariants and fails under races. The coordinator makes Tenant switching must never reuse data, permissions, or caches from another tenant. enforceable and testable across components.</p>
+<h3>What breaks at scale?</h3><p>Pending work, memory retention, stale responses, partial failures, permission drift, and observability gaps become bottlenecks. Use bounds, compaction, pagination, backpressure, metrics, and rollout controls.</p>
+<h3>What consistency model applies?</h3><p>Use operation-level consistency: optimistic eventual convergence for reversible work, stronger confirmation for destructive or authority-sensitive work, and explicit conflict states when intent is ambiguous.</p>
+<h3>How do you defend failure, rollback, abuse, privacy, and cost?</h3><p>Use typed errors, inverse patches or refresh, idempotency, authorization checks, rate limits, data minimization, redacted telemetry, bounded retention, and kill switches. Then walk through a user switches tenants while requests and optimistic updates are still in flight.</p></section>
+<section><h2>References</h2><ul><li><a href="https://react.dev/learn/managing-state" target="_blank" rel="noreferrer">React: Managing State</a></li><li><a href="https://redux.js.org/style-guide/" target="_blank" rel="noreferrer">Redux Style Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://web.dev/articles/vitals" target="_blank" rel="noreferrer">web.dev Web Vitals</a></li></ul></section>
+</ArticleLayout>;}

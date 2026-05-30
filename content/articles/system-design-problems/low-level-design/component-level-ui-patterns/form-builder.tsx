@@ -35,12 +35,11 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function FormBuilderArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      {/* Section 1: Problem Clarification */}
+export default function FormBuilderArticle() { return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Form Builder</h1><h2>Definition &amp; Context</h2><p>Design a Form Builder is an implementation-heavy low-level design problem covering schema editing, field registry, conditional logic, drag layout, version migration, preview runtime, validation composition, and draft persistence. A principal-level answer must define state ownership, local structures, lifecycle cleanup, browser semantics, server reconciliation, observability, privacy, and rollback.</p><p>Treat the form schema as versioned data. Builder selection and drag projection are editor-only state, while preview rendering consumes a validated schema snapshot. The important structures are schema tree, field registry, stable field ids, condition AST, layout projection, schema version, migration pipeline, undo journal, preview snapshot, and validation registry.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/form-builder-runtime.svg" alt="Design a Form Builder runtime" caption="Runtime flow from intent through guarded state, semantic projection, and recovery." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the component-specific mechanics that an implementation discussion must defend.</p>{/* Section 1: Problem Clarification */}
       <section>
-        <h2>Problem Clarification</h2>
+        <h3>Problem Clarification</h3>
         <HighlightBlock as="p" tier="important">
           We need to design a reusable form builder system for a large-scale React
           application. The form builder must render forms dynamically from a JSON schema
@@ -103,7 +102,7 @@ export default function FormBuilderArticle() {
 
       {/* Section 2: Requirements */}
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
@@ -223,7 +222,7 @@ export default function FormBuilderArticle() {
 
       {/* Section 3: High-Level Approach */}
       <section>
-        <h2>High-Level Approach</h2>
+        <h3>High-Level Approach</h3>
         <HighlightBlock as="p" tier="crucial">
           The core idea is to separate the <strong>form schema definition</strong>, the
           <strong>form state management</strong>, and the <strong>form rendering</strong>
@@ -272,7 +271,7 @@ export default function FormBuilderArticle() {
 
       {/* Section 4: System Design (LLD) */}
       <section>
-        <h2>System Design</h2>
+        <h3>System Design</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module Architecture</h3>
         <p>The system consists of six modules:</p>
@@ -470,7 +469,7 @@ export default function FormBuilderArticle() {
 
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
-        <h2>Data Flow / Execution Flow</h2>
+        <h3>Data Flow / Execution Flow</h3>
         <HighlightBlock as="p" tier="important">
           The execution flow follows a unidirectional data flow pattern. All state
           mutations flow through the Zustand store, and all rendering flows from store
@@ -534,7 +533,7 @@ export default function FormBuilderArticle() {
 
       {/* Section 6: Implementation */}
       <section>
-        <h2>Implementation</h2>
+        <h3>Implementation</h3>
         <HighlightBlock as="p" tier="important">
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
@@ -668,7 +667,7 @@ export default function FormBuilderArticle() {
 
       {/* Section 7: Performance & Scalability */}
       <section>
-        <h2>Performance &amp; Scalability</h2>
+        <h3>Performance &amp; Scalability</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Time and Space Complexity</h3>
         <div className="my-4 overflow-x-auto">
@@ -791,7 +790,7 @@ export default function FormBuilderArticle() {
 
       {/* Section 8: Security Considerations */}
       <section>
-        <h2>Security Considerations</h2>
+        <h3>Security Considerations</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Sanitization</h3>
         <HighlightBlock as="p" tier="important">
@@ -890,7 +889,7 @@ export default function FormBuilderArticle() {
 
       {/* Section 9: Testing Strategy */}
       <section>
-        <h2>Testing Strategy</h2>
+        <h3>Testing Strategy</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
@@ -972,7 +971,7 @@ export default function FormBuilderArticle() {
 
       {/* Section 10: Interview-Focused Insights */}
       <section>
-        <h2>Interview-Focused Insights</h2>
+        <h3>Interview-Focused Insights</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Common Mistakes Candidates Make</h3>
         <ul className="space-y-3">
@@ -1176,74 +1175,12 @@ export default function FormBuilderArticle() {
             </p>
           </div>
         </div>
-      </section>
-
-      {/* Section 11: References */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://react-hook-form.com/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              React Hook Form — Performant Form Library for React
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://rjsf-team.github.io/react-jsonschema-form/docs/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              React JSON Schema Form — Schema-Driven Form Generation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://zustand.docs.pmnd.rs/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Zustand — State Management Library Documentation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://json-schema.org/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              JSON Schema Specification — Form Definition Format
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.w3.org/WAI/tutorials/forms/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              WAI-ARIA Form Accessibility Guidelines
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://formio.github.io/formio.js/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Formio — Open Source Form Builder Platform
-            </a>
-          </li>
-        </ul>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Use five boundaries: an input adapter, a typed state controller, a projection layer, an integration adapter, and an observability adapter. Normalize events before they enter state. Keep previews separate from commits. Release timers, observers, listeners, abort controllers, workers, and pointer capture idempotently on cancel and unmount.</p><p>Treat the form schema as versioned data. Builder selection and drag projection are editor-only state, while preview rendering consumes a validated schema snapshot. For durable changes, validate the latest intent and record enough evidence to rollback deterministically.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/form-builder-scale-recovery.svg" alt="Design a Form Builder scale and recovery" caption="Scale defense: bound pressure, validate policy, reconcile failures, and emit reasoned evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Hard-coded forms are cheaper and safer for stable flows; a schema builder is justified for frequently changing workflows owned by operations or product teams.</p><p>Committed schema versions are server-authoritative. Local edits are journaled and autosaved with a base version; preview is a derived snapshot and must never mutate the editor document. The dominant scale risks are large schemas, cyclic conditions, incompatible migrations, collaborative edits, plugin fields, autosave races, and inaccessible generated forms. Control them with bounded work, stable ids, cancellation, generation guards, measured caching, and explicit degraded behavior.</p><p>Optimistic UI is appropriate only when rollback is deterministic and understandable. Authorization, destructive effects, and conflict-sensitive truth stay server-authoritative.</p></section>
+<section><h2>Best practices</h2><p>Use typed state unions, stable identities, idempotency keys, versioned writes, SSR-safe browser feature detection, abortable async work, bounded caches, and semantic HTML. Test keyboard-only use, screen-reader output, slow networks, stale completion, retries, unmount during work, and large datasets.</p><p>Measure blocked transitions, stale drops, rollback rates, latency percentiles, cache pressure, retry exhaustion, and accessibility regressions. Keep telemetry small and free of sensitive content.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing preview and committed state, trusting arrival order, leaking resources after unmount, accepting stale completion, assuming visible data is the complete dataset, and implementing custom controls without accessible semantics.</p><p>For this topic, detect cycles, reject unknown field types, migrate versions explicitly, preserve drafts after save conflict, isolate plugin failures, and keep a last-known-valid preview. Security and privacy require the design to authorize schema publication, sanitize labels and rich descriptions, validate plugin configuration, protect submitted data, redact sensitive fields, and audit publish actions.</p></section>
+<section><h2>Real-world use cases</h2><p>This design appears in production surfaces where repeated interaction, large datasets, asynchronous completion, and partial failure are normal. Reuse the runtime shell, but inject product policy explicitly: authorization, latency budget, persistence boundary, fallback, and telemetry.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Treat the form schema as versioned data. Builder selection and drag projection are editor-only state, while preview rendering consumes a validated schema snapshot. I would name preview, commit, derived projection, async generation, and rollback evidence separately.</p><h3>What breaks at scale?</h3><p>large schemas, cyclic conditions, incompatible migrations, collaborative edits, plugin fields, autosave races, and inaccessible generated forms. I would bound each expensive operation and cancel work that no longer affects the visible committed result.</p><h3>What consistency model applies?</h3><p>Committed schema versions are server-authoritative. Local edits are journaled and autosaved with a base version; preview is a derived snapshot and must never mutate the editor document.</p><h3>How do you recover from failure?</h3><p>I would detect cycles, reject unknown field types, migrate versions explicitly, preserve drafts after save conflict, isolate plugin failures, and keep a last-known-valid preview.</p><h3>How do you defend the architecture?</h3><p>Hard-coded forms are cheaper and safer for stable flows; a schema builder is justified for frequently changing workflows owned by operations or product teams. The added complexity is acceptable only when the required behavior and operational evidence justify it.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API" target="_blank" rel="noreferrer">MDN Intersection Observer API</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>; }

@@ -24,11 +24,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function AudioVideoPlayerArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function AudioVideoPlayerArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design an Audio/Video Player</h1><h2>Definition &amp; Context</h2><p>Design an Audio/Video Player is an implementation-heavy low-level design problem covering media element reconciliation, adaptive streaming, buffering, seek previews, captions, keyboard controls, fullscreen, Picture-in-Picture, and recovery. A principal-level answer must explain state ownership, browser or worker boundaries, scale limits, consistency, rollback, privacy, cost, and observability.</p><p>Treat the browser media element as playback truth. UI state mirrors media events and keeps quality, captions, previews, and controls as derived projections. The core structures are media element, manifest state, buffered ranges, quality selection, bandwidth estimate, cue index, preview sprites, controls timer, retry budget, and analytics watermark.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/file-media-content-systems/audio-video-player-runtime.svg" alt="Design an Audio/Video Player runtime" caption="Topic-specific runtime from source intake through guarded projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -95,7 +94,7 @@ export default function AudioVideoPlayerArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -130,7 +129,7 @@ export default function AudioVideoPlayerArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -176,14 +175,10 @@ export default function AudioVideoPlayerArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/audio-video-player-architecture.svg"
-        alt="Audio / Video Player Architecture"
-        caption="Media element (HTML5 video/audio) ← Streaming engine (hls.js, dash.js, or native) → React control layer (state synced via media events) → Custom UI (controls, captions overlay, progress, quality) + Picture-in-Picture + Media Session integration."
-      />
+      
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <HighlightBlock as="p" tier="important">
           The player wraps a native
           <code> {`<video>`}</code> or
@@ -299,7 +294,7 @@ export default function AudioVideoPlayerArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial">
           <strong>VolumeControl</strong>, <strong>SpeedMenu</strong>,{" "}
           <strong>QualityMenu</strong>, <strong>CaptionsControl</strong> render
@@ -314,7 +309,7 @@ export default function AudioVideoPlayerArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">Control state
           (open menus, fullscreen) lives in component
           state.</HighlightBlock>
@@ -323,7 +318,7 @@ export default function AudioVideoPlayerArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Inputs:{" "}
           <code>source</code> (URL or sources array),
@@ -339,7 +334,7 @@ export default function AudioVideoPlayerArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="crucial">Streaming engine handles adaptive bitrate.
           Time updates throttled. Captions overlay
           renders only the active cue.</HighlightBlock>
@@ -350,7 +345,7 @@ export default function AudioVideoPlayerArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important">Captions menu shows
           available languages. Time display in
           mm:ss or hh:mm:ss. Keyboard</Highlight></HighlightBlock>
@@ -360,7 +355,7 @@ export default function AudioVideoPlayerArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">Transcript panel accessible.{" "}
           <Highlight tier="important">Keyboard parity</Highlight>.
           Focus visible on all</HighlightBlock>
@@ -370,7 +365,7 @@ export default function AudioVideoPlayerArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Media sources authenticated and CORS-enabled
           where needed. No user content rendered <Highlight tier="important">as
@@ -381,7 +376,7 @@ export default function AudioVideoPlayerArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="crucial">Accessibility tests
           for <Highlight tier="important">caption rendering</Highlight> and keyboard parity.</HighlightBlock>
 <HighlightBlock as="p" tier="important">Performance tests for control responsiveness
@@ -389,7 +384,7 @@ export default function AudioVideoPlayerArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">Seeking to
           unbuffered area: shows spinner during
           fetch. Captions track loads slowly:
@@ -403,7 +398,7 @@ export default function AudioVideoPlayerArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Generic over media source and streaming
           <Highlight tier="important">engine. Plugin system for chapters,
@@ -413,7 +408,7 @@ export default function AudioVideoPlayerArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Control labels, language names in caption
           menu, error <Highlight tier="important">messages via i18n. RTL flips
@@ -423,7 +418,7 @@ export default function AudioVideoPlayerArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Custom controls vs native controls</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -463,7 +458,7 @@ export default function AudioVideoPlayerArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           DRM integration (Widevine, FairPlay).
           AirPlay/Cast <Highlight tier="important">support. Real-time
@@ -471,89 +466,12 @@ export default function AudioVideoPlayerArticle() {
           users). AI-generated captions. Chapter
           auto-detection.
         </Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. How do you sync React state with the
-          media element?</strong> Listen to media element
-          events (timeupdate, play, pause, etc.) and
-          mirror to a React store. User interactions
-          call media element methods, which trigger
-          events, which update state. One-way flow.
-        </HighlightBlock>
-
-        <p>
-          <strong>2. How is HLS handled?</strong> Native
-          HLS in Safari (set src directly).
-          Non-native browsers use hls.js attached to
-          the video element. The streaming engine
-          adapter picks at runtime.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>3. How do captions work?</strong>
-          <code> {`<track>`}</code> element with
-          WebVTT file. Native rendering by default;
-          custom rendering for consistent styling
-          reads active cues from
-          <code> textTracks[i].activeCues</code>.
-        </HighlightBlock>
-
-        <p>
-          <strong>4. How does Picture-in-Picture
-          integrate?</strong> Picture-in-Picture API:
-          <code> video.requestPictureInPicture()</code>{" "}
-          and
-          <code> document.exitPictureInPicture()</code>.
-          Listen to enter/exit events to update UI.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>5. How is Media Session API
-          used?</strong> Set metadata (title,
-          artwork) and action handlers (play, pause,
-          seek). This connects the player to OS-level
-          media controls (lock screen, hardware
-          keys).
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>6. How are keyboard shortcuts handled
-          without conflicting with inputs?</strong>{" "}
-          Check active element before handling keys.
-          If the user is in a form input, ignore
-          shortcuts. Otherwise handle and prevent
-          default.
-        </HighlightBlock>
-
-        <p>
-          <strong>7. How does watch progress persist?</strong>{" "}
-          On pause and unload, save current time to
-          host storage keyed by (user, video). On
-          next mount, offer to resume.
-        </p>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>8. How is the player accessible?</strong>{" "}
-          Real form controls with labels, captions,
-          audio descriptions, transcript panel,
-          keyboard parity. Focus visible on all
-          controls.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">The control layer renders
-          custom UI that calls media methods. Media
-          Session API integrates with</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">OS controls;
-          captions, keyboard shortcuts, and progress
-          persistence round out the experience.</Highlight></HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate durable source data, transient interaction state, derived render state, remote or worker effects, and bounded telemetry. Every object URL, request, worker, listener, timer, cache entry, and decoder task needs an explicit owner and cleanup path.</p><p>Treat the browser media element as playback truth. UI state mirrors media events and keeps quality, captions, previews, and controls as derived projections. Commit durable changes only after policy validation and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/file-media-content-systems/audio-video-player-recovery.svg" alt="Design an Audio/Video Player recovery" caption="Recovery flow: classify failure, preserve stable state, and degrade predictably." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Native controls are cheaper and robust; custom controls are justified only for adaptive streaming observability, richer UX, and product-specific accessibility.</p><p>Playback is locally authoritative; resume position and analytics sync asynchronously and monotonically so delayed events never move progress backward. Scale pressure comes from unstable networks, live-edge drift, codec mismatch, segment retries, caption load, hidden tabs, and device constraints. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic projection only when rollback is deterministic and visible. Keep authorization, validation, and destructive actions server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed states, generation guards, bounded queues, abortable effects, semantic HTML, and idempotent cleanup. Test accessibility, stale work, retries, unmount, constrained devices, large files, and corrupted input.</p><p>Measure latency, memory, queue pressure, stale drops, retries, fallbacks, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include treating rendered output as durable truth, leaking resources, accepting stale worker completion, unbounded prefetch, and hiding degraded behavior.</p><p>For this topic, downgrade quality, bound segment retries, use native HLS fallback, preserve an accessible retry, and keep controls responsive during recovery. Validate untrusted content, authorize durable mutations, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to content-heavy product surfaces where browser APIs, workers, networks, and remote policy fail independently. Reuse the controller boundary while injecting product-specific fallback and retention policy.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Treat the browser media element as playback truth. UI state mirrors media events and keeps quality, captions, previews, and controls as derived projections.</p><h3>What breaks at scale?</h3><p>unstable networks, live-edge drift, codec mismatch, segment retries, caption load, hidden tabs, and device constraints. I would bound work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>Playback is locally authoritative; resume position and analytics sync asynchronously and monotonically so delayed events never move progress backward.</p><h3>How do you recover?</h3><p>I would downgrade quality, bound segment retries, use native HLS fallback, preserve an accessible retry, and keep controls responsive during recovery.</p><h3>Why this architecture?</h3><p>Native controls are cheaper and robust; custom controls are justified only for adaptive streaming observability, richer UX, and product-specific accessibility.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API" target="_blank" rel="noreferrer">MDN Web Workers API</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

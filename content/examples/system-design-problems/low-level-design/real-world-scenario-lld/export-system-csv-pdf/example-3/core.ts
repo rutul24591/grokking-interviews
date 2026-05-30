@@ -1,90 +1,29 @@
-export type exportSystemCsvPdfRuntimeState = {
-  topic: "export-system-csv-pdf";
-  mounted: boolean;
-  lastSuccessfulVersion: number;
-  pendingVersion: number;
-  lastInteractionAtMs: number;
-  lastRecoveryAtMs?: number;
-  signal: {
-    latencyMs: number;
-    staleAgeMs: number;
-    conflictCount: number;
-    errorRate: number;
-  };
-};
-
-export type exportSystemCsvPdfRecoveryPlan = {
-  mode: "continue" | "degrade" | "block-and-recover";
-  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
-  actions: Array<"show-stale-state" | "queue-repair" | "record-audit-event" | "emit-telemetry" | "keep-current-state">;
-  evidence: string[];
-};
-
-function minutes(ms: number) {
-  return Math.round(ms / 60_000);
+export interface ExportSystemCsvPdfMetric{operationId:string;
+phase:"accepted"|"rejected"|"settled"|"rolled-back";
+durationMs:number;
+reason?:string;
 }
-
-export function planExportSystemCsvPdfRecovery(
-  state: exportSystemCsvPdfRuntimeState,
-  nowMs: number,
-): exportSystemCsvPdfRecoveryPlan {
-  const evidence: string[] = [];
-  const actions: exportSystemCsvPdfRecoveryPlan["actions"] = ["emit-telemetry"];
-  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
-  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
-
-  if (!state.mounted) evidence.push("component-unmounted-before-completion");
-  if (versionGap > 1) evidence.push("multiple-versions-pending");
-  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
-  if (state.signal.latencyMs > 2_000) evidence.push("latencyMs-breached");
-  if (state.signal.staleAgeMs > 0) evidence.push("staleAgeMs-requires-operator-attention");
-  if (state.signal.conflictCount > 0.2) evidence.push("conflictCount-unsafe-for-silent-commit");
-
-  if (!state.mounted) {
-    actions.push("show-stale-state");
-    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
-  }
-
-  if (versionGap > 1 || state.signal.conflictCount > 0.2) {
-    actions.push("queue-repair", "record-audit-event");
-    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
-  }
-
-  actions.push("keep-current-state");
-  return { mode: "continue", userVisibleState: "current", actions, evidence };
+export class ExportSystemCsvPdfDiagnostics{private events:ExportSystemCsvPdfMetric[]=[];
+record(e:ExportSystemCsvPdfMetric){this.events.push(e);
+if(this.events.length>200)this.events.shift();
+}summary(){return this.events.reduce<Record<string,number>>((a,e)=>{const k=e.reason?`${e.phase}:${e.reason}`:e.phase;
+a[k]=(a[k]??0)+1;
+return a;
+},{});
+}slow(threshold:number){return this.events.filter(e=>e.durationMs>threshold).map(e=>e.operationId);
+}alert(){const rejected=this.events.filter(e=>e.phase==="rejected").length;
+const rollback=this.events.filter(e=>e.phase==="rolled-back").length;
+return rejected>5||rollback>2?"page":"normal";
+}}
+export function planExportSystemCsvPdfRecovery(input:{mounted:boolean;
+authorized:boolean;
+versionGap:number;
+pendingAgeMs:number}){const reasons:string[]=[];
+if(!input.mounted)reasons.push("unmounted");
+if(!input.authorized)reasons.push("permission-changed");
+if(input.versionGap>0)reasons.push("stale-version");
+if(input.pendingAgeMs>10000)reasons.push("pending-too-long");
+return{mode:reasons.length?"degrade-and-reconcile":"continue",reasons,edge:"a user starts a huge PDF export, changes filters, and returns after the download URL expires",structures:"export job id, filter snapshot, format, progress, signed URL, expiry, audit metadata"};
 }
-
-export function runExportSystemCsvPdfEdgeCaseScenario() {
-  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
-  const normal = planExportSystemCsvPdfRecovery(
-    {
-      topic: "export-system-csv-pdf",
-      mounted: true,
-      lastSuccessfulVersion: 21,
-      pendingVersion: 22,
-      lastInteractionAtMs: nowMs - 90_000,
-      signal: { latencyMs: 160, staleAgeMs: 0, conflictCount: 0.01, errorRate: 0 },
-    },
-    nowMs,
-  );
-
-  const failure = planExportSystemCsvPdfRecovery(
-    {
-      topic: "export-system-csv-pdf",
-      mounted: true,
-      lastSuccessfulVersion: 21,
-      pendingVersion: 25,
-      lastInteractionAtMs: nowMs - 18 * 60_000,
-      signal: { latencyMs: 2_900, staleAgeMs: 2, conflictCount: 0.42, errorRate: 4 },
-    },
-    nowMs,
-  );
-
-  return {
-    topic: "Export System Csv Pdf",
-    subcategory: "real-world-scenario-lld",
-    invariant: "The UI should preserve user intent while exposing stale, failed, or conflicting state clearly.",
-    normal,
-    failure,
-  };
+export function runExportSystemCsvPdfRecovery(){return planExportSystemCsvPdfRecovery({mounted:true,authorized:false,versionGap:2,pendingAgeMs:16000});
 }

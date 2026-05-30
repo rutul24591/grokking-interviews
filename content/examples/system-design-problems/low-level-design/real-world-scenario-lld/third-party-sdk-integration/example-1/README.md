@@ -1,6 +1,1 @@
-# Third-party SDK Integration — Example 1
-
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+# Design Third-party SDK Integration example 1\n\nConcrete low-level implementation exercise for Design Third-party SDK Integration.\n

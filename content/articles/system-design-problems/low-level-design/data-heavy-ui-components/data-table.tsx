@@ -36,11 +36,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function DataTableArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function DataTableArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Data Table</h1><h2>Definition &amp; Context</h2><p>Design a Data Table is an implementation-heavy low-level design problem covering column schema, query state, server and client sorting, filtering, virtualization, selection algebra, export, URL sync, and accessibility. A principal-level answer must define state ownership, consistency, lifecycle cleanup, scale limits, rollback, privacy, cost, and observability.</p><p>Separate column schema, query state, row entities, selection state, viewport state, and preferences. Visible rows are never equivalent to the full filtered dataset. The core structures are column registry, filter AST, sort vector, cursor state, row map, visible range, size cache, selected-id set, all-matching exclusions, width map, and request generation.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/data-table-runtime.svg" alt="Design a Data Table runtime" caption="Topic-specific data flow from input or payload through guarded projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -138,7 +137,7 @@ export default function DataTableArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -193,7 +192,7 @@ export default function DataTableArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -274,14 +273,10 @@ export default function DataTableArticle() {
         </p>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/data-table-architecture.svg"
-        alt="Data Table Architecture"
-        caption="Column definitions + Data Source adapter → Table Engine (sort + filter + paginate) → Virtualizer → Visible row windows → Header (sticky, sortable) + Body (virtualized) + Footer (paginator). Column resize and selection are plugins on top of the engine."
-      />
+      
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <HighlightBlock as="p" tier="important">
           The table is structured around five interlocking
           layers: a <strong>column model</strong> (declarative
@@ -451,7 +446,7 @@ export default function DataTableArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="important">
           <strong>TableProvider</strong> instantiates the
           engine, the virtualizer, and the plugin chain.
@@ -543,7 +538,7 @@ export default function DataTableArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management Strategy</h2>
+        <h3>🔄 State Management Strategy</h3>
         <HighlightBlock as="p" tier="crucial">
           State splits into four planes. <strong>Engine
           state</strong> — sort keys, filter values,
@@ -584,7 +579,7 @@ export default function DataTableArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important">Inputs:{" "}
           <code>columns</code> (array of column definitions),
           <code> dataSource</code> (adapter instance),
@@ -611,7 +606,7 @@ export default function DataTableArticle() {
       </section>
 
       <section>
-        <h2>⚡ Rendering &amp; Performance Strategy</h2>
+        <h3>⚡ Rendering &amp; Performance Strategy</h3>
         <HighlightBlock as="p" tier="important">
           Virtualization is the headline performance lever.
           We use a fixed-height virtualizer for tables with
@@ -659,7 +654,7 @@ export default function DataTableArticle() {
       </section>
 
       <section>
-        <h2>🎨 UI/UX &amp; Interaction Design</h2>
+        <h3>🎨 UI/UX &amp; Interaction Design</h3>
         <HighlightBlock as="p" tier="crucial">
           Density toggles let users compact the table when
           they need to see more rows at once; this is
@@ -696,7 +691,7 @@ export default function DataTableArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="important">The table uses
           <code> role=&quot;table&quot;</code> with
           <code> role=&quot;row&quot;</code>,
@@ -730,14 +725,14 @@ export default function DataTableArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security Considerations</h2>
+        <h3>🔐 Security Considerations</h3>
         <HighlightBlock as="p" tier="crucial">Authorization is enforced server-side: the server filters by user permissions and never</HighlightBlock>
 <HighlightBlock as="p" tier="important">trusts the client&rsquo;s row id list. Sensitive columns (e.g. payment details) can be configured</HighlightBlock>
 <HighlightBlock as="p" tier="important">to render redacted values by default with a click-to-reveal action that&rsquo;s audit-logged.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🧪 Testing Strategy</h2>
+        <h3>🧪 Testing Strategy</h3>
         <HighlightBlock as="p" tier="important">Unit tests cover the engine: sort and filter logic against canonical inputs, pagination math, fetch-token race</HighlightBlock>
 <HighlightBlock as="p" tier="important">resolution. Integration tests mount realistic tables with synthetic data sources and exercise:</HighlightBlock>
 <HighlightBlock as="p" tier="important">scroll-and-virtualize, sort and filter, server-side pagination with mocked adapters, selection across pages, column resize persistence.</HighlightBlock>
@@ -752,7 +747,7 @@ export default function DataTableArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases &amp; Failure Handling</h2>
+        <h3>🚨 Edge Cases &amp; Failure Handling</h3>
         <HighlightBlock as="p" tier="crucial">
           Variable row heights with sticky-left columns
           (the sticky cells must match height to their
@@ -791,21 +786,21 @@ export default function DataTableArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability &amp; Extensibility</h2>
+        <h3>🔁 Reusability &amp; Extensibility</h3>
         <HighlightBlock as="p" tier="crucial">Theming uses design tokens; consumers can override per table via className on the</HighlightBlock>
 <HighlightBlock as="p" tier="important">wrapper. Data source adapters let teams plug in unusual data sources (a WebSocket</HighlightBlock>
 <HighlightBlock as="p" tier="important">stream, a GraphQL endpoint with cursor pagination) without modifying engine internals.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="crucial">Sort comparisons use Intl.Collator for locale-aware string ordering (so</HighlightBlock>
 <HighlightBlock as="p" tier="important">&ldquo;Ä&rdquo; sorts after &ldquo;Z&rdquo; in some locales and after &ldquo;A&rdquo; in others).</HighlightBlock>
 <HighlightBlock as="p" tier="important">RTL flips the table via CSS logical properties; sticky-left becomes sticky-end naturally.</HighlightBlock>
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs &amp; Design Decisions</h2>
+        <h3>⚖️ Trade-offs &amp; Design Decisions</h3>
 
         <h3>Virtualize rows but not columns by default</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -875,7 +870,7 @@ export default function DataTableArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">A built-in CSV export from the current view, with
           server-side support for cross-page export. Web
           Worker-based sort and filter for very large
@@ -887,101 +882,12 @@ export default function DataTableArticle() {
           formatting (highlight rows that match a
           predicate). Column-level pinning beyond just
           first column. Saved view sharing across users.</Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. How does virtualization work for
-          variable-height rows?</strong> Maintain a measured-
-          height cache keyed by row id; render unmeasured
-          rows at an estimated default; use
-          <code> ResizeObserver</code> to update measurements
-          when rows mount; recalculate scroll height as the
-          sum of measured plus estimated heights.
-        </HighlightBlock>
-
-        <p>
-          <strong>2. How do you avoid losing selections when the
-          user sorts or filters?</strong> Track selections by
-          row id, not by index. Selected rows that filter
-          out remain in the selection set but are hidden;
-          they re-appear when the filter relaxes.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>3. Sticky header with virtualization — what&rsquo;s
-          tricky?</strong> The header must scroll with the
-          viewport horizontally but stay sticky vertically.
-          Using <code>position: sticky</code> on the header
-          inside a scrollable container handles this if the
-          container&rsquo;s overflow is set correctly.
-          Virtualization changes the body&rsquo;s scroll
-          height dynamically, but sticky positioning
-          honors the viewport, not the content, so it
-          works.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. How do you reflect sort/filter/page state in
-          the URL?</strong> Use the Next.js router&rsquo;s
-          shallow routing to update query parameters
-          without full navigation. On mount, parse the URL
-          and seed engine state from it. On every state
-          change, debounce a URL update so rapid typing in
-          a filter doesn&rsquo;t spam the history.
-        </HighlightBlock>
-
-        <p>
-          <strong>5. How do you handle a mix of server-sortable
-          and client-sortable columns?</strong> The data source
-          adapter routes per column. Server-sortable
-          columns issue a server request with the new
-          sort param; client-sortable columns sort
-          in-memory. Combining them (sort by server
-          column, then by client column) requires the
-          server to deliver the page already sorted by
-          the server column, then the client applies the
-          secondary sort within the page.
-        </p>
-
-        <p>
-          <strong>6. How do you race-protect rapid filter
-          changes?</strong> Each fetch carries a monotonic
-          token. Only the response with the latest token
-          is committed; earlier responses are discarded.
-          This is the same pattern as async validation
-          races.
-        </p>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>7. How is the table accessible to keyboard
-          users?</strong> ARIA grid pattern with single
-          tabstop and arrow-key navigation. Sort state via
-          <code> aria-sort</code>. Selection checkboxes
-          labeled with row identifiers. Sticky headers
-          remain announceable. We test with real screen
-          readers, not just axe-core.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>8. How would you scale this to a million
-          rows?</strong> Server-side pagination is the
-          answer; the client never holds a million rows.
-          Cursor-based pagination scales better than
-          page-based at large offsets because the database
-          doesn&rsquo;t have to skip millions of rows. The
-          table&rsquo;s adapter pattern accommodates either.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">URL reflection makes views shareable; selection-by-id survives sort and</HighlightBlock>
-<HighlightBlock as="p" tier="important">filter; skeleton loading preserves layout. The result is a table that feels</HighlightBlock>
-<HighlightBlock as="p" tier="important">native at any data scale, accessible to all users, and extensible without forking.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate canonical data, user intent, transient projection, remote effects, and bounded telemetry. Every cursor, subscription, cache entry, request, timer, observer, and worker requires an explicit owner and cleanup path. Stable ids are mandatory because indexes and DOM nodes are disposable views.</p><p>Separate column schema, query state, row entities, selection state, viewport state, and preferences. Visible rows are never equivalent to the full filtered dataset. Commit durable changes only after applying the current policy and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/data-table-recovery.svg" alt="Design a Data Table recovery" caption="Recovery flow: validate versions, contain scale pressure, preserve stable truth, and explain the result." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Client-side tables are fast for bounded datasets; server adapters are required when filtering, authorization, aggregation, or export exceed browser budgets.</p><p>The server owns filtered result truth. URL query state is shareable, fetches are generation-guarded, and select-all across pages requires an explicit all-matching contract with exclusions. Scale pressure comes from millions of server rows, expensive counts, rapid filters, variable heights, bulk selection, column drift, and stale pages. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic projection only where rollback is deterministic and visible. Keep authorization and conflict-sensitive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit versions, cursor validation, generation guards, bounded caches, semantic HTML, and idempotent cleanup. Test keyboard use, accessibility output, stale responses, reconnects, retries, scroll restoration, and large datasets.</p><p>Measure interaction latency, render cost, cache pressure, stale drops, conflicts, retries, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include confusing visible data with complete data, trusting arrival order, leaking subscriptions, accepting stale completion, using indexes as identity, and hiding rollback.</p><p>For this topic, abort stale fetches, retain prior rows during refresh, key selection by id, cap export, migrate preferences, and reconcile selections when filters change. Validate untrusted inputs, authorize durable actions server-side, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to operational interfaces where users manipulate large, changing datasets under partial failure. Reuse the controller shape while injecting query, authorization, persistence, and fallback policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Separate column schema, query state, row entities, selection state, viewport state, and preferences. Visible rows are never equivalent to the full filtered dataset.</p><h3>What breaks at scale?</h3><p>millions of server rows, expensive counts, rapid filters, variable heights, bulk selection, column drift, and stale pages. I would bound expensive work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>The server owns filtered result truth. URL query state is shareable, fetches are generation-guarded, and select-all across pages requires an explicit all-matching contract with exclusions.</p><h3>How do you recover?</h3><p>I would abort stale fetches, retain prior rows during refresh, key selection by id, cap export, migrate preferences, and reconcile selections when filters change.</p><h3>Why this architecture?</h3><p>Client-side tables are fast for bounded datasets; server adapters are required when filtering, authorization, aggregation, or export exceed browser budgets.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

@@ -32,11 +32,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function ClientSideDataNormalizationArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function ClientSideDataNormalizationArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Client-side Data Normalization System</h1><h2>Definition &amp; Context</h2><p>Design a Client-side Data Normalization System is an implementation-heavy low-level design problem covering schema-guided entity ingestion, normalized storage, denormalized selectors, subscriptions, optimistic patches, rollback, and garbage collection. A principal-level answer must define state ownership, consistency, lifecycle cleanup, scale limits, rollback, privacy, cost, and observability.</p><p>Store each entity once by type and id. Ordered query results keep references, while denormalized view models are memoized projections over entity versions. The core structures are entity tables, query reference lists, schema registry, entity versions, selector cache, subscription index, optimistic patch journal, reference counts, and eviction TTL.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/client-side-data-normalization-runtime.svg" alt="Design a Client-side Data Normalization System runtime" caption="Topic-specific data flow from input or payload through guarded projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -109,7 +108,7 @@ export default function ClientSideDataNormalizationArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -149,7 +148,7 @@ export default function ClientSideDataNormalizationArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -189,12 +188,8 @@ export default function ClientSideDataNormalizationArticle() {
       </section>
 
       <section>
-        <h2>🧠 Solution Approach</h2>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/client-side-data-normalization-architecture.svg"
-          alt="Client-side data normalization architecture showing entity store shape, normalization schema, normalize pipeline, denormalize, memoized selectors, optimistic updates, write-through mutation sync, and conflict resolution"
-          caption="Architecture Overview"
-        />
+        <h3>🧠 Solution Approach</h3>
+        
         <HighlightBlock as="p" tier="important">
           The system is built around three primitives: a
           <strong> schema</strong> (declares entities and
@@ -298,7 +293,7 @@ export default function ClientSideDataNormalizationArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important"><strong>Schema</strong></Highlight> is a static declaration
           per entity type. <strong>Normalizer</strong>{" "}
           walks payloads against schemas and produces flat
@@ -315,7 +310,7 @@ export default function ClientSideDataNormalizationArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">The entity store is the single source of truth
           for entity data. React Query owns query metadata
           (status, error, fetch timestamps); the entity
@@ -326,7 +321,7 @@ export default function ClientSideDataNormalizationArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="crucial">A normalization schema defines which objects are
           entities (for example: Customer, Order) and how
           relationships are represented. The normalize step
@@ -339,7 +334,7 @@ export default function ClientSideDataNormalizationArticle() {
       </section>
 
       <section>
-        <h2>⚡ Rendering &amp; Performance</h2>
+        <h3>⚡ Rendering &amp; Performance</h3>
         <HighlightBlock as="p" tier="crucial">Normalization is O(payload size) once per fetch.
           Denormalization is memoized by (result, entity
           versions); cache hits are constant-time. Selector
@@ -351,7 +346,7 @@ export default function ClientSideDataNormalizationArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">Cross-screen consistency is the main UX win:
           updates appear instantly everywhere they&rsquo;re
           visible.</HighlightBlock>
@@ -362,7 +357,7 @@ export default function ClientSideDataNormalizationArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">The normalization layer is invisible to a11y; it
           just provides data.</HighlightBlock>
 <HighlightBlock as="p" tier="important">Consumer components handle
@@ -372,7 +367,7 @@ export default function ClientSideDataNormalizationArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="crucial">Entity content is data, not code. Schemas are
           declared in code, not loaded from runtime.
           Cross-user scope is server-enforced; the client
@@ -384,7 +379,7 @@ export default function ClientSideDataNormalizationArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important">Unit tests for normalization correctness against
           representative payloads, denormalization
           round-trips, garbage collection on reference-
@@ -396,14 +391,14 @@ export default function ClientSideDataNormalizationArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">Circular references (entity A → B → A): the schema declares them as refs; denormalization handles cycles by tracking</HighlightBlock>
 <HighlightBlock as="p" tier="important">visited ids and not infinite-looping. Garbage collection during an active subscription: never evict referenced entities.</HighlightBlock>
 <HighlightBlock as="p" tier="important">Real-time push delivers an entity that doesn&rsquo;t fit any active query: store it anyway; future queries may use it.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="crucial">
           The normalization layer is generic over entity types and query shapes.
         </HighlightBlock>
@@ -418,7 +413,7 @@ export default function ClientSideDataNormalizationArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="crucial">
           Entity content i18n is the consumer&rsquo;s concern; the normalization layer
           should store canonical values and avoid locale-specific formatting.
@@ -435,7 +430,7 @@ export default function ClientSideDataNormalizationArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Custom layer vs Apollo / Relay</h3>
         <HighlightBlock as="p" tier="important">
@@ -480,7 +475,7 @@ export default function ClientSideDataNormalizationArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">Persistent offline store via IndexedDB.
           Real-time WebSocket integration with
           server-pushed entity updates.</HighlightBlock>
@@ -488,86 +483,12 @@ export default function ClientSideDataNormalizationArticle() {
           TypeScript type generation for entities.
           Time-travel debugging UI. Smart prefetching
           based on observed query patterns.</Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>1. Why normalize on the client?</strong>{" "}
-          Cross-view consistency without refetching. The
-          same entity referenced from multiple views
-          updates everywhere when one view mutates it,
-          eliminating stale-data bugs.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How does denormalization stay
-          fast?</strong> Memoization keyed by (query result,
-          entity versions). Unchanged entities reuse the
-          prior denormalized form via referential
-          equality.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>3. How do optimistic updates
-          work?</strong> The mutation function specifies
-          how to optimistically update the store. The
-          update applies immediately; the server call
-          runs; on success, the server response merges
-          (correcting drift); on failure, the store
-          rolls back.
-        </HighlightBlock>
-
-        <p>
-          <strong>4. How is garbage collection
-          implemented?</strong> Reference counting plus
-          TTL: unreferenced entities are evicted after a
-          short delay (so brief unsubscribe-resubscribe
-          doesn&rsquo;t lose them).
-        </p>
-
-        <p>
-          <strong>5. What about concurrent mutations on
-          the same entity?</strong> React Query&rsquo;s
-          mutation queue serializes them. The second
-          mutation sees the first&rsquo;s optimistic state
-          as its starting point.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>6. How does this differ from Apollo or
-          Relay?</strong> Those are full GraphQL clients
-          with built-in normalization. Our layer is
-          REST-friendly, lighter, integrates with React
-          Query, and gives explicit control over schema.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>7. What happens when the schema
-          evolves?</strong> Server adds new fields →
-          client tolerates (reads if present, ignores
-          otherwise). Server removes fields → client
-          handles missing values gracefully. Schema
-          versioning at the edges keeps clients
-          compatible across deploys.
-        </HighlightBlock>
-
-        <p>
-          <strong>8. How do real-time updates fit
-          in?</strong> A WebSocket connection emits entity
-          updates; we merge them into the store via the
-          same path mutations use. Subscriptions to
-          affected entities fire automatically.
-        </p>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">Integration with React Query handles fetch and mutation orchestration; the normalization layer</HighlightBlock>
-<HighlightBlock as="p" tier="important">handles state shape and cross-view consistency. Optimistic updates feel instant; cross-screen</HighlightBlock>
-<HighlightBlock as="p" tier="important">consistency happens automatically. The layer becomes the central nervous system of any non-trivial app.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate canonical data, user intent, transient projection, remote effects, and bounded telemetry. Every cursor, subscription, cache entry, request, timer, observer, and worker requires an explicit owner and cleanup path. Stable ids are mandatory because indexes and DOM nodes are disposable views.</p><p>Store each entity once by type and id. Ordered query results keep references, while denormalized view models are memoized projections over entity versions. Commit durable changes only after applying the current policy and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/client-side-data-normalization-recovery.svg" alt="Design a Client-side Data Normalization System recovery" caption="Recovery flow: validate versions, contain scale pressure, preserve stable truth, and explain the result." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Keeping nested payloads per screen is simple; normalization is justified when entities appear across views and mutations must reconcile consistently.</p><p>Server entity versions are authoritative. Query lists and optimistic patches are local projections; incoming snapshots merge only under an explicit version and field policy. Scale pressure comes from large payloads, overlapping queries, concurrent optimistic mutations, WebSocket merges, stale fields, selector fan-out, and memory retention. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic projection only where rollback is deterministic and visible. Keep authorization and conflict-sensitive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit versions, cursor validation, generation guards, bounded caches, semantic HTML, and idempotent cleanup. Test keyboard use, accessibility output, stale responses, reconnects, retries, scroll restoration, and large datasets.</p><p>Measure interaction latency, render cost, cache pressure, stale drops, conflicts, retries, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include confusing visible data with complete data, trusting arrival order, leaking subscriptions, accepting stale completion, using indexes as identity, and hiding rollback.</p><p>For this topic, record inverse patches, merge server corrections, reject stale snapshots, evict unreferenced entities after TTL, and isolate malformed schema edges. Validate untrusted inputs, authorize durable actions server-side, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to operational interfaces where users manipulate large, changing datasets under partial failure. Reuse the controller shape while injecting query, authorization, persistence, and fallback policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Store each entity once by type and id. Ordered query results keep references, while denormalized view models are memoized projections over entity versions.</p><h3>What breaks at scale?</h3><p>large payloads, overlapping queries, concurrent optimistic mutations, WebSocket merges, stale fields, selector fan-out, and memory retention. I would bound expensive work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>Server entity versions are authoritative. Query lists and optimistic patches are local projections; incoming snapshots merge only under an explicit version and field policy.</p><h3>How do you recover?</h3><p>I would record inverse patches, merge server corrections, reject stale snapshots, evict unreferenced entities after TTL, and isolate malformed schema edges.</p><h3>Why this architecture?</h3><p>Keeping nested payloads per screen is simple; normalization is justified when entities appear across views and mutations must reconcile consistently.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

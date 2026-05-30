@@ -33,11 +33,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function SpreadsheetLikeGridArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function SpreadsheetLikeGridArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Spreadsheet-like Grid</h1><h2>Definition &amp; Context</h2><p>Design a Spreadsheet-like Grid is an implementation-heavy low-level design problem covering cell addressing, range selection, editing, formulas, dependency graph, recalculation, clipboard, virtualization, undo, and collaboration boundaries. A principal-level answer must define state ownership, consistency, lifecycle cleanup, scale limits, rollback, privacy, cost, and observability.</p><p>Separate source cell values, formula ASTs, computed values, selection state, edit drafts, and rendered viewport cells. Computed results are derived from a versioned dependency graph. The core structures are cell map, row-column ids, formula AST, dependency graph, reverse edges, dirty queue, range selection, edit draft, undo journal, and viewport window.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/spreadsheet-like-grid-runtime.svg" alt="Design a Spreadsheet-like Grid runtime" caption="Topic-specific data flow from input or payload through guarded projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -114,7 +113,7 @@ export default function SpreadsheetLikeGridArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -158,7 +157,7 @@ export default function SpreadsheetLikeGridArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -213,14 +212,10 @@ export default function SpreadsheetLikeGridArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/spreadsheet-like-grid-architecture.svg"
-        alt="Spreadsheet-like Grid Architecture"
-        caption="2D Virtualized Grid (substrate) ← Cell Store + Selection Model + Edit State + Formula Engine (dependency DAG) + Command History (undo/redo) + Clipboard Bridge + Fill-handle pattern detector. The spreadsheet layers interaction systems over the rendering primitive."
-      />
+      
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <HighlightBlock as="p" tier="crucial">
           The spreadsheet is a layered system on top of the
           2D virtualized grid. The substrate handles
@@ -338,14 +333,14 @@ export default function SpreadsheetLikeGridArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial">EditController manages edit state. CommandHistory implements undo/redo.</HighlightBlock>
 <HighlightBlock as="p" tier="important">ClipboardBridge handles copy/paste. FillHandle detects and extrapolates patterns.</HighlightBlock>
 <HighlightBlock as="p" tier="important">CellRenderer renders one cell and connects to the appropriate editor in edit mode.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">
           The invariant is deterministic, serializable edits: all mutations flow through a single
           command pipeline so undo/redo is correct even across multi-cell operations.
@@ -361,7 +356,7 @@ export default function SpreadsheetLikeGridArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="crucial">
           The contract must support incremental updates: the grid should accept and emit deltas
           (changed cells + metadata) rather than forcing full-sheet replaces on every edit.
@@ -377,21 +372,21 @@ export default function SpreadsheetLikeGridArticle() {
       </section>
 
       <section>
-        <h2>⚡ Rendering &amp; Performance</h2>
+        <h3>⚡ Rendering &amp; Performance</h3>
         <HighlightBlock as="p" tier="crucial">Formula recomputation is incremental via the dependency DAG; changing one</HighlightBlock>
 <HighlightBlock as="p" tier="important">cell touches only its dependents. For large formula workloads, the engine</HighlightBlock>
 <HighlightBlock as="p" tier="important">runs in a Web Worker; the main thread only handles edit input and rendering.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🎨 UI/UX</h2>
+        <h3>🎨 UI/UX</h3>
         <HighlightBlock as="p" tier="crucial">The fill handle appears at the bottom-right corner of the active cell.</HighlightBlock>
 <HighlightBlock as="p" tier="important">Cell type indicators (a small badge for date or formula cells) help users</HighlightBlock>
 <HighlightBlock as="p" tier="important">orient. Errors render inline as #ERROR with a tooltip explaining the error.</HighlightBlock>
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">ARIA grid pattern from the underlying 2D grid.
           Edit state announces (&ldquo;Editing cell
           B5&rdquo;). Selection announces (&ldquo;Selected
@@ -405,7 +400,7 @@ export default function SpreadsheetLikeGridArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important">Formula DSL is sandboxed: a strict parser
           whitelists tokens; identifiers must resolve to
           cell references or registered functions. No
@@ -420,14 +415,14 @@ export default function SpreadsheetLikeGridArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="crucial">Integration tests exercise full edit flows: edit a cell, verify dependents update; copy a range,</HighlightBlock>
 <HighlightBlock as="p" tier="important">paste, verify reference translation; undo a multi-cell edit, verify full revert. Property tests verify</HighlightBlock>
 <HighlightBlock as="p" tier="important">undo/redo correctness: any sequence of edits followed by equal undos should return to the initial state.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="important">Circular references: detected when adding a formula to the DAG; the cell shows #CYCLE . A formula references a cell</HighlightBlock>
 <HighlightBlock as="p" tier="important">that doesn&rsquo;t exist (out of bounds): shows #REF . Paste larger than selection: extends selection with confirmation.</HighlightBlock>
 <HighlightBlock as="p" tier="important">Paste of TSV with formulas (from Excel): we parse the TSV and translate formula syntax; incompatible formulas show #N/A .</HighlightBlock>
@@ -448,7 +443,7 @@ export default function SpreadsheetLikeGridArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="crucial">The formula engine, command history, and
           selection model are reusable in any table-like
           UI that needs them. The fill-handle pattern
@@ -461,7 +456,7 @@ export default function SpreadsheetLikeGridArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important">Number and date formatting via
           </Highlight><code> Intl.NumberFormat</code> and
           <code> Intl.DateTimeFormat</code> with locale
@@ -475,7 +470,7 @@ export default function SpreadsheetLikeGridArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Custom DSL vs JavaScript expressions</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -524,7 +519,7 @@ export default function SpreadsheetLikeGridArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">Real-time collaborative editing via CRDTs.
           More formula functions (statistical, financial).
           Conditional formatting rule UI.</HighlightBlock>
@@ -533,95 +528,12 @@ export default function SpreadsheetLikeGridArticle() {
           rules. Server-side formula evaluation for
           extremely large sheets. Voice input for cell
           values.</Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. How does formula recomputation stay
-          incremental?</strong> A dependency DAG. When a
-          cell changes, look up dependents in the DAG and
-          recompute them in topological order. Cells not
-          in the dependent set don&rsquo;t recompute.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How is undo/redo implemented?</strong>{" "}
-          Command pattern. Every edit is a command with
-          apply/undo methods. Commands push onto a stack;
-          redo uses a separate stack that clears on the
-          next non-redo command. Multi-cell edits are
-          single commands with multiple internal effects.
-        </HighlightBlock>
-
-        <p>
-          <strong>3. How do you handle circular
-          references?</strong> Detect at formula parse
-          time when adding to the DAG: if adding the
-          dependency edge would create a cycle, refuse
-          and show
-          <code> #CYCLE</code>. Don&rsquo;t evaluate
-          and don&rsquo;t add the edge.
-        </p>
-
-        <p>
-          <strong>4. How does copy-paste work for
-          formulas?</strong> Internal copy serializes
-          formulas with their original references; on
-          paste, references are translated for the new
-          position (relative shifts; absolute stays).
-          External paste from clipboard parses TSV or HTML
-          format; pasted formulas in Excel syntax are
-          translated to our DSL.
-        </p>
-
-        <p>
-          <strong>5. How does drag-fill detect patterns?</strong>{" "}
-          The fill engine analyzes the source cells:
-          numeric sequences via difference, dates via
-          step, day-of-week via cyclic detection, text
-          patterns via regex. Unrecognized → repeat the
-          source.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>6. Why is the formula DSL sandboxed?</strong>{" "}
-          Security and predictability. JavaScript
-          expressions via
-          <code> eval</code> would let users write
-          arbitrary code, opening XSS, data exfiltration,
-          and infinite loops. A whitelisted DSL prevents
-          all of those.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>7. How does the spreadsheet stay fast on
-          large sheets?</strong> Virtualization from the
-          underlying 2D grid; selection as overlay (no
-          per-cell render); incremental formula
-          recomputation via dependency DAG; optional
-          Web Worker for the engine. Memoization of cell
-          renders by (cell id, value, formatting).
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>8. How is the spreadsheet
-          accessible?</strong> ARIA grid pattern from
-          the underlying 2D grid. Edit and selection
-          state announced via live regions. Every
-          keyboard shortcut has a discoverable equivalent
-          via a help dialog. Errors are inline accessible
-          messages.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">Sandboxed formula DSL keeps it secure; incremental recomputation keeps it fast; the</HighlightBlock>
-<HighlightBlock as="p" tier="important">command pattern keeps undo coherent. The result feels like Excel without becoming</HighlightBlock>
-<HighlightBlock as="p" tier="important">Excel — a primitive consumers compose into product-specific spreadsheet experiences.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate canonical data, user intent, transient projection, remote effects, and bounded telemetry. Every cursor, subscription, cache entry, request, timer, observer, and worker requires an explicit owner and cleanup path. Stable ids are mandatory because indexes and DOM nodes are disposable views.</p><p>Separate source cell values, formula ASTs, computed values, selection state, edit drafts, and rendered viewport cells. Computed results are derived from a versioned dependency graph. Commit durable changes only after applying the current policy and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/spreadsheet-like-grid-recovery.svg" alt="Design a Spreadsheet-like Grid recovery" caption="Recovery flow: validate versions, contain scale pressure, preserve stable truth, and explain the result." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>An HTML table is enough for display; a grid runtime is justified for editing, formulas, range operations, virtualization, and deterministic recalculation.</p><p>Cell edits are ordered transactions. Computed values are deterministic projections; collaborative persistence must reconcile cell versions or operations explicitly. Scale pressure comes from millions of cells, formula cycles, fan-out, paste bursts, variable sizing, expensive functions, and concurrent edits. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic projection only where rollback is deterministic and visible. Keep authorization and conflict-sensitive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit versions, cursor validation, generation guards, bounded caches, semantic HTML, and idempotent cleanup. Test keyboard use, accessibility output, stale responses, reconnects, retries, scroll restoration, and large datasets.</p><p>Measure interaction latency, render cost, cache pressure, stale drops, conflicts, retries, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include confusing visible data with complete data, trusting arrival order, leaking subscriptions, accepting stale completion, using indexes as identity, and hiding rollback.</p><p>For this topic, detect cycles, topologically recalculate dirty cells, cap expensive formulas, virtualize viewport cells, sanitize clipboard input, and preserve edit drafts. Validate untrusted inputs, authorize durable actions server-side, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to operational interfaces where users manipulate large, changing datasets under partial failure. Reuse the controller shape while injecting query, authorization, persistence, and fallback policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Separate source cell values, formula ASTs, computed values, selection state, edit drafts, and rendered viewport cells. Computed results are derived from a versioned dependency graph.</p><h3>What breaks at scale?</h3><p>millions of cells, formula cycles, fan-out, paste bursts, variable sizing, expensive functions, and concurrent edits. I would bound expensive work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>Cell edits are ordered transactions. Computed values are deterministic projections; collaborative persistence must reconcile cell versions or operations explicitly.</p><h3>How do you recover?</h3><p>I would detect cycles, topologically recalculate dirty cells, cap expensive formulas, virtualize viewport cells, sanitize clipboard input, and preserve edit drafts.</p><h3>Why this architecture?</h3><p>An HTML table is enough for display; a grid runtime is justified for editing, formulas, range operations, virtualization, and deterministic recalculation.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

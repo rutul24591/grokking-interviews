@@ -20,10 +20,9 @@ export const metadata: ArticleMetadata = {
   relatedTopics: ["rich-text-editor", "spreadsheet-like-grid", "file-explorer-ui"],
 };
 
-export default function CodeEditorComponentArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <p>
+export default function CodeEditorComponentArticle() { return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Code Editor Component</h1><h2>Definition &amp; Context</h2><p>Design a Code Editor Component is an implementation-heavy low-level design problem covering document modeling, incremental edits, syntax-worker coordination, selection mapping, undo grouping, large-file mode, diagnostics, and accessible keyboard handling. A principal-level answer must define state ownership, local structures, lifecycle cleanup, browser semantics, server reconciliation, observability, privacy, and rollback.</p><p>The text model is authoritative. Rendered lines, syntax spans, diagnostics, and minimap data are derived projections tagged with the document version that produced them. The important structures are rope or piece table, edit transaction, selection ranges, undo groups, viewport window, syntax-worker generation, diagnostic index, composition session, and command map.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/code-editor-component-runtime.svg" alt="Design a Code Editor Component runtime" caption="Runtime flow from intent through guarded state, semantic projection, and recovery." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the component-specific mechanics that an implementation discussion must defend.</p><p>
         A code editor component is the most technically sophisticated widget in any
         developer tool product. It must tokenize code for syntax highlighting at
         keystroke speed, integrate with a Language Server Protocol implementation for
@@ -40,7 +39,7 @@ export default function CodeEditorComponentArticle() {
         caption="Code editor architecture: extension system, syntax tokenization, LSP integration, theme and diff"
       />
 
-      <h2>Build vs Embed: Monaco vs CodeMirror</h2>
+      <h3>Build vs Embed: Monaco vs CodeMirror</h3>
       <p>
         The first question in a code editor interview is always: build from scratch,
         embed Monaco, or embed CodeMirror 6? The answer is almost always embed, with
@@ -68,7 +67,7 @@ export default function CodeEditorComponentArticle() {
         go into embedding and customizing either library, not just "we'd use Monaco."
       </p>
 
-      <h2>CodeMirror 6 Architecture</h2>
+      <h3>CodeMirror 6 Architecture</h3>
       <p>
         CodeMirror 6 is built around an immutable state model and a reactive extension
         system. This makes it worth studying in depth for interview purposes because
@@ -106,7 +105,7 @@ export default function CodeEditorComponentArticle() {
         microseconds and milliseconds per edit operation.
       </HighlightBlock>
 
-      <h2>Extension System</h2>
+      <h3>Extension System</h3>
       <p>
         CodeMirror 6's extension system allows any feature to be composed as an extension.
         An extension is a value (or array of values) that contributes one or more of:
@@ -133,7 +132,7 @@ export default function CodeEditorComponentArticle() {
         as a single Extension export, composable with other extensions.
       </p>
 
-      <h2>Syntax Highlighting</h2>
+      <h3>Syntax Highlighting</h3>
       <p>
         Syntax highlighting requires tokenizing the document text by the language's
         grammar. CodeMirror uses Lezer — a fast incremental parser built specifically
@@ -158,7 +157,7 @@ export default function CodeEditorComponentArticle() {
         performance is superior.
       </p>
 
-      <h2>LSP Integration</h2>
+      <h3>LSP Integration</h3>
       <p>
         The Language Server Protocol is a standardized JSON-RPC protocol that language
         servers use to provide language intelligence to editors. The server process (e.g.,
@@ -190,7 +189,7 @@ export default function CodeEditorComponentArticle() {
         another server round-trip.
       </p>
 
-      <h2>Diff View</h2>
+      <h3>Diff View</h3>
       <p>
         A diff view shows the differences between two versions of a file — the original
         and the modified. Monaco provides a built-in DiffEditor component. For custom
@@ -212,7 +211,7 @@ export default function CodeEditorComponentArticle() {
         similar to GitHub's diff view.
       </p>
 
-      <h2>Theming</h2>
+      <h3>Theming</h3>
       <p>
         Editor themes define colors for all token types (keywords, strings, comments,
         identifiers) plus the editor chrome (background, gutter, selection highlight,
@@ -234,7 +233,7 @@ export default function CodeEditorComponentArticle() {
         design system's semantic color tokens.
       </p>
 
-      <h2>Accessibility</h2>
+      <h3>Accessibility</h3>
       <p>
         Code editors are notoriously difficult to make accessible. The core challenge:
         a textarea element is the accessible baseline for text input, but all features
@@ -255,89 +254,12 @@ export default function CodeEditorComponentArticle() {
         Keyboard navigation must be entirely possible — Tab should indent (not exit
         the editor); Escape followed by Tab should exit. The editor should expose
         a "Use Tab to exit the editor" hint for keyboard users.
-      </p>
-
-      <h2>Interview Q&A</h2>
-
-      <h3>Q: Why is the document stored as a B-tree rather than a string in production editors?</h3>
-      <p>
-        A string's concatenation cost is O(n) where n is the string length. Inserting
-        a character in the middle of a 1MB file requires allocating a new 1MB string.
-        At 60 keystrokes per second, this is 60 MB of string allocation per second —
-        triggering frequent garbage collection and frame drops. A B-tree of string
-        segments (the "rope" data structure) breaks the document into chunks of ~1,000
-        characters. Insertions modify only the affected chunk and update the tree's
-        metadata, both O(log n). The tree also maintains cumulative character counts,
-        enabling O(log n) line-by-line access and range lookups. The tradeoff: more
-        complex implementation and slightly higher constant-factor overhead than a
-        plain string for reads. For files under ~10,000 characters, the overhead
-        outweighs the benefit; production editors typically switch to a rope only above
-        a file size threshold.
-      </p>
-
-      <h3>Q: How does autocomplete avoid making a server round-trip on every keystroke?</h3>
-      <p>
-        The completion protocol has two phases: triggering (requesting completions from
-        the language server) and filtering (narrowing the completion list as the user
-        continues typing). On trigger, send one request to the language server and
-        receive a full list of completions for the current context (e.g., all properties
-        of the object the user is accessing). Cache this list. As the user types
-        additional characters, filter the cached list client-side by fuzzy-matching
-        the typed prefix against the completion labels — no new server request needed.
-        A new trigger request is sent only when the completion context changes (e.g.,
-        the user moves the cursor to a different position, types a delimiter like a
-        period or space that opens a new context, or the previous list was marked as
-        non-complete by the server). This pattern reduces server requests to O(1) per
-        completion context rather than O(keystrokes).
-      </p>
-
-      <h3>Q: How do you implement "find and replace" in a large document without UI thread stalls?</h3>
-      <p>
-        The search itself (matching a regex or string across the document) can stall
-        the UI thread for large files. Mitigate by running the search in a Web Worker:
-        send the document text and the search pattern to the worker, which returns
-        the match positions. For incremental results (show matches as they are found
-        rather than waiting for the full file), the worker sends batches of match
-        positions back to the main thread as it processes the document in chunks.
-        On the main thread, decorate the received match positions using CodeMirror
-        Decoration.mark to highlight them. Replace-all is a batch transaction: compute
-        all match ranges, construct a ChangeSet that replaces each match with the
-        replacement text, and apply it as a single transaction. Undo-redo treats this
-        as one atomic operation.
-      </p>
-
-      <h3>Q: How would you design a collaborative code editor (like Google Docs for code)?</h3>
-      <p>
-        Collaborative code editing requires an Operational Transformation (OT) or CRDT
-        layer on top of the editor's document model. Each keystroke produces a
-        ChangeSet (in CodeMirror terms) describing insertions and deletions. This
-        ChangeSet is sent to a server that applies it to the canonical document state
-        and broadcasts it to other connected editors. Each client applies received
-        ChangeSets using OT's transform function: if client A and client B both edit
-        at position 100, and A's change is applied first, B's change must be rebased
-        (offset by A's insertion length) before being applied. Yjs uses a CRDT approach:
-        each character has a globally unique ID, and the CRDT's merge rules guarantee
-        convergence without a central server. yjs-codemirror provides the binding
-        between Yjs's document model and CodeMirror 6's EditorState. The cursor
-        positions of other users are rendered as remote cursors using Decorations —
-        a small colored cursor element at each collaborator's position.
-      </p>
-
-      <h3>Q: How does the gutter (line numbers and other annotations) stay in sync with the editor content during fast scrolling?</h3>
-      <p>
-        The gutter is part of the EditorView's virtualized DOM layer, rendered with
-        the same virtual scroll logic as the code lines themselves. Only the gutter
-        cells for visible lines are in the DOM. When the user scrolls, the view
-        recalculates which lines are visible, creates gutter cell DOM nodes for newly
-        visible lines, and removes nodes for lines that scrolled out of view. The
-        gutter cells are positioned absolutely at the same top offset as their
-        corresponding code lines, keeping them aligned. This is managed entirely
-        within the EditorView's layout phase — no separate scroll synchronization
-        logic is needed. Custom gutter annotations (breakpoint indicators, coverage
-        markers, error line highlights) are registered as GutterMarker extensions
-        that contribute a DOM element for specific line numbers; the view renders
-        them during its layout phase.
-      </p>
-    </ArticleLayout>
-  );
-}
+      </p></section>
+<section><h2>Architecture &amp; Flow</h2><p>Use five boundaries: an input adapter, a typed state controller, a projection layer, an integration adapter, and an observability adapter. Normalize events before they enter state. Keep previews separate from commits. Release timers, observers, listeners, abort controllers, workers, and pointer capture idempotently on cancel and unmount.</p><p>The text model is authoritative. Rendered lines, syntax spans, diagnostics, and minimap data are derived projections tagged with the document version that produced them. For durable changes, validate the latest intent and record enough evidence to rollback deterministically.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/code-editor-component-scale-recovery.svg" alt="Design a Code Editor Component scale and recovery" caption="Scale defense: bound pressure, validate policy, reconcile failures, and emit reasoned evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>A textarea is robust for basic text; a custom editor runtime is justified when incremental rendering, diagnostics, multi-cursor editing, and extensibility are required.</p><p>Local edits are ordered transactions. Worker results and remote diagnostics are eventually consistent projections and must be discarded when their document version is stale. The dominant scale risks are large files, rapid edits, IME composition, worker lag, line wrapping, multi-cursor transforms, and extension failures. Control them with bounded work, stable ids, cancellation, generation guards, measured caching, and explicit degraded behavior.</p><p>Optimistic UI is appropriate only when rollback is deterministic and understandable. Authorization, destructive effects, and conflict-sensitive truth stay server-authoritative.</p></section>
+<section><h2>Best practices</h2><p>Use typed state unions, stable identities, idempotency keys, versioned writes, SSR-safe browser feature detection, abortable async work, bounded caches, and semantic HTML. Test keyboard-only use, screen-reader output, slow networks, stale completion, retries, unmount during work, and large datasets.</p><p>Measure blocked transitions, stale drops, rollback rates, latency percentiles, cache pressure, retry exhaustion, and accessibility regressions. Keep telemetry small and free of sensitive content.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing preview and committed state, trusting arrival order, leaking resources after unmount, accepting stale completion, assuming visible data is the complete dataset, and implementing custom controls without accessible semantics.</p><p>For this topic, isolate worker failure, disable expensive projections in large-file mode, preserve plain-text editing, remap selections through committed edits, and bound undo memory. Security and privacy require the design to sandbox extensions, escape rendered tokens, cap file size and worker messages, avoid logging source text, and gate clipboard or filesystem access behind explicit gestures.</p></section>
+<section><h2>Real-world use cases</h2><p>This design appears in production surfaces where repeated interaction, large datasets, asynchronous completion, and partial failure are normal. Reuse the runtime shell, but inject product policy explicitly: authorization, latency budget, persistence boundary, fallback, and telemetry.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>The text model is authoritative. Rendered lines, syntax spans, diagnostics, and minimap data are derived projections tagged with the document version that produced them. I would name preview, commit, derived projection, async generation, and rollback evidence separately.</p><h3>What breaks at scale?</h3><p>large files, rapid edits, IME composition, worker lag, line wrapping, multi-cursor transforms, and extension failures. I would bound each expensive operation and cancel work that no longer affects the visible committed result.</p><h3>What consistency model applies?</h3><p>Local edits are ordered transactions. Worker results and remote diagnostics are eventually consistent projections and must be discarded when their document version is stale.</p><h3>How do you recover from failure?</h3><p>I would isolate worker failure, disable expensive projections in large-file mode, preserve plain-text editing, remap selections through committed edits, and bound undo memory.</p><h3>How do you defend the architecture?</h3><p>A textarea is robust for basic text; a custom editor runtime is justified when incremental rendering, diagnostics, multi-cursor editing, and extensibility are required. The added complexity is acceptable only when the required behavior and operational evidence justify it.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API" target="_blank" rel="noreferrer">MDN Intersection Observer API</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>; }

@@ -31,11 +31,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function InlineEditingSystemArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function InlineEditingSystemArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design an Inline Editing System</h1><h2>Definition &amp; Context</h2><p>Design an Inline Editing System is an implementation-heavy low-level design problem covering edit activation, draft state, validation, optimistic save, keyboard commit-cancel, conflict detection, rollback, and focus restoration. A principal-level answer must define state ownership, consistency, lifecycle cleanup, scale limits, rollback, privacy, cost, and observability.</p><p>Keep displayed server value, active draft, optimistic projection, and save generation separate. The editor must never lose a recoverable user draft silently. The core structures are cell identity, committed value, draft value, edit mode, validation result, base version, save generation, optimistic journal, and focus target.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/inline-editing-system-runtime.svg" alt="Design an Inline Editing System runtime" caption="Topic-specific data flow from input or payload through guarded projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -109,7 +108,7 @@ export default function InlineEditingSystemArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -151,7 +150,7 @@ export default function InlineEditingSystemArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -200,12 +199,8 @@ export default function InlineEditingSystemArticle() {
       </section>
 
       <section>
-        <h2>🧠 Solution Approach</h2>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/inline-editing-system-architecture.svg"
-          alt="Inline editing system architecture showing edit trigger activation, edit state model, text and specialized input types, client and server validation rules, optimistic save, and keyboard UX"
-          caption="Architecture Overview"
-        />
+        <h3>🧠 Solution Approach</h3>
+        
         <p>
           The system is built around four primitives:
           <strong> per-cell edit state</strong>,
@@ -320,7 +315,7 @@ export default function InlineEditingSystemArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial"><strong>EditController</strong> manages edit
           state across the table.
           <strong> EditorRegistry</strong> maps column
@@ -338,7 +333,7 @@ export default function InlineEditingSystemArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">Edit state lives in a small external store —
           one active editor at a time. Cell-level dirty</HighlightBlock>
 <HighlightBlock as="p" tier="important">and error state lives in the data
@@ -350,7 +345,7 @@ export default function InlineEditingSystemArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="crucial">
           The data-flow contract must be versioned and conflict-aware: edits include an entity/cell id plus a version
           so the server can reject stale writes and the UI can surface a conflict instead of silently overwriting.
@@ -366,7 +361,7 @@ export default function InlineEditingSystemArticle() {
       </section>
 
       <section>
-        <h2>⚡ Rendering &amp; Performance</h2>
+        <h3>⚡ Rendering &amp; Performance</h3>
         <HighlightBlock as="p" tier="crucial">Edit state is per-table singleton; cells not
           in edit mode render their value via memoized
           renderers. Optimistic updates flow through
@@ -380,7 +375,7 @@ export default function InlineEditingSystemArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="important">Edit mode entry is unmistakable: the cell shows a focus ring and the editor</HighlightBlock>
 <HighlightBlock as="p" tier="important">mounts. Typing feels native. Validation errors render below the editor immediately, but</HighlightBlock>
 <HighlightBlock as="p" tier="important">only after the first blur or commit attempt to avoid flickering errors mid-typing.</HighlightBlock>
@@ -394,7 +389,7 @@ export default function InlineEditingSystemArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important">Each editor is a real form control with
           proper labels and ARIA. Edit mode entry
           announces (&ldquo;Editing customer
@@ -409,7 +404,7 @@ export default function InlineEditingSystemArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="crucial">Per-field permissions enforced server-side;
           the UI reflects what&rsquo;s editable based on
           server data. Edit payloads carry version
@@ -421,7 +416,7 @@ export default function InlineEditingSystemArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="crucial">Unit tests for the optimistic pipeline
           (apply, confirm, rollback). Integration tests:
           edit a cell, verify optimistic update,
@@ -434,14 +429,14 @@ export default function InlineEditingSystemArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">Cell becomes uneditable mid-session (permission revoked): edit mode exits with a message; no save is attempted. Network offline mid- edit: optimistic update applies;</HighlightBlock>
 <HighlightBlock as="p" tier="important">mutation queues (via the normalization mutation system); when online, mutation flushes; subsequent mutations build on the queued one. Editor unmounts during edit (parent</HighlightBlock>
 <HighlightBlock as="p" tier="important">re- render): edit state preserved if the cell remounts; otherwise the edit is lost. Long text in a small cell: editor expands or becomes a popover for adequate input space.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="crucial">The editor registry is generic; new editor
           types add cleanly. The pipeline reuses
           existing subsystems (validation, normalization,
@@ -453,7 +448,7 @@ export default function InlineEditingSystemArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="crucial">
           Locale-sensitive input is the hard part: store canonical values, parse/format at the
           edges, and keep validation rules locale-aware.
@@ -470,7 +465,7 @@ export default function InlineEditingSystemArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Optimistic vs confirmed-first updates</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -520,7 +515,7 @@ export default function InlineEditingSystemArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">Range editing (apply one value to many cells).
           Real-time collaborative editing of the same
           cell with CRDTs.</HighlightBlock>
@@ -528,100 +523,12 @@ export default function InlineEditingSystemArticle() {
           IndexedDB queue. AI-assisted edit
           suggestions. Voice input for cell values.
           Cross-cell formulas in a constrained way.</Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. How does optimistic updating
-          work?</strong> The cell visually updates on
-          commit; the mutation runs in background.
-          On success, server response merges (correcting
-          drift). On failure, the cell rolls back to
-          the prior value with an error toast. The
-          flow is tracked through the normalization
-          layer&rsquo;s mutation API.
-        </HighlightBlock>
-
-        <p>
-          <strong>2. How is undo implemented?</strong>{" "}
-          Command pattern. Each commit pushes a
-          command with apply/undo methods. Undo pops
-          the latest, reverts the cell via
-          normalization (propagating to all views),
-          and issues a server undo. Redo pushes
-          back.
-        </p>
-
-        <p>
-          <strong>3. How are concurrent edits
-          handled?</strong> Optimistic locking: each
-          row carries a version. On commit, send the
-          version. Server returns 409 Conflict if it
-          mismatches. Conflict banner offers keep-mine,
-          accept-theirs, or merge.
-        </p>
-
-        <p>
-          <strong>4. How does Tab navigation work in
-          edit mode?</strong> Tab commits the current
-          edit and moves edit mode to the next
-          editable cell. Shift-Tab moves backward.
-          Wraps to the next row at row end. Stays in
-          the current cell if the value is invalid.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>5. How is validation
-          integrated?</strong> Through the form
-          validation engine. Per-column validation
-          rules declared with the schema. Validation
-          runs as the user types (deferred to blur
-          for first-time errors). Invalid values
-          block commit.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>6. How are visual states
-          communicated?</strong> Edit-mode focus ring,
-          dirty-state background tint, error indicator,
-          conflict warning. Each state has a
-          distinctive visual that&rsquo;s also
-          accessible (text equivalents, not color
-          alone).
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>7. How does this work with the
-          normalization layer?</strong> Optimistic
-          updates apply to the normalization store;
-          subscribers (every view of the same entity)
-          re-render. Server confirmation merges; on
-          failure, rollback restores. Undo flows
-          through the same path.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>8. How is this accessible?</strong>{" "}
-          Real form controls; edit mode and validation
-          state announce; Tab navigation works; conflict
-          banners are actionable and accessible. Every
-          mouse interaction has a keyboard
-          equivalent.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="important">An inline editing system is per-cell edit state + editor registry + optimistic mutation</HighlightBlock>
-<HighlightBlock as="p" tier="important">pipeline + command-pattern undo . The pipeline reuses validation, normalization, and conflict</HighlightBlock>
-<HighlightBlock as="p" tier="important">detection; new editor types plug into a registry; visual states communicate the lifecycle of each edit.</HighlightBlock>
-<HighlightBlock as="p" tier="crucial">The result feels Excel-fluent — fast
-          edits, instant feedback, clean rollback on
-          failure, undo across the session — while
-          preserving server-side authority.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate canonical data, user intent, transient projection, remote effects, and bounded telemetry. Every cursor, subscription, cache entry, request, timer, observer, and worker requires an explicit owner and cleanup path. Stable ids are mandatory because indexes and DOM nodes are disposable views.</p><p>Keep displayed server value, active draft, optimistic projection, and save generation separate. The editor must never lose a recoverable user draft silently. Commit durable changes only after applying the current policy and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/inline-editing-system-recovery.svg" alt="Design an Inline Editing System recovery" caption="Recovery flow: validate versions, contain scale pressure, preserve stable truth, and explain the result." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Modal editing is easier to control; inline editing is justified for repetitive corrections where low-friction keyboard workflows matter.</p><p>The server version is authoritative. Local commit may project optimistically, but a conflict preserves the draft and explains the newer server value. Scale pressure comes from rapid edits, multiple active cells, validation races, concurrent server updates, virtualization unmounts, and permission changes. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic projection only where rollback is deterministic and visible. Keep authorization and conflict-sensitive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit versions, cursor validation, generation guards, bounded caches, semantic HTML, and idempotent cleanup. Test keyboard use, accessibility output, stale responses, reconnects, retries, scroll restoration, and large datasets.</p><p>Measure interaction latency, render cost, cache pressure, stale drops, conflicts, retries, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include confusing visible data with complete data, trusting arrival order, leaking subscriptions, accepting stale completion, using indexes as identity, and hiding rollback.</p><p>For this topic, validate before submit, reject stale saves, retain drafts across virtualization boundaries, roll back failed projections, restore focus, and show conflict resolution. Validate untrusted inputs, authorize durable actions server-side, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to operational interfaces where users manipulate large, changing datasets under partial failure. Reuse the controller shape while injecting query, authorization, persistence, and fallback policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep displayed server value, active draft, optimistic projection, and save generation separate. The editor must never lose a recoverable user draft silently.</p><h3>What breaks at scale?</h3><p>rapid edits, multiple active cells, validation races, concurrent server updates, virtualization unmounts, and permission changes. I would bound expensive work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>The server version is authoritative. Local commit may project optimistically, but a conflict preserves the draft and explains the newer server value.</p><h3>How do you recover?</h3><p>I would validate before submit, reject stale saves, retain drafts across virtualization boundaries, roll back failed projections, restore focus, and show conflict resolution.</p><h3>Why this architecture?</h3><p>Modal editing is easier to control; inline editing is justified for repetitive corrections where low-friction keyboard workflows matter.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

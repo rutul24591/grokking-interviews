@@ -1,6 +1,1 @@
-# Shopping Cart System — Example 1
-
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+# Design a Shopping Cart System example 1\n\nConcrete low-level implementation exercise for Design a Shopping Cart System.\n

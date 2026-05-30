@@ -20,10 +20,9 @@ export const metadata: ArticleMetadata = {
   relatedTopics: ["kanban-board", "notification-center-inbox", "rich-text-editor"],
 };
 
-export default function ChatMessagingUIArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <p>
+export default function ChatMessagingUIArticle() { return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Chat / Messaging UI</h1><h2>Definition &amp; Context</h2><p>Design a Chat / Messaging UI is an implementation-heavy low-level design problem covering message normalization, bidirectional pagination, WebSocket event merge, optimistic send, read receipts, typing TTLs, and scroll-anchor preservation. A principal-level answer must define state ownership, local structures, lifecycle cleanup, browser semantics, server reconciliation, observability, privacy, and rollback.</p><p>Keep a normalized message map and ordered ids, separate the viewed window from the live edge, and reconcile optimistic client ids with server ids without duplicating visible messages. The important structures are message map, ordered ids, cursor window, live-edge marker, optimistic-id map, receipt watermark, typing TTL map, attachment dimensions, and scroll anchor.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/chat-messaging-ui-runtime.svg" alt="Design a Chat / Messaging UI runtime" caption="Runtime flow from intent through guarded state, semantic projection, and recovery." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the component-specific mechanics that an implementation discussion must defend.</p><p>
         Chat interfaces are a canonical "tricky" LLD problem because the requirements
         actively conflict with standard web patterns. Lists normally scroll downward
         from top to bottom; chat lists scroll upward to load history. Infinite scroll
@@ -42,7 +41,7 @@ export default function ChatMessagingUIArticle() {
         caption="Chat UI architecture: message store, scroll anchor, real-time delivery, typing indicators and read receipts"
       />
 
-      <h2>Clarifying the Requirements</h2>
+      <h3>Clarifying the Requirements</h3>
       <p>
         The scope of a chat UI ranges from a simple comments section to a full Slack
         equivalent. Key questions:
@@ -71,7 +70,7 @@ export default function ChatMessagingUIArticle() {
         (server push only), or polling. WebSocket is the standard for production chat.
       </p>
 
-      <h2>The Message Store</h2>
+      <h3>The Message Store</h3>
       <p>
         Messages are stored as a sorted list (by timestamp) in a normalized structure.
         The primary data structure is a Map keyed by message ID (for O(1) lookup and
@@ -104,7 +103,7 @@ export default function ChatMessagingUIArticle() {
         viewed cursor to the live edge to fill the gap.
       </HighlightBlock>
 
-      <h2>Scroll Anchor Preservation</h2>
+      <h3>Scroll Anchor Preservation</h3>
       <p>
         The hardest technical problem in chat UI is preventing viewport jumps when new
         content is prepended (loading older messages). When 50 messages are prepended
@@ -131,7 +130,7 @@ export default function ChatMessagingUIArticle() {
         "scroll position preservation" pattern used by Discord's message list.
       </p>
 
-      <h2>Automatic Scroll-to-Bottom</h2>
+      <h3>Automatic Scroll-to-Bottom</h3>
       <p>
         When a new message arrives, the chat should auto-scroll to show it — but only
         if the user is already near the bottom (reading the latest messages). If the
@@ -155,7 +154,7 @@ export default function ChatMessagingUIArticle() {
         their sent message.
       </p>
 
-      <h2>Message Virtualization</h2>
+      <h3>Message Virtualization</h3>
       <p>
         For channels with long history, rendering all messages in the DOM is
         prohibitively slow. Virtual scrolling renders only the messages in the viewport
@@ -179,7 +178,7 @@ export default function ChatMessagingUIArticle() {
         for chat-like lists and handle these edge cases.
       </p>
 
-      <h2>Optimistic Message Sending</h2>
+      <h3>Optimistic Message Sending</h3>
       <p>
         When the user sends a message, show it immediately in the UI without waiting
         for server confirmation. This optimistic update reduces perceived latency from
@@ -207,7 +206,7 @@ export default function ChatMessagingUIArticle() {
         by server timestamps for consistency.
       </p>
 
-      <h2>Typing Indicators</h2>
+      <h3>Typing Indicators</h3>
       <p>
         The typing indicator ("Alice is typing...") shows when another user is composing
         a message. The indicator disappears after the user stops typing or sends the
@@ -236,7 +235,7 @@ export default function ChatMessagingUIArticle() {
         appearance and disappearance should not cause layout shifts in the message list.
       </HighlightBlock>
 
-      <h2>Read Receipts</h2>
+      <h3>Read Receipts</h3>
       <p>
         Read receipts show when a message has been seen by the recipient. In a two-person
         chat, this is a simple boolean — the message is "read" when the recipient has
@@ -257,7 +256,7 @@ export default function ChatMessagingUIArticle() {
         message item and updated when the real-time update arrives.
       </p>
 
-      <h2>Message Grouping</h2>
+      <h3>Message Grouping</h3>
       <p>
         Messages from the same sender sent within 2–5 minutes of each other are
         visually grouped (only the first shows the sender's avatar and name; subsequent
@@ -273,7 +272,7 @@ export default function ChatMessagingUIArticle() {
         of the avatar and sender name.
       </p>
 
-      <h2>Accessibility</h2>
+      <h3>Accessibility</h3>
       <p>
         The message list should have role="log" with aria-live="polite" and
         aria-label="Message history." The aria-live region announces new incoming
@@ -292,78 +291,12 @@ export default function ChatMessagingUIArticle() {
         messages with limits) via aria-label and aria-description. Typing indicator
         changes should be announced via a separate aria-live="polite" element so
         screen reader users know when someone is typing.
-      </p>
-
-      <h2>Interview Q&A</h2>
-
-      <h3>Q: How do you handle the race between initial fetch and real-time events?</h3>
-      <p>
-        Same pattern as the notification center: buffer real-time events that arrive
-        during the initial fetch. Connect to the WebSocket before the fetch starts
-        (to avoid missing events during the fetch window), but hold incoming messages
-        in a buffer until the fetch completes. After the fetch populates the store,
-        replay the buffered messages and deduplicate by ID. This ensures no messages
-        are missed during the load window. The alternative — connecting to WebSocket
-        after the fetch — risks missing messages sent during the fetch round-trip time.
-      </p>
-
-      <h3>Q: How does the scroll anchor approach work with a virtualized list?</h3>
-      <p>
-        CSS scroll anchoring operates on the DOM, but virtualized lists remove elements
-        from the DOM when they scroll out of view. This means the anchor element may
-        not exist when new content is prepended. The manual approach is required for
-        virtualized lists: before prepending new messages, record the top item's offset
-        (virtualList.scrollToIndex with alignment 'start' gives the item's current
-        viewport position). After prepending, the virtual list's internal offset
-        accounting should adjust automatically if the library supports prepend-aware
-        mode (Virtuso's firstItemIndex prop or react-virtual's initialScrollIndex).
-        Without explicit library support, store the visible item index, measure its
-        new rendered offset after prepend, and call scrollToOffset with the delta.
-      </p>
-
-      <h3>Q: How do you implement jump-to-message (clicking a reply preview to jump to the original message)?</h3>
-      <p>
-        The reply preview shows the original message's text. Clicking it should
-        navigate to the original message, which may be far up in the history (not
-        in the current DOM or even in the current loaded window). The flow: fetch
-        the target message by ID from the API. If the message's timestamp is within
-        the currently loaded range, scroll to it (using the virtual list's scrollToIndex
-        if virtualized). If it is outside the loaded range, fetch messages around the
-        target timestamp (a page centered on the target's timestamp), replace the
-        current message list window with this fetched page, and scroll to the target
-        message. Highlight the target message temporarily (pulsing animation) to orient
-        the user. The "jump to latest" button becomes available so the user can return
-        to the live edge.
-      </p>
-
-      <h3>Q: How do you handle image messages where the image dimensions are unknown until load?</h3>
-      <p>
-        Unknown image dimensions cause CLS: the list height changes when the image
-        loads, shifting the scroll position. Two solutions: reserve space before load
-        using a placeholder div sized to the expected image dimensions (sent in the
-        message metadata — the server knows the image dimensions from upload), or use
-        the CSS aspect-ratio property with a known aspect ratio to create a stable
-        placeholder. When the image loads, it fills the placeholder without changing
-        the layout. If the server does not provide dimensions (for third-party images
-        in link unfurls), use a fixed-height placeholder (e.g., 200px) and accept the
-        small layout shift when the image loads — or disable link unfurls for links
-        without known dimensions.
-      </p>
-
-      <h3>Q: How do you design the message input for a Slack-like rich text experience?</h3>
-      <p>
-        A rich message input (bold, italic, code, mentions, emoji) requires a rich text
-        editor rather than a plain textarea. Use a lightweight editor like Tiptap or
-        Plate.js, configured with only the relevant extensions. The document model
-        should be a small subset of the full editor schema: paragraphs, inline marks
-        (bold, italic, code, link), mention nodes, and emoji nodes. Mentions are
-        inserted by typing "@" and selecting from an autocomplete dropdown (fetched from
-        the members API, filtered by the typed query). Emoji are inserted by typing ":"
-        and selecting from a picker. On submit, serialize the editor content to the
-        server's message format — either a custom JSON schema or Markdown. The server
-        stores the structured format; the chat UI re-renders it using the same schema
-        to display formatted messages.
-      </p>
-    </ArticleLayout>
-  );
-}
+      </p></section>
+<section><h2>Architecture &amp; Flow</h2><p>Use five boundaries: an input adapter, a typed state controller, a projection layer, an integration adapter, and an observability adapter. Normalize events before they enter state. Keep previews separate from commits. Release timers, observers, listeners, abort controllers, workers, and pointer capture idempotently on cancel and unmount.</p><p>Keep a normalized message map and ordered ids, separate the viewed window from the live edge, and reconcile optimistic client ids with server ids without duplicating visible messages. For durable changes, validate the latest intent and record enough evidence to rollback deterministically.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/chat-messaging-ui-scale-recovery.svg" alt="Design a Chat / Messaging UI scale and recovery" caption="Scale defense: bound pressure, validate policy, reconcile failures, and emit reasoned evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Polling is operationally simple; WebSocket delivery is justified for low-latency bidirectional events, but cursor-based recovery remains mandatory after reconnect.</p><p>The server sequence is authoritative for durable ordering. Optimistic local sends are provisional, receipts are monotonic watermarks, and ephemeral typing indicators expire locally. The dominant scale risks are long histories, out-of-order events, reconnect gaps, media layout shifts, unread storms, and users reading history while new messages arrive. Control them with bounded work, stable ids, cancellation, generation guards, measured caching, and explicit degraded behavior.</p><p>Optimistic UI is appropriate only when rollback is deterministic and understandable. Authorization, destructive effects, and conflict-sensitive truth stay server-authoritative.</p></section>
+<section><h2>Best practices</h2><p>Use typed state unions, stable identities, idempotency keys, versioned writes, SSR-safe browser feature detection, abortable async work, bounded caches, and semantic HTML. Test keyboard-only use, screen-reader output, slow networks, stale completion, retries, unmount during work, and large datasets.</p><p>Measure blocked transitions, stale drops, rollback rates, latency percentiles, cache pressure, retry exhaustion, and accessibility regressions. Keep telemetry small and free of sensitive content.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing preview and committed state, trusting arrival order, leaking resources after unmount, accepting stale completion, assuming visible data is the complete dataset, and implementing custom controls without accessible semantics.</p><p>For this topic, buffer socket events during initial fetch, dedupe by id and sequence, detect history gaps, preserve the visible anchor during prepend, and expose retry for failed optimistic sends. Security and privacy require the design to authorize conversations server-side, sanitize rich content and unfurls, scan attachments, redact message bodies from telemetry, and rate-limit typing and send events.</p></section>
+<section><h2>Real-world use cases</h2><p>This design appears in production surfaces where repeated interaction, large datasets, asynchronous completion, and partial failure are normal. Reuse the runtime shell, but inject product policy explicitly: authorization, latency budget, persistence boundary, fallback, and telemetry.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep a normalized message map and ordered ids, separate the viewed window from the live edge, and reconcile optimistic client ids with server ids without duplicating visible messages. I would name preview, commit, derived projection, async generation, and rollback evidence separately.</p><h3>What breaks at scale?</h3><p>long histories, out-of-order events, reconnect gaps, media layout shifts, unread storms, and users reading history while new messages arrive. I would bound each expensive operation and cancel work that no longer affects the visible committed result.</p><h3>What consistency model applies?</h3><p>The server sequence is authoritative for durable ordering. Optimistic local sends are provisional, receipts are monotonic watermarks, and ephemeral typing indicators expire locally.</p><h3>How do you recover from failure?</h3><p>I would buffer socket events during initial fetch, dedupe by id and sequence, detect history gaps, preserve the visible anchor during prepend, and expose retry for failed optimistic sends.</p><h3>How do you defend the architecture?</h3><p>Polling is operationally simple; WebSocket delivery is justified for low-latency bidirectional events, but cursor-based recovery remains mandatory after reconnect. The added complexity is acceptable only when the required behavior and operational evidence justify it.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API" target="_blank" rel="noreferrer">MDN Intersection Observer API</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>; }

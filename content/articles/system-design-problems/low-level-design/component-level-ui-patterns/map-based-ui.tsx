@@ -20,10 +20,9 @@ export const metadata: ArticleMetadata = {
   relatedTopics: ["file-explorer-ui", "dashboard-builder", "image-gallery-lightbox"],
 };
 
-export default function MapBasedUIArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <p>
+export default function MapBasedUIArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Map-Based UI</h1><h2>Definition &amp; Context</h2><p>Design a Map-Based UI is an implementation-heavy low-level design problem covering viewport state, tile loading, marker clustering, geospatial queries, selection, geolocation permission, cache budgeting, and fallback. A principal-level answer must make state ownership, data structures, lifecycle, failure containment, consistency, privacy, cost, and observability explicit.</p><p>Separate camera state from query state and selected entity state. Only meaningful viewport settles should trigger remote search. The implementation structures are camera bounds, zoom, tile cache, marker index, cluster tree, selected id, query generation, permission status, and fallback list.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/map-based-ui-runtime.svg" alt="Design a Map-Based UI runtime" caption="Topic-specific runtime stages from user intent through durable projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below contains the topic-specific implementation mechanics.</p><p>
         Map-based UIs are a staple of real estate, logistics, food delivery, and
         ridesharing products. Building a production-quality map component requires
         understanding how tile servers work, how WebGL-based map renderers differ
@@ -40,7 +39,7 @@ export default function MapBasedUIArticle() {
         caption="Map UI architecture: tile rendering, viewport-driven data fetching, marker clustering, and geofencing"
       />
 
-      <h2>Clarifying the Requirements</h2>
+      <h3>Clarifying the Requirements</h3>
       <p>
         Map UIs vary enormously in complexity. Start with the data scale: how many
         markers? A real estate map with 50 listings per viewport is trivially managed
@@ -70,7 +69,7 @@ export default function MapBasedUIArticle() {
         on top.
       </p>
 
-      <h2>Tile Rendering Architecture</h2>
+      <h3>Tile Rendering Architecture</h3>
       <p>
         Map renderers display the world by fetching and compositing map tiles — raster
         images (PNG/JPEG) or vector data (Protobuf Mapbox Vector Tiles) for each
@@ -99,7 +98,7 @@ export default function MapBasedUIArticle() {
         map will cause layout thrashing and frame drops at any meaningful scale.
       </HighlightBlock>
 
-      <h2>React + Map Library Integration Pattern</h2>
+      <h3>React + Map Library Integration Pattern</h3>
       <p>
         The canonical pattern for integrating a map library with React is to initialize
         the map once in a useEffect and hold the map instance in a ref. All subsequent
@@ -126,7 +125,7 @@ export default function MapBasedUIArticle() {
         up the full marker data from a store and shows a detail panel.
       </p>
 
-      <h2>Viewport-Driven Data Fetching</h2>
+      <h3>Viewport-Driven Data Fetching</h3>
       <p>
         A search-on-map-move pattern fetches data for the current viewport from the
         server. The map's moveend event fires when panning or zooming completes. The
@@ -155,7 +154,7 @@ export default function MapBasedUIArticle() {
         This eliminates the need to perform clustering on the client for large datasets.
       </p>
 
-      <h2>Marker Clustering</h2>
+      <h3>Marker Clustering</h3>
       <p>
         Client-side marker clustering groups nearby markers into single cluster markers
         with a count badge when the markers are too close together to be individually
@@ -187,7 +186,7 @@ export default function MapBasedUIArticle() {
         elements. deck.gl's ScatterplotLayer can render 1 million points at 60fps.
       </HighlightBlock>
 
-      <h2>Custom Popups and Info Windows</h2>
+      <h3>Custom Popups and Info Windows</h3>
       <p>
         When the user clicks a marker, a popup appears showing the marker's detail
         content. Map libraries provide their own popup implementations, but these are
@@ -211,7 +210,7 @@ export default function MapBasedUIArticle() {
         project() method.
       </p>
 
-      <h2>Geofence Drawing</h2>
+      <h3>Geofence Drawing</h3>
       <p>
         Geofencing allows users to draw polygon regions on the map. The drawing tool
         has two modes: drawing (adding vertices by clicking) and editing (dragging
@@ -237,7 +236,7 @@ export default function MapBasedUIArticle() {
         self-intersections and unkink() to fix them if needed.
       </p>
 
-      <h2>Real-Time Moving Markers</h2>
+      <h3>Real-Time Moving Markers</h3>
       <p>
         For markers that move (delivery drivers, vehicles, aircraft), receiving position
         updates every 10 seconds and snapping the marker to the new position creates
@@ -252,7 +251,7 @@ export default function MapBasedUIArticle() {
         haversine formula, and set the icon's rotation to match.
       </p>
 
-      <h2>Accessibility</h2>
+      <h3>Accessibility</h3>
       <p>
         Map canvases (WebGL or canvas elements) are inherently inaccessible to screen
         readers — they render pixels, not accessible semantic elements. The accessible
@@ -262,76 +261,12 @@ export default function MapBasedUIArticle() {
         The map itself has role="application" with aria-label describing its purpose.
         Interactive map controls (zoom in/out, search) are real button/input elements
         outside the canvas with proper labels and keyboard handling.
-      </p>
-
-      <h2>Interview Q&A</h2>
-
-      <h3>Q: How do you efficiently update 1,000 moving markers without dropping frames?</h3>
-      <p>
-        Avoid the pattern of calling mapbox.Marker.setLngLat() in a loop for 1,000
-        markers on every update — this forces 1,000 DOM style mutations per frame.
-        Instead, use a GeoJSON data source layer. Store all marker positions in a GeoJSON
-        FeatureCollection, update the map source using map.getSource('markers').setData(geojson),
-        and let Mapbox's GL rendering pipeline handle the visual update. setData is a
-        single operation that pushes the entire feature collection to the GPU in one
-        batch; Mapbox's shader computes the screen positions for all 1,000 features
-        in parallel on the GPU. For animated position transitions, use Mapbox's symbol
-        layer animation or deck.gl's ScatterplotLayer with animated props.
-      </p>
-
-      <h3>Q: How do you implement "search as I move the map" without fetching on every frame?</h3>
-      <p>
-        The map's move event fires on every animation frame during panning (typically
-        60 times per second). Fetching on every move event would fire 60 requests per
-        second during a pan. The solution has two parts: listen to moveend (which fires
-        only when the pan animation completes) rather than move, and add a debounce of
-        200–300ms on top of moveend to handle rapid sequential pans. The debounce
-        resets on each new moveend event, so only the final position after a pause in
-        panning triggers a fetch. Also cancel any in-flight request when a new one starts
-        using AbortController, so out-of-order responses from slow network requests do
-        not overwrite newer data.
-      </p>
-
-      <h3>Q: How do you handle a map that needs to show both raw markers and cluster markers at the same time, depending on zoom?</h3>
-      <p>
-        Use Mapbox's built-in clustering (clusterMaxZoom and clusterRadius on the
-        GeoJSON source). Below the maxZoom threshold, Mapbox automatically computes
-        and renders cluster points. Above it, individual points are shown. Add two
-        separate symbol layers in the map style: one for cluster features (a circle
-        with a count label, using the point_count expression to access the cluster's
-        member count) and one for individual features (custom marker icons). Mapbox
-        evaluates the appropriate layer for each feature based on whether it is a
-        cluster or individual point — no client-side switching logic needed.
-      </p>
-
-      <h3>Q: What are the privacy implications of sending viewport coordinates to the backend on every map move?</h3>
-      <p>
-        The viewport bounding box reveals where the user is looking, which can infer
-        the user's location (if they zoom in on a specific neighborhood), their interests
-        (if they search a specific area), and their daily patterns (if they frequently
-        look at the same area). This is sensitive data under GDPR and CCPA, particularly
-        if combined with a user ID. Mitigations: do not log viewport queries with
-        user identifiers if the feature does not require it; add query anonymization
-        (coarsen the bounding box to the nearest tile boundary before sending to the
-        server); cache viewport query results aggressively at a tile granularity so
-        the same viewport does not generate multiple identifiable requests; and disclose
-        viewport data collection in the privacy policy.
-      </p>
-
-      <h3>Q: How would you implement a map that works offline (like a hiking map app)?</h3>
-      <p>
-        Offline maps require pre-downloading tiles for a geographic region. The user
-        selects a bounding box and zoom range; the app computes the list of tile
-        coordinates (z, x, y) for all zoom levels in that range and bounding box,
-        fetches each tile, and stores the tiles in IndexedDB. A Service Worker
-        intercepts subsequent tile requests and serves them from IndexedDB when offline.
-        For vector tiles (Mapbox GL), the tile data is the Protobuf binary; for raster
-        tiles, it is PNG/JPEG blobs. Storage estimates: a city-scale area at zoom
-        levels 10–16 is typically 50–200 MB of vector tile data. Expose a download
-        progress indicator and a storage usage display to keep the user informed.
-        Implement an eviction policy (oldest downloaded region first) when storage
-        approaches the quota limit.
-      </p>
-    </ArticleLayout>
-  );
-}
+      </p></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate input normalization, typed state transitions, derived projection, integration effects, and bounded telemetry. Preview state must not silently become durable state. Every timer, listener, observer, worker, request, pointer capture, and cache entry needs an explicit lifetime.</p><p>Separate camera state from query state and selected entity state. Only meaningful viewport settles should trigger remote search. Commit only after applying the latest policy and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/map-based-ui-recovery.svg" alt="Design a Map-Based UI recovery map" caption="Recovery decisions: contain pressure, retain committed truth, reconcile safely, and emit evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>A static map image is cheaper; an interactive map runtime is justified for spatial discovery, clustering, and direct manipulation.</p><p>Viewport queries are eventually consistent snapshots. Results are accepted only for the active query generation and bounds; selection remains stable by entity id. The scale pressure is dense markers, rapid pan and zoom, tile failures, stale viewport responses, device memory limits, and denied geolocation. Bound work, cancel stale effects, cap memory, and degrade predictably.</p><p>Use optimistic UI only where rollback is deterministic and understandable. Keep authorization and destructive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit state unions, idempotency keys, generation guards, SSR-safe feature checks, and deterministic cleanup. Test keyboard use, accessibility output, stale responses, retries, unmount, constrained devices, and large datasets.</p><p>Measure interaction latency, blocked transitions, stale drops, rollbacks, cache pressure, retries, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing preview and commit, trusting arrival order, leaking resources, accepting stale async work, and implementing custom interaction without semantic fallbacks.</p><p>For this topic, debounce settled viewport queries, cancel stale requests, bound tile and marker caches, retain selection across clustering, and provide a list fallback. Security and privacy require the design to validate untrusted input, authorize durable mutations server-side, minimize sensitive telemetry, and bound resource consumption.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies where users repeatedly manipulate state while network, browser, and authorization boundaries can fail independently. Reuse the controller shell, but inject product-specific policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Separate camera state from query state and selected entity state. Only meaningful viewport settles should trigger remote search.</p><h3>What breaks at scale?</h3><p>dense markers, rapid pan and zoom, tile failures, stale viewport responses, device memory limits, and denied geolocation. I would bound expensive work and cancel obsolete effects.</p><h3>What consistency model applies?</h3><p>Viewport queries are eventually consistent snapshots. Results are accepted only for the active query generation and bounds; selection remains stable by entity id.</p><h3>How do you recover?</h3><p>I would debounce settled viewport queries, cancel stale requests, bound tile and marker caches, retain selection across clustering, and provide a list fallback.</p><h3>Why this architecture?</h3><p>A static map image is cheaper; an interactive map runtime is justified for spatial discovery, clustering, and direct manipulation. The implementation cost is justified only when the required behavior needs it.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li></ul></section>
+</ArticleLayout>}

@@ -2,215 +2,196 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
-import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-lld-global-event-bus",
-  title: "Global Event Bus System",
-  description:
-    "Pub/sub event bus for decoupled component communication with event filtering, priority handling, and async event processing.",
+  title: "Design a Global Event Bus",
+  description: "Implementation-heavy low-level design guide for design a global event bus, covering APIs, state transitions, edge cases, failure handling, and interview trade-offs.",
   category: "low-level-design",
   subcategory: "state-interaction-modeling",
   slug: "global-event-bus",
-  wordCount: 5400,
-  readingTime: 33,
-  lastUpdated: "2026-05-06",
-  tags: ["lld", "event-bus", "pub-sub", "communication", "decoupling"],
-  relatedTopics: ["fine-grained-subscription-system", "cross-tab-state-sync"],
+  wordCount: 4600,
+  readingTime: 22,
+  lastUpdated: "2026-05-29",
+  tags: ["lld", "state-modeling", "frontend-architecture", "principal-engineer"],
+  relatedTopics: ["state-management", "race-condition-handling", "observability"],
 };
 
 export default function GlobalEventBusArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">
-          In large React applications, components that have no direct parent-child relationship regularly need to communicate. A notification bell in the header needs to know when a background API call returns new alerts. A floating toast manager needs to display messages triggered from deeply nested form submissions. A WebSocket handler needs to broadcast incoming server events to whatever components are currently mounted and interested. Prop drilling (passing callbacks through 5–8 levels of component hierarchy) is unmaintainable. Lifting state up to a common ancestor works but pollutes shared state with transient, ephemeral communication data that doesn't belong there.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          The global event bus provides a decoupled publish-subscribe channel. Publishers emit events without knowing who is listening. Subscribers register interest in specific event types without knowing who publishes them. The bus mediates between them, maintaining a registry of active subscriptions and routing events to matching subscribers. This is the front-end equivalent of a message queue — fire-and-forget messaging between loosely coupled components.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">
-          The pattern has real failure modes at scale. Without careful lifecycle management, component subscriptions leak after unmount, causing stale handlers to receive events. Without type safety, event names become magic strings that diverge silently between publishers and subscribers. Without backpressure, high-frequency events overwhelm synchronous handlers. Without circular-event detection, events that trigger other events can create infinite dispatch loops that freeze the browser.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          <strong>Explicit assumptions:</strong> Communication is unidirectional (fire-and-forget, not request-response). Event types and payloads are defined at application design time, not dynamically discovered at runtime. The bus is in-process (same JavaScript execution context, not cross-tab). Real-time throughput is bounded — the bus is not a substitute for stream processing infrastructure.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">
-            <strong>Publish:</strong> Any component or service can emit an event by type with a typed payload. The caller does not block waiting for subscribers to finish.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            <strong>Subscribe:</strong> Components register handlers for specific event types. The handler receives the typed payload. Multiple handlers can subscribe to the same event type.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            <strong>Unsubscribe:</strong> Handlers can be deregistered individually. Returns an unsubscribe function from subscribe() to enable easy cleanup.
-          </HighlightBlock>
-          <li>
-            <strong>Event Filtering:</strong> Subscribers can filter within an event type using a predicate — receive only CartItemAdded events where item.category === 'electronics'.
-          </li>
-          <li>
-            <strong>Priority Ordering:</strong> Subscribers can declare a priority level — higher-priority handlers run before lower-priority handlers for the same event.
-          </li>
-          <li>
-            <strong>Async Handler Support:</strong> Handlers can return Promises. The bus can optionally await all handlers before resolving the publish call, enabling sequenced processing.
-          </li>
-          <li>
-            <strong>Error Isolation:</strong> A thrown error in one subscriber must not prevent other subscribers from receiving the event.
-          </li>
-          <li>
-            <strong>Event History / Replay:</strong> Optional buffering of recent events so late subscribers can receive the last N events for a type on subscribe (useful for initialization).
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="crucial">
-            <strong>Latency:</strong> Synchronous event dispatch must complete in under 1ms per subscriber for simple handlers.
-          </HighlightBlock>
-          <li>
-            <strong>Throughput:</strong> The bus must handle 10,000+ events per second without becoming a bottleneck in high-frequency scenarios (WebSocket message streams, animation tick events).
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Memory:</strong> Subscription registry uses O(n) memory where n is active subscription count. No unbounded growth — cleanup on unsubscribe is O(1) with indexed storage.
-          </HighlightBlock>
-          <li>
-            <strong>Type Safety:</strong> TypeScript generics enforce that subscribers for a given event type receive the correct payload type — no runtime casting.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Edge Cases</h3>
-        <ul className="space-y-2">
-          <li>Component subscribes in useEffect, unmounts before calling cleanup — handler receives events for unmounted component (React state update warnings, potential crashes).</li>
-          <li>Circular dispatch: event handler A emits event B, event B's handler emits event A — infinite loop.</li>
-          <li>Subscribe during event dispatch — should the new subscriber receive the currently dispatching event? (Typically: no — iteration snapshot taken at dispatch start.)</li>
-          <li>Unsubscribe during event dispatch — handler list may change mid-iteration.</li>
-          <li>Same handler reference subscribed twice to the same event type — should deduplicate or call twice?</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="important">The bus maintains a Map from event type string to an ordered array of subscription records. Each record holds the handler function, an optional predicate filter, a priority value, and a unique subscription ID.</HighlightBlock>
-<HighlightBlock as="p" tier="important">On publish, the bus looks up the subscription array for the event type, takes a snapshot of it (to handle subscribe/unsubscribe during dispatch safely), sorts by priority if mixed priorities are present, and invokes each handler that passes its predicate filter, wrapped in a try-catch.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">
-          The TypeScript interface uses a generic event map pattern — an interface mapping event type strings to payload types. All publish and subscribe calls are parameterized with a key of this map, giving compile-time safety. The bus implementation is a singleton module exported as a single instance, or injected through React Context for testability.
-        </HighlightBlock>
-      </section>
-
-      <section>
+        <h1>Design a Global Event Bus</h1>
+        <h2>Definition &amp; Context</h2>
+        <p>
+          Design a Global Event Bus is a low-level design problem about building a reusable typed event bus that product teams can depend on under real user behavior, not just the happy path. In a staff or principal interview, the answer should move past naming a pattern and describe the runtime contract: public API, internal state shape, transition rules, ownership boundaries, observability, and what the component refuses to do when correctness is uncertain.
+        </p>
+        <p>
+          The design target is an implementation that can live inside a complex web application with concurrent user actions, remounts, retries, background work, and multiple teams integrating it. The core API is publish(event), subscribe(type, handler, options), unsubscribe(token), drainDeadLetters(). The core state model is subscribed, publishing, queued, replaying, disposed. The most important interview signal is explaining why those states exist, which transitions are legal, and how the design behaves when One subscriber throws while other subscribers must still receive the event exactly once.
+        </p>
         <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/state-interaction-modeling/global-event-bus.svg"
-          alt="Global event bus architecture with publishers, event bus core API, subscribers, typed event catalog, pitfalls, and React integration pattern"
-          caption="Global event bus architecture with publishers, event bus core API, subscribers, typed event catalog, pitfalls, and React integration pattern"
+          src="/diagrams/system-design-problems/low-level-design/state-interaction-modeling/global-event-bus-state-runtime.svg"
+          alt="Design a Global Event Bus runtime state model"
+          caption="Runtime model: public API calls are normalized into guarded state transitions, side effects are isolated, and observers receive stable snapshots."
         />
+      </section>
 
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Core Registry Implementation</h3>
+      <section>
+        <h2>Core Concepts</h2>
         <p>
-          The subscription registry uses a Map where keys are event type strings and values are arrays of subscription objects sorted by priority (descending — highest first). Each subscription object contains: a unique ID (auto-incrementing integer or nanoid), the handler function reference, an optional filter predicate, and the registered priority (default: 0).
+          Start with a narrow ownership boundary. The typed event bus owns transition validity, deduplication of unsafe work, disposal, and telemetry. UI components should not manually coordinate the same rules with scattered booleans. A component may ask for a transition, but the runtime decides whether the event is accepted, ignored, coalesced, retried, or rejected with a typed reason.
         </p>
         <p>
-          Subscribe inserts into the array in priority order (binary search for insertion point). Unsubscribe finds the subscription by ID and removes it. Both operations are O(n) in the worst case on the per-type array; for most applications with fewer than 50 subscribers per event type, this is negligible. For pathological cases (hundreds of subscribers on a single event type), an indexed approach (Map by subscriptionId) can make unsubscribe O(1).
+          The internal model should be explicit rather than inferred from incidental fields. For this topic the durable structures are topic registry, priority queue, replay buffer, dead-letter queue, subscriber token, telemetry hook. These structures let the implementation answer hard questions: which operation is current, which subscribers are still alive, whether a replay is deterministic, whether a persisted snapshot belongs to the current user, or whether a conflict needs to be surfaced instead of hidden.
         </p>
         <p>
-          Dispatch iterates a snapshot: const snapshot = [...subscriptions]; snapshot.forEach(). This protects against mutations to the live array during iteration. After the snapshot is taken, subscribe and unsubscribe calls operate on the original array without affecting the current dispatch iteration.
+          The implementation should separate pure state transitions from effects. Reducer-like logic calculates the next snapshot and an effect description. A runner performs I/O, timers, persistence, or subscriber callbacks after the state commit. This makes race handling testable, prevents side effects from firing during speculative transitions, and gives the design a place to add cancellation, rollback, and debug instrumentation.
         </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Type-Safe Event Map Pattern</h3>
+        <h3>Implementation contract</h3>
         <p>
-          Define a central EventMap interface that enumerates all event types and their corresponding payload types. The bus is typed as EventBus extends EventMap. The publish and subscribe methods use keyof EventMap as the event type parameter, and EventMap[K] as the payload type. This ensures that publishing a CartItemAdded event with the wrong payload shape is a compile-time error, not a runtime surprise.
-        </p>
-        <p>
-          All event type strings are co-located in a const enum or string literal union, eliminating magic string typos. A common convention is to namespace event types by domain: 'auth:login', 'auth:logout', 'cart:item-added', 'notification:received'. This makes the event catalog scannable and reduces collision risk when different teams own different event domains.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">React Integration via useEventBus Hook</h3>
-        <p>
-          A custom hook encapsulates the subscribe/unsubscribe lifecycle contract. The hook accepts an event type and a handler callback. In a useEffect, it calls bus.subscribe and stores the returned unsubscribe function in the effect's cleanup. When the component unmounts or the event type/handler changes, the cleanup fires and the subscription is removed.
+          The contract for Design a Global Event Bus should be written as if another team will build a complex feature on top of it without reading the internals. The runtime must define what identity means, what a version represents, which events are idempotent, which methods are safe after disposal, and whether callers can observe intermediate states. Ambiguity in this contract usually becomes a production incident: duplicate notifications, stale UI, lost rollback information, or a memory leak that only appears after navigation loops.
         </p>
         <p>
-          The handler must be wrapped in useCallback or stabilized via useRef to prevent the useEffect from re-running on every render due to a new function reference. A common pattern: the hook accepts a handler wrapped in useRef internally, so the useEffect dependency is stable while the handler reference itself can change freely.
-        </p>
-        <p>
-          For publishing, a useBusPublish hook or a simple bus.publish import works — publishing is stateless and does not need cleanup. However, in tests, the bus should be injectable via context so that test code can use a local instance without polluting the global bus singleton.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Async Event Handling and Backpressure</h3>
-        <HighlightBlock as="p" tier="important">
-          Synchronous dispatch is straightforward but insufficient when handlers perform async work (fetching data on event receipt, writing to IndexedDB, logging to analytics). Two dispatch modes address this: fire-and-forget (default) where async handlers are started but not awaited, and await-all where publish returns a Promise that resolves after all async handlers complete.
-        </HighlightBlock>
-        <p>
-          Fire-and-forget is appropriate for independent side effects (analytics tracking, cache invalidation). Await-all is appropriate when the publisher needs to know all subscribers have processed the event before continuing (e.g., a save-all event before navigation, where all form components need to flush their local state).
-        </p>
-        <HighlightBlock as="p" tier="important">
-          Backpressure is a real concern for high-frequency events. A WebSocket that receives 1000 messages per second should not invoke synchronous handlers 1000 times per second if those handlers trigger React state updates. Implement event batching: accumulate events within a requestAnimationFrame and deliver them in bulk once per animation frame. React 18's automatic batching helps when the handlers call setState, but the accumulation before delivery still needs explicit implementation.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Circular Event Detection</h3>
-        <HighlightBlock as="p" tier="important">
-          Circular events occur when handler A emits event B and handler B emits event A, creating an infinite dispatch loop. Detect this by tracking a dispatch depth counter. Each publish call increments a depth counter; each completion decrements it. If depth exceeds a threshold (typically 10–20), throw an error or log a warning and abort. The thrown error includes a stack trace of the event chain, identifying exactly which publish calls are circularly referencing each other.
-        </HighlightBlock>
-        <p>
-          An alternative is to track the in-flight event set: each publish adds the event type to a set; completion removes it. If a handler attempts to publish an event type already in the set, that's a direct cycle — throw immediately with a clear message.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Event History and Late Subscription Replay</h3>
-        <p>
-          Some use cases require that a component mounting after an event was published still receives the most recent event of that type. Example: a modal that opens after a 'feature-flag-loaded' event needs the flag values, but the event was published before the modal mounted. Replay-on-subscribe solves this: the bus optionally buffers the last N events per type; new subscribers immediately receive the buffered events on subscription.
-        </p>
-        <p>
-          Configuration: some event types should replay on subscribe (initialization events, configuration loaded, feature flags), while others should not (user click events, one-time notifications). Mark replay-eligible event types in the EventMap definition. The buffer size should be small (typically 1 — only the most recent event) to avoid unexpected state initialization from stale events.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Domain-Scoped Buses vs Single Global Bus</h3>
-        <p>
-          A single global bus is the simplest architecture but can become a coordination problem on large teams where multiple feature teams publish and subscribe to the same bus. An alternative is domain-scoped buses: the auth domain uses an auth bus, the cart domain uses a cart bus. Cross-domain events require a deliberate bridge (a service that subscribes to one bus and publishes to another), making inter-domain dependencies explicit and auditable.
-        </p>
-        <HighlightBlock as="p" tier="crucial">
-          The trade-off: single bus has lower boilerplate and simpler testing setup. Domain-scoped buses provide better isolation and enable different teams to independently replace or refactor their event contracts. For applications with more than 5–6 distinct domains or more than 30 event types, domain-scoped buses scale better architecturally.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Monitoring and Observability</h3>
-        <HighlightBlock as="p" tier="important">
-          Instrument the bus in development mode: log each publish with event type, payload (redacted for sensitive fields), subscriber count, and dispatch duration. In production, emit sampled metrics: event frequency by type per minute, average handler count per dispatch, error rate by event type, and maximum dispatch duration (to detect slow handlers).
-        </HighlightBlock>
-        <p>
-          A development DevTools panel showing a live event stream with timestamps and payloads dramatically reduces debugging time for event-driven state bugs. This can be built as a browser extension or as an in-app panel toggled by a keyboard shortcut, similar to Redux DevTools.
+          A strong implementation also defines its negative behavior. If an event is not legal in the current state, the runtime should reject it with a typed reason and telemetry, not silently drop it. If data is stale, the snapshot should make that visible. If the caller passes an invalid owner, scope, or version, the runtime should fail closed. These details are what distinguish a principal-level LLD answer from a pattern summary.
         </p>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Decoupling vs Traceability</h3>
-        <HighlightBlock as="p" tier="crucial">
-          The event bus's core value proposition (decoupled communication) is also its primary debugging liability. When a component behaves unexpectedly, tracing which publisher sent the triggering event requires either comprehensive logging or tooling like a DevTools panel. Direct function calls are trivially traceable by call stack; event dispatch is not. Accept this trade-off consciously and invest in tooling before it becomes a debugging burden.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Event Bus vs Global State</h3>
-        <HighlightBlock as="p" tier="important">
-          An event bus is appropriate for transient, ephemeral communications — notifications that need to be displayed once, events that trigger side effects but don't persist to the application state. For state that components need to read at any time (not just when a change happens), a global store (Zustand, Redux) is more appropriate. Using an event bus to communicate state changes that should be in the store leads to race conditions where a subscriber misses an event because it wasn't mounted at the time of publishing.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Library vs Custom Implementation</h3>
-        <HighlightBlock as="p" tier="important">
-          Libraries like Mitt (200 bytes) provide the core subscribe/publish/unsubscribe API with TypeScript support. They handle the iteration snapshot pattern and unsubscribe-during-dispatch correctly. Building a custom bus is reasonable for teams that need non-standard features (priority queues, async await-all, replay) but adds maintenance burden. Start with Mitt, wrap it with the custom features your application needs, rather than building from scratch.
-        </HighlightBlock>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          The production design has five layers. The API facade accepts domain-specific calls and validates input. The event normalizer converts those calls into a small event vocabulary. The transition engine checks legal state movement and computes the next snapshot. The effect runner performs work outside the reducer, using cancellation tokens and idempotency keys where needed. The observer layer publishes stable snapshots, metrics, and debug events without leaking internal mutable data.
+        </p>
+        <p>
+          A typical flow starts with a caller invoking the primary API method. The facade attaches operation identity, current version, and caller scope. The transition engine moves from the current state into the next legal state, records why the transition happened, and returns an effect plan. Only after the state commit does the runtime invoke effects. Settlement events must include the original operation identity so stale completions, duplicate messages, or late callbacks can be ignored safely.
+        </p>
+        <p>
+          The design should expose snapshots rather than internal mutable objects. A snapshot contains status, data needed by the UI, last error, version, and debug metadata. For React-style consumers, subscriptions should be scoped by selector and cleaned up by a disposer. For non-UI consumers, the same runtime can expose an event stream, but event stream delivery must not be the source of truth.
+        </p>
+        <h3>Data model and invariants</h3>
+        <p>
+          The data model should include a stable resource key, operation id, monotonic version, owner or scope, status, last committed payload, optional pending payload, error envelope, and trace metadata. Invariants should be asserted at the boundary: there can be only one active operation for a single latest-intent key, terminal states cannot still own live abort handles, disposed subscribers cannot be notified, and rollback data must be captured before the forward effect runs.
+        </p>
+        <p>
+          For shared state, the runtime should never expose mutable references. It should return frozen or copied snapshots and keep internal indices private. That protects the consistency model from accidental mutation and lets the implementation change from arrays to maps, path indexes, ring buffers, or compacted logs without breaking callers. This is also the point where a principal candidate can discuss memory limits and compaction policies, because state runtimes often fail by retaining old closures and history forever.
+        </p>
+        <h3>Lifecycle and concurrency</h3>
+        <p>
+          Lifecycle events need the same rigor as user events. Mount subscribes, unmount disposes, focus may resume work, blur may pause non-critical work, reconnect may replay queued events, and navigation may invalidate a scope. Concurrency should be handled through identity and version checks rather than timing assumptions. If two operations race, the one with the accepted identity wins; the late one becomes a stale settlement with telemetry.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/state-interaction-modeling/global-event-bus-failure-debugging.svg"
+          alt="Design a Global Event Bus failure and debugging model"
+          caption="Failure model: unsafe transitions are blocked early, effect failures become typed settlement events, and debug logs preserve enough context to defend behavior."
+        />
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">For staff-level engineers, the architectural judgment calls are: use a bus for ephemeral events, not persistent state; invest in DevTools instrumentation before the event catalog grows;</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">consider domain-scoped buses at scale; and be explicit about which event types support replay, as unbounded replay buffers create subtle initialization bugs. In production-grade systems like Figma's plugin system or VS Code's extension host, event buses are first-class infrastructure with typed contracts, versioning, and deprecation policies — not an informal string-dispatch mechanism.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>
+          A simple component-local implementation is cheaper for one screen, but it pushes correctness into every caller. That approach usually fails when several components share the same resource, when work outlives a component, or when a late event arrives after the user has changed intent. A centralized runtime adds indirection, but it gives the organization one place to enforce ordered delivery per topic with at-least-once local dispatch and explicit dead-letter handling.
+        </p>
+        <p>
+          A fully generic framework can reduce boilerplate, but it can also hide domain rules behind opaque configuration. For principal-level design, prefer a small domain runtime with explicit events and typed state. It should be generic only where the invariants are actually shared: transition execution, disposal, listener notification, snapshot versioning, and telemetry. Domain-specific policies, such as conflict resolution or retry rules, should remain injectable and testable.
+        </p>
+        <p>
+          The main trade-off is between strictness and flexibility. Strict state machines prevent invalid combinations and make incidents easier to debug. Loose object state is easier to evolve but allows impossible states, such as success with an active cancellation token or replaying while live side effects are enabled. At staff and principal levels, the stronger answer is to make illegal states unrepresentable, then add escape hatches only with explicit audit logs.
+        </p>
+        <p>
+          There is also a trade-off between eager and lazy work. Eager computation makes snapshots simple and predictable, but it can waste CPU when many updates are superseded. Lazy computation reduces work, but it requires invalidation bookkeeping and can move latency to the reader. The correct answer depends on user-visible latency and update frequency. A principal-ready design names that choice and explains how metrics would prove it in production.
+        </p>
+        <p>
+          Another trade-off is whether to fail open or fail closed. For low-risk cosmetic state, dropping a stale event may be acceptable. For authorization, payment, collaboration, or persisted user data, fail closed with a visible error or conflict. This is where the implementation connects to privacy and abuse concerns: a stale persisted snapshot must not leak another tenant, a replay tool must not repeat destructive effects, and a cross-context message must not be trusted without version and origin checks.
+        </p>
+      </section>
+
+      <section>
+        <h2>Best practices</h2>
+        <p>
+          Design the state shape before implementing handlers. Write down legal transitions, terminal states, and whether each transition is synchronous, asynchronous, retryable, or reversible. Every public method should either commit a transition, return a typed rejection, or be a no-op with an observable reason. Silent failure makes interview designs look simple while making production systems impossible to diagnose.
+        </p>
+        <p>
+          Keep effect execution idempotent where possible. Attach operation IDs, resource versions, tab IDs, or command IDs to work that may settle later. Use cancellation for work that can be stopped, and settlement guards for work that cannot be stopped. Those two mechanisms solve different problems: cancellation reduces waste, while settlement guards preserve correctness.
+        </p>
+        <p>
+          Build observability into the runtime. Track transition counts, rejected events, stale settlements, queue depth, retry count, listener count, and average notification time. These are not cosmetic metrics. They tell you whether the abstraction is protecting the application or becoming a hidden bottleneck.
+        </p>
+        <p>
+          Keep tests at the transition level, not only at the component level. Unit tests should cover invalid transitions, stale settlement, disposal, retry exhaustion, rollback, and listener exceptions. Integration tests should verify that the UI sees stable snapshots during rapid user actions. Property-style tests are useful when a runtime has many event permutations because they can reveal impossible states that hand-written examples miss.
+        </p>
+        <p>
+          Prefer small adapters around browser or framework APIs. Timers, storage, network, BroadcastChannel, and random IDs should be injectable so replay, testing, and server rendering remain deterministic. This also improves operability because incidents can be reproduced with recorded events instead of relying on a user to recreate timing-sensitive behavior.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>
+          The most common pitfall is modeling this problem as disconnected boolean flags. Booleans allow contradictory states and make edge cases dependent on update ordering. A principal-ready design names states and transitions directly, then validates the transition before committing any state or effect.
+        </p>
+        <p>
+          Another pitfall is treating cleanup as a UI concern. Components unmount, tabs close, effects resolve late, subscribers throw, persisted data becomes stale, and debug tools replay old events. Cleanup and settlement rules belong inside the runtime because callers cannot reliably coordinate them from the outside.
+        </p>
+        <p>
+          The third pitfall is ignoring handler exception, recursive publish loop, subscriber leak after unmount, unbounded replay buffer until after the implementation is shipped. These failures must be represented in state and telemetry from the beginning. If the runtime cannot explain what happened after a bad transition, it is not ready for production or a principal-level interview answer.
+        </p>
+        <p>
+          A subtle pitfall is allowing observers to become part of the commit path. If one listener throws, is slow, or triggers a nested update, it can corrupt the experience for every other subscriber. The runtime should isolate listener failures, cap nested dispatch depth, batch notifications where appropriate, and record slow subscribers without letting them mutate internal state.
+        </p>
+        <p>
+          Another pitfall is adding persistence before defining ownership. Persisted state must be scoped by user, tenant, app version, and sometimes feature flag. Without that scope, rehydration can resurrect stale privileges, replay an old workflow after logout, or show data from a previous account. The implementation should include schema versioning and a quarantine path for invalid snapshots.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          This design appears in collaborative editors, dashboards, multi-step workflows, offline-capable applications, design tools, and internal admin consoles. These products need predictable user-visible state even when the network is slow, multiple browser contexts are active, or debugging tools replay previous behavior.
+        </p>
+        <p>
+          In a large application, this runtime is usually owned as a platform primitive. Feature teams provide domain policies and UI rendering, while the primitive guarantees transition safety, cleanup, versioning, and instrumentation. That split lets product teams move quickly without re-solving the same correctness issues in every component.
+        </p>
+        <p>
+          In enterprise software, this design also supports auditability. Admin consoles, workflow builders, editors, and support tools need to explain why the interface moved from one state to another. A transition log with operation identity and rejection reasons gives support engineers and developers enough evidence to debug without exposing private payloads in logs.
+        </p>
+        <p>
+          In consumer products, the same ideas protect perceived performance. Users click quickly, navigate away, return from background tabs, and lose connectivity. A state runtime that treats those cases as normal input, rather than exceptional behavior, keeps the interface responsive while preserving correctness under pressure.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you design the implementation end to end?</h3>
+        <p>
+          I would define the public facade first, then map each method to a small event vocabulary. The runtime would keep topic registry, priority queue, replay buffer, dead-letter queue, subscriber token, telemetry hook and expose read-only snapshots. The transition engine would validate legal movement across subscribed, publishing, queued, replaying, disposed and return effect descriptions. Effects would run after commit with operation identity, cancellation, and settlement guards. Observers would receive selector-scoped snapshots so UI rendering stays predictable.
+        </p>
+        <h3>Why choose this architecture over local component state?</h3>
+        <p>
+          Local state is acceptable for isolated screens, but it spreads race handling, cleanup, and failure semantics across callers. This architecture centralizes invariants and makes ordered delivery per topic with at-least-once local dispatch and explicit dead-letter handling. enforceable. The cost is more design upfront, but the benefit is consistent behavior across screens and easier incident debugging.
+        </p>
+        <h3>What breaks at scale?</h3>
+        <p>
+          At scale, listener count, stale events, memory retention, and ambiguous ownership become the bottlenecks. The runtime needs bounded queues, explicit disposal, compaction where history is stored, backpressure for notification storms, and metrics that reveal rejected transitions or slow subscribers before users notice.
+        </p>
+        <h3>How do you handle rollback and failure?</h3>
+        <p>
+          Rollback depends on whether the transition is reversible. Pure state transitions can store inverse patches or previous snapshots. External effects require compensating actions or explicit non-reversible barriers. Failures become typed settlement events, not thrown surprises, so the system can move to an error, blocked, conflicted, or ready state with a visible reason.
+        </p>
+        <h3>How would you defend the trade-offs under interviewer pressure?</h3>
+        <p>
+          I would state that the design optimizes for correctness, debuggability, and reuse across high-value flows. If the interviewer pushes on complexity, I would narrow the runtime to the invariants that must be shared and keep feature policy outside the core. If they push on latency, I would explain batching, selector subscriptions, and lazy recomputation. If they push on edge cases, I would walk through One subscriber throws while other subscribers must still receive the event exactly once.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul>
+          <li><a href="https://react.dev/reference/react" target="_blank" rel="noreferrer">React documentation: component state, effects, and transitions</a></li>
+          <li><a href="https://redux.js.org/style-guide/" target="_blank" rel="noreferrer">Redux Style Guide: state modeling and reducer principles</a></li>
+          <li><a href="https://zustand.docs.pmnd.rs/" target="_blank" rel="noreferrer">Zustand documentation: store subscriptions and selectors</a></li>
+          <li><a href="https://immerjs.github.io/immer/update-patterns/" target="_blank" rel="noreferrer">Immer documentation: immutable update and patch patterns</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel" target="_blank" rel="noreferrer">MDN BroadcastChannel API</a></li>
+        </ul>
       </section>
     </ArticleLayout>
   );

@@ -1,90 +1,60 @@
-export type intersectionobserverLazySystemRuntimeState = {
-  topic: "intersectionobserver-lazy-system";
-  mounted: boolean;
-  lastSuccessfulVersion: number;
-  pendingVersion: number;
-  lastInteractionAtMs: number;
-  lastRecoveryAtMs?: number;
-  signal: {
-    permissionDenied: number;
-    visibilityAgeMs: number;
-    workerQueueDepth: number;
-    fallbackCount: number;
-  };
-};
-
-export type intersectionobserverLazySystemRecoveryPlan = {
-  mode: "continue" | "degrade" | "block-and-recover";
-  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
-  actions: Array<"use-progressive-fallback" | "pause-background-work" | "request-permission-lazily" | "emit-telemetry" | "keep-current-state">;
-  evidence: string[];
-};
-
-function minutes(ms: number) {
-  return Math.round(ms / 60_000);
+export interface IntersectionobserverLazySystemTelemetryEvent {
+  operationId: string;
+  api: "intersectionobserver-lazy-system";
+  outcome: "accepted" | "fallback" | "error" | "cancelled";
+  durationMs: number;
+  reason?: string;
+  sensitivePayloadCaptured: boolean;
 }
 
-export function planIntersectionobserverLazySystemRecovery(
-  state: intersectionobserverLazySystemRuntimeState,
-  nowMs: number,
-): intersectionobserverLazySystemRecoveryPlan {
-  const evidence: string[] = [];
-  const actions: intersectionobserverLazySystemRecoveryPlan["actions"] = ["emit-telemetry"];
-  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
-  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
+export class IntersectionobserverLazySystemTelemetry {
+  private events: IntersectionobserverLazySystemTelemetryEvent[] = [];
 
-  if (!state.mounted) evidence.push("component-unmounted-before-completion");
-  if (versionGap > 1) evidence.push("multiple-versions-pending");
-  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
-  if (state.signal.permissionDenied > 2_000) evidence.push("permissionDenied-breached");
-  if (state.signal.visibilityAgeMs > 0) evidence.push("visibilityAgeMs-requires-operator-attention");
-  if (state.signal.workerQueueDepth > 0.2) evidence.push("workerQueueDepth-unsafe-for-silent-commit");
-
-  if (!state.mounted) {
-    actions.push("use-progressive-fallback");
-    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
+  record(event: IntersectionobserverLazySystemTelemetryEvent): void {
+    if (event.sensitivePayloadCaptured) {
+      this.events.push({ ...event, outcome: "error", reason: "privacy-violation-blocked", sensitivePayloadCaptured: false });
+      return;
+    }
+    this.events.push(event);
+    if (this.events.length > 100) this.events.shift();
   }
 
-  if (versionGap > 1 || state.signal.workerQueueDepth > 0.2) {
-    actions.push("pause-background-work", "request-permission-lazily");
-    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
+  summary() {
+    return this.events.reduce<Record<string, number>>((acc, event) => {
+      const key = event.reason ? `${event.outcome}:${event.reason}` : event.outcome;
+      acc[key] = (acc[key] ?? 0) + 1;
+      return acc;
+    }, {});
   }
 
-  actions.push("keep-current-state");
-  return { mode: "continue", userVisibleState: "current", actions, evidence };
+  slowOperations(thresholdMs: number): string[] {
+    return this.events.filter((event) => event.durationMs > thresholdMs).map((event) => event.operationId);
+  }
+
+  fallbackRate(): number {
+    if (this.events.length === 0) return 0;
+    return this.events.filter((event) => event.outcome === "fallback").length / this.events.length;
+  }
 }
 
-export function runIntersectionobserverLazySystemEdgeCaseScenario() {
-  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
-  const normal = planIntersectionobserverLazySystemRecovery(
-    {
-      topic: "intersectionobserver-lazy-system",
-      mounted: true,
-      lastSuccessfulVersion: 21,
-      pendingVersion: 22,
-      lastInteractionAtMs: nowMs - 90_000,
-      signal: { permissionDenied: 160, visibilityAgeMs: 0, workerQueueDepth: 0.01, fallbackCount: 0 },
-    },
-    nowMs,
-  );
+export function runIntersectionobserverLazySystemTelemetryScenario() {
+  const telemetry = new IntersectionobserverLazySystemTelemetry();
+  telemetry.record({ operationId: "op-1", api: "intersectionobserver-lazy-system", outcome: "accepted", durationMs: 18, sensitivePayloadCaptured: false });
+  telemetry.record({ operationId: "op-2", api: "intersectionobserver-lazy-system", outcome: "fallback", reason: "permission-denied", durationMs: 4, sensitivePayloadCaptured: false });
+  telemetry.record({ operationId: "op-3", api: "intersectionobserver-lazy-system", outcome: "accepted", durationMs: 90, sensitivePayloadCaptured: true });
+  return { summary: telemetry.summary(), slow: telemetry.slowOperations(50), fallbackRate: telemetry.fallbackRate() };
+}
 
-  const failure = planIntersectionobserverLazySystemRecovery(
-    {
-      topic: "intersectionobserver-lazy-system",
-      mounted: true,
-      lastSuccessfulVersion: 21,
-      pendingVersion: 25,
-      lastInteractionAtMs: nowMs - 18 * 60_000,
-      signal: { permissionDenied: 2_900, visibilityAgeMs: 2, workerQueueDepth: 0.42, fallbackCount: 4 },
-    },
-    nowMs,
-  );
+export function buildIntersectionobserverLazySystemIncidentReport(events: IntersectionobserverLazySystemTelemetryEvent[]): string[] {
+  return events.map((event) => {
+    const safeReason = event.reason ?? "none";
+    const privacy = event.sensitivePayloadCaptured ? "privacy-risk" : "privacy-safe";
+    return `${event.api}:${event.operationId}:${event.outcome}:${safeReason}:${privacy}`;
+  });
+}
 
-  return {
-    topic: "Intersectionobserver Lazy System",
-    subcategory: "web-platform-browser-apis",
-    invariant: "Browser APIs must degrade predictably when permission, lifecycle, or support changes.",
-    normal,
-    failure,
-  };
+export function chooseIntersectionobserverLazySystemAlertLevel(fallbackRate: number, slowCount: number): "normal" | "watch" | "page" {
+  if (fallbackRate > 0.5 || slowCount > 20) return "page";
+  if (fallbackRate > 0.2 || slowCount > 5) return "watch";
+  return "normal";
 }

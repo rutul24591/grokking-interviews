@@ -23,7 +23,17 @@ export const metadata: ArticleMetadata = {
 export default function CarouselSliderArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      <p>
+      <section>
+        <h1>Design a Carousel Slider</h1>
+        <h2>Definition &amp; Context</h2>
+        <p>Design a Carousel Slider is a low-level design problem about implementing pointer capture, drag velocity, snap selection, autoplay timers, reduced-motion policy, virtualized slides, and focus-safe announcements. A principal-level interview answer must define ownership boundaries, browser and accessibility semantics, local data structures, lifecycle cleanup, server reconciliation, and explicit degraded behavior.</p>
+        <p>Keep the committed slide index separate from the transient drag offset so an interrupted gesture can snap back without corrupting navigation state. The central structures are slide registry, committed index, drag session, velocity samples, snap points, autoplay deadline, visibility observer, roving focus index, and virtualization window. The implementation is not complete until cancellation, stale work, SSR behavior, privacy, metrics, and rollback are deliberate rather than incidental.</p>
+        <ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/carousel-slider-runtime.svg" alt="Design a Carousel Slider runtime flow" caption="Runtime flow: input becomes a guarded state transition, a semantic projection, and a recoverable outcome." />
+      </section>
+      <section>
+        <h2>Core Concepts</h2>
+        <p>The following deep dive preserves the component-specific mechanics and browser constraints that determine the implementation.</p>
+        <p>
         A carousel sits at the intersection of animation engineering, touch event handling,
         accessibility, and performance optimization. The surface area is deceptively large:
         a product carousel on an e-commerce homepage needs to handle touch swipes with
@@ -40,7 +50,7 @@ export default function CarouselSliderArticle() {
         caption="Carousel architecture: slide state, touch/velocity engine, FLIP animation, autoplay and accessibility"
       />
 
-      <h2>Clarifying the Requirements</h2>
+      <h3>Clarifying the Requirements</h3>
       <p>
         Before designing, establish the scope with the interviewer. The answers determine
         which architectural decisions matter most.
@@ -76,7 +86,7 @@ export default function CarouselSliderArticle() {
         resume automatically after interaction.
       </p>
 
-      <h2>The Slide State Model</h2>
+      <h3>The Slide State Model</h3>
       <p>
         The carousel's core state is a current index (integer) and a direction
         (forward or backward) for animation purposes. In a finite carousel, the index
@@ -103,7 +113,7 @@ export default function CarouselSliderArticle() {
         touch swipes where the user's intent changes rapidly.
       </p>
 
-      <h2>Touch and Pointer Event Handling</h2>
+      <h3>Touch and Pointer Event Handling</h3>
       <p>
         Robust touch handling is the most mechanically complex part of a carousel. The
         implementation must distinguish horizontal swipes (carousel navigation) from
@@ -150,7 +160,7 @@ export default function CarouselSliderArticle() {
         listener workaround needed for mouse events.
       </p>
 
-      <h2>FLIP Animation for Slide Transitions</h2>
+      <h3>FLIP Animation for Slide Transitions</h3>
       <p>
         The naive animation approach — CSS transition on the translateX of a slide track —
         works for simple carousels but has limitations. If the track contains many slides,
@@ -181,7 +191,7 @@ export default function CarouselSliderArticle() {
         mid-animation when the user swipes before the transition completes.
       </p>
 
-      <h2>Virtualization for Large Slide Sets</h2>
+      <h3>Virtualization for Large Slide Sets</h3>
       <p>
         For carousels with many slides (product shelves, image galleries), rendering
         all slides in the DOM is wasteful. A virtualized carousel renders only a
@@ -209,7 +219,7 @@ export default function CarouselSliderArticle() {
         reliable for a horizontally-scrolling carousel viewport.
       </p>
 
-      <h2>Autoplay and Pause Logic</h2>
+      <h3>Autoplay and Pause Logic</h3>
       <p>
         Autoplay advances to the next slide on a timer. The interval (typically 3–5
         seconds) should be configurable. The implementation uses setInterval, but there
@@ -239,7 +249,7 @@ export default function CarouselSliderArticle() {
         during this transition.
       </p>
 
-      <h2>Accessibility: ARIA and Keyboard Model</h2>
+      <h3>Accessibility: ARIA and Keyboard Model</h3>
       <p>
         The carousel widget should implement the ARIA carousel pattern. The outer
         container has role="region" with an aria-label (e.g., "Featured products carousel"
@@ -270,7 +280,7 @@ export default function CarouselSliderArticle() {
         the current slide.
       </p>
 
-      <h2>Keyboard Navigation Within the Carousel</h2>
+      <h3>Keyboard Navigation Within the Carousel</h3>
       <p>
         Inside the carousel, the keyboard model depends on whether slides contain
         interactive content (links, buttons) or are purely visual (images). For
@@ -294,7 +304,7 @@ export default function CarouselSliderArticle() {
         navigation from conflicting with content interaction.
       </p>
 
-      <h2>Responsive Design and Slide Counts</h2>
+      <h3>Responsive Design and Slide Counts</h3>
       <p>
         Many carousels show multiple slides simultaneously — three product cards on
         desktop, two on tablet, one on mobile. This "slides per view" configuration
@@ -315,74 +325,50 @@ export default function CarouselSliderArticle() {
         of the list. Clamp the index to the maximum valid position for the new
         slidesPerView value and snap to that position without animation.
       </p>
-
-      <h2>Interview Q&A</h2>
-
-      <h3>Q: How do you implement an infinite carousel without cloning DOM nodes?</h3>
-      <p>
-        Use an unbounded integer as the current index and compute the actual slide
-        data index as (currentIndex mod slideCount) using a modulo function that handles
-        negative values. The slide window always renders three slides: at positions
-        [currentIndex - 1, currentIndex, currentIndex + 1]. Each position maps to a
-        data slot via modular arithmetic. Going backward from index 0 to -1 renders
-        the last slide ((-1 mod 3 + 3) mod 3 = 2) without any DOM manipulation. The
-        FLIP animation calculates positions purely from the current and target indices,
-        so the animation direction (left or right) is determined by whether the target
-        index is greater or less than the current index, naturally wrapping at the
-        boundaries.
-      </p>
-
-      <h3>Q: How do you prevent layout thrashing during touch-driven drag?</h3>
-      <p>
-        Apply the drag transform directly to the DOM via a ref, bypassing React state
-        entirely for the drag phase. React state updates are batched and processed
-        asynchronously; for a 60fps drag, this introduces perceptible lag. Instead,
-        use a mutable ref that holds the track element. In the pointermove handler,
-        compute the new translateX and set it directly via element.style.transform.
-        This is a synchronous DOM write, but it happens after the browser's layout phase
-        for the current frame (in the event handler, which runs before paint), so it
-        does not cause forced layout. Only commit to React state on pointerup, when
-        the final slide index and snap position are determined.
-      </p>
-
-      <h3>Q: How does WCAG compliance constrain the autoplay implementation?</h3>
-      <p>
-        WCAG 2.1 SC 2.2.2 (Pause, Stop, Hide) requires that any moving content lasting
-        more than 5 seconds can be paused, stopped, or hidden by the user. A carousel
-        with autoplay must provide a visible pause button. WCAG SC 2.3.1 (Three Flashes
-        or Below Threshold) means content should not flash more than three times per
-        second — relevant for rapid auto-advancing. For users who enable prefers-reduced-motion,
-        disable autoplay and all slide transition animations. The @media (prefers-reduced-motion:
-        reduce) media query in CSS and the matchMedia API in JavaScript both expose this
-        preference. A carousel that ignores prefers-reduced-motion can trigger vestibular
-        disorders in sensitive users.
-      </p>
-
-      <h3>Q: How would you support a carousel where each slide has different width?</h3>
-      <p>
-        Variable-width slides require measuring each slide's width and computing the
-        track offset as the sum of all previous slide widths, not as currentIndex times
-        a fixed width. Store an array of cumulative offsets computed by reading
-        slide.offsetWidth for each slide after mount (in a useLayoutEffect or ResizeObserver
-        callback). The translate offset for navigating to index N is the cumulative offset
-        at position N. FLIP animation still works because it measures the before/after
-        positions directly from the DOM. Update the cumulative offsets whenever a
-        ResizeObserver detects a slide width change (e.g., when images load with intrinsic
-        sizes). This approach handles heterogeneous slide content naturally but requires
-        DOM reads on mount and content changes.
-      </p>
-
-      <h3>Q: How would you handle a carousel that is part of a server-rendered page?</h3>
-      <p>
-        Server-render all slides in the DOM for SEO and LCP. The initial HTML includes
-        all slides; JavaScript hydrates the carousel and then sets up the virtual window.
-        During hydration, avoid running animations to prevent hydration mismatch.
-        After hydration, the carousel can take over and set slides outside the window
-        to be visually hidden. For the first slide, ensure the image has
-        fetchpriority="high" in the server-rendered HTML — this signals the browser to
-        prioritize it in the preload scanner, improving LCP. Use the loading="eager"
-        attribute on the first slide's image (not lazy) so it is not deferred.
-      </p>
+      </section>
+      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>Implement the component as a small runtime with five boundaries. The input adapter normalizes keyboard, pointer, touch, browser, and async events. The state controller applies guards and separates preview state from committed state. The projection layer derives semantic DOM and ARIA relationships. The integration adapter owns server requests, URL synchronization, or browser APIs. The observability adapter emits bounded evidence for failures and slow paths.</p>
+        <p>For this topic, the critical state rule is: Keep the committed slide index separate from the transient drag offset so an interrupted gesture can snap back without corrupting navigation state. During interaction, record enough context to cancel safely. On commit, validate the latest intent, update the durable projection, and release temporary listeners, timers, observers, pointer capture, and abort controllers. On unmount, cleanup must be idempotent.</p>
+        <ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/carousel-slider-edge-cases.svg" alt="Design a Carousel Slider edge-case defense map" caption="Edge-case map: validate intent, contain scale pressure, recover from failure, reconcile committed state, and emit evidence." />
+      </section>
+      <section>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>CSS scroll snapping offers simpler native behavior; a transform-driven controller is justified when velocity-aware snapping, looping, or virtualization policy must be explicit. The custom design should still lean on native semantics and browser primitives where they remain correct. Replacing them creates testing obligations for keyboard behavior, focus ownership, reduced motion, touch interaction, zoom, SSR hydration, and assistive technology.</p>
+        <p>Slide selection is local state. URL or analytics synchronization is asynchronous and deduplicated by committed index rather than pointer-move events. At scale, the failure pressure is hundreds of media-heavy slides, nested scrolling, rapid swipes, hidden tabs, responsive item counts, and screen-reader announcement noise. Defend the latency budget by batching measurement, aborting stale async work, bounding caches and prefetch, and emitting analytics only for committed outcomes.</p>
+        <p>A principal answer should distinguish local responsiveness from durable correctness. Optimistic UI is appropriate when the rollback is deterministic and visible. It is inappropriate when the client cannot validate authorization, inventory, resource conflicts, or destructive side effects.</p>
+      </section>
+      <section>
+        <h2>Best practices</h2>
+        <p>Use explicit state unions, typed events, idempotent cleanup, stable ids, native semantics, SSR-safe feature detection, abortable requests, and deterministic tests. Exercise keyboard-only use, touch cancellation, screen-reader output, high zoom, reduced motion, slow network, stale responses, unmount during work, and browser back-forward behavior where relevant.</p>
+        <p>Observe blocked transitions, rollback frequency, stale-response drops, slow interaction latency, cache pressure, retry count, and accessibility regression results. Keep telemetry small and avoid sensitive payloads. Publish the public behavior contract before changing shared component semantics.</p>
+      </section>
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>Common failures include mixing draft and committed state, treating rendering state as the source of truth for browser-owned behavior, leaving listeners or timers active after unmount, accepting stale async completion, trusting client-side authorization, and producing inaccessible custom controls.</p>
+        <p>For this component specifically, the failure policy is to release pointer capture on cancel, pause timers while hidden or focused, restore the last committed index after a failed lazy load, and render a stable media fallback. Security and privacy require the implementation to sanitize slide content, constrain remote image sources, limit autoplay, respect reduced motion, and avoid analytics emission for every drag frame.</p>
+      </section>
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>Representative deployments include a product gallery, a story viewer with timed progression, and a media catalog carousel that virtualizes expensive slides. In each case, the same component shell may be reused, but the policy layer changes: latency budget, permissions, persistence, fallback, and telemetry should be injected explicitly instead of hidden in presentation code.</p>
+      </section>
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you model component state?</h3><p>I would separate committed state, transient interaction state, derived presentation, and async request generations. For this component, Keep the committed slide index separate from the transient drag offset so an interrupted gesture can snap back without corrupting navigation state. That model makes cancellation and rollback explicit.</p>
+        <h3>What breaks at scale?</h3><p>The dominant pressures are hundreds of media-heavy slides, nested scrolling, rapid swipes, hidden tabs, responsive item counts, and screen-reader announcement noise. I would bound work per interaction, virtualize or cache only where measured, and cancel work that is no longer relevant.</p>
+        <h3>What consistency model applies?</h3><p>Slide selection is local state. URL or analytics synchronization is asynchronous and deduplicated by committed index rather than pointer-move events. The interview answer must state which layer is authoritative and how stale completion is rejected.</p>
+        <h3>How do you handle failure and rollback?</h3><p>I would release pointer capture on cancel, pause timers while hidden or focused, restore the last committed index after a failed lazy load, and render a stable media fallback. I would also emit a reason code so product metrics distinguish expected cancellation from defects and provider failures.</p>
+        <h3>How do you defend the architecture over alternatives?</h3><p>CSS scroll snapping offers simpler native behavior; a transform-driven controller is justified when velocity-aware snapping, looping, or virtualization policy must be explicit. I would choose the smallest design that satisfies the required behavior and explicitly accept the testing and operability cost of custom interaction.</p>
+      </section>
+      <section>
+        <h2>References</h2>
+        <ul>
+          <li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events" target="_blank" rel="noreferrer">MDN Pointer events</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li>
+          <li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React: Sharing State Between Components</a></li>
+        </ul>
+      </section>
     </ArticleLayout>
   );
 }

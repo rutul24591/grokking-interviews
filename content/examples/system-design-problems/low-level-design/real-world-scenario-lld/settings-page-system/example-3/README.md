@@ -1,6 +1,1 @@
-# Settings Page System — Example 3
-
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+# Design a Settings Page System example 3\n\nConcrete low-level implementation exercise for Design a Settings Page System.\n

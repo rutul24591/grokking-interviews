@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function ImageGalleryLightboxArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function ImageGalleryLightboxArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design an Image Gallery Lightbox</h1><h2>Definition &amp; Context</h2><p>Design an Image Gallery Lightbox is an implementation-heavy low-level design problem covering asset manifest, thumbnails, responsive sources, prefetch budgeting, decode cache, modal focus, navigation, zoom gestures, and fallback. A principal-level answer must explain state ownership, browser or worker boundaries, scale limits, consistency, rollback, privacy, cost, and observability.</p><p>Keep gallery selection, lightbox visibility, decoded asset status, zoom transform, and prefetch queue separate. Failed media must never corrupt navigation. The core structures are asset manifest, active index, decoded cache, prefetch queue, source candidates, transform, focus return target, placeholder, and signed-URL refresh state.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/file-media-content-systems/image-gallery-lightbox-runtime.svg" alt="Design an Image Gallery Lightbox runtime" caption="Topic-specific runtime from source intake through guarded projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -89,7 +88,7 @@ export default function ImageGalleryLightboxArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -128,7 +127,7 @@ export default function ImageGalleryLightboxArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -173,14 +172,10 @@ export default function ImageGalleryLightboxArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/image-gallery-lightbox-architecture.svg"
-        alt="Image Gallery / Lightbox Architecture"
-        caption="Image source (with srcset variants) → Thumbnail grid (responsive, lazy via IntersectionObserver) → Lightbox modal (focus trap, swipe/keyboard nav, zoom/pan, pre-load adjacent). Deep-link via URL fragment."
-      />
+      
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <HighlightBlock as="p" tier="important">
           The system has two main surfaces: the
           <strong> thumbnail grid</strong> and the
@@ -275,7 +270,7 @@ export default function ImageGalleryLightboxArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial"><strong>LightboxImage</strong>{" "}
           renders the current image with zoom/pan.
           <strong> NavigationControls</strong> renders
@@ -290,7 +285,7 @@ export default function ImageGalleryLightboxArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           The active image id, lightbox open state,
           zoom/pan state live in an <Highlight tier="important">external store.
@@ -301,7 +296,7 @@ export default function ImageGalleryLightboxArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important">
           <Highlight tier="crucial">Image shape:</Highlight>{" "}
           <Highlight tier="important">
@@ -312,7 +307,7 @@ export default function ImageGalleryLightboxArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="crucial">Thumbnails lazy-load via IntersectionObserver.
           Lightbox transitions use CSS transforms</HighlightBlock>
 <HighlightBlock as="p" tier="important">(hardware-accelerated). Pre-loading adjacent
@@ -324,7 +319,7 @@ export default function ImageGalleryLightboxArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">Zoom feels tactile (CSS
           transforms align with pointer movement). Close
           via Escape or</HighlightBlock>
@@ -334,7 +329,7 @@ export default function ImageGalleryLightboxArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important">Navigation announces position
           via live region (&ldquo;Image 5 of 20:
           [alt]&rdquo;). Zoom and pan controls</Highlight></HighlightBlock>
@@ -344,7 +339,7 @@ export default function ImageGalleryLightboxArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Image URLs from trusted sources or CSP-
           enforced. Captions <Highlight tier="important">sanitized if HTML.
@@ -354,7 +349,7 @@ export default function ImageGalleryLightboxArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important">Integration tests:
           thumbnail lazy load, lightbox open with deep
           link, swipe gestures via</Highlight></HighlightBlock>
@@ -364,7 +359,7 @@ export default function ImageGalleryLightboxArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">Open lightbox while another is
           opening: the second supersedes; one lightbox
           at a time. Deep-link to a non-existent image</HighlightBlock>
@@ -374,7 +369,7 @@ export default function ImageGalleryLightboxArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Generic over image source; works <Highlight tier="important">for any
           collection of images. Plugins</Highlight> for slideshow,
@@ -383,7 +378,7 @@ export default function ImageGalleryLightboxArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Counter formatted via
           <Highlight tier="important"><code>Intl.NumberFormat</code></Highlight>. Captions
@@ -394,7 +389,7 @@ export default function ImageGalleryLightboxArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Modal lightbox vs full-page</h3>
         <HighlightBlock as="p" tier="important">
@@ -435,7 +430,7 @@ export default function ImageGalleryLightboxArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           AVIF / WebP format negotiation. Progressive
           loading with low-quality <Highlight tier="important">placeholder
@@ -443,84 +438,12 @@ export default function ImageGalleryLightboxArticle() {
           view for product galleries. Offline-first
           caching via service worker.
         </Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. How are thumbnails lazy-loaded?</strong>{" "}
-          IntersectionObserver per thumbnail; src is
-          set when the thumbnail enters viewport.
-          <code> loading=&quot;lazy&quot;</code> as a
-          fallback.
-        </HighlightBlock>
-
-        <p>
-          <strong>2. How does swipe navigation work?</strong>{" "}
-          Pointer Events track horizontal delta; if it
-          exceeds a threshold on touchend, commit to
-          next or previous. Below threshold, snap back.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>3. How is zoom implemented?</strong>{" "}
-          CSS transform: scale() with double-tap toggle
-          and pinch-to-scale on touch (two-pointer
-          tracking). Pan via translate() when zoomed,
-          bounded to image edges.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. How does pre-loading work?</strong>{" "}
-          Next and previous images fetched as
-          <code> Image</code> objects (browser cache);
-          when user navigates, the cached image
-          renders instantly.
-        </HighlightBlock>
-
-        <p>
-          <strong>5. How is deep-linking handled?</strong>{" "}
-          URL fragment encodes active image id. On
-          mount, parse and open lightbox if present.
-          Update fragment on navigation. Sharing URL
-          takes recipient to same view.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>6. How is focus trapped in the
-          lightbox?</strong> Standard modal pattern:
-          focus moves to lightbox on open; Tab cycles
-          within; Escape closes and returns focus.
-        </HighlightBlock>
-
-        <p>
-          <strong>7. How does srcset improve
-          performance?</strong> The browser picks the
-          right image size for the viewport and pixel
-          density. Mobile gets smaller; retina gets
-          higher resolution. Bandwidth saved without
-          sacrificing quality.
-        </p>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>8. How is this accessible?</strong>{" "}
-          Modal dialog with focus trap. Alt text on
-          every image. Position announced via live
-          region. Keyboard parity with mouse for all
-          interactions including zoom and pan.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">Focus trap and
-          deep-link URL fragments handle accessibility
-          and shareability. The result</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">feels native
-          everywhere — fast on desktop, fluid on
-          touch, navigable by keyboard.</Highlight></HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate durable source data, transient interaction state, derived render state, remote or worker effects, and bounded telemetry. Every object URL, request, worker, listener, timer, cache entry, and decoder task needs an explicit owner and cleanup path.</p><p>Keep gallery selection, lightbox visibility, decoded asset status, zoom transform, and prefetch queue separate. Failed media must never corrupt navigation. Commit durable changes only after policy validation and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/file-media-content-systems/image-gallery-lightbox-recovery.svg" alt="Design an Image Gallery Lightbox recovery" caption="Recovery flow: classify failure, preserve stable state, and degrade predictably." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Linked images are cheaper; a managed lightbox is justified for protected assets, responsive media, zoom, prefetch, and accessible modal behavior.</p><p>Asset metadata may be eventually consistent, while active navigation remains local and deterministic. Prefetch completion is advisory and never reorders assets. Scale pressure comes from thousands of assets, high-resolution media, constrained memory, rapid navigation, signed URL expiry, decode failure, and orientation metadata. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic projection only when rollback is deterministic and visible. Keep authorization, validation, and destructive actions server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed states, generation guards, bounded queues, abortable effects, semantic HTML, and idempotent cleanup. Test accessibility, stale work, retries, unmount, constrained devices, large files, and corrupted input.</p><p>Measure latency, memory, queue pressure, stale drops, retries, fallbacks, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include treating rendered output as durable truth, leaking resources, accepting stale worker completion, unbounded prefetch, and hiding degraded behavior.</p><p>For this topic, render a stable placeholder, refresh signed URLs once, cancel obsolete prefetch, cap decode concurrency, evict distant assets, and preserve close navigation. Validate untrusted content, authorize durable mutations, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to content-heavy product surfaces where browser APIs, workers, networks, and remote policy fail independently. Reuse the controller boundary while injecting product-specific fallback and retention policy.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep gallery selection, lightbox visibility, decoded asset status, zoom transform, and prefetch queue separate. Failed media must never corrupt navigation.</p><h3>What breaks at scale?</h3><p>thousands of assets, high-resolution media, constrained memory, rapid navigation, signed URL expiry, decode failure, and orientation metadata. I would bound work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>Asset metadata may be eventually consistent, while active navigation remains local and deterministic. Prefetch completion is advisory and never reorders assets.</p><h3>How do you recover?</h3><p>I would render a stable placeholder, refresh signed URLs once, cancel obsolete prefetch, cap decode concurrency, evict distant assets, and preserve close navigation.</p><h3>Why this architecture?</h3><p>Linked images are cheaper; a managed lightbox is justified for protected assets, responsive media, zoom, prefetch, and accessible modal behavior.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API" target="_blank" rel="noreferrer">MDN Web Workers API</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

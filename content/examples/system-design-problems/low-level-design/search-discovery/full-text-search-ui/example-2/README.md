@@ -1,6 +1,3 @@
-# Full-text Search UI — Example 2
+# Design a Full-text Search UI example 2
 
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+Concrete search implementation exercise.

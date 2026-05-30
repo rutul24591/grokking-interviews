@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function PDFViewerArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function PDFViewerArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a PDF Viewer</h1><h2>Definition &amp; Context</h2><p>Design a PDF Viewer is an implementation-heavy low-level design problem covering range requests, worker parsing, page metadata, viewport scheduling, canvas rendering, text layers, search, annotations, zoom, and fallback. A principal-level answer must explain state ownership, browser or worker boundaries, scale limits, consistency, rollback, privacy, cost, and observability.</p><p>Keep document bytes, parsed metadata, page render tasks, text layers, and annotation state separate. Canvas output is disposable and generation-tagged. The core structures are document source, range cache, worker channel, page metadata, visible range, render queue, scale generation, text cache, annotation journal, and abort handles.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/file-media-content-systems/pdf-viewer-runtime.svg" alt="Design a PDF Viewer runtime" caption="Topic-specific runtime from source intake through guarded projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -93,7 +92,7 @@ export default function PDFViewerArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -131,7 +130,7 @@ export default function PDFViewerArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -178,14 +177,10 @@ export default function PDFViewerArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/pdf-viewer-architecture.svg"
-        alt="PDF Viewer Architecture"
-        caption="PDF source → PDF.js worker (parse, page render to canvas) → Page virtualizer (lazy-mount near-viewport pages) + Text layer (selectable, screen-reader accessible) + Annotation overlay → Toolbar (zoom, search, navigate)."
-      />
+      
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <HighlightBlock as="p" tier="important">
           The viewer wraps PDF.js with a React
           component that provides a familiar viewer
@@ -295,7 +290,7 @@ export default function PDFViewerArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial">
           <strong>SearchEngine</strong> handles in-document search.{" "}
           <strong>AnnotationManager</strong> handles annotation lifecycle.
@@ -308,7 +303,7 @@ export default function PDFViewerArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">Document state (loaded, error, page count),
           current page, zoom level, search</HighlightBlock>
 <HighlightBlock as="p" tier="important">state,
@@ -320,7 +315,7 @@ export default function PDFViewerArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important">
           <Highlight tier="crucial">Inputs:</Highlight>{" "}
           <code>source</code> (URL or buffer), <code>initialPage</code>,{" "}
@@ -332,7 +327,7 @@ export default function PDFViewerArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="crucial">Zoom uses canvas transform for
           preview + re-render on commit. Search runs</HighlightBlock>
 <HighlightBlock as="p" tier="important"><Highlight tier="important">progressively. Memory bounded by releasing
@@ -340,7 +335,7 @@ export default function PDFViewerArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">Thumbnails panel
           collapsible. Annotation tools in a secondary
           toolbar when annotation mode</HighlightBlock>
@@ -350,7 +345,7 @@ export default function PDFViewerArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">Search
           match count announces. Zoom level
           announces. Annotation tools have
@@ -361,7 +356,7 @@ export default function PDFViewerArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           PDF.js sandboxes any embedded JavaScript
           (typically disabled). PDF <Highlight tier="important">source URLs
@@ -372,7 +367,7 @@ export default function PDFViewerArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="crucial">Unit tests for the page virtualizer, search
           engine, annotation overlay positioning.</HighlightBlock>
 <HighlightBlock as="p" tier="important">Integration tests with sample PDFs:
@@ -383,7 +378,7 @@ export default function PDFViewerArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">Right-to-left PDFs (Arabic, Hebrew): text
           layer respects direction. Pages of vastly
           different sizes: virtualizer handles
@@ -395,7 +390,7 @@ export default function PDFViewerArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           The wrapper around PDF.js is reusable for any
           <Highlight tier="important">product needing PDF display. Annotation
@@ -405,7 +400,7 @@ export default function PDFViewerArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           UI strings via i18n. PDF text language is
           <Highlight tier="important">the document&rsquo;s own. Right-to-left UI
@@ -415,7 +410,7 @@ export default function PDFViewerArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>PDF.js vs native browser viewer</h3>
         <HighlightBlock as="p" tier="important">
@@ -453,7 +448,7 @@ export default function PDFViewerArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Form filling for AcroForms. Digital signature
           verification UI. <Highlight tier="important">Read-aloud (TTS).
@@ -461,89 +456,12 @@ export default function PDFViewerArticle() {
           instant preview before PDF.js loads.
           Real-time collaborative annotations.
         </Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. How does PDF rendering work?</strong>{" "}
-          PDF.js parses the PDF in a Web Worker and
-          renders pages to canvas on demand. We
-          virtualize so only near-viewport pages
-          render.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How does text selection work?</strong>{" "}
-          PDF.js extracts text and positions
-          transparent text overlays matching the
-          rendered glyphs. Standard browser selection
-          works on the text layer.
-        </HighlightBlock>
-
-        <p>
-          <strong>3. How is search implemented?</strong>{" "}
-          PDF.js extracts text per page; we search
-          across pages, build a match list, jump
-          and highlight via annotation overlay.
-        </p>
-
-        <p>
-          <strong>4. How do annotations survive zoom and
-          rotation?</strong> Annotations stored in
-          PDF coordinates (not screen). On zoom or
-          rotation, the overlay re-positions
-          automatically.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>5. How does this scale to large
-          PDFs?</strong> Page virtualization scopes
-          rendered pages to near-viewport. Text
-          extraction is on-demand. Search runs
-          progressively.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>6. How is accessibility provided for
-          PDFs?</strong> The text layer exposes
-          extracted text to screen readers. Without
-          PDF.js&rsquo;s text layer, PDFs are
-          opaque to assistive tech; this is the
-          single most important a11y feature.
-        </HighlightBlock>
-
-        <p>
-          <strong>7. How are annotations
-          persisted?</strong> Adapter pattern: server-
-          side per user, local-only, or shared.
-          Annotations serialize to a small JSON shape
-          (type, coordinates, content).
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>8. What can&rsquo;t this do?</strong>{" "}
-          Generate PDFs (server concern). Verify
-          digital signatures (specialized libraries).
-          Process complex JavaScript-in-PDF (we
-          sandbox it). Edit the PDF document itself
-          (we display + annotate, not modify the
-          underlying PDF).
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">The text
-          layer is the foundation for selection and
-          accessibility; virtualization keeps memory
-          bounded; annotations live</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">in PDF coordinates
-          for zoom/rotation resilience. The result
-          feels like a desktop PDF reader embedded in
-          the web app.</Highlight></HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate durable source data, transient interaction state, derived render state, remote or worker effects, and bounded telemetry. Every object URL, request, worker, listener, timer, cache entry, and decoder task needs an explicit owner and cleanup path.</p><p>Keep document bytes, parsed metadata, page render tasks, text layers, and annotation state separate. Canvas output is disposable and generation-tagged. Commit durable changes only after policy validation and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/file-media-content-systems/pdf-viewer-recovery.svg" alt="Design a PDF Viewer recovery" caption="Recovery flow: classify failure, preserve stable state, and degrade predictably." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Embedding the browser viewer is cheap; a custom runtime is justified for annotations, search, policy, telemetry, and consistent UX.</p><p>Document bytes and annotation versions are authoritative. Page renders are disposable projections; stale generation output must never replace current zoom. Scale pressure comes from large documents, encrypted files, malformed PDFs, rapid zoom, worker errors, memory pressure, and download policy. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic projection only when rollback is deterministic and visible. Keep authorization, validation, and destructive actions server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed states, generation guards, bounded queues, abortable effects, semantic HTML, and idempotent cleanup. Test accessibility, stale work, retries, unmount, constrained devices, large files, and corrupted input.</p><p>Measure latency, memory, queue pressure, stale drops, retries, fallbacks, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include treating rendered output as durable truth, leaking resources, accepting stale worker completion, unbounded prefetch, and hiding degraded behavior.</p><p>For this topic, cancel obsolete tasks, prioritize visible pages, evict distant renders, isolate worker failure, preserve download fallback, and validate annotation writes. Validate untrusted content, authorize durable mutations, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to content-heavy product surfaces where browser APIs, workers, networks, and remote policy fail independently. Reuse the controller boundary while injecting product-specific fallback and retention policy.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep document bytes, parsed metadata, page render tasks, text layers, and annotation state separate. Canvas output is disposable and generation-tagged.</p><h3>What breaks at scale?</h3><p>large documents, encrypted files, malformed PDFs, rapid zoom, worker errors, memory pressure, and download policy. I would bound work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>Document bytes and annotation versions are authoritative. Page renders are disposable projections; stale generation output must never replace current zoom.</p><h3>How do you recover?</h3><p>I would cancel obsolete tasks, prioritize visible pages, evict distant renders, isolate worker failure, preserve download fallback, and validate annotation writes.</p><h3>Why this architecture?</h3><p>Embedding the browser viewer is cheap; a custom runtime is justified for annotations, search, policy, telemetry, and consistent UX.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API" target="_blank" rel="noreferrer">MDN Web Workers API</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

@@ -1,89 +1,70 @@
-export type fineGrainedSubscriptionSystemSignal = {
-  offlineAgeMs: number;
-  conflictCount: number;
-  logSize: number;
-  lastAckVersion: number;
-};
+export type FineGrainedSubscriptionSystemEvent = "start" | "resolve" | "fail" | "cancel" | "reset";
+export type FineGrainedSubscriptionSystemState = "idle" | "pending" | "success" | "error" | "cancelled";
 
-export type fineGrainedSubscriptionSystemEvent = {
-  id: string;
-  topic: "fine-grained-subscription-system";
-  actorId: string;
-  sequence: number;
-  receivedAtMs: number;
-  expectedVersion: number;
-  currentVersion: number;
-  payloadSize: number;
-  signal: fineGrainedSubscriptionSystemSignal;
-};
-
-export type fineGrainedSubscriptionSystemDecision = {
-  accepted: boolean;
-  action: "replay-local-log" | "surface-conflict" | "compact-acknowledged-ops" | "commit";
-  nextVersion: number;
-  reasons: string[];
-  audit: string[];
-};
-
-const topicInvariant = "Local state must survive reloads and converge after reconnect without losing user intent.";
-
-export function evaluateFineGrainedSubscriptionSystemEvent(event: fineGrainedSubscriptionSystemEvent): fineGrainedSubscriptionSystemDecision {
-  const reasons: string[] = [];
-
-  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
-  if (event.sequence <= 0) reasons.push("invalid-sequence");
-  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
-  if (event.signal.offlineAgeMs > 2_000) reasons.push("offlineAgeMs-outside-slo");
-  if (event.signal.logSize > 0.2) reasons.push("logSize-requires-guardrail");
-
-  let action: fineGrainedSubscriptionSystemDecision["action"] = "commit";
-  if (reasons.includes("version-mismatch")) action = "replay-local-log";
-  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "surface-conflict";
-  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "compact-acknowledged-ops";
-
-  return {
-    accepted: reasons.length === 0,
-    action,
-    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
-    reasons,
-    audit: [
-      "topic:Fine Grained Subscription System",
-      "subcategory:state-interaction-modeling",
-      "entity:local mutation",
-      "state:client state log",
-      "operation:sync reconciliation",
-      "invariant:" + topicInvariant,
-      "actor:" + event.actorId,
-      "event:" + event.id,
-    ],
-  };
+export interface Transition<Event extends string, State extends string> {
+  from: State;
+  event: Event;
+  to: State;
+  guard?: (ctx: { version: number; owner?: string }) => boolean;
+  effect?: "none" | "run" | "rollback" | "notify";
 }
 
-export function runFineGrainedSubscriptionSystemContractScenario() {
-  const base = Date.parse("2026-05-29T09:00:00.000Z");
-  const accepted = evaluateFineGrainedSubscriptionSystemEvent({
-    id: "fine-grained-subscription-system-evt-1",
-    topic: "fine-grained-subscription-system",
-    actorId: "user-42",
-    sequence: 7,
-    receivedAtMs: base,
-    expectedVersion: 12,
-    currentVersion: 12,
-    payloadSize: 18_500,
-    signal: { offlineAgeMs: 180, conflictCount: 0, logSize: 0.01, lastAckVersion: 1 },
-  });
+export class TransitionTable<Event extends string, State extends string> {
+  private version = 0;
+  private rejectionLog: Array<{ event: Event; from: State; reason: string }> = [];
+  private acceptedLog: Array<{ event: Event; to: State; version: number; effect: string }> = [];
 
-  const guarded = evaluateFineGrainedSubscriptionSystemEvent({
-    id: "fine-grained-subscription-system-evt-late",
-    topic: "fine-grained-subscription-system",
-    actorId: "user-42",
-    sequence: 8,
-    receivedAtMs: base + 4_000,
-    expectedVersion: 12,
-    currentVersion: 14,
-    payloadSize: 310_000,
-    signal: { offlineAgeMs: 2_700, conflictCount: 3, logSize: 0.34, lastAckVersion: 2 },
-  });
+  constructor(private state: State, private readonly transitions: Array<Transition<Event, State>>) {}
 
-  return { accepted, guarded };
+  current(): State {
+    return this.state;
+  }
+
+  rejected(): Array<{ event: Event; from: State; reason: string }> {
+    return [...this.rejectionLog];
+  }
+
+  accepted(): Array<{ event: Event; to: State; version: number; effect: string }> {
+    return [...this.acceptedLog];
+  }
+
+  send(event: Event, owner?: string): { accepted: true; state: State; version: number } | { accepted: false; reason: string; state: State } {
+    const transition = this.transitions.find((candidate) => candidate.from === this.state && candidate.event === event);
+    if (!transition) {
+      const reason = "invalid-transition";
+      this.rejectionLog.push({ event, from: this.state, reason });
+      return { accepted: false, reason, state: this.state };
+    }
+    if (transition.guard && !transition.guard({ version: this.version, owner })) {
+      const reason = "guard-rejected";
+      this.rejectionLog.push({ event, from: this.state, reason });
+      return { accepted: false, reason, state: this.state };
+    }
+    this.state = transition.to;
+    this.version += 1;
+    this.acceptedLog.push({ event, to: this.state, version: this.version, effect: transition.effect ?? "none" });
+    return { accepted: true, state: this.state, version: this.version };
+  }
+
+  can(event: Event): boolean {
+    return this.transitions.some((transition) => transition.from === this.state && transition.event === event);
+  }
+
+  assertTerminal(): boolean {
+    return this.state === "success" || this.state === "error" || this.state === "cancelled";
+  }
+}
+
+export const fineGrainedSubscriptionSystemTransitions: Array<Transition<FineGrainedSubscriptionSystemEvent, FineGrainedSubscriptionSystemState>> = [
+  { from: "idle", event: "start", to: "pending", effect: "run" },
+  { from: "pending", event: "resolve", to: "success", guard: ({ owner }) => owner !== "stale-caller", effect: "notify" },
+  { from: "pending", event: "fail", to: "error", effect: "rollback" },
+  { from: "pending", event: "cancel", to: "cancelled", effect: "rollback" },
+  { from: "success", event: "reset", to: "idle" },
+  { from: "error", event: "reset", to: "idle" },
+  { from: "cancelled", event: "reset", to: "idle" },
+];
+
+export function buildFineGrainedSubscriptionSystemTransitionTable(): TransitionTable<FineGrainedSubscriptionSystemEvent, FineGrainedSubscriptionSystemState> {
+  return new TransitionTable<FineGrainedSubscriptionSystemEvent, FineGrainedSubscriptionSystemState>("idle", fineGrainedSubscriptionSystemTransitions);
 }

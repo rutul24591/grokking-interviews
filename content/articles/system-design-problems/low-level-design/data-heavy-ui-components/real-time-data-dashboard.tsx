@@ -32,11 +32,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function RealTimeDataDashboardArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function RealTimeDataDashboardArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Real-time Data Dashboard</h1><h2>Definition &amp; Context</h2><p>Design a Real-time Data Dashboard is an implementation-heavy low-level design problem covering snapshot bootstrap, stream merge, aggregation windows, render throttling, freshness indicators, reconnect, gap recovery, and widget isolation. A principal-level answer must define state ownership, consistency, lifecycle cleanup, scale limits, rollback, privacy, cost, and observability.</p><p>Separate authoritative data time from browser arrival time and render cadence. A dashboard may ingest quickly while projecting at a bounded frame rate. The core structures are baseline snapshot, event sequence, stream buffer, aggregation windows, widget subscriptions, render scheduler, freshness watermark, reconnect token, and gap detector.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/real-time-data-dashboard-runtime.svg" alt="Design a Real-time Data Dashboard runtime" caption="Topic-specific data flow from input or payload through guarded projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -109,7 +108,7 @@ export default function RealTimeDataDashboardArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="important">
@@ -151,7 +150,7 @@ export default function RealTimeDataDashboardArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -199,12 +198,8 @@ export default function RealTimeDataDashboardArticle() {
       </section>
 
       <section>
-        <h2>🧠 Solution Approach</h2>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/real-time-data-dashboard-architecture.svg"
-          alt="Real-time data dashboard architecture showing widget registry, dashboard layout, WebSocket data feed with REST fallback, time-series chart update with ring buffer, stat cards, refresh controls, and error handling"
-          caption="Architecture Overview"
-        />
+        <h3>🧠 Solution Approach</h3>
+        
         <p>
           The dashboard is built around a <strong>shared
           WebSocket connection</strong> with multiplexed
@@ -297,14 +292,14 @@ export default function RealTimeDataDashboardArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial">ConnectionLifecycle handles reconnect, backoff, gap recovery. StaleDetector</HighlightBlock>
 <HighlightBlock as="p" tier="important">watches for quiet streams. useStream(name) is the hook consumers use to subscribe;</HighlightBlock>
 <HighlightBlock as="p" tier="important">it returns the current stream state and registers the consumer with the manager.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">Connection status and stream subscriptions live
           in an external store. Stream data lives per-</HighlightBlock>
 <HighlightBlock as="p" tier="important">stream in ring buffers (most recent N points)
@@ -314,7 +309,7 @@ export default function RealTimeDataDashboardArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="crucial">
           The contract must be resumable: every update is tagged with a stream id and a monotonic
           cursor/watermark so the client can reconnect and recover gaps safely.
@@ -330,21 +325,21 @@ export default function RealTimeDataDashboardArticle() {
       </section>
 
       <section>
-        <h2>⚡ Rendering &amp; Performance</h2>
+        <h3>⚡ Rendering &amp; Performance</h3>
         <HighlightBlock as="p" tier="crucial">Per-widget throttling controls how often a widget receives flushes —</HighlightBlock>
 <HighlightBlock as="p" tier="important">high-cost charts can flush less often than their data arrives. Memory is bounded</HighlightBlock>
 <HighlightBlock as="p" tier="important">by per-stream ring buffers; old data points evict when the buffer is full.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">Pause/resume per widget lets users freeze a state for inspection. Smooth chart</HighlightBlock>
 <HighlightBlock as="p" tier="important">animations on update use the chart library&rsquo;s animation features but capped at frame rate.</HighlightBlock>
 <HighlightBlock as="p" tier="important">Tab-hidden state shows a subtle indicator on return so users know the dashboard paused.</HighlightBlock>
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">Connection status announces on change via live
           region. Stale-data warnings are accessible.</HighlightBlock>
         <HighlightBlock as="p" tier="important">
@@ -358,7 +353,7 @@ export default function RealTimeDataDashboardArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="crucial">WebSocket connections authenticate via session
           tokens during handshake. Server enforces
           per-stream</HighlightBlock>
@@ -371,7 +366,7 @@ export default function RealTimeDataDashboardArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="important">
           Unit tests cover the update buffer (RAF-aligned flush correctness), subscription manager
           (ref-count semantics), reconnection backoff, and stale detection.
@@ -389,14 +384,14 @@ export default function RealTimeDataDashboardArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">Tab backgrounded for hours: on resume, we may need to refetch a large gap; we surface progress and let the user opt to</HighlightBlock>
 <HighlightBlock as="p" tier="important">skip and start fresh. Multiple widgets subscribing to the same stream: ref-counted; the connection sends one stream and</HighlightBlock>
 <HighlightBlock as="p" tier="important">the buffer fans out. Server sends an unsubscribe error: we drop the subscription and surface the error to affected widgets.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="crucial">
           The shared connection + update-buffer pattern is reusable: it&rsquo;s a generic primitive for any
           high-throughput stream UI, not just dashboards.
@@ -412,7 +407,7 @@ export default function RealTimeDataDashboardArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="crucial">
           Status labels, warnings, and error messages come from i18n; timestamps must respect locale
           and time zone while remaining comparable (show both absolute and relative when useful).
@@ -428,7 +423,7 @@ export default function RealTimeDataDashboardArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Shared connection vs per-widget connections</h3>
         <HighlightBlock as="p" tier="important">
@@ -480,7 +475,7 @@ export default function RealTimeDataDashboardArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">Backend-side update aggregation (server
           combines high-frequency updates into batched
           messages, reducing wire traffic). WebTransport
@@ -489,100 +484,12 @@ export default function RealTimeDataDashboardArticle() {
           adjustable speed. Multi-region failover.
           Smart prefetching of historical context when
           a widget mounts.</Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. Why a shared WebSocket connection?</strong>{" "}
-          Scales linearly with dashboards instead of
-          widgets. Simpler lifecycle. Less server
-          resource usage. The subscription manager
-          multiplexes streams over the single connection.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How do you keep rendering smooth at
-          100+ updates per second?</strong> RAF-aligned
-          flush: incoming messages buffer per-stream;
-          on every frame, we flush the batch to
-          subscribers. React reconciles once per frame,
-          not per message.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>3. How does reconnection work?</strong>{" "}
-          Exponential backoff (1s, 2s, 4s, capped at
-          30s). On reconnect, fetch missed data via REST
-          using last-known timestamps per stream; merge
-          into streams; resume live updates.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. How do you detect stale data?</strong>{" "}
-          Each stream has an expected cadence. If no
-          update arrives within a multiple of that
-          cadence (3x), mark stale and warn. Differs
-          from disconnect — connection is alive,
-          server isn&rsquo;t sending.
-        </HighlightBlock>
-
-        <p>
-          <strong>5. What happens when the tab is
-          hidden?</strong> Page Visibility API triggers
-          pause: either disconnect or send a server-
-          side pause. Buffer holds any remaining
-          messages but doesn&rsquo;t flush to renderers.
-          On resume, reconnect if needed and fill the
-          gap.
-        </p>
-
-        <p>
-          <strong>6. How is per-widget throttling
-          implemented?</strong> Widgets declare a max
-          update frequency. The buffer respects that
-          per widget — high-frequency streams flush at
-          the widget&rsquo;s capped rate, not the
-          stream&rsquo;s actual rate. Most recent data
-          always wins.
-        </p>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>7. How is the dashboard
-          accessible?</strong> Status changes via live
-          region. Charts have text-equivalent
-          summaries. Pause/resume controls are keyboard
-          accessible. Stale warnings announce.
-        </HighlightBlock>
-
-        <p>
-          <strong>8. How does this integrate with charting
-          libraries?</strong> The runtime delivers
-          batched updates to widgets. The widget calls
-          the chart library&rsquo;s batched-update API
-          (most chart libraries have one). The runtime
-          doesn&rsquo;t know about chart specifics; it
-          just delivers data.
-        </p>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A real-time dashboard is{" "}
-          <strong>shared WebSocket + RAF-aligned update
-          buffer + connection lifecycle manager</strong>.
-          The shared connection scales; the buffer keeps
-          rendering smooth under load; the lifecycle
-          manager handles reconnection, gap recovery,
-          and stale detection.</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">Per-widget throttling
-          controls cost; Page Visibility API pauses on
-          hidden tabs. The result is a dashboard that
-          stays at 60 fps under 100+ updates per second
-          while clearly signaling connection state to
-          users.</Highlight></HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate canonical data, user intent, transient projection, remote effects, and bounded telemetry. Every cursor, subscription, cache entry, request, timer, observer, and worker requires an explicit owner and cleanup path. Stable ids are mandatory because indexes and DOM nodes are disposable views.</p><p>Separate authoritative data time from browser arrival time and render cadence. A dashboard may ingest quickly while projecting at a bounded frame rate. Commit durable changes only after applying the current policy and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/real-time-data-dashboard-recovery.svg" alt="Design a Real-time Data Dashboard recovery" caption="Recovery flow: validate versions, contain scale pressure, preserve stable truth, and explain the result." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Polling is simpler and predictable; streaming is justified when freshness matters enough to accept ordering, buffering, and reconnect complexity.</p><p>The event sequence and snapshot watermark are authoritative. UI rendering is a throttled projection; reconnect recovery replays from a known sequence or refreshes the snapshot. Scale pressure comes from high event rates, bursty streams, reconnect gaps, out-of-order events, expensive charts, hidden tabs, and stale widgets. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic projection only where rollback is deterministic and visible. Keep authorization and conflict-sensitive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit versions, cursor validation, generation guards, bounded caches, semantic HTML, and idempotent cleanup. Test keyboard use, accessibility output, stale responses, reconnects, retries, scroll restoration, and large datasets.</p><p>Measure interaction latency, render cost, cache pressure, stale drops, conflicts, retries, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include confusing visible data with complete data, trusting arrival order, leaking subscriptions, accepting stale completion, using indexes as identity, and hiding rollback.</p><p>For this topic, buffer bursts, detect sequence gaps, resubscribe from watermark, refresh when replay is unavailable, pause hidden work, and isolate failed widgets. Validate untrusted inputs, authorize durable actions server-side, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to operational interfaces where users manipulate large, changing datasets under partial failure. Reuse the controller shape while injecting query, authorization, persistence, and fallback policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Separate authoritative data time from browser arrival time and render cadence. A dashboard may ingest quickly while projecting at a bounded frame rate.</p><h3>What breaks at scale?</h3><p>high event rates, bursty streams, reconnect gaps, out-of-order events, expensive charts, hidden tabs, and stale widgets. I would bound expensive work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>The event sequence and snapshot watermark are authoritative. UI rendering is a throttled projection; reconnect recovery replays from a known sequence or refreshes the snapshot.</p><h3>How do you recover?</h3><p>I would buffer bursts, detect sequence gaps, resubscribe from watermark, refresh when replay is unavailable, pause hidden work, and isolate failed widgets.</p><h3>Why this architecture?</h3><p>Polling is simpler and predictable; streaming is justified when freshness matters enough to accept ordering, buffering, and reconnect complexity.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

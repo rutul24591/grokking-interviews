@@ -36,9 +36,19 @@ export const metadata: ArticleMetadata = {
 export default function PaginationComponentArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      {/* Section 1: Problem Clarification */}
       <section>
-        <h2>Problem Clarification</h2>
+        <h1>Design a Pagination Component</h1>
+        <h2>Definition &amp; Context</h2>
+        <p>Design a Pagination Component is a low-level design problem about implementing URL parsing, page-window calculation, cursor storage, request cancellation, prefetch, focus movement, loading state, and stale-response rejection. A principal-level interview answer must define ownership boundaries, browser and accessibility semantics, local data structures, lifecycle cleanup, server reconciliation, and explicit degraded behavior.</p>
+        <p>Treat the URL as the shareable navigation source of truth and keep request generation separate so delayed page responses cannot overwrite newer navigation. The central structures are current page, page size, total estimate, cursor map, visible window, request generation, cache entries, prefetch budget, and focus restoration policy. The implementation is not complete until cancellation, stale work, SSR behavior, privacy, metrics, and rollback are deliberate rather than incidental.</p>
+        <ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/pagination-component-runtime.svg" alt="Design a Pagination Component runtime flow" caption="Runtime flow: input becomes a guarded state transition, a semantic projection, and a recoverable outcome." />
+      </section>
+      <section>
+        <h2>Core Concepts</h2>
+        <p>The following deep dive preserves the component-specific mechanics and browser constraints that determine the implementation.</p>
+        {/* Section 1: Problem Clarification */}
+      <section>
+        <h3>Problem Clarification</h3>
         <HighlightBlock as="p" tier="important">
           We need to design a reusable pagination component for a large-scale web
           application that displays tabular or list data. The component must render
@@ -91,7 +101,7 @@ export default function PaginationComponentArticle() {
 
       {/* Section 2: Requirements */}
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
@@ -207,7 +217,7 @@ export default function PaginationComponentArticle() {
 
       {/* Section 3: High-Level Approach */}
       <section>
-        <h2>High-Level Approach</h2>
+        <h3>High-Level Approach</h3>
         <HighlightBlock as="p" tier="crucial">
           The core idea is to separate <strong>pagination state management</strong>,{" "}
           <strong>page range computation</strong>, and <strong>UI rendering</strong>{" "}
@@ -254,7 +264,7 @@ export default function PaginationComponentArticle() {
 
       {/* Section 4: System Design (LLD) */}
       <section>
-        <h2>System Design</h2>
+        <h3>System Design</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module Architecture</h3>
         <p>The system consists of six modules:</p>
@@ -458,7 +468,7 @@ export default function PaginationComponentArticle() {
 
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
-        <h2>Data Flow / Execution Flow</h2>
+        <h3>Data Flow / Execution Flow</h3>
         <HighlightBlock as="p" tier="crucial">
           The execution flow follows a unidirectional data flow pattern. URL query
           parameters seed the initial state, the Zustand store holds the current state,
@@ -527,7 +537,7 @@ export default function PaginationComponentArticle() {
 
       {/* Section 6: Implementation */}
       <section>
-        <h2>Implementation</h2>
+        <h3>Implementation</h3>
         <HighlightBlock as="p" tier="important">
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
@@ -628,7 +638,7 @@ export default function PaginationComponentArticle() {
 
       {/* Section 7: Performance & Scalability */}
       <section>
-        <h2>Performance &amp; Scalability</h2>
+        <h3>Performance &amp; Scalability</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Time and Space Complexity</h3>
         <div className="my-4 overflow-x-auto">
@@ -731,7 +741,7 @@ export default function PaginationComponentArticle() {
 
       {/* Section 8: Security Considerations */}
       <section>
-        <h2>Security Considerations</h2>
+        <h3>Security Considerations</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">URL Parameter Validation</h3>
         <HighlightBlock as="p" tier="important">
@@ -816,7 +826,7 @@ export default function PaginationComponentArticle() {
 
       {/* Section 9: Testing Strategy */}
       <section>
-        <h2>Testing Strategy</h2>
+        <h3>Testing Strategy</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
@@ -886,7 +896,7 @@ export default function PaginationComponentArticle() {
 
       {/* Section 10: Interview-Focused Insights */}
       <section>
-        <h2>Interview-Focused Insights</h2>
+        <h3>Interview-Focused Insights</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Common Mistakes Candidates Make</h3>
         <ul className="space-y-3">
@@ -1062,81 +1072,48 @@ export default function PaginationComponentArticle() {
           </div>
         </div>
       </section>
-
-      {/* Section 11: References */}
+      </section>
       <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://www.smashingmagazine.com/2023/02/pagination-ux-patterns/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Smashing Magazine — Pagination UX Patterns and Best Practices
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.nngroup.com/articles/pagination-ux/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Nielsen Norman Group — Pagination: Usability Guidelines for Web
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://zustand.docs.pmnd.rs/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Zustand — State Management Library Documentation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.w3.org/WAI/ARIA/apg/patterns/pagination/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              WAI-ARIA Pagination Pattern — Accessibility Guidelines
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://usehooks.com/usePagination/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              useHooks — Custom React Hooks for Pagination
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developer.mozilla.org/en-US/docs/Web/API/History_API"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              MDN — History API (pushState / replaceState) Documentation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              MDN — AbortController for Request Cancellation
-            </a>
-          </li>
+        <h2>Architecture &amp; Flow</h2>
+        <p>Implement the component as a small runtime with five boundaries. The input adapter normalizes keyboard, pointer, touch, browser, and async events. The state controller applies guards and separates preview state from committed state. The projection layer derives semantic DOM and ARIA relationships. The integration adapter owns server requests, URL synchronization, or browser APIs. The observability adapter emits bounded evidence for failures and slow paths.</p>
+        <p>For this topic, the critical state rule is: Treat the URL as the shareable navigation source of truth and keep request generation separate so delayed page responses cannot overwrite newer navigation. During interaction, record enough context to cancel safely. On commit, validate the latest intent, update the durable projection, and release temporary listeners, timers, observers, pointer capture, and abort controllers. On unmount, cleanup must be idempotent.</p>
+        <ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/pagination-component-edge-cases.svg" alt="Design a Pagination Component edge-case defense map" caption="Edge-case map: validate intent, contain scale pressure, recover from failure, reconcile committed state, and emit evidence." />
+      </section>
+      <section>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>offset pagination supports direct page jumps and simple URLs; cursor pagination handles changing high-volume datasets with stronger traversal stability. The custom design should still lean on native semantics and browser primitives where they remain correct. Replacing them creates testing obligations for keyboard behavior, focus ownership, reduced motion, touch interaction, zoom, SSR hydration, and assistive technology.</p>
+        <p>Offset pagination is stable only for mostly static datasets. Cursor pagination provides a traversal snapshot boundary; new items may appear after refresh without corrupting the current walk. At scale, the failure pressure is large result sets, unknown totals, cursor expiry, rapid navigation, browser back-forward actions, and expensive count queries. Defend the latency budget by batching measurement, aborting stale async work, bounding caches and prefetch, and emitting analytics only for committed outcomes.</p>
+        <p>A principal answer should distinguish local responsiveness from durable correctness. Optimistic UI is appropriate when the rollback is deterministic and visible. It is inappropriate when the client cannot validate authorization, inventory, resource conflicts, or destructive side effects.</p>
+      </section>
+      <section>
+        <h2>Best practices</h2>
+        <p>Use explicit state unions, typed events, idempotent cleanup, stable ids, native semantics, SSR-safe feature detection, abortable requests, and deterministic tests. Exercise keyboard-only use, touch cancellation, screen-reader output, high zoom, reduced motion, slow network, stale responses, unmount during work, and browser back-forward behavior where relevant.</p>
+        <p>Observe blocked transitions, rollback frequency, stale-response drops, slow interaction latency, cache pressure, retry count, and accessibility regression results. Keep telemetry small and avoid sensitive payloads. Publish the public behavior contract before changing shared component semantics.</p>
+      </section>
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>Common failures include mixing draft and committed state, treating rendering state as the source of truth for browser-owned behavior, leaving listeners or timers active after unmount, accepting stale async completion, trusting client-side authorization, and producing inaccessible custom controls.</p>
+        <p>For this component specifically, the failure policy is to abort superseded requests, discard stale responses, preserve the previous page while loading, recover from expired cursors with a refresh boundary, and reflect errors in the URL-owned view. Security and privacy require the implementation to cap page size, validate cursors server-side, rate-limit traversal, avoid exposing raw database offsets where sensitive, and prevent prefetch from multiplying load.</p>
+      </section>
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>Representative deployments include an administrative table with page jumps, an activity feed using cursors, and a search result page whose filters and page state are URL-synchronized. In each case, the same component shell may be reused, but the policy layer changes: latency budget, permissions, persistence, fallback, and telemetry should be injected explicitly instead of hidden in presentation code.</p>
+      </section>
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you model component state?</h3><p>I would separate committed state, transient interaction state, derived presentation, and async request generations. For this component, Treat the URL as the shareable navigation source of truth and keep request generation separate so delayed page responses cannot overwrite newer navigation. That model makes cancellation and rollback explicit.</p>
+        <h3>What breaks at scale?</h3><p>The dominant pressures are large result sets, unknown totals, cursor expiry, rapid navigation, browser back-forward actions, and expensive count queries. I would bound work per interaction, virtualize or cache only where measured, and cancel work that is no longer relevant.</p>
+        <h3>What consistency model applies?</h3><p>Offset pagination is stable only for mostly static datasets. Cursor pagination provides a traversal snapshot boundary; new items may appear after refresh without corrupting the current walk. The interview answer must state which layer is authoritative and how stale completion is rejected.</p>
+        <h3>How do you handle failure and rollback?</h3><p>I would abort superseded requests, discard stale responses, preserve the previous page while loading, recover from expired cursors with a refresh boundary, and reflect errors in the URL-owned view. I would also emit a reason code so product metrics distinguish expected cancellation from defects and provider failures.</p>
+        <h3>How do you defend the architecture over alternatives?</h3><p>offset pagination supports direct page jumps and simple URLs; cursor pagination handles changing high-volume datasets with stronger traversal stability. I would choose the smallest design that satisfies the required behavior and explicitly accept the testing and operability cost of custom interaction.</p>
+      </section>
+      <section>
+        <h2>References</h2>
+        <ul>
+          <li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events" target="_blank" rel="noreferrer">MDN Pointer events</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li>
+          <li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React: Sharing State Between Components</a></li>
         </ul>
       </section>
     </ArticleLayout>

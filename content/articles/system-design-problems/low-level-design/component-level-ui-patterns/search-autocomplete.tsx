@@ -34,11 +34,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function SearchAutocompleteArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
+export default function SearchAutocompleteArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Search Autocomplete</h1><h2>Definition &amp; Context</h2><p>Design a Search Autocomplete is an implementation-heavy low-level design problem covering focus ownership, query debounce, request generation, cache policy, keyboard navigation, composition events, ranking, and blur handling. A principal-level answer must make state ownership, data structures, lifecycle, failure containment, consistency, privacy, cost, and observability explicit.</p><p>Suggestions are visible only while the search control owns focus and the query is eligible. Async results are accepted only for the current normalized query generation. The implementation structures are query draft, normalized key, focused flag, composition flag, debounce timer, abort controller, generation, cache entry, active descendant, and selected suggestion.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/search-autocomplete-runtime.svg" alt="Design a Search Autocomplete runtime" caption="Topic-specific runtime stages from user intent through durable projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below contains the topic-specific implementation mechanics.</p><section>
+        <h3>Problem Clarification</h3>
         <HighlightBlock as="p" tier="crucial">
           We need to design a search autocomplete component that provides real-time
           suggestions as the user types into a search input. The component should
@@ -61,7 +60,7 @@ export default function SearchAutocompleteArticle() {
       </section>
 
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
@@ -96,7 +95,7 @@ export default function SearchAutocompleteArticle() {
       </section>
 
       <section>
-        <h2>High-Level Approach</h2>
+        <h3>High-Level Approach</h3>
         <HighlightBlock as="p" tier="crucial">
           The core idea is to compose three independent concerns: a <strong>debounced
           input</strong> that throttles user keystrokes, a <strong>cached fetch
@@ -121,7 +120,7 @@ export default function SearchAutocompleteArticle() {
       </section>
 
       <section>
-        <h2>System Design</h2>
+        <h3>System Design</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module Architecture</h3>
         <p>The system consists of five modules:</p>
@@ -213,7 +212,7 @@ export default function SearchAutocompleteArticle() {
       </section>
 
       <section>
-        <h2>Data Flow / Execution Flow</h2>
+        <h3>Data Flow / Execution Flow</h3>
         <HighlightBlock as="p" tier="crucial">
           The data flow is unidirectional: user input → debounced query → cache check →
           API fetch → state update → re-render → dropdown display. Keyboard events modify
@@ -230,7 +229,7 @@ export default function SearchAutocompleteArticle() {
       </section>
 
       <section>
-        <h2>Implementation</h2>
+        <h3>Implementation</h3>
         <p>
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module.
@@ -291,7 +290,7 @@ export default function SearchAutocompleteArticle() {
       </section>
 
       <section>
-        <h2>Performance &amp; Scalability</h2>
+        <h3>Performance &amp; Scalability</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Time and Space Complexity</h3>
         <div className="my-4 overflow-x-auto">
@@ -345,7 +344,7 @@ export default function SearchAutocompleteArticle() {
       </section>
 
       <section>
-        <h2>Security Considerations</h2>
+        <h3>Security Considerations</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Validation</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -387,7 +386,7 @@ export default function SearchAutocompleteArticle() {
       </section>
 
       <section>
-        <h2>Testing Strategy</h2>
+        <h3>Testing Strategy</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
@@ -413,7 +412,7 @@ export default function SearchAutocompleteArticle() {
       </section>
 
       <section>
-        <h2>Interview-Focused Insights</h2>
+        <h3>Interview-Focused Insights</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Common Mistakes Candidates Make</h3>
         <ul className="space-y-3">
@@ -503,36 +502,12 @@ export default function SearchAutocompleteArticle() {
         </div>
       </section>
 
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a href="https://www.w3.org/WAI/ARIA/apg/patterns/combobox/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              WAI-ARIA Combobox Pattern — Accessibility Guidelines
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/downshift-js/downshift" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Downshift — Headless Autocomplete/Combobox Library
-            </a>
-          </li>
-          <li>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              MDN — AbortController API
-            </a>
-          </li>
-          <li>
-            <a href="https://www.smashingmagazine.com/2022/03/debouncing-throttling-explained-examples-javascript/" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              Smashing Magazine — Debouncing &amp; Throttling Explained
-            </a>
-          </li>
-          <li>
-            <a href="https://react.dev/reference/react/useSyncExternalStore" className="text-accent hover:underline" target="_blank" rel="noopener noreferrer">
-              React Docs — useSyncExternalStore
-            </a>
-          </li>
-        </ul>
       </section>
-    </ArticleLayout>
-  );
-}
+<section><h2>Architecture &amp; Flow</h2><p>Separate input normalization, typed state transitions, derived projection, integration effects, and bounded telemetry. Preview state must not silently become durable state. Every timer, listener, observer, worker, request, pointer capture, and cache entry needs an explicit lifetime.</p><p>Suggestions are visible only while the search control owns focus and the query is eligible. Async results are accepted only for the current normalized query generation. Commit only after applying the latest policy and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/search-autocomplete-recovery.svg" alt="Design a Search Autocomplete recovery map" caption="Recovery decisions: contain pressure, retain committed truth, reconcile safely, and emit evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>A submit-only input is simpler; autocomplete is justified when discovery and latency reduction outweigh provider load and interaction complexity.</p><p>The typed query is local truth. Suggestions are eventually consistent provider results guarded by generation; executing a selection revalidates the chosen destination. The scale pressure is rapid typing, stale responses, CJK composition, repeated queries, focus transitions, slow providers, and restricted suggestions. Bound work, cancel stale effects, cap memory, and degrade predictably.</p><p>Use optimistic UI only where rollback is deterministic and understandable. Keep authorization and destructive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit state unions, idempotency keys, generation guards, SSR-safe feature checks, and deterministic cleanup. Test keyboard use, accessibility output, stale responses, retries, unmount, constrained devices, and large datasets.</p><p>Measure interaction latency, blocked transitions, stale drops, rollbacks, cache pressure, retries, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing preview and commit, trusting arrival order, leaking resources, accepting stale async work, and implementing custom interaction without semantic fallbacks.</p><p>For this topic, abort superseded requests, keep a bounded TTL cache, close safely on blur after pointer selection, skip disabled results, and retain typed text after provider failure. Security and privacy require the design to validate untrusted input, authorize durable mutations server-side, minimize sensitive telemetry, and bound resource consumption.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies where users repeatedly manipulate state while network, browser, and authorization boundaries can fail independently. Reuse the controller shell, but inject product-specific policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Suggestions are visible only while the search control owns focus and the query is eligible. Async results are accepted only for the current normalized query generation.</p><h3>What breaks at scale?</h3><p>rapid typing, stale responses, CJK composition, repeated queries, focus transitions, slow providers, and restricted suggestions. I would bound expensive work and cancel obsolete effects.</p><h3>What consistency model applies?</h3><p>The typed query is local truth. Suggestions are eventually consistent provider results guarded by generation; executing a selection revalidates the chosen destination.</p><h3>How do you recover?</h3><p>I would abort superseded requests, keep a bounded TTL cache, close safely on blur after pointer selection, skip disabled results, and retain typed text after provider failure.</p><h3>Why this architecture?</h3><p>A submit-only input is simpler; autocomplete is justified when discovery and latency reduction outweigh provider load and interaction complexity. The implementation cost is justified only when the required behavior needs it.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li></ul></section>
+</ArticleLayout>}

@@ -20,10 +20,9 @@ export const metadata: ArticleMetadata = {
   relatedTopics: ["kanban-board", "resizable-split-pane", "data-table"],
 };
 
-export default function DashboardBuilderArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <p>
+export default function DashboardBuilderArticle() { return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Dashboard Builder</h1><h2>Definition &amp; Context</h2><p>Design a Dashboard Builder is an implementation-heavy low-level design problem covering widget registry, drag-resize projection, grid packing, layout persistence, responsive breakpoints, lazy widgets, and rollback. A principal-level answer must define state ownership, local structures, lifecycle cleanup, browser semantics, server reconciliation, observability, privacy, and rollback.</p><p>Keep the committed dashboard layout separate from the transient drag-resize projection. Widget rendering uses registered capabilities and versioned configuration rather than arbitrary component injection. The important structures are widget registry, layout by breakpoint, projected rectangles, collision index, drag session, resize session, schema version, dirty journal, and widget error boundary.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/dashboard-builder-runtime.svg" alt="Design a Dashboard Builder runtime" caption="Runtime flow from intent through guarded state, semantic projection, and recovery." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the component-specific mechanics that an implementation discussion must defend.</p><p>
         Dashboard builders are a canonical "hard" LLD problem in staff-level interviews
         because they combine a complex geometric grid placement engine, a drag-and-drop
         system with collision detection, a widget registry pattern, lazy loading of
@@ -40,7 +39,7 @@ export default function DashboardBuilderArticle() {
         caption="Dashboard builder architecture: widget registry, grid placement, resize constraints, data fetching and persistence"
       />
 
-      <h2>Clarifying the Requirements</h2>
+      <h3>Clarifying the Requirements</h3>
       <p>
         The scope of a dashboard builder varies from a simple fixed grid with
         rearrangeable cards to a fully freeform layout with pixel-precise positioning.
@@ -73,7 +72,7 @@ export default function DashboardBuilderArticle() {
         code splitting.
       </p>
 
-      <h2>The Widget Registry</h2>
+      <h3>The Widget Registry</h3>
       <p>
         The widget registry is a mapping from a widget type identifier (a string, e.g.,
         "line-chart", "data-table", "kpi-card") to its definition: the component to
@@ -102,7 +101,7 @@ export default function DashboardBuilderArticle() {
         the dashboard context.
       </HighlightBlock>
 
-      <h2>The Grid Layout Model</h2>
+      <h3>The Grid Layout Model</h3>
       <p>
         Each placed widget in the dashboard has a layout item: type (widget type string),
         id (unique placement ID), x (column start, 0-indexed), y (row start, 0-indexed),
@@ -125,7 +124,7 @@ export default function DashboardBuilderArticle() {
         CSS transitions on left/top/width/height) during drag and resize operations.
       </p>
 
-      <h2>The Placement Algorithm</h2>
+      <h3>The Placement Algorithm</h3>
       <p>
         When a new widget is dropped onto the dashboard or an existing widget is moved,
         the placement algorithm must find a valid non-overlapping position. The algorithm
@@ -156,7 +155,7 @@ export default function DashboardBuilderArticle() {
         canonical layout.
       </p>
 
-      <h2>Drag and Drop Implementation</h2>
+      <h3>Drag and Drop Implementation</h3>
       <p>
         Dashboard drag-and-drop requires: dragging a widget header to reposition the
         entire widget, and dragging a resize handle (typically in the bottom-right corner)
@@ -185,7 +184,7 @@ export default function DashboardBuilderArticle() {
         preview. On pointer up, commit.
       </p>
 
-      <h2>Responsive Breakpoints</h2>
+      <h3>Responsive Breakpoints</h3>
       <p>
         A dashboard that looks good on a wide monitor becomes unusable on a laptop at
         1200px wide or a tablet at 768px. React-grid-layout solves this with breakpoint
@@ -207,7 +206,7 @@ export default function DashboardBuilderArticle() {
         in the lg layout. This produces a reasonable mobile layout automatically.
       </p>
 
-      <h2>Widget Data Fetching</h2>
+      <h3>Widget Data Fetching</h3>
       <p>
         Each widget on the dashboard typically fetches its own data from an API
         (a line chart widget fetches time-series data; a KPI card fetches a summary
@@ -236,7 +235,7 @@ export default function DashboardBuilderArticle() {
         independently error-bounded.
       </HighlightBlock>
 
-      <h2>Persistence</h2>
+      <h3>Persistence</h3>
       <p>
         The dashboard layout (the array of layout items with their positions and
         configurations) is persisted to the server in the user's profile. On mount,
@@ -259,7 +258,7 @@ export default function DashboardBuilderArticle() {
         dashboards.
       </p>
 
-      <h2>Accessibility</h2>
+      <h3>Accessibility</h3>
       <p>
         Dashboard builders are keyboard and screen reader accessibility nightmares when
         built naively. The minimum viable accessible dashboard: each widget has an
@@ -280,78 +279,12 @@ export default function DashboardBuilderArticle() {
         logical element (the added widget's title, or the "Add widget" button after
         deletion). After drag-and-drop completes (including keyboard-driven drag), focus
         returns to the drag handle.
-      </p>
-
-      <h2>Interview Q&A</h2>
-
-      <h3>Q: How does the compact placement algorithm handle a large dashboard efficiently?</h3>
-      <p>
-        The compact algorithm runs after every drag or resize event, processing each
-        layout item to move it as far up as possible. Its time complexity is O(n²) in
-        the number of widgets (for each of n widgets, it checks for overlaps with all
-        other widgets). For dashboards with 20–50 widgets, this is imperceptibly fast.
-        For dashboards with hundreds of widgets (analytics platforms), optimize by
-        representing the grid as a 2D boolean occupancy array (rows × columns). Placing
-        or moving a widget flips cells in the array from free to occupied. Finding the
-        highest valid position for a widget is a scan of the occupancy array from top
-        to bottom — O(rows × w) for a widget of width w. The total complexity is
-        O(n × rows × maxWidth), which is linear in n for fixed grid dimensions.
-      </p>
-
-      <h3>Q: How do you handle a widget that needs to be full-width on mobile but multi-column on desktop?</h3>
-      <p>
-        The responsive breakpoint layout system handles this: the lg layout stores the
-        widget at w=6 (half-width on a 12-column grid); the sm layout stores the same
-        widget at x=0, w=6 (full-width on a 6-column grid, since 6/6=100%). The
-        breakpoint switch happens automatically when the dashboard container's width
-        crosses the breakpoint threshold (detected by ResizeObserver). If the sm layout
-        is not explicitly saved, auto-generation sets x=0, w=maxCols (full-width),
-        ensuring every widget spans the full width on small screens — a safe default
-        for most widgets.
-      </p>
-
-      <h3>Q: How would you implement a dashboard with real-time streaming data (e.g., a live metrics wall)?</h3>
-      <p>
-        Each widget subscribes to a WebSocket channel specific to its data source
-        and time range. The widget component connects on mount and disconnects on
-        unmount. For a shared channel (multiple widgets showing the same metric), a
-        singleton connection shared via React context or a Zustand subscription store
-        avoids multiple WebSocket connections to the same channel. Incoming data points
-        are appended to the widget's local time-series buffer (a ring buffer of fixed
-        size, e.g., 1000 points). The chart re-renders on each new data point using
-        requestAnimationFrame to batch rapid updates into single render cycles. For
-        very high-frequency streams (1000+ events/second), aggregate in the widget's
-        buffer before rendering: only render the last N points that fit in the widget's
-        pixel width.
-      </p>
-
-      <h3>Q: How do you design the configuration schema for widget settings?</h3>
-      <p>
-        Each widget definition in the registry includes a JSON Schema describing its
-        configuration options. The dashboard builder renders a generic settings form
-        from this schema using a schema-to-form library (react-jsonschema-form, or
-        a custom implementation). This means new widget types can define their own
-        settings without any changes to the dashboard builder code — the schema drives
-        the form. A line chart widget's schema includes fields like: dataSource
-        (string, enum of available metrics), timeRange (string, enum), showLegend
-        (boolean), yAxisMin (number), yAxisMax (number). The settings panel
-        instantiates the schema form, binds it to the widget's saved configuration,
-        and on submit, updates the widget's configuration in the layout and persists.
-      </p>
-
-      <h3>Q: How do you prevent a widget's data fetch from blocking the dashboard render?</h3>
-      <p>
-        Each widget is wrapped in a React Suspense boundary and an ErrorBoundary.
-        The Suspense boundary shows the skeleton placeholder while the widget's lazy
-        component loads (code-splitting) and while its data fetch is pending (if using
-        Suspense-compatible data fetching like React Query's useSuspenseQuery). The
-        ErrorBoundary shows the widget's error state if the fetch fails. Because each
-        widget has its own Suspense and ErrorBoundary, a slow or failing widget only
-        shows its own fallback — the rest of the dashboard renders normally. The
-        dashboard layout is rendered with all widget placeholders immediately; widgets
-        fill in as their data loads, giving the impression of progressive loading
-        rather than a blocking spinner for the entire dashboard.
-      </p>
-    </ArticleLayout>
-  );
-}
+      </p></section>
+<section><h2>Architecture &amp; Flow</h2><p>Use five boundaries: an input adapter, a typed state controller, a projection layer, an integration adapter, and an observability adapter. Normalize events before they enter state. Keep previews separate from commits. Release timers, observers, listeners, abort controllers, workers, and pointer capture idempotently on cancel and unmount.</p><p>Keep the committed dashboard layout separate from the transient drag-resize projection. Widget rendering uses registered capabilities and versioned configuration rather than arbitrary component injection. For durable changes, validate the latest intent and record enough evidence to rollback deterministically.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/dashboard-builder-scale-recovery.svg" alt="Design a Dashboard Builder scale and recovery" caption="Scale defense: bound pressure, validate policy, reconcile failures, and emit reasoned evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>A fixed dashboard is cheaper and more predictable; a builder is justified when user-specific composition materially improves repeated operational workflows.</p><p>Layout previews are local. Persist versioned layouts optimistically and reconcile conflicts explicitly; widget data may refresh independently under bounded cache policy. The dominant scale risks are many widgets, expensive queries, breakpoint migration, collision cascades, third-party widget failures, and concurrent dashboard edits. Control them with bounded work, stable ids, cancellation, generation guards, measured caching, and explicit degraded behavior.</p><p>Optimistic UI is appropriate only when rollback is deterministic and understandable. Authorization, destructive effects, and conflict-sensitive truth stay server-authoritative.</p></section>
+<section><h2>Best practices</h2><p>Use typed state unions, stable identities, idempotency keys, versioned writes, SSR-safe browser feature detection, abortable async work, bounded caches, and semantic HTML. Test keyboard-only use, screen-reader output, slow networks, stale completion, retries, unmount during work, and large datasets.</p><p>Measure blocked transitions, stale drops, rollback rates, latency percentiles, cache pressure, retry exhaustion, and accessibility regressions. Keep telemetry small and free of sensitive content.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing preview and committed state, trusting arrival order, leaking resources after unmount, accepting stale completion, assuming visible data is the complete dataset, and implementing custom controls without accessible semantics.</p><p>For this topic, cancel invalid drops, isolate widget errors, cap grid reflow, migrate stored schemas, retain the last committed layout, and retry idempotent saves. Security and privacy require the design to authorize widget types and data sources, validate configuration schemas, sandbox third-party content, avoid leaking query results, and audit layout changes.</p></section>
+<section><h2>Real-world use cases</h2><p>This design appears in production surfaces where repeated interaction, large datasets, asynchronous completion, and partial failure are normal. Reuse the runtime shell, but inject product policy explicitly: authorization, latency budget, persistence boundary, fallback, and telemetry.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep the committed dashboard layout separate from the transient drag-resize projection. Widget rendering uses registered capabilities and versioned configuration rather than arbitrary component injection. I would name preview, commit, derived projection, async generation, and rollback evidence separately.</p><h3>What breaks at scale?</h3><p>many widgets, expensive queries, breakpoint migration, collision cascades, third-party widget failures, and concurrent dashboard edits. I would bound each expensive operation and cancel work that no longer affects the visible committed result.</p><h3>What consistency model applies?</h3><p>Layout previews are local. Persist versioned layouts optimistically and reconcile conflicts explicitly; widget data may refresh independently under bounded cache policy.</p><h3>How do you recover from failure?</h3><p>I would cancel invalid drops, isolate widget errors, cap grid reflow, migrate stored schemas, retain the last committed layout, and retry idempotent saves.</p><h3>How do you defend the architecture?</h3><p>A fixed dashboard is cheaper and more predictable; a builder is justified when user-specific composition materially improves repeated operational workflows. The added complexity is acceptable only when the required behavior and operational evidence justify it.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API" target="_blank" rel="noreferrer">MDN Intersection Observer API</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>; }

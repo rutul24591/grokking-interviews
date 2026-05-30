@@ -35,12 +35,11 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function FileExplorerUIArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      {/* Section 1: Problem Clarification */}
+export default function FileExplorerUIArticle() { return <ArticleLayout metadata={metadata}>
+<section><h1>Design a File Explorer UI</h1><h2>Definition &amp; Context</h2><p>Design a File Explorer UI is an implementation-heavy low-level design problem covering lazy tree loading, path navigation, selection, keyboard traversal, rename, move, optimistic mutation, conflict handling, and virtualized directories. A principal-level answer must define state ownership, local structures, lifecycle cleanup, browser semantics, server reconciliation, observability, privacy, and rollback.</p><p>Model nodes by stable id rather than mutable path. Keep expanded branches, selection, and optimistic mutations separate so rename or move does not invalidate every descendant reference. The important structures are node map, parent-child index, expanded-id set, loaded-child cursors, selection anchor, clipboard intent, mutation journal, version etag, and breadcrumb projection.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/file-explorer-ui-runtime.svg" alt="Design a File Explorer UI runtime" caption="Runtime flow from intent through guarded state, semantic projection, and recovery." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the component-specific mechanics that an implementation discussion must defend.</p>{/* Section 1: Problem Clarification */}
       <section>
-        <h2>Problem Clarification</h2>
+        <h3>Problem Clarification</h3>
         <HighlightBlock as="p" tier="important">
           We need to design a reusable file explorer UI component for a large-scale
           web application. The file explorer allows users to browse, manage, and
@@ -105,7 +104,7 @@ export default function FileExplorerUIArticle() {
 
       {/* Section 2: Requirements */}
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
@@ -242,7 +241,7 @@ export default function FileExplorerUIArticle() {
 
       {/* Section 3: High-Level Approach */}
       <section>
-        <h2>High-Level Approach</h2>
+        <h3>High-Level Approach</h3>
         <HighlightBlock as="p" tier="crucial">
           The file explorer is composed of several cooperating modules, each responsible
           for a distinct concern. The <strong>Zustand store</strong> holds the canonical
@@ -295,7 +294,7 @@ export default function FileExplorerUIArticle() {
 
       {/* Section 4: System Design (LLD) */}
       <section>
-        <h2>System Design</h2>
+        <h3>System Design</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module Architecture</h3>
         <p>The system consists of ten modules:</p>
@@ -534,7 +533,7 @@ export default function FileExplorerUIArticle() {
 
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
-        <h2>Data Flow / Execution Flow</h2>
+        <h3>Data Flow / Execution Flow</h3>
         <HighlightBlock as="p" tier="important">
           The file explorer follows a unidirectional data flow. All user interactions
           dispatch actions to the Zustand store. The store updates its state and notifies
@@ -597,7 +596,7 @@ export default function FileExplorerUIArticle() {
 
       {/* Section 6: Implementation */}
       <section>
-        <h2>Implementation</h2>
+        <h3>Implementation</h3>
         <p>
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
@@ -751,7 +750,7 @@ export default function FileExplorerUIArticle() {
 
       {/* Section 7: Performance & Scalability */}
       <section>
-        <h2>Performance &amp; Scalability</h2>
+        <h3>Performance &amp; Scalability</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Time and Space Complexity</h3>
         <div className="my-4 overflow-x-auto">
@@ -882,7 +881,7 @@ export default function FileExplorerUIArticle() {
 
       {/* Section 8: Security Considerations */}
       <section>
-        <h2>Security Considerations</h2>
+        <h3>Security Considerations</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Validation</h3>
         <p>
@@ -1003,7 +1002,7 @@ export default function FileExplorerUIArticle() {
 
       {/* Section 9: Testing Strategy */}
       <section>
-        <h2>Testing Strategy</h2>
+        <h3>Testing Strategy</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
@@ -1107,7 +1106,7 @@ export default function FileExplorerUIArticle() {
 
       {/* Section 10: Interview-Focused Insights */}
       <section>
-        <h2>Interview-Focused Insights</h2>
+        <h3>Interview-Focused Insights</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Common Mistakes Candidates Make</h3>
         <ul className="space-y-3">
@@ -1308,94 +1307,12 @@ export default function FileExplorerUIArticle() {
             </p>
           </div>
         </div>
-      </section>
-
-      {/* Section 11: References */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              MDN — Intersection Observer API
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              MDN — HTML Drag and Drop API
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.w3.org/WAI/ARIA/apg/patterns/grid/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              WAI-ARIA Grid Pattern — Accessibility Guidelines
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.w3.org/WAI/ARIA/apg/patterns/menu/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              WAI-ARIA Menu Pattern — Context Menu Accessibility
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://github.com/Stuk/jszip"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              JSZip — Client-Side Zip Archive Library
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://bvaughn.github.io/react-window/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              React Window — Virtualization Library for React Lists and Grids
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://zustand-demo.pmnd.rs/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Zustand — State Management Library Documentation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.nngroup.com/articles/bulk-operations/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Nielsen Norman Group — Bulk Operations UX Guidelines
-            </a>
-          </li>
-        </ul>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Use five boundaries: an input adapter, a typed state controller, a projection layer, an integration adapter, and an observability adapter. Normalize events before they enter state. Keep previews separate from commits. Release timers, observers, listeners, abort controllers, workers, and pointer capture idempotently on cancel and unmount.</p><p>Model nodes by stable id rather than mutable path. Keep expanded branches, selection, and optimistic mutations separate so rename or move does not invalidate every descendant reference. For durable changes, validate the latest intent and record enough evidence to rollback deterministically.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/file-explorer-ui-scale-recovery.svg" alt="Design a File Explorer UI scale and recovery" caption="Scale defense: bound pressure, validate policy, reconcile failures, and emit reasoned evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>A flat file list is simpler for shallow storage; a lazy tree explorer is justified for hierarchical navigation, bulk actions, and repeated management workflows.</p><p>The server filesystem model is authoritative. Local mutations are optimistic only when rollback is deterministic; list children by cursor and reconcile changed versions after writes. The dominant scale risks are huge directories, deep trees, path changes, permission drift, concurrent rename, partial loading, and recursive move hazards. Control them with bounded work, stable ids, cancellation, generation guards, measured caching, and explicit degraded behavior.</p><p>Optimistic UI is appropriate only when rollback is deterministic and understandable. Authorization, destructive effects, and conflict-sensitive truth stay server-authoritative.</p></section>
+<section><h2>Best practices</h2><p>Use typed state unions, stable identities, idempotency keys, versioned writes, SSR-safe browser feature detection, abortable async work, bounded caches, and semantic HTML. Test keyboard-only use, screen-reader output, slow networks, stale completion, retries, unmount during work, and large datasets.</p><p>Measure blocked transitions, stale drops, rollback rates, latency percentiles, cache pressure, retry exhaustion, and accessibility regressions. Keep telemetry small and free of sensitive content.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing preview and committed state, trusting arrival order, leaking resources after unmount, accepting stale completion, assuming visible data is the complete dataset, and implementing custom controls without accessible semantics.</p><p>For this topic, retain stable ids, reject recursive moves, rollback failed rename, refresh affected branches after conflict, preserve focus, and keep unloaded branches lazy. Security and privacy require the design to authorize every node operation, prevent path traversal, redact restricted nodes, validate upload and rename input, rate-limit recursive actions, and audit destructive mutations.</p></section>
+<section><h2>Real-world use cases</h2><p>This design appears in production surfaces where repeated interaction, large datasets, asynchronous completion, and partial failure are normal. Reuse the runtime shell, but inject product policy explicitly: authorization, latency budget, persistence boundary, fallback, and telemetry.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Model nodes by stable id rather than mutable path. Keep expanded branches, selection, and optimistic mutations separate so rename or move does not invalidate every descendant reference. I would name preview, commit, derived projection, async generation, and rollback evidence separately.</p><h3>What breaks at scale?</h3><p>huge directories, deep trees, path changes, permission drift, concurrent rename, partial loading, and recursive move hazards. I would bound each expensive operation and cancel work that no longer affects the visible committed result.</p><h3>What consistency model applies?</h3><p>The server filesystem model is authoritative. Local mutations are optimistic only when rollback is deterministic; list children by cursor and reconcile changed versions after writes.</p><h3>How do you recover from failure?</h3><p>I would retain stable ids, reject recursive moves, rollback failed rename, refresh affected branches after conflict, preserve focus, and keep unloaded branches lazy.</p><h3>How do you defend the architecture?</h3><p>A flat file list is simpler for shallow storage; a lazy tree explorer is justified for hierarchical navigation, bulk actions, and repeated management workflows. The added complexity is acceptable only when the required behavior and operational evidence justify it.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API" target="_blank" rel="noreferrer">MDN Intersection Observer API</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>; }

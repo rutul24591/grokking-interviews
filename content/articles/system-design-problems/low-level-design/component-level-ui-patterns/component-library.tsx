@@ -34,12 +34,11 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function ComponentLibraryArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      {/* Section 1: Problem Clarification */}
+export default function ComponentLibraryArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Component Library</h1><h2>Definition &amp; Context</h2><p>Design a Component Library is an implementation-heavy low-level design problem covering token resolution, variant composition, accessibility contracts, package versioning, visual regression, SSR behavior, and migration governance. A principal-level answer must make state ownership, data structures, lifecycle, failure containment, consistency, privacy, cost, and observability explicit.</p><p>Treat tokens, primitive behavior, and product composition as separate layers. Stable semantic APIs matter more than incidental DOM shape. The implementation structures are token graph, variant schema, slot contract, accessibility state, package boundary, deprecation ledger, visual fixtures, and adoption telemetry.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/component-library-runtime.svg" alt="Design a Component Library runtime" caption="Topic-specific runtime stages from user intent through durable projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below contains the topic-specific implementation mechanics.</p>{/* Section 1: Problem Clarification */}
       <section>
-        <h2>Problem Clarification</h2>
+        <h3>Problem Clarification</h3>
         <HighlightBlock as="p" tier="crucial">
           We need to design a reusable component library for a large-scale
           organization that maintains multiple web and mobile applications. The
@@ -94,7 +93,7 @@ export default function ComponentLibraryArticle() {
 
       {/* Section 2: Requirements */}
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
@@ -217,7 +216,7 @@ export default function ComponentLibraryArticle() {
 
       {/* Section 3: High-Level Approach */}
       <section>
-        <h2>High-Level Approach</h2>
+        <h3>High-Level Approach</h3>
         <HighlightBlock as="p" tier="crucial">
           The core architecture separates the component library into three layers:
           a <strong>token layer</strong> (design tokens as structured data with
@@ -266,7 +265,7 @@ export default function ComponentLibraryArticle() {
 
       {/* Section 4: System Design (LLD) */}
       <section>
-        <h2>System Design</h2>
+        <h3>System Design</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module Architecture</h3>
         <p>The library consists of six primary modules:</p>
@@ -398,7 +397,7 @@ export default function ComponentLibraryArticle() {
 
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
-        <h2>Data Flow / Execution Flow</h2>
+        <h3>Data Flow / Execution Flow</h3>
         <HighlightBlock as="p" tier="crucial">
           The execution flow follows a unidirectional token-to-CSS pipeline. Token
           definitions are the source of truth, the Theme Builder transforms them into
@@ -493,7 +492,7 @@ export default function ComponentLibraryArticle() {
 
       {/* Section 6: Implementation */}
       <section>
-        <h2>Implementation</h2>
+        <h3>Implementation</h3>
         <p>
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
@@ -611,7 +610,7 @@ export default function ComponentLibraryArticle() {
 
       {/* Section 7: Performance & Scalability */}
       <section>
-        <h2>Performance &amp; Scalability</h2>
+        <h3>Performance &amp; Scalability</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Time and Space Complexity</h3>
         <div className="my-4 overflow-x-auto">
@@ -725,7 +724,7 @@ export default function ComponentLibraryArticle() {
 
       {/* Section 8: Security Considerations */}
       <section>
-        <h2>Security &amp; Accessibility Considerations</h2>
+        <h3>Security &amp; Accessibility Considerations</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Sanitization in Component Content</h3>
         <HighlightBlock as="p" tier="important">
@@ -803,7 +802,7 @@ export default function ComponentLibraryArticle() {
 
       {/* Section 9: Testing Strategy */}
       <section>
-        <h2>Testing Strategy</h2>
+        <h3>Testing Strategy</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
@@ -911,7 +910,7 @@ export default function ComponentLibraryArticle() {
 
       {/* Section 10: Interview-Focused Insights */}
       <section>
-        <h2>Interview-Focused Insights</h2>
+        <h3>Interview-Focused Insights</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Common Mistakes Candidates Make</h3>
         <ul className="space-y-3">
@@ -1104,94 +1103,12 @@ export default function ComponentLibraryArticle() {
             </p>
           </div>
         </div>
-      </section>
-
-      {/* Section 11: References */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://storybook.js.org/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Storybook — Component Documentation and Playground
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.w3.org/WAI/WCAG21/quickref/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              WCAG 2.1 Quick Reference — Accessibility Guidelines
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.deque.com/axe/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              axe-core — Automated Accessibility Testing Engine
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://github.com/amzn/style-dictionary"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Style Dictionary — Cross-Platform Token Exporter
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.radix-ui.com/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Radix UI — Accessible Component Primitives
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://primer.style/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              GitHub Primer — Design System and Token Architecture
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://polaris.shopify.com/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Shopify Polaris — Component Library and Design Guidelines
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://design-tokens.github.io/community-group/format/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              W3C Design Tokens Format — Cross-Platform Token Specification
-            </a>
-          </li>
-        </ul>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate input normalization, typed state transitions, derived projection, integration effects, and bounded telemetry. Preview state must not silently become durable state. Every timer, listener, observer, worker, request, pointer capture, and cache entry needs an explicit lifetime.</p><p>Treat tokens, primitive behavior, and product composition as separate layers. Stable semantic APIs matter more than incidental DOM shape. Commit only after applying the latest policy and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/component-library-recovery.svg" alt="Design a Component Library recovery map" caption="Recovery decisions: contain pressure, retain committed truth, reconcile safely, and emit evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>A copy-paste component folder is fast initially; a governed library is justified when many teams need consistent behavior, accessibility, and upgrade paths.</p><p>Published packages are immutable. Token and component upgrades are explicit version transitions with migration notes and rollback paths. The scale pressure is many products, theme overrides, breaking changes, bundle growth, SSR hydration differences, and inconsistent accessibility fixes. Bound work, cancel stale effects, cap memory, and degrade predictably.</p><p>Use optimistic UI only where rollback is deterministic and understandable. Keep authorization and destructive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit state unions, idempotency keys, generation guards, SSR-safe feature checks, and deterministic cleanup. Test keyboard use, accessibility output, stale responses, retries, unmount, constrained devices, and large datasets.</p><p>Measure interaction latency, blocked transitions, stale drops, rollbacks, cache pressure, retries, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing preview and commit, trusting arrival order, leaking resources, accepting stale async work, and implementing custom interaction without semantic fallbacks.</p><p>For this topic, retain old APIs through a measured deprecation window, isolate experimental variants, detect visual drift, preserve SSR-safe defaults, and roll back package adoption by version. Security and privacy require the design to validate untrusted input, authorize durable mutations server-side, minimize sensitive telemetry, and bound resource consumption.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies where users repeatedly manipulate state while network, browser, and authorization boundaries can fail independently. Reuse the controller shell, but inject product-specific policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Treat tokens, primitive behavior, and product composition as separate layers. Stable semantic APIs matter more than incidental DOM shape.</p><h3>What breaks at scale?</h3><p>many products, theme overrides, breaking changes, bundle growth, SSR hydration differences, and inconsistent accessibility fixes. I would bound expensive work and cancel obsolete effects.</p><h3>What consistency model applies?</h3><p>Published packages are immutable. Token and component upgrades are explicit version transitions with migration notes and rollback paths.</p><h3>How do you recover?</h3><p>I would retain old APIs through a measured deprecation window, isolate experimental variants, detect visual drift, preserve SSR-safe defaults, and roll back package adoption by version.</p><h3>Why this architecture?</h3><p>A copy-paste component folder is fast initially; a governed library is justified when many teams need consistent behavior, accessibility, and upgrade paths. The implementation cost is justified only when the required behavior needs it.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li></ul></section>
+</ArticleLayout>}

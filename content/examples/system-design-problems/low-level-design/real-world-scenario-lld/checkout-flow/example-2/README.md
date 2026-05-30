@@ -1,6 +1,1 @@
-# Checkout Flow — Example 2
-
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+# Design a Checkout Flow example 2\n\nConcrete low-level implementation exercise for Design a Checkout Flow.\n

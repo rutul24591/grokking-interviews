@@ -1,6 +1,1 @@
-# Notifications Badge System — Example 3
-
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+# Design a Notifications Badge System example 3\n\nConcrete low-level implementation exercise for Design a Notifications Badge System.\n

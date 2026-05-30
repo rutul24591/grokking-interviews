@@ -1,6 +1,1 @@
-# Version History System — Example 3
-
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+# Design a Version History System example 3\n\nConcrete low-level implementation exercise for Design a Version History System.\n

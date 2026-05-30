@@ -21,11 +21,10 @@ export const metadata: ArticleMetadata = {
   relatedTopics: ["form-builder", "form-validation-engine"],
 };
 
-export default function DateTimePickerArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function ArticlePage(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Date-Time Picker Input System</h1><h2>Definition &amp; Context</h2><p>Design a Date-Time Picker Input System is an implementation-heavy low-level design problem covering calendar navigation, wall-clock draft parsing, timezone projection, disabled intervals, ambiguity handling, keyboard movement, and server validation. A principal-level answer must explain state ownership, durable boundaries, lifecycle cleanup, failure recovery, privacy, cost, and observability.</p><p>Keep wall-clock draft, timezone id, resolved instant, and validation status separate. Daylight-saving ambiguity must be surfaced rather than silently shifted. The core structures are draft fields, timezone id, resolved instant, locale formatter, focused date, active view, min-max policy, disabled intervals, and validation result.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/forms-input-systems/date-time-picker-runtime.svg" alt="Design a Date-Time Picker Input System runtime" caption="Topic-specific runtime from input intent through validated durable state." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -93,7 +92,7 @@ export default function DateTimePickerArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -130,7 +129,7 @@ export default function DateTimePickerArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -174,7 +173,7 @@ export default function DateTimePickerArticle() {
       </section>
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <HighlightBlock as="p" tier="important">
           The picker has two complementary surfaces: a
           <strong> field</strong> (text input + popover trigger)
@@ -326,14 +325,10 @@ export default function DateTimePickerArticle() {
         </p>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/date-time-picker-architecture.svg"
-        alt="Date / Time Picker Architecture"
-        caption="Headless core hook owning canonical ZonedDateTime; DateField + Calendar + TimePicker + RangeController skin the same engine. Canonical-internal, locale-aware-display, with an adapter abstracting Temporal/date-fns/Luxon."
-      />
+      
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="important">
           <strong>DateField</strong> is the visible field —
           either a text input that opens a popover, or on
@@ -395,7 +390,7 @@ export default function DateTimePickerArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="important">Local state holds: canonical
           <code> value</code>, <code>viewDate</code> (which
           month is visible), <code>focusDate</code> (which
@@ -418,7 +413,7 @@ export default function DateTimePickerArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important">Inputs:{" "}
           <code>value</code>, </Highlight><code>onChange</code>,
           <code> min</code>, <code>max</code>,
@@ -436,7 +431,7 @@ export default function DateTimePickerArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance Strategy</h2>
+        <h3>⚡ Performance Strategy</h3>
         <HighlightBlock as="p" tier="important">The month grid memoizes by (year, month, locale, timezone, disabledDate ref);</HighlightBlock>
 <HighlightBlock as="p" tier="important">recomputation only happens when those change. Intl.DateTimeFormat instances are cached per</HighlightBlock>
 <HighlightBlock as="p" tier="important">(locale, options) tuple because constructing one is surprisingly expensive (sub-ms but adds up).</HighlightBlock>
@@ -448,7 +443,7 @@ export default function DateTimePickerArticle() {
       </section>
 
       <section>
-        <h2>🎨 UI/UX Considerations</h2>
+        <h3>🎨 UI/UX Considerations</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important">Highlight today distinctly. Mark weekends and
           (when configured) holidays. For ranges, hover
           renders a preview of the range with a subtle
@@ -464,14 +459,14 @@ export default function DateTimePickerArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">The field carries an aria-label describing the value (&ldquo;March 15, 2026&rdquo;). Live region announces month</HighlightBlock>
 <HighlightBlock as="p" tier="important">changes (&ldquo;March 2026&rdquo;) on Page Up/Down. We do not rely on color alone for state — disabled cells have a distinct</HighlightBlock>
 <HighlightBlock as="p" tier="important">text style; selected cells have both color and a visible border. Sufficient contrast (WCAG AA at minimum) on all states.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important">Strict parser rejects ambiguous strings rather
           than silently picking an interpretation that may
           be wrong. The picker never executes user-supplied
@@ -486,21 +481,21 @@ export default function DateTimePickerArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing Strategy</h2>
+        <h3>🧪 Testing Strategy</h3>
         <HighlightBlock as="p" tier="crucial">Visual snapshot tests for boundary months (February of leap years, months that</HighlightBlock>
 <HighlightBlock as="p" tier="important">span DST transitions). Cross-locale tests verify formatting and parsing in en-US,</HighlightBlock>
 <HighlightBlock as="p" tier="important">en-GB, ar-SA, ja-JP, hi-IN. Cross-time-zone tests verify canonical-storage round-trips.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🚨 Edge Cases &amp; Failure Handling</h2>
+        <h3>🚨 Edge Cases &amp; Failure Handling</h3>
         <HighlightBlock as="p" tier="crucial">Range with same start and end on a disabled day: treat as invalid; surface the reason. Two-month view when selection spans</HighlightBlock>
 <HighlightBlock as="p" tier="important">months: keep both visible. Pasted invalid string: surface error inline; do not corrupt state. Calendar opened on a disabled-day-only</HighlightBlock>
 <HighlightBlock as="p" tier="important">week: focus the next valid day, not a disabled one. A min date that&rsquo;s after max : treat as a misconfiguration; log and clamp.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🔁 Reusability &amp; Extensibility</h2>
+        <h3>🔁 Reusability &amp; Extensibility</h3>
         <HighlightBlock as="p" tier="crucial">The DateAdapter is the primary extension point —
           consumers can swap libraries by implementing the
           small operation set. Theming uses design tokens;
@@ -514,7 +509,7 @@ export default function DateTimePickerArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important">All formatting via
           <code> Intl.DateTimeFormat</code> with the active
           locale; no hard-coded month or day names. RTL
@@ -533,7 +528,7 @@ export default function DateTimePickerArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs &amp; Design Decisions</h2>
+        <h3>⚖️ Trade-offs &amp; Design Decisions</h3>
 
         <h3>Custom desktop UI vs native input on mobile</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -599,7 +594,7 @@ export default function DateTimePickerArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="important">NLP parsing of free-text dates (&ldquo;next Tuesday at 3pm&rdquo;) with a confirmation step would</HighlightBlock>
 <HighlightBlock as="p" tier="important">accelerate input for power users. Server-driven availability calendars (busy/free streamed in) would</HighlightBlock>
 <HighlightBlock as="p" tier="important">close the gap with native scheduling apps. Calendar integration (Google, Outlook) for recurring events.</HighlightBlock>
@@ -611,107 +606,12 @@ export default function DateTimePickerArticle() {
           insufficient (e.g. very granular time selection).</HighlightBlock>
       </section>
 
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. How do you keep DST-correct values when storing
-          and displaying?</strong> Store ISO-with-offset (a
-          zoned instant). Display through
-          <code> Intl.DateTimeFormat</code> with the active
-          time zone. On spring-forward, round nonexistent
-          wall times forward; on fall-back, use the
-          Temporal-style disambiguation default and surface
-          the offset where it matters. Never store wall
-          time without offset.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>2. Why use <code>role=&quot;grid&quot;</code> for the
-          calendar?</strong> The grid pattern gives screen
-          reader users a 2D navigation model that matches
-          the visual layout. With a single tabstop and arrow-
-          key navigation, users can explore dates without
-          tab-trampolining. Buttons in a row would lose the
-          2D semantic. WAI-ARIA Authoring Practices
-          documents this pattern explicitly.
-        </HighlightBlock>
-
-        <p>
-          <strong>3. How do you handle locale week-start
-          differences?</strong>
-          <code> Intl.Locale.weekInfo</code> exposes the
-          first day of the week per locale (where
-          supported); fall back to a small data table for
-          older browsers. The first column header and the
-          grid alignment update accordingly.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. Why store ISO-with-offset vs raw local
-          time?</strong> Local time without offset is
-          ambiguous — &ldquo;3pm&rdquo; is a different
-          instant in PST vs EST. Storing ISO-with-offset
-          carries the time zone information; the value
-          round-trips through APIs cleanly. The common bug
-          of &ldquo;the meeting moved an hour&rdquo; is
-          exactly this: storing local and reinterpreting
-          server-side.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>5. How do you keep the picker accessible on
-          mobile?</strong> Use the native
-          <code> {`<input type="date">`}</code> or
-          <code> type="datetime-local"</code>. The OS picker
-          is fully accessible by definition (built into the
-          platform&rsquo;s assistive tech) and handles
-          calendar systems we&rsquo;d otherwise need to
-          support manually.
-        </HighlightBlock>
-
-        <p>
-          <strong>6. How do you avoid bundling all locales?</strong>
-          Use <code>Intl</code> (built into the browser) for
-          formatting; we bundle no locale data ourselves. For
-          libraries like date-fns that ship locale data
-          separately, dynamically import the locale module
-          based on the active locale, never statically.
-        </p>
-
-        <p>
-          <strong>7. What happens if a user pastes an invalid
-          string?</strong> The strict parser rejects rather
-          than guessing; an inline error appears, and the
-          stored value is unchanged. Guessing would lead to
-          submitted values that don&rsquo;t match the user&rsquo;s
-          intent — much worse than asking them to retype.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>8. How would you support recurring date
-          selection?</strong> RRULE is its own subsystem;
-          the picker exposes a single value or a range. A
-          recurring rule editor builds on top of the picker
-          (using it to select the start date and pattern
-          parameters) but is not part of this control. The
-          recurring editor emits an RRULE string; the
-          picker emits dates. Composition keeps both
-          coherent.
-        </HighlightBlock>
       </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="important">A solid Date/Time Picker is a headless, locale- and zone-aware control wrapped in an accessible</HighlightBlock>
-<HighlightBlock as="p" tier="important">WAI-ARIA grid. Store canonical ISO-with-offset values, format with Intl , pick the right adapter</HighlightBlock>
-<HighlightBlock as="p" tier="important">(Temporal where available), and use the native input on mobile while offering a rich custom UI on desktop.</HighlightBlock>
-<HighlightBlock as="p" tier="crucial">The non-negotiable invariants are
-          canonical storage, separated focus and selection,
-          DST-correct math, and full keyboard accessibility.
-          Get those right and the rest is presentation
-          polish.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+<section><h2>Architecture &amp; Flow</h2><p>Separate field input, typed state transitions, derived projections, persistence effects, and bounded telemetry. Draft, preview, validated, and submitted states must not collapse into one mutable object. Every debounce timer, request, storage write, worker, and subscription needs an explicit owner and cleanup path.</p><p>Keep wall-clock draft, timezone id, resolved instant, and validation status separate. Daylight-saving ambiguity must be surfaced rather than silently shifted. Commit only after the current policy gate succeeds and retain enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/forms-input-systems/date-time-picker-recovery.svg" alt="Design a Date-Time Picker Input System recovery" caption="Recovery flow: reject obsolete work, preserve recoverable drafts, and explain the outcome." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Native inputs work well on mobile; a custom picker is justified for timezone resolution, ranges, blocked slots, and consistent enterprise policy.</p><p>Local validation improves responsiveness, but server availability is authoritative. The submitted instant includes timezone and offset evidence. Scale pressure comes from timezone database changes, DST gaps and overlaps, locale variation, mobile input, stale availability, and dense disabled ranges. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic transitions only when rollback is deterministic and understandable. Authorization and final validation remain server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable field ids, typed events, explicit state unions, schema versions, generation guards, SSR-safe feature checks, semantic HTML, and idempotent cleanup. Test keyboard use, screen-reader output, stale responses, offline recovery, retries, restoration, and constrained devices.</p><p>Measure field latency, blocked actions, stale drops, save conflicts, retries, storage pressure, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing drafts and committed values, trusting client validation, leaking resources, accepting stale async completion, and hiding rollback from the user.</p><p>For this topic, retain draft on error, distinguish nonexistent from ambiguous time, offer an offset choice, revalidate on submit, and degrade to typed input. Validate untrusted input, authorize durable mutations server-side, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to high-value forms where users expect responsive input while browser, persistence, validation, and policy boundaries can fail independently. Reuse the controller structure while injecting product policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep wall-clock draft, timezone id, resolved instant, and validation status separate. Daylight-saving ambiguity must be surfaced rather than silently shifted.</p><h3>What breaks at scale?</h3><p>timezone database changes, DST gaps and overlaps, locale variation, mobile input, stale availability, and dense disabled ranges. I would bound expensive work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>Local validation improves responsiveness, but server availability is authoritative. The submitted instant includes timezone and offset evidence.</p><h3>How do you recover?</h3><p>I would retain draft on error, distinguish nonexistent from ambiguous time, offer an offset choice, revalidate on submit, and degrade to typed input.</p><h3>Why this architecture?</h3><p>Native inputs work well on mobile; a custom picker is justified for timezone resolution, ranges, blocked slots, and consistent enterprise policy.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank" rel="noreferrer">MDN localStorage</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

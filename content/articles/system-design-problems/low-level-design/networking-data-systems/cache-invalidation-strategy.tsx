@@ -2,237 +2,130 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
-import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-lld-cache-invalidation-strategy",
-  title: "Cache Invalidation Strategy (After Mutations)",
-  description: "Production-grade cache invalidation strategies for keeping frontend cache fresh after mutations with dependency tracking, selective invalidation, and race condition handling.",
+  title: "Design a Cache Invalidation Strategy After Mutations",
+  description: "LLD for invalidating and updating frontend cache after mutations using tags, normalized entities, optimistic patches, and revalidation.",
   category: "low-level-design",
   subcategory: "networking-data-systems",
   slug: "cache-invalidation-strategy",
-  wordCount: 5400,
-  readingTime: 33,
-  lastUpdated: "2026-05-06",
-  tags: ["lld", "caching", "invalidation", "mutations", "frontend", "data-consistency"],
-  relatedTopics: ["frontend-caching-layer", "optimistic-ui-system", "request-deduplication-system", "data-fetching-hook"],
+  wordCount: 4200,
+  readingTime: 24,
+  lastUpdated: "2026-05-29",
+  tags: ["lld", "frontend-networking", "implementation-design", "react", "resilience"],
+  relatedTopics: ["data-fetching-hook", "frontend-caching-layer", "request-deduplication-system", "retry-mechanism", "token-refresh-system"],
 };
 
 export default function CacheInvalidationStrategyArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">
-          Frontend caches improve performance by storing frequently accessed data in memory. But caches create a freshness problem: when the user mutates data (creates a post, edits a comment, deletes a user), the cached copy becomes stale. If the app serves stale data from cache, users see incorrect information until the cache expires. Consider a real scenario: user views a list of posts (cached for 5 minutes). Then creates a new post. The list cache still shows old posts (new post missing). User thinks it didn't work, refreshes, finally sees new post. Bad UX.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          The challenge is invalidating just the right cache entries without over-invalidating (clearing the entire cache = losing performance benefits). Key challenges: (1) Knowing which cache entries to invalidate (which queries depend on the mutated entity?), (2) Timing (invalidate before, after, or during mutation?), (3) Race conditions (mutation in flight, response arrives out of order), (4) Cascading invalidations (user edit invalidates user-detail AND user-list AND organization-members if user is in an org), (5) Stale data during refetch (user sees "loading" spinner while waiting for refetch).
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Naive approaches: (1) Clear entire cache on any mutation—correct but kills performance (lose all cached data). (2) Never invalidate, trust TTL—wrong (stale data too long). (3) Manual invalidation everywhere—brittle (easy to forget to invalidate related queries). Better approach: dependency mapping (mutation type → affected cache keys), selective invalidation (clear only affected entries), automatic refetching (reload invalidated data), and cascading invalidation (mark related entries as stale).
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          <strong>Explicit assumptions:</strong> Cache layer exists (React Query, SWR, custom). Mutations change server state. Frontend cache must stay fresh (~seconds lag acceptable). Query dependencies can be determined (mutation type → cache keys). Refetching is cheap enough to do on every mutation. Backend is source of truth.
-        </HighlightBlock>
+      <section className="space-y-5">
+        <h2>Definition &amp; Context</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Design a Cache Invalidation Strategy After Mutations is a low-level implementation problem, not a broad architecture prompt. The interviewer expects you to describe the runtime module, public API, internal state, data structures, lifecycle transitions, failure semantics, and test cases that make the feature safe inside a large React or TypeScript application.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The core primitive is the invalidation planner. A principal-level answer should start from the user-visible behavior, then quickly move into the implementation contract: invalidateAfterMutation(mutation, &#123; entityIds, tags, optimisticPatch, revalidate &#125;). That contract must be stable enough for many components to depend on it, but small enough that teams cannot bypass the lifecycle rules accidentally.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The design boundary is the browser client. The server may provide HTTP, GraphQL, WebSocket, upload, or auth endpoints, but the article focuses on client orchestration: when to call, when to cancel, what to cache, how to avoid duplicate work, how to surface errors, and how to keep UI state consistent under slow networks and rapid user interaction.</p>
       </section>
 
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="crucial"><strong>Selective Invalidation:</strong> Mark specific cache entries as stale (user update invalidates user-detail cache, but not posts list). Don't clear entire cache on every mutation (wasteful).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Dependency Tracking:</strong> Define mapping: which cache queries are affected by which mutations. Example: deleting a specific post (for example DELETE /posts/POST_ID) affects the posts list, the specific post detail view, and the list of posts for the owning user.</HighlightBlock>
-          <li><strong>Cascading Invalidation:</strong> When post is deleted, also invalidate comment-list for that post. When user is deleted, invalidate all posts by that user. Support multi-level dependencies.</li>
-          <HighlightBlock as="li" tier="important"><strong>Invalidation Timing:</strong> Support three modes: (1) Pre-mutation (optimistic—invalidate cache before request), (2) Post-mutation (after response), (3) Conditional (only on success).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Automatic Refetching:</strong> After invalidating a cache entry, automatically refetch fresh data. Support configurable timing (immediate, lazy on access, batched, scheduled).</HighlightBlock>
-          <li><strong>Manual Override:</strong> Provide API for component to manually invalidate cache (e.g., invalidateQuery('posts-list')) for complex cases not covered by rules.</li>
-          <li><strong>Stale While Refetch:</strong> Mark data as stale but continue serving from cache while refetch is in-flight (improved UX). Show "updated N seconds ago" indicator.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Correctness:</strong> No stale data after mutation succeeds. If refetch fails, re-show old data with error (don't show broken cache).</li>
-          <li><strong>Efficiency:</strong> Minimize unnecessary refetches. Don't invalidate unrelated queries. Batch multiple invalidations into single request.</li>
-          <li><strong>Simplicity:</strong> Invalidation rules easy to understand and maintain. Clear mapping of mutations to cache keys.</li>
-          <li><strong>Performance:</strong> Invalidation logic runs fast (&lt;50ms). Refetch doesn't block mutation success response.</li>
-          <HighlightBlock as="li" tier="important"><strong>Resilience:</strong> Handle race conditions (mutations arriving out of order, network failures during refetch).</HighlightBlock>
-        </ul>
+      <section className="space-y-5">
+        <h2>Core Concepts</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The first concept is a typed request or operation identity. Every operation needs a stable key so the runtime can deduplicate, cache, cancel, retry, batch, or invalidate it. For design a cache invalidation strategy after mutations, the key should include the resource identity, security context, relevant parameters, and behavior-changing options. It should not include unstable values such as inline function identity or render-local object references.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The second concept is lifecycle state. This article uses these states as the baseline: clean, dirty, patched, revalidating, reconciled, rollbackNeeded. These states are deliberately more precise than a boolean loading flag. They let the UI distinguish initial load from background refresh, recoverable failure from terminal failure, stale data from absent data, and ignored stale work from committed work.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The third concept is a boundary between control-plane decisions and rendering. The control plane owns cancellation, timers, retry budgets, request sharing, storage, and telemetry. Rendering code should consume a compact view model and command callbacks. That separation is what keeps component trees from re-implementing inconsistent networking behavior.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The fourth concept is observability as part of the API. The runtime should emit operation key, attempt count, latency, status, retry reason, cancellation reason, cache source, stale age, and user-visible fallback. Without these signals, production failures look like random UI glitches instead of diagnosable lifecycle bugs.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The fifth concept is data-structure choice. Most networking LLD answers become credible when you name the actual structures: a Map for in-flight operations, a Map from resource key to subscriber set, a priority queue or timer wheel for delayed retries, an LRU list for memory cache, a tag-to-key index for invalidation, and an append-only operation journal for optimistic or resumable workflows. These structures are small enough to implement in an interview but powerful enough to explain scale behavior.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The sixth concept is authority. The client can decide rendering, caching, dedupe, retries, and local rollback, but it cannot decide authorization, final mutation success, or cross-device consistency alone. Every implementation should mark which state is speculative, which state is server-acknowledged, and which state is only a local projection used to keep the interface responsive.</p>
       </section>
 
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="important">
-          Cache invalidation has three phases: dependency definition, mutation handling, and refetching.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">
-          Phase 1 (Dependency Definition): Define a mapping from mutation types to affected cache queries. For example, creating a post invalidates the posts list. Updating a specific post invalidates the posts list, that post’s detail view, and the owning user’s posts list. Deleting a post invalidates the same set. This mapping can be defined declaratively (as configuration owned by the data layer) or implicitly (conventions that derive affected query families from the resource type).
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Phase 2 (Mutation Handling): When user submits mutation (e.g., POST /posts), system: (1) Sends request to backend. (2) Backend processes, updates database, returns response. (3) On success, lookup dependent cache queries from mapping. (4) Mark those queries as "stale". (5) Optionally trigger refetch. (6) Return mutation response to user immediately (don't wait for refetch).
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Phase 3 (Refetching): Stale-marked queries can be refetched in several ways: (1) Immediately after mutation (instant freshness, increased load). (2) Lazily on next access (user requests that query, it refetches). (3) Batched (combine multiple stale queries into one request). (4) Scheduled (refetch after delay so user stops interacting, less disruptive). Choose based on data criticality and expected user behavior.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Optimization: "stale-while-revalidate"—serve cached data immediately while refetching in background. User sees data instantly, but it might be slightly stale. Once refetch completes, update with fresh data. This improves perceived performance.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Invalidation Strategies and Mechanisms</h3>
-        <p>
-          TTL-Based (Time-To-Live): Cache entry expires after a fixed duration (e.g., 5 minutes). Simple, requires no explicit invalidation logic. Con: data may be stale for up to 5 minutes. Best for non-critical data where staleness is acceptable.
-        </p>
-        <p>
-          Event-Based (Active): Mutation triggers invalidation immediately. When POST /posts succeeds, event published ("post_created"). Subscribers listening for this event invalidate "posts-list" cache. Pro: instant freshness. Con: complex (need event system), tight coupling between mutations and cache.
-        </p>
-        <p>
-          Timestamp-Based: Server includes timestamp in response (e.g., "last_updated: 2026-05-06T10:00Z"). Cache stores entry with timestamp. When refetching, compare: if server timestamp newer than cache timestamp, fetch fresh data. Otherwise, reuse cache. Useful for conditional requests (HTTP If-Modified-Since header).
-        </p>
-        <p>
-          Version Numbers: Each entity has version counter (incremented on every change). Cache stores entity+version. If server version newer, data is stale. Lightweight alternative to timestamps.
-        </p>
-        <HighlightBlock as="p" tier="crucial">
-          Subscriptions (Real-time): Client subscribes to entity changes via WebSocket or polling. Server broadcasts updates (new data, deletion). Subscribers invalidate cache immediately. Most sophisticated, enables real-time freshness. Trade: complexity, server-side subscription management, higher latency on updates.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Dependency Mapping and Query Relationships</h3>
-        <p>
-          Manual mapping: the developer explicitly specifies which cache query families to invalidate for each mutation. The advantage is clarity and precision. The downside is operational drift: as the app evolves, it is easy to forget a related query, which produces subtle staleness bugs.
-        </p>
-        <HighlightBlock as="p" tier="important">
-          Convention-based mapping: derive invalidations from the resource type and mutation shape. For example, creating an entity invalidates list queries for that entity type, while updating or deleting a specific entity invalidates both the list and the corresponding detail view. This reduces boilerplate but requires consistent naming conventions and cannot express every cross-entity dependency.
-        </HighlightBlock>
-        <p>
-          Pattern matching: use prefixes or wildcard patterns to invalidate groups of related cache keys. This is flexible and compact, but can over-invalidate and increase refetch load if patterns are too broad.
-        </p>
-        <p>
-          Nested dependencies (cascading): when a post changes, related caches may need invalidation, such as the post detail view, comment lists for that post, and feed timelines. Dependencies form a graph across entities. The system should model these relationships explicitly so it can invalidate all affected caches without relying on ad hoc guesses.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Optimistic Invalidation and Mutation Response</h3>
-        <p>
-          Optimistic updates: When user submits mutation, immediately update UI with expected result (don't wait for server response). Example: user clicks "delete comment", comment immediately hidden in UI. Simultaneously, DELETE request sent to server. If server confirms, nothing changes (UI already updated). If server rejects (permission denied, comment already deleted), rollback UI to show original comment, display error.
-        </p>
-        <HighlightBlock as="p" tier="important">
-          Optimistic cache invalidation: When mutation submitted, immediately invalidate affected cache entries (before server response). This forces refetch from server on next access. Benefits: instant freshness on success. Downside: if mutation fails, user sees refetch fail, then has to retry. Alternative: do optimistic update, defer cache invalidation until success response received.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Error handling: If mutation fails, restore original cache (or skip invalidation entirely). Don't serve incorrect data to user. Display error message, let user retry.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Automatic Refetching Strategies</h3>
-        <p>
-          After invalidating cache entry, refresh the data. Refetching strategy depends on use case. Immediate refetch: triggers refetch right after mutation succeeds. Data is fresh quickly. Con: increased server load, user sees loading spinner. Best for critical data (user's account details, financial info).
-        </p>
-        <p>
-          Lazy refetch: Mark cache as stale. Don't refetch immediately. Refetch only when component next accesses that query (user scrolls back, navigates to page showing that data). Reduces server load, but data stays stale briefly. Best for non-critical data.
-        </p>
-        <p>
-          Batched refetch: Multiple mutations invalidate multiple queries. Instead of refetching each individually (N requests), batch into single request if possible (e.g., "give me users 1,2,3" instead of three separate requests). Reduces network traffic, faster.
-        </p>
-        <p>
-          Scheduled refetch: Refetch after delay (e.g., 500ms). Useful if user is expected to perform another mutation soon (batch mutations), avoid thrashing. Or if user likely navigated away, no point refetching immediately.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Cascading Invalidation and Dependency Traversal</h3>
-        <p>
-          When entity changes, related caches must also be invalidated. Examples: (1) Direct: user updated → invalidate user-detail cache and user-list. (2) Indirect: organization member removed → invalidate org-members-list, org-detail. (3) Transitive: post deleted → invalidate post-detail, comments-for-post, feed-timeline (because feed shows posts). Dependencies form a graph that must be traversed.
-        </p>
-        <p>
-          Wildcard invalidation: invalidate all cache keys matching a prefix or pattern for an entity. For example, invalidating all keys that start with a user identifier can cover user detail, user posts, and user comments. This is useful when an entity has many related queries, but it can over-invalidate and increase refetch load.
-        </p>
-        <p>
-          Depth control: Limit cascade depth. Depth 1: directly affected queries only. Depth 2: direct + one level of indirect dependencies. Example: post updated → depth 1: post-detail. Depth 2: feed-timeline (depends on posts). Depth 3: user-profile-feed (depends on timeline).
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Race Conditions and Consistency</h3>
-        <p>
-          Concurrent mutations: User submits two mutations rapidly (click delete, then create). Both sent to server. May arrive out of order or have overlapping effects. Server must handle (typically "last-write-wins"—later mutation overwrites earlier). On frontend: both mutations submitted, both invalidate cache. If cache gets invalidated by first mutation, then refetch, result might be from second mutation. If second mutation response arrives first, cache might be out of sync with second response. Mitigation: use request ID versioning or timestamps to detect stale responses.
-        </p>
-        <HighlightBlock as="p" tier="important">
-          Refetch race: Mutation invalidates cache, triggers refetch. While refetch in-flight, server updated again (another user made change). Refetch returns response from second change. This is acceptable (eventual consistency). User sees latest data.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Manual Invalidation and Override</h3>
-        <p>
-          For complex cases not covered by automatic rules, provide manual API: invalidateQuery('users-list') in component. Use cases: (1) Complex multi-entity updates. (2) Third-party API that affects cache (external service called). (3) Debugging—manually invalidate to force refetch. (4) Refresh button—user clicks "refresh" → calls invalidateQuery. Pro: flexible. Con: verbose, easy to forget some queries.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Caching Library Integration</h3>
-        <p>
-          React Query: provides a built-in invalidation mechanism. The common pattern is to invalidate the list or detail queries affected by a mutation after the mutation succeeds, and let the library refetch automatically. This works well when you maintain a clear mapping from mutations to the affected query families.
-        </p>
-        <p>
-          SWR: supports cache mutation and refetch triggers, but offers less structured dependency mapping. Teams usually standardize conventions for which keys to revalidate after each mutation to avoid drift.
-        </p>
-        <p>
-          Apollo GraphQL: supports manual cache updates after mutations. This provides strong control over correctness and reduces refetch volume, but increases the risk of missed updates unless you keep cache update logic disciplined and well tested.
-        </p>
-        <p>
-          Custom cache: Implement dependency mapping, manual invalidation API, refetch logic from scratch. Most control, most complexity.
-        </p>
-      </section>
-
-      <section>
-        <h2>Cache Invalidation Patterns & Strategies</h2>
-
+      <section className="space-y-5">
+        <h2>Architecture &amp; Flow</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A production implementation has five cooperating pieces: a public adapter, a lifecycle reducer, a registry or cache, a transport adapter, and an observer. The public adapter exposes invalidateAfterMutation(mutation, &#123; entityIds, tags, optimisticPatch, revalidate &#125;). The reducer owns transitions. The registry stores normalized entity store plus query-to-entity dependency index. The transport adapter talks to fetch, GraphQL, WebSocket, upload, or auth APIs. The observer emits metrics and debug events.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The normal flow starts when a component or command creates an operation. The runtime normalizes the key, checks local state, decides whether to serve cached data, dedupe with an existing operation, enqueue work, or issue a new transport call. When the transport resolves, the runtime validates that the response is still relevant, updates state, notifies subscribers, records metrics, and releases resources.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The hardest flow is the edge case: creating a comment should update the comment list, count badge, activity feed, and detail page without refetching everything. The design must make that behavior deterministic. A late response, duplicate event, expired token, stale cache entry, failed retry, partial batch result, or dropped socket frame should have an explicit transition rather than relying on whichever promise settles last.</p>
         <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/networking-data-systems/cache-invalidation-strategy.svg"
-          alt="Cache invalidation strategies after mutations: write-through, write-back, event-based patterns and invalidation strategies diagram"
+          src="/diagrams/system-design-problems/low-level-design/networking-data-systems/cache-invalidation-strategy-runtime-flow.svg"
+          alt="Design a Cache Invalidation Strategy After Mutations runtime flow"
+          caption="Runtime flow: public API, lifecycle reducer, registry, transport adapter, cache, observer, and UI view model cooperate to keep networking state deterministic."
         />
-
-        <HighlightBlock as="p" tier="crucial">
-          Interview signal: the invalidation design is a dependency graph problem. A mutation must map to a small, correct set of cache keys (and sometimes one level of indirect dependents) while preventing races where a stale refetch overwrites fresh state.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Prefer entity-tagging or query-family conventions (e.g.{" "}
-          <em>user:123</em>, <em>post:list</em>) so invalidation stays consistent and maintainable as the UI surface grows.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Couple invalidation with UX patterns: stale-while-revalidate to avoid spinners, optimistic updates for perceived speed, and version/timestamp checks to ignore out-of-order responses.
-        </HighlightBlock>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The state reducer should be written as a small state machine, even if implemented with a switch statement or Zustand store. Events include start, cacheHit, cacheStale, transportStarted, transportSucceeded, transportFailed, retryScheduled, cancelled, superseded, invalidated, subscriberAdded, subscriberRemoved, and garbageCollected. Each event must define whether it changes visible data, metadata only, or no state at all.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A practical implementation also needs cleanup rules. When a subscriber unmounts, decrement the reference count. When the last subscriber leaves, either abort the transport or let it finish into cache depending on policy. Timers must be cleared on cancellation. Cache entries should have both freshness TTL and garbage-collection TTL. Journals should compact acknowledged operations. These details are what separate a usable LLD answer from a helper-function answer.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The testing flow mirrors the state machine. Unit tests drive reducer events directly. Integration tests mount two subscribers for the same key and verify sharing. Race tests resolve promises out of order. Timer tests advance fake clocks for debounce, retry, and stale TTL. Browser tests cover focus, blur, online/offline, visibility change, storage quota, and tab coordination where relevant.</p>
       </section>
 
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Invalidation Aggressiveness</h3>
-        <HighlightBlock as="p" tier="important">
-          Aggressive invalidation (invalidate many queries per mutation): Pro—safer, no stale data visible. Con—more refetches, server load, user sees loading spinners. Conservative (only directly affected queries): Pro—fewer requests, better performance. Con—risk of stale data if dependency incomplete. Sweet spot: invalidate affected + one level indirect. Adjust based on data criticality.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Automatic vs Manual Invalidation</h3>
-        <HighlightBlock as="p" tier="important">
-          Automatic rules: Pros—less repetition, scales well, maintainable. Cons—limited expressiveness, may not cover all cases. Manual (explicit per mutation): Pros—explicit, clear. Cons—verbose, error-prone. Hybrid: automatic for common cases, manual for exceptions.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Refetch Timing</h3>
-        <HighlightBlock as="p" tier="important">
-          Immediate refetch: Data fresh immediately. Con—blocking, server load spike. Lazy refetch: Reduces load, brief stale window. Choice depends on data criticality.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">TTL vs Event-Based</h3>
-        <HighlightBlock as="p" tier="crucial">
-          TTL: Simple, fire-and-forget. Con—stale window. Event-based: Instant freshness. Con—complex, coupling. Hybrid: events for critical, TTL fallback.
-        </HighlightBlock>
+      <section className="space-y-5">
+        <h2>Trade offs &amp; Comparison</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Tag invalidation is simple but coarse; normalized dependency indexes are precise but costly to maintain.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The main consistency trade-off is whether the UI favors latest known data, latest requested data, or latest acknowledged data. Latest known data gives fast rendering but can be stale. Latest requested data prevents older responses from committing but can show loading more often. Latest acknowledged data is safest for financial, auth, and destructive workflows but creates more waiting states.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The main performance trade-off is centralization versus local control. A central runtime reduces duplicated requests, gives shared telemetry, and standardizes failure behavior. It can also become a bottleneck or an overly complex abstraction if every product case is pushed into it. The senior answer is to define extension points for request factory, key derivation, retry classifier, cache policy, and user message mapping without allowing components to bypass lifecycle safety.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The main cost trade-off is how aggressively the client talks to the backend. Deduplication, caching, debounce, batching, and WebSocket subscriptions can reduce request volume, but each one introduces correctness questions. In interviews, defend the policy with observable numbers: p95 latency, request rate per active user, retry amplification, stale-render duration, memory usage, and dropped-event count.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A principal-level comparison should also explain when not to build this abstraction. If the product only has a few simple reads, a mature library is better than a bespoke runtime. If the system has regulated payments, healthcare, or admin control planes, the runtime needs stricter commit guards and audit logs. If the system is collaborative, eventual consistency and merge policy matter more than raw request count.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The design should explicitly choose a consistency model. Most UI networking state is read-your-own-writes for the current tab, monotonic reads for a resource key, and eventual consistency across tabs or devices. Strong consistency is reserved for destructive actions, permissions, token state, and payment-like flows. Naming this model helps defend why stale-while-revalidate is acceptable in one surface and unacceptable in another.</p>
       </section>
 
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important">
-          Cache invalidation is critical for correctness after mutations. For staff/principal engineers, key architectural components: (1) Dependency mapping linking mutation types to affected cache queries (selective invalidation, not blanket cache clear). (2) Invalidation strategies: TTL-based (passive, simple), event-based (active, complex), timestamp/version-based (conditional refresh). (3) Cascading invalidation traversing dependency graphs to find all affected caches. (4) Refetching strategies: immediate (fresh data, high load), lazy (low load, brief stale window), batched (network-efficient), scheduled (user-aware).
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          At scale (1M users, high mutation volume), cache invalidation impacts server load significantly. Intelligent invalidation avoids unnecessary refetches. Stale-while-revalidate pattern improves UX (instant load, background refresh). Handling race conditions (concurrent mutations, out-of-order responses) requires versioning or timestamps. Manual invalidation API essential for complex multi-entity mutations not covered by rules.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">
-          Real-world systems use caching libraries (React Query, SWR, Apollo) with built-in invalidation, version-based freshness checks, subscription systems for real-time updates, and dependency graphs. Testing must cover: single mutation invalidating correct queries, cascading invalidations reaching all affected caches, race conditions (concurrent mutations), refetch failures (graceful degradation, retry logic), manual invalidation API. Trade-offs: aggressive invalidation for correctness vs conservative for performance, automatic rules for simplicity vs manual for flexibility, immediate refetch for freshness vs lazy for efficiency.
-        </HighlightBlock>
+      <section className="space-y-5">
+        <h2>Best practices</h2>
+        <ul className="list-disc space-y-2 pl-6 text-slate-700 dark:text-slate-300">
+          <li>Define a stable operation key and test it with reordered object properties, optional parameters, tenant changes, auth changes, and pagination cursors.</li>
+          <li>Keep lifecycle transitions in a reducer or explicit state machine so cancellation, retry, stale response, and cleanup behavior can be tested without rendering React components.</li>
+          <li>Use AbortController where the transport supports it, but still keep a monotonic request token because not every transport or browser path cancels before a response resolves.</li>
+          <li>Separate retry classification from retry scheduling. Classification decides whether an error is retryable; scheduling decides when the next attempt is allowed under deadline and budget.</li>
+          <li>Emit diagnostics for every suppressed or ignored operation. Silent stale-response drops are correct behavior, but they still need debug visibility.</li>
+          <li>Treat auth, tenant, locale, feature flag, and privacy mode as key dimensions when they change returned data or access permissions.</li>
+        </ul>
+      </section>
+
+      <section className="space-y-5">
+        <h2>Common Pitfalls</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A common pitfall is treating design a cache invalidation strategy after mutations as a small helper instead of a runtime. A helper usually handles the happy path. A runtime owns cancellation, cleanup, concurrency, memory limits, stale work, metrics, and user-visible recovery.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Another pitfall is conflating transport success with UI success. A 200 response can still be stale, unauthorized for the current tenant, partial, incompatible with the current schema, or obsolete because a newer operation already committed. The commit guard must validate response relevance before updating UI state.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A third pitfall is hiding failures behind generic retry or generic error UI. over-invalidation causes thundering refetches; under-invalidation leaves stale UI. The user experience should make the correct state visible: stale data with a banner, retryable failure with a button, auth failure with re-login, conflict with resolution UI, or disabled action with a clear reason.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A fourth pitfall is failing to bound memory. A registry that never deletes settled operations, an LRU without byte accounting, a retry scheduler that keeps dead timers, or a WebSocket subscription map that keeps handlers after unmount will eventually create production-only failures. The cleanup story should be part of the design, not an implementation afterthought.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A fifth pitfall is making policy impossible to override. Product teams need different policies for admin tools, search inputs, checkout, collaboration, and analytics dashboards. The runtime should expose controlled extension points while keeping the invariants non-negotiable: no stale commit, no auth-scope leak, no unbounded retry, and no silent rollback.</p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/networking-data-systems/cache-invalidation-strategy-failure-model.svg"
+          alt="Design a Cache Invalidation Strategy After Mutations failure and recovery model"
+          caption="Failure model: stale work, retry limits, cache invalidation, auth boundaries, and observer signals decide whether the UI commits, degrades, retries, or rolls back."
+        />
+      </section>
+
+      <section className="space-y-5">
+        <h2>Real-world use cases</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Design a Cache Invalidation Strategy After Mutations appears in product surfaces where users move faster than networks: search boxes, dashboards, admin tools, checkout flows, upload forms, collaboration views, and authenticated SaaS consoles. In these surfaces, one bad race condition can show stale data, double-submit a mutation, hide a failure, or leak information across tenants.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">For staff/principal interviews, anchor the use case in a concrete screen. Example: a settings page loads current settings, the user changes a value, a mutation starts, cached views update optimistically, another tab invalidates the same resource, and the network returns a delayed response. Your answer should describe which event wins, what the user sees, what is persisted, and which metric would prove the runtime behaved correctly.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The production readiness bar includes rollback and abuse handling. Rollback means the UI can revert optimistic or stale state without erasing newer user intent. Abuse handling means the runtime limits request amplification caused by rapid typing, tab storms, retries during outages, reconnect loops, and repeated token refresh failures.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Another real-world use case is incident response. During an outage, this runtime should help operators answer whether the client is retrying too aggressively, whether users are seeing stale state, whether requests are being deduped, whether token refresh is stuck, and which user actions are degraded. That requires event names, counters, and sampled traces designed into the module from the beginning.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A third use case is migration. Teams often move from hand-written fetch calls to a shared networking runtime gradually. The module should support adapter wrappers so older callers can use the same dedupe, retry, and error handling policy without a full rewrite. Good LLD answers mention migration because principal engineers are judged on adoption paths, not only greenfield design.</p>
+      </section>
+
+      <section className="space-y-5">
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you implement the core module end to end?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">I would define the public API first: invalidateAfterMutation(mutation, &#123; entityIds, tags, optimisticPatch, revalidate &#125;). Then I would implement a pure reducer for clean, dirty, patched, revalidating, reconciled, rollbackNeeded. The adapter would normalize keys, read the registry, decide whether to reuse, cache, enqueue, or start transport work, and expose a view model with data, status, error, stale age, retry state, and command callbacks.</p>
+        <h3>How do you prevent stale or duplicate work from corrupting the UI?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">I would use stable operation keys plus a monotonic sequence token. AbortController reduces wasted work, but the token decides whether a response can commit. If a newer operation has started, the older one resolves into an ignored event that updates telemetry but not visible state. For shared in-flight operations, subscriber reference counts decide cleanup without cancelling work still needed by another component.</p>
+        <h3>What breaks at scale?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Request amplification breaks first: retries, duplicate mounts, rapid typing, reconnect loops, and cache invalidation storms can multiply backend traffic. Memory breaks next if caches, timers, event listeners, and operation journals are never collected. Debuggability breaks if ignored responses and retry decisions are not observable.</p>
+        <h3>How do you handle failure and rollback?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The reducer needs explicit failed, stale, retrying, rolledBack, and degraded states. Rollback should use inverse patches or scoped snapshots instead of resetting an entire cache. User-visible state should distinguish retryable network failure, authorization failure, validation failure, conflict, and stale data. Every rollback or suppressed commit should emit a trace event with operation key and reason.</p>
+        <h3>How do you defend your trade-offs?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">I would defend them with invariants: no stale response can commit after a newer operation, no non-idempotent mutation retries without an idempotency key, no cache entry crosses auth or tenant boundaries, and no retry loop can exceed budget. Then I would show metrics that prove those invariants in production: duplicate suppression count, stale commit suppression count, retry amplification, cache hit rate, p95 stale age, and rollback success rate.</p>
+        <h3>What would you ask the interviewer before coding?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">I would ask which operations are reads versus mutations, which ones are idempotent, whether data is tenant- or permission-scoped, what latency target matters, whether stale data is acceptable, how many components may subscribe to the same resource, and what the expected offline or reconnect behavior is. These questions determine cache policy, retry policy, and commit strictness.</p>
+        <h3>What does the example implementation need to prove?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The examples should prove the non-happy paths: duplicate subscribers share work, stale responses are ignored, retry budgets are enforced, rollback does not erase newer state, cache keys include security scope, and telemetry records the reason for every degraded outcome. A one-line example is not enough for this category because the design is mostly about lifecycle behavior under pressure.</p>
+      </section>
+
+      <section className="space-y-4">
+        <h2>References</h2>
+        <ul className="list-disc space-y-2 pl-6 text-slate-700 dark:text-slate-300">
+          <li><a href="https://react.dev/reference/react" target="_blank" rel="noreferrer">React docs: Hooks and effects</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN: AbortController</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" target="_blank" rel="noreferrer">MDN: Fetch API</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket" target="_blank" rel="noreferrer">MDN: WebSocket API</a></li>
+          <li><a href="https://spec.graphql.org/" target="_blank" rel="noreferrer">GraphQL specification</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc9110" target="_blank" rel="noreferrer">HTTP Semantics RFC 9110</a></li>
+        </ul>
       </section>
     </ArticleLayout>
   );

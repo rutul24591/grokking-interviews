@@ -35,12 +35,11 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function CommentThreadArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      {/* Section 1: Problem Clarification */}
+export default function CommentThreadArticle() { return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Comment Thread</h1><h2>Definition &amp; Context</h2><p>Design a Comment Thread is an implementation-heavy low-level design problem covering tree normalization, lazy replies, optimistic posting, edit versions, moderation state, reaction merge, pagination, and accessible thread navigation. A principal-level answer must define state ownership, local structures, lifecycle cleanup, browser semantics, server reconciliation, observability, privacy, and rollback.</p><p>Store comments by id with explicit parent ids and child-order lists. Separate optimistic drafts from committed comments so moderation, retry, and server reconciliation stay visible. The important structures are comment map, root cursor, child cursors, parent-child index, optimistic-id map, edit version, moderation status, reaction counters, and collapsed-thread state.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/comment-thread-runtime.svg" alt="Design a Comment Thread runtime" caption="Runtime flow from intent through guarded state, semantic projection, and recovery." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the component-specific mechanics that an implementation discussion must defend.</p>{/* Section 1: Problem Clarification */}
       <section>
-        <h2>Problem Clarification</h2>
+        <h3>Problem Clarification</h3>
         <HighlightBlock as="p" tier="crucial">
           We need to design a reusable comment thread component for a large-scale
           web application. The system must support deeply nested replies with visual
@@ -86,7 +85,7 @@ export default function CommentThreadArticle() {
 
       {/* Section 2: Requirements */}
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
@@ -200,7 +199,7 @@ export default function CommentThreadArticle() {
 
       {/* Section 3: High-Level Approach */}
       <section>
-        <h2>High-Level Approach</h2>
+        <h3>High-Level Approach</h3>
         <HighlightBlock as="p" tier="important">
           The core idea is to separate the <strong>comment tree state management</strong>
           from the <strong>comment rendering</strong> using a global store (Zustand) and
@@ -248,7 +247,7 @@ export default function CommentThreadArticle() {
 
       {/* Section 4: System Design (LLD) */}
       <section>
-        <h2>System Design</h2>
+        <h3>System Design</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module Architecture</h3>
         <p>The system consists of seven modules:</p>
@@ -419,7 +418,7 @@ export default function CommentThreadArticle() {
 
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
-        <h2>Data Flow / Execution Flow</h2>
+        <h3>Data Flow / Execution Flow</h3>
         <HighlightBlock as="p" tier="crucial">
           The execution flow follows a unidirectional data flow pattern. All state
           mutations flow through the Zustand store, and all rendering flows from store
@@ -459,7 +458,7 @@ export default function CommentThreadArticle() {
 
       {/* Section 6: Implementation */}
       <section>
-        <h2>Implementation</h2>
+        <h3>Implementation</h3>
         <p>
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
@@ -559,7 +558,7 @@ export default function CommentThreadArticle() {
 
       {/* Section 7: Performance & Scalability */}
       <section>
-        <h2>Performance &amp; Scalability</h2>
+        <h3>Performance &amp; Scalability</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Time and Space Complexity</h3>
         <div className="my-4 overflow-x-auto">
@@ -669,7 +668,7 @@ export default function CommentThreadArticle() {
 
       {/* Section 8: Security Considerations */}
       <section>
-        <h2>Security Considerations</h2>
+        <h3>Security Considerations</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">XSS Prevention (CRITICAL)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -755,7 +754,7 @@ export default function CommentThreadArticle() {
 
       {/* Section 9: Testing Strategy */}
       <section>
-        <h2>Testing Strategy</h2>
+        <h3>Testing Strategy</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
@@ -830,7 +829,7 @@ export default function CommentThreadArticle() {
 
       {/* Section 10: Interview-Focused Insights */}
       <section>
-        <h2>Interview-Focused Insights</h2>
+        <h3>Interview-Focused Insights</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Common Mistakes Candidates Make</h3>
         <ul className="space-y-3">
@@ -1019,74 +1018,12 @@ export default function CommentThreadArticle() {
             </p>
           </div>
         </div>
-      </section>
-
-      {/* Section 11: References */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://zustand.docs.pmnd.rs/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Zustand — State Management Library Documentation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://github.com/cure53/DOMPurify"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              DOMPurify — HTML Sanitization Library
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.w3.org/WAI/ARIA/apg/patterns/feed/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              WAI-ARIA Feed Pattern — Accessibility Guidelines for Comment Threads
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://web.dev/articles/websockets"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Web.dev — WebSocket API and Real-Time Communication Patterns
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://tanstack.com/virtual/latest"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              TanStack Virtual — Virtualization for Long Lists
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.reddit.com/r/reactjs/comments/nested-comments-design/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Reddit Discussion — Nested Comment Thread Architecture Patterns
-            </a>
-          </li>
-        </ul>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Use five boundaries: an input adapter, a typed state controller, a projection layer, an integration adapter, and an observability adapter. Normalize events before they enter state. Keep previews separate from commits. Release timers, observers, listeners, abort controllers, workers, and pointer capture idempotently on cancel and unmount.</p><p>Store comments by id with explicit parent ids and child-order lists. Separate optimistic drafts from committed comments so moderation, retry, and server reconciliation stay visible. For durable changes, validate the latest intent and record enough evidence to rollback deterministically.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/comment-thread-scale-recovery.svg" alt="Design a Comment Thread scale and recovery" caption="Scale defense: bound pressure, validate policy, reconcile failures, and emit reasoned evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>A flat chronological list is simpler; a normalized tree is justified when replies, collapse state, lazy child pagination, and moderation context matter.</p><p>Server versions are authoritative for edits and moderation. Optimistic creation is provisional, reactions may merge eventually, and deleted parents remain tombstones when replies still exist. The dominant scale risks are deep threads, hot roots, concurrent edits, deleted parents, moderation actions, duplicate retries, and permission changes. Control them with bounded work, stable ids, cancellation, generation guards, measured caching, and explicit degraded behavior.</p><p>Optimistic UI is appropriate only when rollback is deterministic and understandable. Authorization, destructive effects, and conflict-sensitive truth stay server-authoritative.</p></section>
+<section><h2>Best practices</h2><p>Use typed state unions, stable identities, idempotency keys, versioned writes, SSR-safe browser feature detection, abortable async work, bounded caches, and semantic HTML. Test keyboard-only use, screen-reader output, slow networks, stale completion, retries, unmount during work, and large datasets.</p><p>Measure blocked transitions, stale drops, rollback rates, latency percentiles, cache pressure, retry exhaustion, and accessibility regressions. Keep telemetry small and free of sensitive content.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing preview and committed state, trusting arrival order, leaking resources after unmount, accepting stale completion, assuming visible data is the complete dataset, and implementing custom controls without accessible semantics.</p><p>For this topic, dedupe retried posts with an idempotency key, retain tombstones, rollback rejected edits, lazily page replies, and show moderation state without losing navigation context. Security and privacy require the design to authorize every mutation, sanitize rich text, rate-limit posting and reactions, preserve moderation evidence, redact private thread data, and prevent enumeration through cursors.</p></section>
+<section><h2>Real-world use cases</h2><p>This design appears in production surfaces where repeated interaction, large datasets, asynchronous completion, and partial failure are normal. Reuse the runtime shell, but inject product policy explicitly: authorization, latency budget, persistence boundary, fallback, and telemetry.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Store comments by id with explicit parent ids and child-order lists. Separate optimistic drafts from committed comments so moderation, retry, and server reconciliation stay visible. I would name preview, commit, derived projection, async generation, and rollback evidence separately.</p><h3>What breaks at scale?</h3><p>deep threads, hot roots, concurrent edits, deleted parents, moderation actions, duplicate retries, and permission changes. I would bound each expensive operation and cancel work that no longer affects the visible committed result.</p><h3>What consistency model applies?</h3><p>Server versions are authoritative for edits and moderation. Optimistic creation is provisional, reactions may merge eventually, and deleted parents remain tombstones when replies still exist.</p><h3>How do you recover from failure?</h3><p>I would dedupe retried posts with an idempotency key, retain tombstones, rollback rejected edits, lazily page replies, and show moderation state without losing navigation context.</p><h3>How do you defend the architecture?</h3><p>A flat chronological list is simpler; a normalized tree is justified when replies, collapse state, lazy child pagination, and moderation context matter. The added complexity is acceptable only when the required behavior and operational evidence justify it.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API" target="_blank" rel="noreferrer">MDN Intersection Observer API</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>; }

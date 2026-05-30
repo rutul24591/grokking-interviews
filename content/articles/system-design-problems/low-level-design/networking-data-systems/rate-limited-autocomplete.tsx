@@ -2,433 +2,130 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
-import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-lld-rate-limited-autocomplete",
   title: "Design a Rate-Limited Autocomplete System",
-  description:
-    "Production-grade autocomplete with debouncing, request deduplication, rate limiting, cancellation, and result caching for responsive search UX.",
+  description: "LLD for autocomplete request orchestration with debounce, rate limits, cache hits, focus/blur behavior, and stale response protection.",
   category: "low-level-design",
   subcategory: "networking-data-systems",
   slug: "rate-limited-autocomplete",
-  wordCount: 6800,
-  readingTime: 40,
-  lastUpdated: "2026-05-06",
-  tags: [
-    "lld",
-    "autocomplete",
-    "debounce",
-    "rate-limiting",
-    "request-deduplication",
-    "caching",
-  ],
-  relatedTopics: [
-    "data-fetching-hook",
-    "frontend-caching-layer",
-    "request-deduplication-system",
-  ],
+  wordCount: 4200,
+  readingTime: 24,
+  lastUpdated: "2026-05-29",
+  tags: ["lld", "frontend-networking", "implementation-design", "react", "resilience"],
+  relatedTopics: ["data-fetching-hook", "frontend-caching-layer", "request-deduplication-system", "retry-mechanism", "token-refresh-system"],
 };
 
 export default function RateLimitedAutocompleteArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">
-          User types search query: "jav...a" (4 keystrokes). Naive implementation: 4 requests sent (one per key). Keystroke 1 "j" → request. Keystroke 2 "ja" → request (first still in-flight). Result: wasted requests (too many, overlapping). Better: debounce (wait 300ms after last keystroke before requesting). After "java" + 300ms silence → single request. User still sees instant suggestions (UI shows as they type, request deferred). Result: 1 request instead of 4.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Additional challenges: (1) User types fast, requests arrive out of order (request for "java" completes before "jav" starts). Must discard stale results (don't show "java" results after user edited to "javan"). (2) Rate limiting (server allows 100 requests/minute). If all users debounce-request simultaneously, load spike. Solution: throttle client-side (space out requests). (3) Caching ("java" and "javan" may have same results—cache by prefix to avoid duplicate requests). (4) Cancellation (user continues typing, previous request becomes irrelevant—cancel it).
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Real-world impact: Google Search autocomplete handles 1B+ searches/day. Debouncing + caching + deduplication critical. Without them, server overwhelmed.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">
-          <strong>Explicit assumptions:</strong> User types incrementally. Keystroke rate variable (200-500ms between keys). Server has rate limits. Concurrent users. Requests may arrive out of order. Response latency 100-500ms.
-        </HighlightBlock>
+      <section className="space-y-5">
+        <h2>Definition &amp; Context</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Design a Rate-Limited Autocomplete System is a low-level implementation problem, not a broad architecture prompt. The interviewer expects you to describe the runtime module, public API, internal state, data structures, lifecycle transitions, failure semantics, and test cases that make the feature safe inside a large React or TypeScript application.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The core primitive is the autocomplete request governor. A principal-level answer should start from the user-visible behavior, then quickly move into the implementation contract: createAutocompleteController(&#123; fetchSuggestions, debounceMs, minLength, maxQps, cacheTtlMs &#125;). That contract must be stable enough for many components to depend on it, but small enough that teams cannot bypass the lifecycle rules accidentally.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The design boundary is the browser client. The server may provide HTTP, GraphQL, WebSocket, upload, or auth endpoints, but the article focuses on client orchestration: when to call, when to cancel, what to cache, how to avoid duplicate work, how to surface errors, and how to keep UI state consistent under slow networks and rapid user interaction.</p>
       </section>
 
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li>
-            <strong>Debouncing:</strong> Wait 300ms after user stops typing before
-            fetching.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Rate Limiting:</strong> Space requests (e.g., min 1s between
-            requests).
-          </HighlightBlock>
-          <li>
-            <strong>Request Deduplication:</strong> If user quickly types
-            &quot;ja&quot; then &quot;java&quot;, cancel &quot;ja&quot; request.
-          </li>
-          <li>
-            <strong>Caching:</strong> Cache results for query. Reuse if typed again.
-          </li>
-          <li>
-            <strong>Cancellation:</strong> Cancel in-flight request if user clears
-            input.
-          </li>
-          <li>
-            <strong>Keyboard Navigation:</strong> Arrow keys navigate results, Enter
-            selects.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Accessibility:</strong> ARIA labels, screen reader support.
-          </HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="crucial">
-            <strong>Perceived Latency:</strong> Results appear quickly. Cache ensures
-            instant results for repeat queries.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            <strong>Server Load:</strong> Debounce, rate limit, deduplication minimize
-            requests.
-          </HighlightBlock>
-          <li>
-            <strong>Memory:</strong> Cache bounded. LRU eviction when full.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Edge Cases</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">
-            User types rapidly (e.g., &quot;java&quot; in 200ms) → debounce waits,
-            then fetches once.
-          </HighlightBlock>
-          <li>
-            Two requests in flight simultaneously → cancel older, keep newer.
-          </li>
-          <li>
-            Request times out → show error, allow manual retry.
-          </li>
-          <li>
-            User selects result → close dropdown, clear input.
-          </li>
-        </ul>
+      <section className="space-y-5">
+        <h2>Core Concepts</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The first concept is a typed request or operation identity. Every operation needs a stable key so the runtime can deduplicate, cache, cancel, retry, batch, or invalidate it. For design a rate-limited autocomplete system, the key should include the resource identity, security context, relevant parameters, and behavior-changing options. It should not include unstable values such as inline function identity or render-local object references.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The second concept is lifecycle state. This article uses these states as the baseline: idle, focused, debouncing, fetching, showing, empty, rateLimited, closed. These states are deliberately more precise than a boolean loading flag. They let the UI distinguish initial load from background refresh, recoverable failure from terminal failure, stale data from absent data, and ignored stale work from committed work.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The third concept is a boundary between control-plane decisions and rendering. The control plane owns cancellation, timers, retry budgets, request sharing, storage, and telemetry. Rendering code should consume a compact view model and command callbacks. That separation is what keeps component trees from re-implementing inconsistent networking behavior.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The fourth concept is observability as part of the API. The runtime should emit operation key, attempt count, latency, status, retry reason, cancellation reason, cache source, stale age, and user-visible fallback. Without these signals, production failures look like random UI glitches instead of diagnosable lifecycle bugs.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The fifth concept is data-structure choice. Most networking LLD answers become credible when you name the actual structures: a Map for in-flight operations, a Map from resource key to subscriber set, a priority queue or timer wheel for delayed retries, an LRU list for memory cache, a tag-to-key index for invalidation, and an append-only operation journal for optimistic or resumable workflows. These structures are small enough to implement in an interview but powerful enough to explain scale behavior.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The sixth concept is authority. The client can decide rendering, caching, dedupe, retries, and local rollback, but it cannot decide authorization, final mutation success, or cross-device consistency alone. Every implementation should mark which state is speculative, which state is server-acknowledged, and which state is only a local projection used to keep the interface responsive.</p>
       </section>
 
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="crucial">On input change, debounce (wait 300ms). Check cache for results. If cached,
-          show immediately. Otherwise, respect rate limit (wait if last request recent),
-          then fetch. Cancel previous in-flight request.</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">Show loading indicator while
-          fetching. On results arrive, cache and display. Handle errors and timeouts
-          gracefully. Keyboard navigation and selection handled by component.</Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Debouncing</h3>
-        <p>
-          Delay query fetch until user stops typing for N milliseconds.
-        </p>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">
-            <strong>Debounce Delay:</strong> Typical 300-500ms. Balance between
-            responsiveness and load.
-          </HighlightBlock>
-          <li>
-            <strong>Implementation:</strong> Timer restarted on each keystroke.
-            Cleared on unmount.
-          </li>
-          <li>
-            <strong>UI Feedback:</strong> Show spinner while debounce timer pending
-            (optional).
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Rate Limiting</h3>
-        <p>
-          Enforce minimum time between requests to a single backend endpoint.
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Min Interval:</strong> Typical 1 second. Requests faster than this
-            are throttled.
-          </li>
-          <li>
-            <strong>Token Bucket:</strong> Allow N requests per time window. Refill
-            periodically.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Queuing:</strong> If rate limit reached, queue request. Execute
-            when rate limit allows.
-          </HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Request Deduplication</h3>
-        <p>
-          Cancel in-flight request if newer request made.
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Tracking:</strong> Store AbortController for current in-flight
-            request.
-          </li>
-          <li>
-            <strong>On New Request:</strong> Abort previous via AbortController.
-          </li>
-          <li>
-            <strong>Edge Case:</strong> Response may arrive after abort. Ignore via
-            AbortSignal.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Caching</h3>
-        <p>
-          Cache results by query string. Reuse on repeat query.
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Cache Key:</strong> Query string (e.g., &quot;java&quot;).
-          </li>
-          <li>
-            <strong>TTL:</strong> Cache results for 5 minutes. Reuse if query typed
-            again within 5 min.
-          </li>
-          <li>
-            <strong>Max Size:</strong> Cache up to 50 queries. LRU evict oldest.
-          </li>
-          <li>
-            <strong>Instant Feedback:</strong> Show cached results immediately while
-            background refetch.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Cancellation</h3>
-        <p>
-          User can clear input or close dropdown, canceling in-flight request.
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Clear Input:</strong> Empty input field → abort fetch, hide
-            results.
-          </li>
-          <li>
-            <strong>Unmount:</strong> Component unmounts → abort fetch, cleanup
-            timers.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Error Handling</h3>
-        <p>
-          Handle fetch errors gracefully.
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Network Error:</strong> Show &quot;Network error&quot; message.
-            Expose retry button.
-          </li>
-          <li>
-            <strong>Timeout:</strong> After 5s, timeout and show error.
-          </li>
-          <li>
-            <strong>Empty Results:</strong> &quot;No results found&quot; message.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Keyboard Navigation</h3>
-        <HighlightBlock as="p" tier="important">
-          Support keyboard navigation in results dropdown.
-        </HighlightBlock>
-        <ul className="space-y-2">
-          <li>
-            <strong>Arrow Up/Down:</strong> Navigate between results. Highlight
-            current.
-          </li>
-          <li>
-            <strong>Enter:</strong> Select highlighted result.
-          </li>
-          <li>
-            <strong>Escape:</strong> Close dropdown, clear highlight.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Result Highlighting</h3>
-        <p>
-          Highlight matching portions of result text for clarity.
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Matching Portion:</strong> Bold or highlight the portion matching
-            query.
-          </li>
-          <li>
-            <strong>Example:</strong> Query: &quot;java&quot;, Result: &quot;JavaScript&quot;
-            → &quot;<strong>Java</strong>Script&quot;.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Accessibility</h3>
-        <HighlightBlock as="p" tier="important">
-          Support screen readers and keyboard-only navigation.
-        </HighlightBlock>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="crucial">
-            <strong>ARIA Labels:</strong> Input labeled &quot;Search suggestions&quot;.
-            Results list has role=&quot;listbox&quot;.
-          </HighlightBlock>
-          <li>
-            <strong>Live Region:</strong> Announce result count and current highlight
-            to screen readers.
-          </li>
-          <li>
-            <strong>Keyboard Only:</strong> Tab to navigate, arrow keys in results,
-            Enter to select.
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Implementation Considerations</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Debounce vs Throttle</h3>
-        <HighlightBlock as="p" tier="important">
-          Debounce (wait for silence) vs Throttle (space out requests). Debounce
-          better for autocomplete (fewer requests). Throttle better for scroll
-          events.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Search Strategies</h3>
-        <HighlightBlock as="p" tier="important">
-          Local search (filter cached results) vs remote search (query backend).
-          Hybrid: show local results instantly, fetch remote in background.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Mobile Considerations</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Mobile may have higher latency/lower bandwidth. Adjust debounce delay and
-          rate limit accordingly.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Prefetching</h3>
-        <HighlightBlock as="p" tier="important">
-          Prefetch suggestions for common queries on page load (e.g., trending
-          searches).
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Advanced Production Patterns</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Client-Side vs Server-Side Rate Limiting</h3>
-        <p>
-          Client-side limits protect your backend but users can bypass. Server-side
-          limits enforce hard limits per user/IP. Implement both: client prevents
-          accidental spam, server enforces true limits. At 1M concurrent users,
-          server limits critical.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Adaptive Debounce Based on Network</h3>
-        <HighlightBlock as="p" tier="important">
-          Detect network latency: slow network → longer debounce (wait for user to
-          finish typing). Fast network → shorter debounce. Profile user typing
-          speed: power-users type fast, casual users slower. Adjust debounce
-          adaptively. Complex but better UX.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Local Search First Pattern</h3>
-        <HighlightBlock as="p" tier="important">
-          Show local results instantly (from cache), fetch remote in background.
-          User types "j", show recent searches starting with "j" immediately.
-          Meanwhile, fetch fresh suggestions server-side. When arrive, update.
-          Dramatically improves perceived latency.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing Autocomplete Edge Cases</h3>
-        <HighlightBlock as="p" tier="important">
-          Test rapid input changes, clear input, unmount mid-fetch. Test cache hits
-          vs misses. Test rate limiting (exceed limits, verify graceful degradation).
-          Use fake timers for debounce timing. Property-based: generate random input
-          sequences, verify behavior consistent.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-World Optimization</h3>
-        <p>
-          Cache results aggressively (5 min TTL). Prefetch trending queries on page
-          load. Rank results by usage (popular searches first). Monitor: cache hit
-          rate, avg response time, retry rate. If hit rate low, increase TTL.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Mobile Considerations</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Mobile has higher latency, variable bandwidth. Increase debounce delay
-          (500-800ms). Reduce result count (show 5 instead of 20). Local search
-          more valuable on mobile (instant results). Test on real devices.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Accessibility at Scale</h3>
-        <HighlightBlock as="p" tier="important">
-          Screen reader announces result count. Keyboard: arrow keys navigate,
-          Enter selects, Escape closes. ARIA live region updates on results.
-          Test with real screen readers. Accessibility shouldn't be afterthought.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Integration with Backend Search</h3>
-        <p>
-          Frontend autocomplete is just UI. Backend search service does heavy
-          lifting. Coordinate: frontend requests full-text search, backend returns
-          ranked results. Ensure backend search indices up-to-date (eventual
-          consistency acceptable for autocomplete).
-        </p>
-      </section>
-
-      <section>
-        <h2>Rate-Limiting Pipeline</h2>
-
+      <section className="space-y-5">
+        <h2>Architecture &amp; Flow</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A production implementation has five cooperating pieces: a public adapter, a lifecycle reducer, a registry or cache, a transport adapter, and an observer. The public adapter exposes createAutocompleteController(&#123; fetchSuggestions, debounceMs, minLength, maxQps, cacheTtlMs &#125;). The reducer owns transitions. The registry stores normalized query LRU with result TTL and recent-search fallback. The transport adapter talks to fetch, GraphQL, WebSocket, upload, or auth APIs. The observer emits metrics and debug events.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The normal flow starts when a component or command creates an operation. The runtime normalizes the key, checks local state, decides whether to serve cached data, dedupe with an existing operation, enqueue work, or issue a new transport call. When the transport resolves, the runtime validates that the response is still relevant, updates state, notifies subscribers, records metrics, and releases resources.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The hardest flow is the edge case: suggestions should stay open while the input is focused and close on blur after suggestion mouse selection is handled. The design must make that behavior deterministic. A late response, duplicate event, expired token, stale cache entry, failed retry, partial batch result, or dropped socket frame should have an explicit transition rather than relying on whichever promise settles last.</p>
         <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/networking-data-systems/rate-limited-autocomplete.svg"
-          alt="Rate-limited autocomplete request pipeline and techniques diagram"
+          src="/diagrams/system-design-problems/low-level-design/networking-data-systems/rate-limited-autocomplete-runtime-flow.svg"
+          alt="Design a Rate-Limited Autocomplete System runtime flow"
+          caption="Runtime flow: public API, lifecycle reducer, registry, transport adapter, cache, observer, and UI view model cooperate to keep networking state deterministic."
         />
-
-        <HighlightBlock as="p" tier="crucial">
-          Interview signal: autocomplete is a load-shedding pipeline (debounce/throttle + cancellation + caching) that must preserve perceived responsiveness while protecting downstream search services.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Treat cancellation as correctness, not optimization: abort in-flight fetches on new keystrokes so stale suggestions don&rsquo;t win the race.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Combine client-side smoothing with hard server-side rate limits (token bucket/leaky bucket) and observability (429 rate, p95 latency, cache hit rate) to tune safely.
-        </HighlightBlock>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The state reducer should be written as a small state machine, even if implemented with a switch statement or Zustand store. Events include start, cacheHit, cacheStale, transportStarted, transportSucceeded, transportFailed, retryScheduled, cancelled, superseded, invalidated, subscriberAdded, subscriberRemoved, and garbageCollected. Each event must define whether it changes visible data, metadata only, or no state at all.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A practical implementation also needs cleanup rules. When a subscriber unmounts, decrement the reference count. When the last subscriber leaves, either abort the transport or let it finish into cache depending on policy. Timers must be cleared on cancellation. Cache entries should have both freshness TTL and garbage-collection TTL. Journals should compact acknowledged operations. These details are what separate a usable LLD answer from a helper-function answer.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The testing flow mirrors the state machine. Unit tests drive reducer events directly. Integration tests mount two subscribers for the same key and verify sharing. Race tests resolve promises out of order. Timer tests advance fake clocks for debounce, retry, and stale TTL. Browser tests cover focus, blur, online/offline, visibility change, storage quota, and tab coordination where relevant.</p>
       </section>
 
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Responsiveness vs Load</h3>
-        <HighlightBlock as="p" tier="important">
-          Shorter debounce = more responsive but higher load. Longer debounce =
-          lower load but less responsive.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Cache Staleness</h3>
-        <HighlightBlock as="p" tier="important">
-          Caching results risks showing stale suggestions. Balance freshness with
-          performance via TTL.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Server Side</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Rate limiting and caching reduce backend load significantly. Implement
-          server-side caching and rate limiting for extra protection.
-        </HighlightBlock>
+      <section className="space-y-5">
+        <h2>Trade offs &amp; Comparison</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Debounce reduces request volume; immediate cache display improves perceived latency but can show stale suggestions briefly.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The main consistency trade-off is whether the UI favors latest known data, latest requested data, or latest acknowledged data. Latest known data gives fast rendering but can be stale. Latest requested data prevents older responses from committing but can show loading more often. Latest acknowledged data is safest for financial, auth, and destructive workflows but creates more waiting states.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The main performance trade-off is centralization versus local control. A central runtime reduces duplicated requests, gives shared telemetry, and standardizes failure behavior. It can also become a bottleneck or an overly complex abstraction if every product case is pushed into it. The senior answer is to define extension points for request factory, key derivation, retry classifier, cache policy, and user message mapping without allowing components to bypass lifecycle safety.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The main cost trade-off is how aggressively the client talks to the backend. Deduplication, caching, debounce, batching, and WebSocket subscriptions can reduce request volume, but each one introduces correctness questions. In interviews, defend the policy with observable numbers: p95 latency, request rate per active user, retry amplification, stale-render duration, memory usage, and dropped-event count.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A principal-level comparison should also explain when not to build this abstraction. If the product only has a few simple reads, a mature library is better than a bespoke runtime. If the system has regulated payments, healthcare, or admin control planes, the runtime needs stricter commit guards and audit logs. If the system is collaborative, eventual consistency and merge policy matter more than raw request count.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The design should explicitly choose a consistency model. Most UI networking state is read-your-own-writes for the current tab, monotonic reads for a resource key, and eventual consistency across tabs or devices. Strong consistency is reserved for destructive actions, permissions, token state, and payment-like flows. Naming this model helps defend why stale-while-revalidate is acceptable in one surface and unacceptable in another.</p>
       </section>
 
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Real-world systems use machine learning to rank results based on user behavior. Testing must cover rapid typing, network interruptions, cache behavior, and</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">accessibility (screen readers, keyboard navigation). Production monitoring tracks cache hit rate, response time percentiles (P95, P99), and retry rates to detect degradation. Understanding the interaction between debouncing, rate limiting, caching, and deduplication is essential for efficient client-server communication at scale.</HighlightBlock>
+      <section className="space-y-5">
+        <h2>Best practices</h2>
+        <ul className="list-disc space-y-2 pl-6 text-slate-700 dark:text-slate-300">
+          <li>Define a stable operation key and test it with reordered object properties, optional parameters, tenant changes, auth changes, and pagination cursors.</li>
+          <li>Keep lifecycle transitions in a reducer or explicit state machine so cancellation, retry, stale response, and cleanup behavior can be tested without rendering React components.</li>
+          <li>Use AbortController where the transport supports it, but still keep a monotonic request token because not every transport or browser path cancels before a response resolves.</li>
+          <li>Separate retry classification from retry scheduling. Classification decides whether an error is retryable; scheduling decides when the next attempt is allowed under deadline and budget.</li>
+          <li>Emit diagnostics for every suppressed or ignored operation. Silent stale-response drops are correct behavior, but they still need debug visibility.</li>
+          <li>Treat auth, tenant, locale, feature flag, and privacy mode as key dimensions when they change returned data or access permissions.</li>
+        </ul>
+      </section>
+
+      <section className="space-y-5">
+        <h2>Common Pitfalls</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A common pitfall is treating design a rate-limited autocomplete system as a small helper instead of a runtime. A helper usually handles the happy path. A runtime owns cancellation, cleanup, concurrency, memory limits, stale work, metrics, and user-visible recovery.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Another pitfall is conflating transport success with UI success. A 200 response can still be stale, unauthorized for the current tenant, partial, incompatible with the current schema, or obsolete because a newer operation already committed. The commit guard must validate response relevance before updating UI state.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A third pitfall is hiding failures behind generic retry or generic error UI. a slow response for a previous query must not replace newer suggestions. The user experience should make the correct state visible: stale data with a banner, retryable failure with a button, auth failure with re-login, conflict with resolution UI, or disabled action with a clear reason.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A fourth pitfall is failing to bound memory. A registry that never deletes settled operations, an LRU without byte accounting, a retry scheduler that keeps dead timers, or a WebSocket subscription map that keeps handlers after unmount will eventually create production-only failures. The cleanup story should be part of the design, not an implementation afterthought.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A fifth pitfall is making policy impossible to override. Product teams need different policies for admin tools, search inputs, checkout, collaboration, and analytics dashboards. The runtime should expose controlled extension points while keeping the invariants non-negotiable: no stale commit, no auth-scope leak, no unbounded retry, and no silent rollback.</p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/networking-data-systems/rate-limited-autocomplete-failure-model.svg"
+          alt="Design a Rate-Limited Autocomplete System failure and recovery model"
+          caption="Failure model: stale work, retry limits, cache invalidation, auth boundaries, and observer signals decide whether the UI commits, degrades, retries, or rolls back."
+        />
+      </section>
+
+      <section className="space-y-5">
+        <h2>Real-world use cases</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Design a Rate-Limited Autocomplete System appears in product surfaces where users move faster than networks: search boxes, dashboards, admin tools, checkout flows, upload forms, collaboration views, and authenticated SaaS consoles. In these surfaces, one bad race condition can show stale data, double-submit a mutation, hide a failure, or leak information across tenants.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">For staff/principal interviews, anchor the use case in a concrete screen. Example: a settings page loads current settings, the user changes a value, a mutation starts, cached views update optimistically, another tab invalidates the same resource, and the network returns a delayed response. Your answer should describe which event wins, what the user sees, what is persisted, and which metric would prove the runtime behaved correctly.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The production readiness bar includes rollback and abuse handling. Rollback means the UI can revert optimistic or stale state without erasing newer user intent. Abuse handling means the runtime limits request amplification caused by rapid typing, tab storms, retries during outages, reconnect loops, and repeated token refresh failures.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Another real-world use case is incident response. During an outage, this runtime should help operators answer whether the client is retrying too aggressively, whether users are seeing stale state, whether requests are being deduped, whether token refresh is stuck, and which user actions are degraded. That requires event names, counters, and sampled traces designed into the module from the beginning.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A third use case is migration. Teams often move from hand-written fetch calls to a shared networking runtime gradually. The module should support adapter wrappers so older callers can use the same dedupe, retry, and error handling policy without a full rewrite. Good LLD answers mention migration because principal engineers are judged on adoption paths, not only greenfield design.</p>
+      </section>
+
+      <section className="space-y-5">
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you implement the core module end to end?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">I would define the public API first: createAutocompleteController(&#123; fetchSuggestions, debounceMs, minLength, maxQps, cacheTtlMs &#125;). Then I would implement a pure reducer for idle, focused, debouncing, fetching, showing, empty, rateLimited, closed. The adapter would normalize keys, read the registry, decide whether to reuse, cache, enqueue, or start transport work, and expose a view model with data, status, error, stale age, retry state, and command callbacks.</p>
+        <h3>How do you prevent stale or duplicate work from corrupting the UI?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">I would use stable operation keys plus a monotonic sequence token. AbortController reduces wasted work, but the token decides whether a response can commit. If a newer operation has started, the older one resolves into an ignored event that updates telemetry but not visible state. For shared in-flight operations, subscriber reference counts decide cleanup without cancelling work still needed by another component.</p>
+        <h3>What breaks at scale?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Request amplification breaks first: retries, duplicate mounts, rapid typing, reconnect loops, and cache invalidation storms can multiply backend traffic. Memory breaks next if caches, timers, event listeners, and operation journals are never collected. Debuggability breaks if ignored responses and retry decisions are not observable.</p>
+        <h3>How do you handle failure and rollback?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The reducer needs explicit failed, stale, retrying, rolledBack, and degraded states. Rollback should use inverse patches or scoped snapshots instead of resetting an entire cache. User-visible state should distinguish retryable network failure, authorization failure, validation failure, conflict, and stale data. Every rollback or suppressed commit should emit a trace event with operation key and reason.</p>
+        <h3>How do you defend your trade-offs?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">I would defend them with invariants: no stale response can commit after a newer operation, no non-idempotent mutation retries without an idempotency key, no cache entry crosses auth or tenant boundaries, and no retry loop can exceed budget. Then I would show metrics that prove those invariants in production: duplicate suppression count, stale commit suppression count, retry amplification, cache hit rate, p95 stale age, and rollback success rate.</p>
+        <h3>What would you ask the interviewer before coding?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">I would ask which operations are reads versus mutations, which ones are idempotent, whether data is tenant- or permission-scoped, what latency target matters, whether stale data is acceptable, how many components may subscribe to the same resource, and what the expected offline or reconnect behavior is. These questions determine cache policy, retry policy, and commit strictness.</p>
+        <h3>What does the example implementation need to prove?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The examples should prove the non-happy paths: duplicate subscribers share work, stale responses are ignored, retry budgets are enforced, rollback does not erase newer state, cache keys include security scope, and telemetry records the reason for every degraded outcome. A one-line example is not enough for this category because the design is mostly about lifecycle behavior under pressure.</p>
+      </section>
+
+      <section className="space-y-4">
+        <h2>References</h2>
+        <ul className="list-disc space-y-2 pl-6 text-slate-700 dark:text-slate-300">
+          <li><a href="https://react.dev/reference/react" target="_blank" rel="noreferrer">React docs: Hooks and effects</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN: AbortController</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" target="_blank" rel="noreferrer">MDN: Fetch API</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket" target="_blank" rel="noreferrer">MDN: WebSocket API</a></li>
+          <li><a href="https://spec.graphql.org/" target="_blank" rel="noreferrer">GraphQL specification</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc9110" target="_blank" rel="noreferrer">HTTP Semantics RFC 9110</a></li>
+        </ul>
       </section>
     </ArticleLayout>
   );

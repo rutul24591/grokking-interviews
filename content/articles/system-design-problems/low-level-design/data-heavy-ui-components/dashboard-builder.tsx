@@ -32,11 +32,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function DashboardBuilderArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function DashboardBuilderArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Data Dashboard Builder</h1><h2>Definition &amp; Context</h2><p>Design a Data Dashboard Builder is an implementation-heavy low-level design problem covering widget registry, layout editing, drag-resize projection, data-source binding, refresh policy, responsive breakpoints, persistence, and error isolation. A principal-level answer must define state ownership, consistency, lifecycle cleanup, scale limits, rollback, privacy, cost, and observability.</p><p>Keep committed layout, transient drag geometry, widget configuration, and independently refreshed widget data separate. A failed widget must not invalidate the dashboard. The core structures are widget registry, layout by breakpoint, projected rectangles, collision index, widget config schema, refresh scheduler, cache entries, save journal, and error boundary.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/dashboard-builder-runtime.svg" alt="Design a Data Dashboard Builder runtime" caption="Topic-specific data flow from input or payload through guarded projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -104,7 +103,7 @@ export default function DashboardBuilderArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -143,7 +142,7 @@ export default function DashboardBuilderArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -189,14 +188,10 @@ export default function DashboardBuilderArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/dashboard-builder-architecture.svg"
-        alt="Dashboard Builder Architecture"
-        caption="Widget Registry + Layout Engine (collision detection, snap-to-grid) + Persistence Adapter + Lazy Widget Loader → Grid renderer with drag/resize handles. Keyboard alternative: focus widget → Space to enter Move mode → arrow keys → Enter to commit."
-      />
+      
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <p>
           The builder is structured as a <strong>layout
           engine</strong> (positions, sizes, collision
@@ -305,14 +300,14 @@ export default function DashboardBuilderArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial">Widget wraps each widget with drag/resize handles in edit mode.</HighlightBlock>
 <HighlightBlock as="p" tier="important">WidgetPalette renders available widget types for adding. PersistenceAdapter</HighlightBlock>
 <HighlightBlock as="p" tier="important">handles server save/load. KeyboardController manages keyboard move/resize modes.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">The layout (array of widgets with positions) is
           the central state, managed by an external</HighlightBlock>
 <HighlightBlock as="p" tier="important">store.
@@ -323,7 +318,7 @@ export default function DashboardBuilderArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="crucial">
           The contract centers on a stable, versioned <code>layout</code>: an array of widgets
           with identity, type, position/size, and optional settings.
@@ -340,7 +335,7 @@ export default function DashboardBuilderArticle() {
       </section>
 
       <section>
-        <h2>⚡ Rendering &amp; Performance</h2>
+        <h3>⚡ Rendering &amp; Performance</h3>
         <HighlightBlock as="p" tier="important">CSS Grid handles layout natively; we don&rsquo;t
           do per-frame layout math. Widgets are</HighlightBlock>
 <HighlightBlock as="p" tier="important">memoized
@@ -355,7 +350,7 @@ export default function DashboardBuilderArticle() {
       </section>
 
       <section>
-        <h2>🎨 UI/UX</h2>
+        <h3>🎨 UI/UX</h3>
         <HighlightBlock as="p" tier="crucial">Edit mode toggle at the top of the dashboard.
           Widget palette as a sidebar or modal accessible
           in edit mode. Drag preview is translucent;
@@ -368,7 +363,7 @@ export default function DashboardBuilderArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">Grid uses
           <code> role=&quot;application&quot;</code> in edit
           mode (because keyboard interactions override
@@ -383,7 +378,7 @@ export default function DashboardBuilderArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="crucial">Widget types are registered in code, never
           loaded from runtime data. Layouts scope by user
           id; server enforces ownership on save and
@@ -394,7 +389,7 @@ export default function DashboardBuilderArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important">Unit tests for the layout engine: collision
           detection, rearrangement, resize constraints.
           Integration tests: drag a widget, verify
@@ -407,7 +402,7 @@ export default function DashboardBuilderArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="important">Widget dragged to a position with insufficient space: rearrangement pushes other widgets</HighlightBlock>
 <HighlightBlock as="p" tier="important">down; if no fit is possible, the drag is rejected with a hint. Resize that would shrink</HighlightBlock>
 <HighlightBlock as="p" tier="important">a widget below its minimum: stops at min. Resize that would extend off the grid: clamped.</HighlightBlock>
@@ -423,7 +418,7 @@ export default function DashboardBuilderArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="crucial">The layout engine is generic over widget type;
           consumers register their own. The</HighlightBlock>
 <HighlightBlock as="p" tier="important">persistence
@@ -434,7 +429,7 @@ export default function DashboardBuilderArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="crucial">
           All builder chrome (Edit mode labels, palette strings, banners, errors) comes from i18n.
         </HighlightBlock>
@@ -449,7 +444,7 @@ export default function DashboardBuilderArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Grid units vs free-form pixel positioning</h3>
         <HighlightBlock as="p" tier="important">
@@ -499,109 +494,19 @@ export default function DashboardBuilderArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">Real-time collaborative editing via CRDTs.
           AI-suggested layouts based on widget types and
           user role. Templates and starter dashboards.</HighlightBlock>
 <HighlightBlock as="p" tier="important"><Highlight tier="important">Sharing layouts via URL. Cross-dashboard widget
           linking (filter changes propagate). Dashboard
           versioning with named snapshots.</Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. Why CSS Grid for layout?</strong> CSS
-          Grid handles widget placement declaratively in
-          row/column units, supports gaps and alignment
-          natively, and updates efficiently as positions
-          change. Manual absolute positioning would
-          require recomputing pixels on every viewport
-          change.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How does collision detection work
-          during drag?</strong> The layout engine computes
-          the dragged widget&rsquo;s candidate footprint
-          (x, y, w, h) and checks for overlap with every
-          other widget. Overlapping widgets trigger
-          rearrangement (push-down). Live preview during
-          drag shows the resulting layout.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>3. How do you make drag-and-drop
-          accessible?</strong> Provide a keyboard
-          alternative: focus a widget, Space enters Move
-          mode, arrow keys move, Enter commits. Same
-          pattern for resize. Mode changes and position
-          updates announce via live region.
-        </HighlightBlock>
-
-        <p>
-          <strong>4. How are widgets lazy-loaded?</strong>{" "}
-          The widget registry maps types to async
-          loaders via <code>React.lazy</code>. Each
-          widget mounts its loader; a skeleton occupies
-          the grid cell during loading. Widgets not in
-          the layout don&rsquo;t load.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>5. How is the layout persisted?</strong>{" "}
-          A persistence adapter handles save/load. Saves
-          are debounced after edits and idempotent
-          (full layout replaces prior). Loads happen
-          before dashboard render so users see their
-          layout on first paint.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>6. How does the dashboard handle mobile
-          breakpoints?</strong> Either the layout adapts
-          (widgets reflow into a single column) or
-          users define a separate mobile layout. We
-          default to adaptive with a fallback to
-          per-breakpoint layouts for products that need
-          finer control.
-        </HighlightBlock>
-
-        <p>
-          <strong>7. How do you handle concurrent edits
-          across tabs?</strong> A broadcast channel
-          warns when the layout has changed externally.
-          The user can reload to pick up the change or
-          keep editing locally with their own
-          changes.
-        </p>
-
-        <p>
-          <strong>8. How is edit mode separated from view
-          mode?</strong> Edit mode is a top-level state.
-          In view, widgets render content; in edit,
-          drag/resize/delete affordances appear and
-          widget content interactions are suppressed.
-          The mode toggle is explicit.
-        </p>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">A Dashboard Builder is a{" "}
-          <strong>grid layout engine</strong> with drag,
-          resize, and persistence. CSS Grid handles
-          rendering; the layout engine manages positions
-          and collision detection; lazy widget loading
-          keeps the initial mount fast; keyboard
-          alternatives give accessibility parity.</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">Edit
-          mode separates safe viewing from active
-          rearranging. The result feels like Notion or
-          Datadog — composable, persistent, and
-          accessible.</Highlight></HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate canonical data, user intent, transient projection, remote effects, and bounded telemetry. Every cursor, subscription, cache entry, request, timer, observer, and worker requires an explicit owner and cleanup path. Stable ids are mandatory because indexes and DOM nodes are disposable views.</p><p>Keep committed layout, transient drag geometry, widget configuration, and independently refreshed widget data separate. A failed widget must not invalidate the dashboard. Commit durable changes only after applying the current policy and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/dashboard-builder-recovery.svg" alt="Design a Data Dashboard Builder recovery" caption="Recovery flow: validate versions, contain scale pressure, preserve stable truth, and explain the result." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>A fixed dashboard is cheaper; a builder is justified when repeated operational workflows benefit from user-specific composition.</p><p>Layout persistence uses versioned writes. Widget data is independently eventually consistent under per-widget refresh and cache policy. Scale pressure comes from many widgets, expensive queries, synchronized refresh storms, responsive migration, third-party failure, stale configs, and concurrent layout edits. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic projection only where rollback is deterministic and visible. Keep authorization and conflict-sensitive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit versions, cursor validation, generation guards, bounded caches, semantic HTML, and idempotent cleanup. Test keyboard use, accessibility output, stale responses, reconnects, retries, scroll restoration, and large datasets.</p><p>Measure interaction latency, render cost, cache pressure, stale drops, conflicts, retries, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include confusing visible data with complete data, trusting arrival order, leaking subscriptions, accepting stale completion, using indexes as identity, and hiding rollback.</p><p>For this topic, cap refresh concurrency, stagger polling, isolate widget errors, retain committed layout on failed drop, migrate config versions, and surface stale data timestamps. Validate untrusted inputs, authorize durable actions server-side, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to operational interfaces where users manipulate large, changing datasets under partial failure. Reuse the controller shape while injecting query, authorization, persistence, and fallback policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep committed layout, transient drag geometry, widget configuration, and independently refreshed widget data separate. A failed widget must not invalidate the dashboard.</p><h3>What breaks at scale?</h3><p>many widgets, expensive queries, synchronized refresh storms, responsive migration, third-party failure, stale configs, and concurrent layout edits. I would bound expensive work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>Layout persistence uses versioned writes. Widget data is independently eventually consistent under per-widget refresh and cache policy.</p><h3>How do you recover?</h3><p>I would cap refresh concurrency, stagger polling, isolate widget errors, retain committed layout on failed drop, migrate config versions, and surface stale data timestamps.</p><h3>Why this architecture?</h3><p>A fixed dashboard is cheaper; a builder is justified when repeated operational workflows benefit from user-specific composition.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

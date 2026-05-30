@@ -1,6 +1,3 @@
-# Permissions UX — Example 2
+# Design Geolocation Permissions UX example 2
 
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+Concrete browser API runtime example for Design Geolocation Permissions UX. It covers capability gates, lifecycle-safe execution, fallback decisions, and privacy-safe telemetry.

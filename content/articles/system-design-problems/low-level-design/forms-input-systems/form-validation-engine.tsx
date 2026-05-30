@@ -24,11 +24,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function FormValidationEngineArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function ArticlePage(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Form Validation Engine</h1><h2>Definition &amp; Context</h2><p>Design a Form Validation Engine is an implementation-heavy low-level design problem covering rule composition, dependency tracking, synchronous checks, asynchronous providers, stale-response rejection, error projection, localization, and submit gating. A principal-level answer must explain state ownership, durable boundaries, lifecycle cleanup, failure recovery, privacy, cost, and observability.</p><p>Model validation as a dependency graph. Keep field values, touched state, sync errors, async generations, and submit status distinct. The core structures are field registry, rule graph, reverse dependencies, sync error map, async generation map, debounce timers, abort controllers, locale messages, and submit snapshot.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/forms-input-systems/form-validation-engine-runtime.svg" alt="Design a Form Validation Engine runtime" caption="Topic-specific runtime from input intent through validated durable state." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <p>
@@ -133,7 +132,7 @@ export default function FormValidationEngineArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="important">
@@ -203,7 +202,7 @@ export default function FormValidationEngineArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -284,14 +283,10 @@ export default function FormValidationEngineArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/form-validation-engine-architecture.svg"
-        alt="Form Validation Engine Architecture"
-        caption="Schema → Compiler → Plan + Forward Dependency Index. On change, the engine evaluates only affected rules: SyncRunner runs immediately; AsyncQueue debounces and aborts stale tokens; ResultMerger combines client + async + server errors into per-field results."
-      />
+      
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <HighlightBlock as="p" tier="important">
           The engine is structured as a four-stage pipeline:
           <strong> compile</strong>,
@@ -445,7 +440,7 @@ export default function FormValidationEngineArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="important">
           <strong>RuleRegistry</strong> holds named rules
           (<code> required</code>, <code>minLength</code>,
@@ -549,7 +544,7 @@ export default function FormValidationEngineArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">
           The engine itself is stateless across forms: it&rsquo;s
           a pure compiled plan plus a runtime that takes values
@@ -591,7 +586,7 @@ export default function FormValidationEngineArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important">
           The public API is intentionally small.
           <code> compile(schemaOrRules)</code> returns a plan
@@ -634,7 +629,7 @@ export default function FormValidationEngineArticle() {
       </section>
 
       <section>
-        <h2>⚡ Rendering &amp; Performance Strategy</h2>
+        <h3>⚡ Rendering &amp; Performance Strategy</h3>
         <HighlightBlock as="p" tier="crucial">
           Compile-time work is paid once: schema → plan →
           dependency graph. The plan is cached by schema
@@ -679,7 +674,7 @@ export default function FormValidationEngineArticle() {
       </section>
 
       <section>
-        <h2>🎨 UI/UX Considerations</h2>
+        <h3>🎨 UI/UX Considerations</h3>
         <HighlightBlock as="p" tier="crucial">
           Rule order matters profoundly for UX. The natural
           priority is <code>required</code> &rarr;
@@ -717,14 +712,14 @@ export default function FormValidationEngineArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">The engine never assumes a specific UI pattern; it provides the information; the</HighlightBlock>
 <HighlightBlock as="p" tier="important">consumer renders. Status updates batch into single notifications so consumers</HighlightBlock>
 <HighlightBlock as="p" tier="important">don&rsquo;t flood the accessibility tree with intermediate values during a cascade.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🔐 Security Considerations</h2>
+        <h3>🔐 Security Considerations</h3>
         <HighlightBlock as="p" tier="important">Async rules POST to allowlisted endpoints declared in
           configuration; the engine refuses arbitrary URLs from
           a schema (which might come from a CMS or a less-
@@ -751,7 +746,7 @@ export default function FormValidationEngineArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing Strategy</h2>
+        <h3>🧪 Testing Strategy</h3>
         <HighlightBlock as="p" tier="important">Unit tests cover the building blocks: rule primitives
           against canonical good/bad inputs (including edge
           cases like empty strings, null, undefined,
@@ -783,7 +778,7 @@ export default function FormValidationEngineArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases &amp; Failure Handling</h2>
+        <h3>🚨 Edge Cases &amp; Failure Handling</h3>
         <HighlightBlock as="p" tier="crucial">
           The most subtle edge case is async race: two edits in
           flight, response 1 arriving after response 2. The
@@ -825,21 +820,21 @@ export default function FormValidationEngineArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability &amp; Extensibility</h2>
+        <h3>🔁 Reusability &amp; Extensibility</h3>
         <HighlightBlock as="p" tier="crucial">Pluggable async runners (e.g. one that batches multiple field validations into a single request) are possible</HighlightBlock>
 <HighlightBlock as="p" tier="important">because the AsyncQueue speaks an abstract executor interface, not specific fetch logic. The engine plugs into any form</HighlightBlock>
 <HighlightBlock as="p" tier="important">runtime that exposes a values store and accepts error subscriptions; we don&rsquo;t couple to our specific Form Builder.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="crucial">Date and number parameter values are passed as primitives (numbers, ISO</HighlightBlock>
 <HighlightBlock as="p" tier="important">date strings); the resolver formats them via Intl at message time, ensuring</HighlightBlock>
 <HighlightBlock as="p" tier="important">locale-correct output for the full matrix of languages and numbering systems.</HighlightBlock>
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs &amp; Design Decisions</h2>
+        <h3>⚖️ Trade-offs &amp; Design Decisions</h3>
 
         <h3>Schema-first vs imperative rule list</h3>
         <HighlightBlock as="p" tier="important">
@@ -935,125 +930,18 @@ export default function FormValidationEngineArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">Isomorphic submission paths in Next.js Server Actions where the same schema plan runs on the server with direct database</HighlightBlock>
 <HighlightBlock as="p" tier="important">lookups instead of HTTP calls — sharing rules between client and server is the most underrated win available here, and we&rsquo;d like</HighlightBlock>
 <HighlightBlock as="p" tier="important">to make it easier to wire up. Telemetry on rule cost so platform teams can identify expensive rules and optimize the long tail.</HighlightBlock>
       </section>
 
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. How do you prevent stale async validation
-          results from flashing to the UI?</strong> Token-based
-          execution: each async run gets a monotonic token; only
-          the latest token may write its result. New runs abort
-          the prior via <code>AbortController</code>; resolved
-          responses whose token is no longer current are
-          discarded silently. The flash you describe is what
-          you get without this pattern; with it, the UI is
-          monotone with respect to user input.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How do cross-field rules avoid re-validating the
-          entire form on every keystroke?</strong> The engine
-          builds a forward dependency index at compile time,
-          mapping changed-field to affected-rules. On a field
-          change, only the rules in the affected set re-run.
-          Bulk validation happens only on submit or explicit
-          request. Building the index is O(rules × avg deps);
-          per-keystroke work is O(affected rules), typically
-          one or two.
-        </HighlightBlock>
-
-        <p>
-          <strong>3. Why decouple error keys from messages?</strong>{" "}
-          Stability and i18n. Error keys are stable identifiers
-          that consumers can map to messages, render with
-          appropriate iconography, or transform for telemetry.
-          Strings change with locale; keys do not. Keys also
-          enable offline message resolution, reduce server
-          payload size for translated apps, and let
-          server-emitted errors travel locale-agnostic and be
-          formatted on the client.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. How would you support both Zod and Yup as schema
-          input?</strong> Adapters. Each adapter walks the
-          schema structure, maps each constraint to a rule
-          registry entry, and produces a normalized internal
-          plan. Adapters are small (a few hundred lines) and
-          isolated; adding a new schema language is a one-file
-          addition. Internal engine code never sees Zod or Yup
-          types.
-        </HighlightBlock>
-
-        <p>
-          <strong>5. Where do server-side errors live, and when are
-          they cleared?</strong> The engine merges server errors
-          into the same per-field error state as client errors,
-          marked with <code>source: &quot;server&quot;</code>.
-          The engine tracks per-field
-          <code> dirtySinceServerError</code>; when the user
-          edits a field, its server error is cleared. This
-          prevents users from fighting messages that no longer
-          apply.
-        </p>
-
-        <p>
-          <strong>6. How do you order rule priority?</strong>{" "}
-          Required first, then format/structure (length,
-          pattern, range), then async semantics (uniqueness,
-          eligibility). The engine encodes priority as a
-          numeric value per rule and honors it when ordering
-          errors. Consumers can override per rule for cases
-          where their UX wants a different order, but the
-          default matches the natural &ldquo;most informative
-          first&rdquo; principle.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>7. How do you isomorphically share validation between
-          client and server in Next.js?</strong> The engine&rsquo;s
-          compile and runner are pure; they run identically on
-          Node and in the browser. Async rule executors are
-          injected: in the browser they fetch; in Server
-          Actions they call the database directly. The schema
-          is the same file, imported on both sides; the rule
-          registry is the same object; the difference is one
-          parameter at engine instantiation.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>8. What&rsquo;s the cost of recompiling a schema on
-          every render and how do you avoid it?</strong>{" "}
-          Recompilation walks the entire schema and rebuilds the
-          dependency graph; O(rules) work that should be O(1).
-          The engine caches by schema reference, so callers must
-          hoist or memoize their schema. We document this and
-          provide an ESLint rule that warns when a schema is
-          constructed inline in a render function.
-        </HighlightBlock>
       </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="important">A great validation engine is a headless, deterministic pipeline with composable sync and async rules, a forward dependency index for minimal</HighlightBlock>
-<HighlightBlock as="p" tier="important">re-runs, abortable async execution with token-based race resolution, and i18n-friendly error keys. Keeping it pure, decoupled from rendering,</HighlightBlock>
-<HighlightBlock as="p" tier="important">and isomorphic across client and server lets the same engine power form components, mutation hooks, server actions, and shared schema validation.</HighlightBlock>
-<HighlightBlock as="p" tier="crucial">The
-          engine&rsquo;s job is to be boring, fast, and
-          predictable; everything interesting happens at the
-          edges, where consumers compose it into their UI and
-          their server logic. The right invariants — stable
-          error keys, single-writer state, per-field token
-          aborts, dependency-indexed re-runs — separate a
-          forgettable validation library from a load-bearing
-          platform component.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+<section><h2>Architecture &amp; Flow</h2><p>Separate field input, typed state transitions, derived projections, persistence effects, and bounded telemetry. Draft, preview, validated, and submitted states must not collapse into one mutable object. Every debounce timer, request, storage write, worker, and subscription needs an explicit owner and cleanup path.</p><p>Model validation as a dependency graph. Keep field values, touched state, sync errors, async generations, and submit status distinct. Commit only after the current policy gate succeeds and retain enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/forms-input-systems/form-validation-engine-recovery.svg" alt="Design a Form Validation Engine recovery" caption="Recovery flow: reject obsolete work, preserve recoverable drafts, and explain the outcome." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Per-field handlers work for small forms; a graph engine is justified when reusable cross-field, async, and localization policy must stay consistent.</p><p>Client validation is advisory. Server validation remains authoritative; async responses are accepted only for the current field value and generation. Scale pressure comes from cross-field rules, rapid typing, async uniqueness checks, hidden fields, locale changes, large forms, and server-client policy drift. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic transitions only when rollback is deterministic and understandable. Authorization and final validation remain server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable field ids, typed events, explicit state unions, schema versions, generation guards, SSR-safe feature checks, semantic HTML, and idempotent cleanup. Test keyboard use, screen-reader output, stale responses, offline recovery, retries, restoration, and constrained devices.</p><p>Measure field latency, blocked actions, stale drops, save conflicts, retries, storage pressure, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing drafts and committed values, trusting client validation, leaking resources, accepting stale async completion, and hiding rollback from the user.</p><p>For this topic, cancel stale checks, debounce providers, recompute dependents deterministically, focus the first invalid field, preserve server errors, and reject graph cycles. Validate untrusted input, authorize durable mutations server-side, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to high-value forms where users expect responsive input while browser, persistence, validation, and policy boundaries can fail independently. Reuse the controller structure while injecting product policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Model validation as a dependency graph. Keep field values, touched state, sync errors, async generations, and submit status distinct.</p><h3>What breaks at scale?</h3><p>cross-field rules, rapid typing, async uniqueness checks, hidden fields, locale changes, large forms, and server-client policy drift. I would bound expensive work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>Client validation is advisory. Server validation remains authoritative; async responses are accepted only for the current field value and generation.</p><h3>How do you recover?</h3><p>I would cancel stale checks, debounce providers, recompute dependents deterministically, focus the first invalid field, preserve server errors, and reject graph cycles.</p><h3>Why this architecture?</h3><p>Per-field handlers work for small forms; a graph engine is justified when reusable cross-field, async, and localization policy must stay consistent.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank" rel="noreferrer">MDN localStorage</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

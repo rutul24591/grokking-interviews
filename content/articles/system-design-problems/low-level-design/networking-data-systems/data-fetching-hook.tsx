@@ -2,624 +2,130 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
-import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-lld-data-fetching-hook",
   title: "Design a Data Fetching Hook",
-  description:
-    "Production-grade data fetching abstraction for React with loading states, error handling, dependency tracking, request lifecycle management, and cancellation support.",
+  description: "Implementation-heavy LLD for a React data fetching hook with cancellation, stale guards, retries, dedupe, cache reads, and observability.",
   category: "low-level-design",
   subcategory: "networking-data-systems",
   slug: "data-fetching-hook",
-  wordCount: 6900,
-  readingTime: 41,
-  lastUpdated: "2026-05-06",
-  tags: [
-    "lld",
-    "data-fetching",
-    "react-hooks",
-    "async-data",
-    "loading-states",
-    "error-handling",
-  ],
-  relatedTopics: [
-    "frontend-caching-layer",
-    "request-deduplication-system",
-    "token-refresh-system",
-    "global-api-error-handling",
-  ],
+  wordCount: 4200,
+  readingTime: 24,
+  lastUpdated: "2026-05-29",
+  tags: ["lld", "frontend-networking", "implementation-design", "react", "resilience"],
+  relatedTopics: ["data-fetching-hook", "frontend-caching-layer", "request-deduplication-system", "retry-mechanism", "token-refresh-system"],
 };
 
 export default function DataFetchingHookArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">
-          Every React component needs to fetch data from APIs (users, posts, comments). Without abstraction, components repeat boilerplate: useState for data/loading/error, useEffect for fetching, cleanup for cancellation. At scale, this repetition is error-prone and inconsistent. Consider a real scenario: component A fetches user data. While request in-flight, user navigates away, component unmounts. Request completes, tries to setState on unmounted component—warning printed, memory leak. Another component B fetches same user data simultaneously—two identical requests sent, wasting bandwidth.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          The solution is a custom data-fetching hook abstracting this complexity. The hook should: (1) accept a fetch function and dependencies (like useEffect), (2) manage loading, error, and data states internally, (3) handle request cancellation on unmount, (4) deduplicate identical concurrent requests (two components fetching same data = one request), (5) integrate with cache (avoid re-fetching if data cached), (6) retry failed requests with exponential backoff, (7) refetch on mutation (when user creates post, posts list refetches).
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Naive approach: each component has its own useEffect + useState + AbortController. Works for simple cases, but doesn't scale. Better: reusable hook encapsulating best practices (cancellation, retries, caching, deduplication). At 1M users with 1000s of components fetching data, centralized hook approach is critical for performance and correctness.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          <strong>Explicit assumptions:</strong> React 19+ with hooks. TypeScript for type safety. Fetch API or axios available. Cache layer (React Query, custom Map) available. AbortController for cancellation. Exponential backoff for retries. Multiple components may fetch same resource simultaneously.
-        </HighlightBlock>
+      <section className="space-y-5">
+        <h2>Definition &amp; Context</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Design a Data Fetching Hook is a low-level implementation problem, not a broad architecture prompt. The interviewer expects you to describe the runtime module, public API, internal state, data structures, lifecycle transitions, failure semantics, and test cases that make the feature safe inside a large React or TypeScript application.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The core primitive is the hook runtime. A principal-level answer should start from the user-visible behavior, then quickly move into the implementation contract: useResourceQuery(&#123; key, fetcher, enabled, staleTimeMs, retryPolicy, select, onSuccess, onError &#125;). That contract must be stable enough for many components to depend on it, but small enough that teams cannot bypass the lifecycle rules accidentally.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The design boundary is the browser client. The server may provide HTTP, GraphQL, WebSocket, upload, or auth endpoints, but the article focuses on client orchestration: when to call, when to cancel, what to cache, how to avoid duplicate work, how to surface errors, and how to keep UI state consistent under slow networks and rapid user interaction.</p>
       </section>
 
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li>
-            <strong>API Abstraction:</strong> Hook accepts a fetch function and
-            dependencies, returns {`{data, loading, error, refetch}`}.
-          </li>
-          <li>
-            <strong>Loading States:</strong> Distinguish between initial load and
-            refetch (loading vs isRefetching) so UI can show stale data + spinner.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Error Handling:</strong> Capture errors, categorize (network,
-            timeout, 4xx, 5xx), expose raw response and parsed error.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="crucial">
-            <strong>Retry Logic:</strong> Automatic retry on transient failures
-            (network, 5xx) with exponential backoff and max retries.
-          </HighlightBlock>
-          <li>
-            <strong>Dependency Tracking:</strong> Hook re-runs fetch when dependencies
-            change (like useEffect).
-          </li>
-          <li>
-            <strong>Request Deduplication:</strong> If multiple components fetch the
-            same resource, share a single in-flight request.
-          </li>
-          <li>
-            <strong>Cancellation:</strong> Abort fetch when component unmounts or
-            dependencies change mid-flight.
-          </li>
-          <li>
-            <strong>Manual Refetch:</strong> Expose refetch() function to trigger
-            fetch on-demand.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li>
-            <strong>Performance:</strong> Hook does not cause unnecessary renders.
-            State updates batched. Dependencies compared efficiently.
-          </li>
-          <li>
-            <strong>Memory:</strong> In-flight requests tracked and cancelled on
-            unmount. No memory leaks from timers or closures.
-          </li>
-          <li>
-            <strong>Composability:</strong> Hook works with Suspense, error
-            boundaries, and state management libraries.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Cases</h3>
-        <ul className="space-y-2">
-          <li>
-            Fetch completes after component unmounts — state update prevented via
-            cleanup.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            Multiple rapid refetch() calls — throttle to a single in-flight request.
-          </HighlightBlock>
-          <li>
-            Dependency changes mid-flight — cancel in-flight, start new fetch with
-            new deps.
-          </li>
-          <HighlightBlock as="li" tier="important">Retry exhausted after max attempts — surface error, expose retry button.</HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            Network disconnected during fetch — fail fast or timeout vs waiting
-            indefinitely.
-          </HighlightBlock>
-        </ul>
+      <section className="space-y-5">
+        <h2>Core Concepts</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The first concept is a typed request or operation identity. Every operation needs a stable key so the runtime can deduplicate, cache, cancel, retry, batch, or invalidate it. For design a data fetching hook, the key should include the resource identity, security context, relevant parameters, and behavior-changing options. It should not include unstable values such as inline function identity or render-local object references.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The second concept is lifecycle state. This article uses these states as the baseline: idle, loading, success, refetching, error, cancelled. These states are deliberately more precise than a boolean loading flag. They let the UI distinguish initial load from background refresh, recoverable failure from terminal failure, stale data from absent data, and ignored stale work from committed work.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The third concept is a boundary between control-plane decisions and rendering. The control plane owns cancellation, timers, retry budgets, request sharing, storage, and telemetry. Rendering code should consume a compact view model and command callbacks. That separation is what keeps component trees from re-implementing inconsistent networking behavior.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The fourth concept is observability as part of the API. The runtime should emit operation key, attempt count, latency, status, retry reason, cancellation reason, cache source, stale age, and user-visible fallback. Without these signals, production failures look like random UI glitches instead of diagnosable lifecycle bugs.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The fifth concept is data-structure choice. Most networking LLD answers become credible when you name the actual structures: a Map for in-flight operations, a Map from resource key to subscriber set, a priority queue or timer wheel for delayed retries, an LRU list for memory cache, a tag-to-key index for invalidation, and an append-only operation journal for optimistic or resumable workflows. These structures are small enough to implement in an interview but powerful enough to explain scale behavior.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The sixth concept is authority. The client can decide rendering, caching, dedupe, retries, and local rollback, but it cannot decide authorization, final mutation success, or cross-device consistency alone. Every implementation should mark which state is speculative, which state is server-acknowledged, and which state is only a local projection used to keep the interface responsive.</p>
       </section>
 
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">A global request cache deduplicates identical in-flight requests. The hook returns</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">state and a refetch callback. On unmount, an AbortController cancels in-flight requests. Errors trigger automatic retries with exponential backoff for transient failures.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Hook Interface</h3>
-        <p>
-          The hook signature follows React conventions and provides an intuitive
-          API for consuming components.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">State Management</h3>
-        <p>
-          Internal state tracks the current fetch lifecycle. Multiple state pieces
-          distinguish between initial load and refetch so UI can show stale data
-          during background refreshes.
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>data:</strong> The fetched data. Persists across refetches so
-            stale data displays immediately.
-          </li>
-          <li>
-            <strong>loading:</strong> True during initial fetch only. False during
-            refetch.
-          </li>
-          <li>
-            <strong>isRefetching:</strong> True during background refetch. Can be
-            true while loading is false if data is cached.
-          </li>
-          <li>
-            <strong>error:</strong> Error object. Cleared when refetch succeeds.
-            Persists during refetch so user sees the last error.
-          </li>
-          <li>
-            <strong>status:</strong> Enumeration (idle, loading, error, success,
-            refetching) for fine-grained control.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Request Deduplication</h3>
-        <HighlightBlock as="p" tier="crucial">
-          A global request cache stores in-flight requests by a cache key derived
-          from the fetch function and dependencies. When multiple components call
-          the hook with identical parameters, they share a single fetch.
-        </HighlightBlock>
-        <ul className="space-y-2">
-          <li>
-            <strong>Cache Key Generation:</strong> Serialize dependencies into a
-            stable cache key. Use JSON.stringify or a hash function.
-          </li>
-          <li>
-            <strong>Request Sharing:</strong> Store a Promise for in-flight fetches.
-            Multiple hook instances await the same Promise.
-          </li>
-          <li>
-            <strong>Cache Invalidation:</strong> Invalidate the cached request when
-            it completes or errors, or when manually triggered.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Error Classification</h3>
-        <p>
-          Errors are categorized to determine retry strategy. Network errors and 5xx
-          responses are retryable. 4xx errors are permanent and do not retry.
-        </p>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">
-            <strong>Network Error:</strong> fetch() throws (no internet, DNS failure).
-            Retry.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            <strong>Timeout:</strong> Fetch does not complete within timeout window.
-            Retry.
-          </HighlightBlock>
-          <li>
-            <strong>5xx Error:</strong> Server error. Retry with backoff.
-          </li>
-          <li>
-            <strong>4xx Error:</strong> Client error (bad request, not found). Do not
-            retry.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Retry Strategy</h3>
-        <p>
-          Retries use exponential backoff with jitter to avoid thundering herd. Max
-          retries capped at a reasonable number (typically 3-5).
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Exponential Backoff:</strong> Delay = 2^attemptNumber * baseDelay
-            (e.g., 100ms, 200ms, 400ms, 800ms).
-          </li>
-          <li>
-            <strong>Jitter:</strong> Add random jitter (±50%) to avoid synchronized
-            retries.
-          </li>
-          <li>
-            <strong>Max Retries:</strong> Typically 3-5. Configurable per hook call.
-          </li>
-          <li>
-            <strong>Abort Condition:</strong> Stop retrying if component unmounts or
-            dependencies change.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Cancellation</h3>
-        <HighlightBlock as="p" tier="important">
-          AbortController cancels in-flight requests when the component unmounts or
-          dependencies change. The fetch abort is idempotent — canceling an already
-          completed fetch is a no-op.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Integration with Cache</h3>
-        <HighlightBlock as="p" tier="important">
-          The hook integrates with a frontend caching layer. Before initiating a
-          fetch, the hook checks the cache. If data is fresh, it returns cached data
-          without network requests. If stale, it returns stale data and refetches in
-          background. Cache invalidation is exposed to components so mutations can
-          trigger refetches.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Dependency Stability</h3>
-        <p>
-          React dependency arrays are compared by reference. If the dependency array
-          changes on every render, the hook refetches on every render. Consumers
-          must memoize dependencies or use useCallback to stabilize them.
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Stable Dependencies:</strong> Primitive values, arrays/objects
-            created outside render.
-          </li>
-          <li>
-            <strong>Unstable Dependencies:</strong> Inline objects/arrays created
-            during render.
-          </li>
-          <li>
-            <strong>useMemo/useCallback:</strong> Memoize dependencies to prevent
-            unnecessary refetches.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Suspense Integration</h3>
-        <p>
-          The hook can work with React Suspense by throwing a Promise while data
-          loads. This allows parent components to catch the Promise and render a
-          fallback.
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Throw Promise:</strong> Throw in-flight fetch Promise so Suspense
-            catches it.
-          </li>
-          <li>
-            <strong>Fallback UI:</strong> Suspense boundary renders fallback until
-            Promise resolves.
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Implementation Considerations</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Type Safety</h3>
-        <HighlightBlock as="p" tier="important">
-          Use TypeScript generics to ensure type safety. The hook is generic over
-          the data type and error type.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Timeout Handling</h3>
-        <HighlightBlock as="p" tier="important">
-          Wrap the fetch in a timeout using AbortController or a timer. If fetch
-          does not complete within timeout, abort and treat as timeout error.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Stale-While-Revalidate</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Support stale-while-revalidate pattern: if cached data is available
-          (even if stale), return it immediately and refetch in background. User
-          sees stale data first, then updated data when fetch completes.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">DevTools Integration</h3>
-        <HighlightBlock as="p" tier="important">
-          Optionally integrate with React DevTools to inspect hook state, request
-          history, and retry attempts.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Advanced Production Patterns</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Observability & Distributed Tracing</h3>
-        <HighlightBlock as="p" tier="important">
-          Instrument the hook to emit OpenTelemetry spans. Track request duration,
-          retry attempts, cache hits/misses. Correlate with server traces via trace IDs.
-          This visibility is critical for diagnosing performance issues in production
-          across 100+ concurrent users. Expose metrics to monitoring dashboards (Datadog,
-          Prometheus). Alert on high retry rates (indicates backend issues) or high
-          latency (network problems).
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Bulkhead Isolation & Resource Limits</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Limit concurrent in-flight requests per priority/endpoint to prevent cascading
-          failures. If one endpoint degraded (slow), don't starve other endpoints. Use
-          request pools with separate limits: high-priority (auth, critical data) gets
-          more slots. Low-priority (analytics, preloading) gets throttled. Prevents one
-          slow endpoint from blocking critical user flows.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Adaptive Retry Backoff Based on System State</h3>
-        <HighlightBlock as="p" tier="important">
-          Monitor network quality (round-trip time) and backend health (error rates).
-          Adjust retry backoff dynamically: stable network → shorter backoff, slow
-          network → longer backoff. If backend returning 5xx errors, increase backoff
-          exponentially to give it recovery time. This is more sophisticated than
-          fixed exponential backoff.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Memory Profiling & Leak Prevention</h3>
-        <HighlightBlock as="p" tier="important">
-          Use Chrome DevTools to profile memory usage. Watch for growing memory over
-          time (indicates leaks). Common leaks: timers not cleared on unmount,
-          subscriptions not unsubscribed, closures holding references. Use WeakMap for
-          caches to allow garbage collection of unused entries. Test with long-running
-          sessions (hours) to detect slow leaks.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Integration with Global Error Boundary</h3>
-        <p>
-          Data fetching errors can propagate to Error Boundary. Decide: some errors
-          caught locally (render retry UI), others propagate to boundary (unrecoverable
-          errors). Coordinate error handling: if fetch error is expected and handled,
-          don't rethrow. If unexpected, throw to boundary. Log all errors to error
-          tracking service (Sentry) with context (component, request, user).
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Cache Coherency in Multi-Tab Scenarios</h3>
-        <p>
-          When user opens app in multiple tabs, each tab has separate cache. If one tab
-          mutates data, other tabs have stale cache. Sync via localStorage events or
-          BroadcastChannel API. On mutation, emit event. Other tabs invalidate cache
-          and refetch. Critical for consistency on multi-tab workflows.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Prefetching & Predictive Loading</h3>
-        <p>
-          Implement prefetching for likely next navigations. Analyze user behavior:
-          if user views list page, likely to view detail pages. Prefetch detail data
-          in background. On navigation, data likely cached. Feels instant. Requires
-          careful bandwidth management to not overwhelm on slow networks.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing Strategies for Async Fetching</h3>
-        <HighlightBlock as="p" tier="important">
-          Mock fetch with MSW (Mock Service Worker) for deterministic tests. Test race
-          conditions: rapid dependency changes, unmount mid-flight, timeout scenarios.
-          Use act() to wrap state updates. Test error paths extensively (network errors,
-          timeouts, 5xx, 4xx). Use jest.useFakeTimers() for timeout tests. Property-based
-          testing (fast-check) helps find edge cases in retry/backoff logic.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Library Comparison Matrix</h3>
-        <p>
-          <strong>React Query (TanStack Query):</strong> Production battle-tested,
-          built-in caching, deduplication, background refetching. Best choice for most
-          apps. Learning curve moderate.
-        </p>
-        <p>
-          <strong>SWR:</strong> Simpler, lighter-weight. Good for lightweight apps.
-          Less flexible for complex scenarios.
-        </p>
-        <p>
-          <strong>Custom Hook:</strong> Max control, zero dependencies. Best for
-          simple, unique requirements. Risk: missing edge cases production libraries
-          handle.
-        </p>
-        <p>
-          <strong>Recommendation:</strong> Use React Query for most apps. Use SWR for
-          lightweight projects. Build custom only if requirements are truly unique or
-          for educational purposes.
-        </p>
-      </section>
-
-      <section>
-        <h2>Scale Considerations (1M+ Concurrent Users)</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Request Coalescing at Scale</h3>
-        <HighlightBlock as="p" tier="important">
-          At 1M concurrent users, if 1000 users fetch same data simultaneously,
-          deduplication prevents 1000 requests → 1 request. This is the difference
-          between backend overload and stability. Deduplication is non-negotiable at
-          scale. Implement in global request cache, not hook.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Backpressure Handling</h3>
-        <HighlightBlock as="p" tier="crucial">
-          If requests queue faster than network can send, queue grows unbounded →
-          memory bloat. Implement backpressure: when queue reaches size threshold,
-          drop low-priority requests or reject new requests. User sees "Service
-          overloaded" message instead of app crashing from memory exhaustion.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Client-Side Rate Limiting</h3>
-        <HighlightBlock as="p" tier="important">
-          Client limits requests/second per endpoint to not overwhelm backend. If
-          frontend sends 10k requests/sec, backend can't handle. Client-side limiting
-          protects both client (memory) and backend (load). Implement token bucket
-          algorithm per endpoint/priority.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Real-World Lessons & Pitfalls</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">The Stale Closure Bug</h3>
-        <HighlightBlock as="p" tier="important">
-          Closure in useEffect can capture stale state. Common: fetch uses stale
-          dependency, response arrives out of order. Solution: use useCallback to
-          wrap fetch function, ensure dependencies correct. Use ESLint
-          rules (eslint-plugin-react-hooks) to catch these automatically.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Unmount-While-Fetching Race</h3>
-        <HighlightBlock as="p" tier="important">
-          Component unmounts while fetch in-flight. Response arrives, component tries
-          to update state → React warning. Solution: use AbortController, clean up
-          properly in useEffect return. React 18+ useTransition handles this better
-          in some cases.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Infinite Refetch Loops</h3>
-        <HighlightBlock as="p" tier="important">
-          Misconfigured dependency array causes refetch on every render. Component
-          renders → dependency change (new object reference) → refetch → state update
-          → render → dependency change → infinite loop. Solution: memoize dependencies,
-          use useCallback, lint rules.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Mixing Loading States</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Confusing initial load vs refetch. Show spinner on initial load, but show
-          stale data + subtle loader on refetch. Users expect instant UI update even
-          if background refetch slow. Separate loading and isRefetching states.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Cache Invalidation Complexity</h3>
-        <HighlightBlock as="p" tier="important">
-          As mutation landscape grows, deciding what to invalidate becomes complex.
-          Mutation creates post → invalidate posts list AND user profile AND
-          notifications. Automated tag-based invalidation helps but still error-prone.
-          Consider event-driven cache invalidation: server pushes invalidation events
-          to clients.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Integration with Other Systems</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">With State Management (Zustand, Redux)</h3>
-        <HighlightBlock as="p" tier="important">
-          Hook coordinates with store: fetch result → store update → component rerender.
-          Decide: where lives truth? In hook state or store? Recommend: fetch in hook,
-          store in component/parent. Avoid duplication of state across hook and store.
-          Use Zustand + React Query together for clean separation.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">With Suspense (React 18+)</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Throw Promise from hook to trigger Suspense. Allows parent boundary to
-          catch and show fallback. Powerful for SSR and streaming. But adds complexity.
-          Recommend: use cautiously, understand interaction with error boundaries.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">With Server State Sync</h3>
-        <HighlightBlock as="p" tier="important">
-          If backend pushes updates via WebSocket/SSE, hook must merge server updates
-          with local cache. Conflict resolution: last-write-wins, merge, or user
-          choice. Requires version tracking.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Incident Response & Debugging</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">High Retry Rate Incident</h3>
-        <HighlightBlock as="p" tier="important">
-          If monitoring shows 50% of requests retrying, backend likely degraded. Check
-          error logs, backend metrics, availability. Automatic retry helps but signals
-          problem to investigate. Don't ignore high retry rates.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Memory Leak Detection</h3>
-        <HighlightBlock as="p" tier="crucial">
-          If memory grows unbounded over hours, profile with DevTools. Look for growing
-          cache size, timers not cleared, subscriptions not cleaned. Add test that
-          mounts/unmounts component 1000x and checks memory. Catch regressions in CI.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Debugging Race Conditions</h3>
-        <HighlightBlock as="p" tier="important">
-          Intermittent failures suggest races. Reproduce with React.StrictMode (double
-          unmounts, double effects). Use console logs with timestamps. Use DevTools to
-          step through execution. Property-based testing helps find races
-          systematically.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Hook Lifecycle and State Machine</h2>
-
-        <HighlightBlock as="p" tier="important">
-          A production data fetching hook implements a finite state machine controlling transitions between states. The state machine ensures consistent behavior and prevents invalid transitions. Key states: idle (no fetch initiated), loading (initial fetch in-flight), refetching (background refresh with cached data), success (data available), error (fetch failed).
-        </HighlightBlock>
-
-        <p>
-          Transitions are triggered by: (1) component mount or dependency change → loading, (2) fetch completes successfully → success, (3) fetch fails → error, (4) refetch triggered while data exists → refetching, (5) component unmount → cleanup and abort, (6) manual refetch call → resume fetching.
-        </p>
-
-        <p>
-          State machine ensures: from loading, only success or error possible. From success, can transition to refetching. From error, can attempt refetch. Prevents invalid sequences like jumping from loading directly to refetching without success/error. This clarity is crucial for debugging and testing state transitions.
-        </p>
-
+      <section className="space-y-5">
+        <h2>Architecture &amp; Flow</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A production implementation has five cooperating pieces: a public adapter, a lifecycle reducer, a registry or cache, a transport adapter, and an observer. The public adapter exposes useResourceQuery(&#123; key, fetcher, enabled, staleTimeMs, retryPolicy, select, onSuccess, onError &#125;). The reducer owns transitions. The registry stores resource key plus selected params; stale-while-revalidate for mounted readers. The transport adapter talks to fetch, GraphQL, WebSocket, upload, or auth APIs. The observer emits metrics and debug events.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The normal flow starts when a component or command creates an operation. The runtime normalizes the key, checks local state, decides whether to serve cached data, dedupe with an existing operation, enqueue work, or issue a new transport call. When the transport resolves, the runtime validates that the response is still relevant, updates state, notifies subscribers, records metrics, and releases resources.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The hardest flow is the edge case: dependency changes while a slower request is still resolving. The design must make that behavior deterministic. A late response, duplicate event, expired token, stale cache entry, failed retry, partial batch result, or dropped socket frame should have an explicit transition rather than relying on whichever promise settles last.</p>
         <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/networking-data-systems/data-fetching-hook-lifecycle.svg"
-          alt="Data fetching hook state machine and lifecycle diagram"
+          src="/diagrams/system-design-problems/low-level-design/networking-data-systems/data-fetching-hook-runtime-flow.svg"
+          alt="Design a Data Fetching Hook runtime flow"
+          caption="Runtime flow: public API, lifecycle reducer, registry, transport adapter, cache, observer, and UI view model cooperate to keep networking state deterministic."
         />
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Request Lifecycle Phases</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Understanding the complete request lifecycle helps diagnose issues. Phase 1: Initialization. Hook mounts, dependencies evaluated. Phase 2: Cache Check. Before fetch, check if data cached. If fresh, return cached. If stale, refetch. Phase 3: Request Setup. Create AbortController, set timeout, construct request headers (auth tokens, trace IDs). Phase 4: Network Request. Fetch initiated. Network activity tracked. Phase 5: Response Processing. Response received, parse body, validate schema. Phase 6: State Update. Update hook state with data/error. Phase 7: Downstream Effects. Components re-render, effects triggered, dependent fetches may initiate. Phase 8: Cleanup. On unmount or new fetch, abort previous request, clear timers.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Concurrency Control Patterns</h3>
-        <HighlightBlock as="p" tier="important">
-          As complexity grows, managing concurrent requests becomes critical. Pattern 1: Sequential. Fetch A completes → initiate fetch B. Guarantees order but slower. Pattern 2: Parallel. Fetch A and B simultaneously. Faster but order not guaranteed. Pattern 3: Race. Fetch A and B, use result from first to complete. Useful for redundancy (multiple mirrors). Pattern 4: Debounce. Rapid dependency changes → skip earlier fetches, only fetch latest. Pattern 5: Throttle. At most one fetch per N milliseconds. Pattern 6: Request coalescing with Promises. Multiple hook instances → single in-flight Promise shared.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Error Categorization Taxonomy</h3>
-        <HighlightBlock as="p" tier="important">
-          Not all errors are created equal. Classification: Network Errors (DNS failure, no connection, connection reset). Categorized as transient, retryable. Timeout Errors (request exceeds timeout window). Usually transient, retryable. Server Errors (5xx status). Indicate server issue, usually transient, retryable. Client Errors (4xx status). Indicate invalid request, non-retryable (except 429 rate limit). Parsing Errors (response body not valid JSON). Non-retryable, indicates API version mismatch or data corruption. Abort Errors (fetch aborted by code). Expected during cleanup, no retry. Categorize each error to determine appropriate recovery strategy.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Backoff Strategies Deep Dive</h3>
-        <HighlightBlock as="p" tier="important">
-          Exponential backoff (2^n * base) is standard but has variations. Linear backoff: delay = n * base (100ms, 200ms, 300ms). Predictable but slower recovery. Exponential backoff: delay = 2^n * base (100ms, 200ms, 400ms, 800ms). Fast recovery but aggressive. Exponential with jitter: delay = (2^n * base) + random(0, base). Prevents thundering herd when many clients retry simultaneously. Decorrelated jitter (AWS pattern): delay = min(cap, random(base, delay*3)). Adapts backoff based on feedback from previous retry. Fibonacci backoff: slower growth than exponential. Useful for very rate-limited APIs. Choose based on backend characteristics: degraded backend benefits from longer backoff; transient network issues benefit from faster retry.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Request Priority and Queuing</h3>
-        <p>
-          At scale, prioritize requests. High-priority: user-blocking (fetching page data before render). Medium-priority: user-visible but not blocking (loading sidebar data). Low-priority: background (prefetch, analytics). Implement priority queue: high-priority requests get slots first. If queue full, drop low-priority. Or delay low-priority. User experience benefits: critical page loads fast, less critical loads in background. Prevents one slow analytics fetch from blocking user interactions.
-        </p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The state reducer should be written as a small state machine, even if implemented with a switch statement or Zustand store. Events include start, cacheHit, cacheStale, transportStarted, transportSucceeded, transportFailed, retryScheduled, cancelled, superseded, invalidated, subscriberAdded, subscriberRemoved, and garbageCollected. Each event must define whether it changes visible data, metadata only, or no state at all.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A practical implementation also needs cleanup rules. When a subscriber unmounts, decrement the reference count. When the last subscriber leaves, either abort the transport or let it finish into cache depending on policy. Timers must be cleared on cancellation. Cache entries should have both freshness TTL and garbage-collection TTL. Journals should compact acknowledged operations. These details are what separate a usable LLD answer from a helper-function answer.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The testing flow mirrors the state machine. Unit tests drive reducer events directly. Integration tests mount two subscribers for the same key and verify sharing. Race tests resolve promises out of order. Timer tests advance fake clocks for debounce, retry, and stale TTL. Browser tests cover focus, blur, online/offline, visibility change, storage quota, and tab coordination where relevant.</p>
       </section>
 
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Hook vs Class Component</h3>
-        <HighlightBlock as="p" tier="important">
-          Hooks are preferred for cleaner composition and reusability. Class
-          components require HOCs or render props, which are more verbose.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Library vs Custom</h3>
-        <HighlightBlock as="p" tier="important">
-          Consider using a library like React Query (TanStack Query) or SWR if
-          complexity grows. Custom hooks are simpler for straightforward cases.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Global Request Deduplication</h3>
-        <HighlightBlock as="p" tier="important">
-          Deduplication adds complexity but is critical for performance. Without it,
-          multiple components fetching the same resource cause redundant requests.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Error Recovery</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Automatic retries help with transient failures. For permanent errors, expose
-          a retry button so users can manually retry if conditions improve.
-        </HighlightBlock>
+      <section className="space-y-5">
+        <h2>Trade offs &amp; Comparison</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A custom hook gives control over product states; a library such as TanStack Query gives mature caching but less control over domain-specific telemetry.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The main consistency trade-off is whether the UI favors latest known data, latest requested data, or latest acknowledged data. Latest known data gives fast rendering but can be stale. Latest requested data prevents older responses from committing but can show loading more often. Latest acknowledged data is safest for financial, auth, and destructive workflows but creates more waiting states.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The main performance trade-off is centralization versus local control. A central runtime reduces duplicated requests, gives shared telemetry, and standardizes failure behavior. It can also become a bottleneck or an overly complex abstraction if every product case is pushed into it. The senior answer is to define extension points for request factory, key derivation, retry classifier, cache policy, and user message mapping without allowing components to bypass lifecycle safety.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The main cost trade-off is how aggressively the client talks to the backend. Deduplication, caching, debounce, batching, and WebSocket subscriptions can reduce request volume, but each one introduces correctness questions. In interviews, defend the policy with observable numbers: p95 latency, request rate per active user, retry amplification, stale-render duration, memory usage, and dropped-event count.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A principal-level comparison should also explain when not to build this abstraction. If the product only has a few simple reads, a mature library is better than a bespoke runtime. If the system has regulated payments, healthcare, or admin control planes, the runtime needs stricter commit guards and audit logs. If the system is collaborative, eventual consistency and merge policy matter more than raw request count.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The design should explicitly choose a consistency model. Most UI networking state is read-your-own-writes for the current tab, monotonic reads for a resource key, and eventual consistency across tabs or devices. Strong consistency is reserved for destructive actions, permissions, token state, and payment-like flows. Naming this model helps defend why stale-while-revalidate is acceptable in one surface and unacceptable in another.</p>
       </section>
 
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Real-world implementations use libraries like React Query, which handle many edge cases. Understanding the</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">underlying design helps when debugging, optimizing, or building custom solutions for unique requirements. Production systems require careful attention to resource limits, error propagation, and incident response procedures.</HighlightBlock>
+      <section className="space-y-5">
+        <h2>Best practices</h2>
+        <ul className="list-disc space-y-2 pl-6 text-slate-700 dark:text-slate-300">
+          <li>Define a stable operation key and test it with reordered object properties, optional parameters, tenant changes, auth changes, and pagination cursors.</li>
+          <li>Keep lifecycle transitions in a reducer or explicit state machine so cancellation, retry, stale response, and cleanup behavior can be tested without rendering React components.</li>
+          <li>Use AbortController where the transport supports it, but still keep a monotonic request token because not every transport or browser path cancels before a response resolves.</li>
+          <li>Separate retry classification from retry scheduling. Classification decides whether an error is retryable; scheduling decides when the next attempt is allowed under deadline and budget.</li>
+          <li>Emit diagnostics for every suppressed or ignored operation. Silent stale-response drops are correct behavior, but they still need debug visibility.</li>
+          <li>Treat auth, tenant, locale, feature flag, and privacy mode as key dimensions when they change returned data or access permissions.</li>
+        </ul>
+      </section>
+
+      <section className="space-y-5">
+        <h2>Common Pitfalls</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A common pitfall is treating design a data fetching hook as a small helper instead of a runtime. A helper usually handles the happy path. A runtime owns cancellation, cleanup, concurrency, memory limits, stale work, metrics, and user-visible recovery.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Another pitfall is conflating transport success with UI success. A 200 response can still be stale, unauthorized for the current tenant, partial, incompatible with the current schema, or obsolete because a newer operation already committed. The commit guard must validate response relevance before updating UI state.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A third pitfall is hiding failures behind generic retry or generic error UI. stale response must be ignored even when AbortController cannot cancel the network stack in time. The user experience should make the correct state visible: stale data with a banner, retryable failure with a button, auth failure with re-login, conflict with resolution UI, or disabled action with a clear reason.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A fourth pitfall is failing to bound memory. A registry that never deletes settled operations, an LRU without byte accounting, a retry scheduler that keeps dead timers, or a WebSocket subscription map that keeps handlers after unmount will eventually create production-only failures. The cleanup story should be part of the design, not an implementation afterthought.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A fifth pitfall is making policy impossible to override. Product teams need different policies for admin tools, search inputs, checkout, collaboration, and analytics dashboards. The runtime should expose controlled extension points while keeping the invariants non-negotiable: no stale commit, no auth-scope leak, no unbounded retry, and no silent rollback.</p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/networking-data-systems/data-fetching-hook-failure-model.svg"
+          alt="Design a Data Fetching Hook failure and recovery model"
+          caption="Failure model: stale work, retry limits, cache invalidation, auth boundaries, and observer signals decide whether the UI commits, degrades, retries, or rolls back."
+        />
+      </section>
+
+      <section className="space-y-5">
+        <h2>Real-world use cases</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Design a Data Fetching Hook appears in product surfaces where users move faster than networks: search boxes, dashboards, admin tools, checkout flows, upload forms, collaboration views, and authenticated SaaS consoles. In these surfaces, one bad race condition can show stale data, double-submit a mutation, hide a failure, or leak information across tenants.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">For staff/principal interviews, anchor the use case in a concrete screen. Example: a settings page loads current settings, the user changes a value, a mutation starts, cached views update optimistically, another tab invalidates the same resource, and the network returns a delayed response. Your answer should describe which event wins, what the user sees, what is persisted, and which metric would prove the runtime behaved correctly.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The production readiness bar includes rollback and abuse handling. Rollback means the UI can revert optimistic or stale state without erasing newer user intent. Abuse handling means the runtime limits request amplification caused by rapid typing, tab storms, retries during outages, reconnect loops, and repeated token refresh failures.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Another real-world use case is incident response. During an outage, this runtime should help operators answer whether the client is retrying too aggressively, whether users are seeing stale state, whether requests are being deduped, whether token refresh is stuck, and which user actions are degraded. That requires event names, counters, and sampled traces designed into the module from the beginning.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A third use case is migration. Teams often move from hand-written fetch calls to a shared networking runtime gradually. The module should support adapter wrappers so older callers can use the same dedupe, retry, and error handling policy without a full rewrite. Good LLD answers mention migration because principal engineers are judged on adoption paths, not only greenfield design.</p>
+      </section>
+
+      <section className="space-y-5">
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you implement the core module end to end?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">I would define the public API first: useResourceQuery(&#123; key, fetcher, enabled, staleTimeMs, retryPolicy, select, onSuccess, onError &#125;). Then I would implement a pure reducer for idle, loading, success, refetching, error, cancelled. The adapter would normalize keys, read the registry, decide whether to reuse, cache, enqueue, or start transport work, and expose a view model with data, status, error, stale age, retry state, and command callbacks.</p>
+        <h3>How do you prevent stale or duplicate work from corrupting the UI?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">I would use stable operation keys plus a monotonic sequence token. AbortController reduces wasted work, but the token decides whether a response can commit. If a newer operation has started, the older one resolves into an ignored event that updates telemetry but not visible state. For shared in-flight operations, subscriber reference counts decide cleanup without cancelling work still needed by another component.</p>
+        <h3>What breaks at scale?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Request amplification breaks first: retries, duplicate mounts, rapid typing, reconnect loops, and cache invalidation storms can multiply backend traffic. Memory breaks next if caches, timers, event listeners, and operation journals are never collected. Debuggability breaks if ignored responses and retry decisions are not observable.</p>
+        <h3>How do you handle failure and rollback?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The reducer needs explicit failed, stale, retrying, rolledBack, and degraded states. Rollback should use inverse patches or scoped snapshots instead of resetting an entire cache. User-visible state should distinguish retryable network failure, authorization failure, validation failure, conflict, and stale data. Every rollback or suppressed commit should emit a trace event with operation key and reason.</p>
+        <h3>How do you defend your trade-offs?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">I would defend them with invariants: no stale response can commit after a newer operation, no non-idempotent mutation retries without an idempotency key, no cache entry crosses auth or tenant boundaries, and no retry loop can exceed budget. Then I would show metrics that prove those invariants in production: duplicate suppression count, stale commit suppression count, retry amplification, cache hit rate, p95 stale age, and rollback success rate.</p>
+        <h3>What would you ask the interviewer before coding?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">I would ask which operations are reads versus mutations, which ones are idempotent, whether data is tenant- or permission-scoped, what latency target matters, whether stale data is acceptable, how many components may subscribe to the same resource, and what the expected offline or reconnect behavior is. These questions determine cache policy, retry policy, and commit strictness.</p>
+        <h3>What does the example implementation need to prove?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The examples should prove the non-happy paths: duplicate subscribers share work, stale responses are ignored, retry budgets are enforced, rollback does not erase newer state, cache keys include security scope, and telemetry records the reason for every degraded outcome. A one-line example is not enough for this category because the design is mostly about lifecycle behavior under pressure.</p>
+      </section>
+
+      <section className="space-y-4">
+        <h2>References</h2>
+        <ul className="list-disc space-y-2 pl-6 text-slate-700 dark:text-slate-300">
+          <li><a href="https://react.dev/reference/react" target="_blank" rel="noreferrer">React docs: Hooks and effects</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN: AbortController</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" target="_blank" rel="noreferrer">MDN: Fetch API</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket" target="_blank" rel="noreferrer">MDN: WebSocket API</a></li>
+          <li><a href="https://spec.graphql.org/" target="_blank" rel="noreferrer">GraphQL specification</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc9110" target="_blank" rel="noreferrer">HTTP Semantics RFC 9110</a></li>
+        </ul>
       </section>
     </ArticleLayout>
   );

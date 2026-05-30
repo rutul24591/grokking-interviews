@@ -1,6 +1,3 @@
-# Web Worker-based Computation System — Example 2
+# Design Web Worker Computation example 2
 
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+Concrete browser API runtime example for Design Web Worker Computation. It covers capability gates, lifecycle-safe execution, fallback decisions, and privacy-safe telemetry.

@@ -1,0 +1,22 @@
+export interface AccordionCollapsibleTimer{id:string;
+remainingMs:number;
+startedAtMs:number;
+pausedAtMs?:number;
+}export class AccordionCollapsibleTimerRegistry{private timers=new Map<string,AccordionCollapsibleTimer>();
+start(id:string,durationMs:number,now:number){this.timers.set(id,{id,remainingMs:durationMs,startedAtMs:now});
+}pause(id:string,now:number){const t=this.timers.get(id);
+if(!t||t.pausedAtMs!==undefined)return;
+t.remainingMs=Math.max(0,t.remainingMs-(now-t.startedAtMs));
+t.pausedAtMs=now;
+}resume(id:string,now:number){const t=this.timers.get(id);
+if(!t||t.pausedAtMs===undefined)return;
+t.startedAtMs=now;
+delete t.pausedAtMs;
+}expired(now:number){return[...this.timers.values()].filter(t=>t.pausedAtMs===undefined&&now-t.startedAtMs>=t.remainingMs).map(t=>t.id);
+}clear(id:string){this.timers.delete(id);
+}}export function runAccordionCollapsibleTimerScenario(){const r=new AccordionCollapsibleTimerRegistry();
+r.start("notice",5000,0);
+r.pause("notice",2000);
+r.resume("notice",8000);
+return{early:r.expired(10000),late:r.expired(12000)};
+}

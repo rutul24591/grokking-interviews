@@ -20,10 +20,9 @@ export const metadata: ArticleMetadata = {
   relatedTopics: ["drag-drop-list", "chat-messaging-ui", "dashboard-builder"],
 };
 
-export default function KanbanBoardArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <p>
+export default function KanbanBoardArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Kanban Board</h1><h2>Definition &amp; Context</h2><p>Design a Kanban Board is an implementation-heavy low-level design problem covering column paging, card ordering, cross-column drag projection, optimistic mutation, conflict reconciliation, virtualization, and keyboard movement. A principal-level answer must make state ownership, data structures, lifecycle, failure containment, consistency, privacy, cost, and observability explicit.</p><p>Keep committed card positions separate from drag projection. Persist ordering with stable card ids and position keys rather than rewriting whole arrays. The implementation structures are column map, card map, position keys, drag session, projected destination, column cursors, optimistic journal, base version, and presence overlay.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/kanban-board-runtime.svg" alt="Design a Kanban Board runtime" caption="Topic-specific runtime stages from user intent through durable projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below contains the topic-specific implementation mechanics.</p><p>
         A Kanban board is the LLD problem where the most interesting challenges are not
         the visible UI but the data model underneath it. The drag-and-drop visual is
         achievable with any drag library. What separates a staff-level design from a
@@ -41,7 +40,7 @@ export default function KanbanBoardArticle() {
         caption="Kanban board architecture: fractional indexing, drag state, conflict resolution, real-time sync and swimlanes"
       />
 
-      <h2>Clarifying the Requirements</h2>
+      <h3>Clarifying the Requirements</h3>
       <p>
         Scope questions that change the architecture significantly:
       </p>
@@ -69,7 +68,7 @@ export default function KanbanBoardArticle() {
         that affects the drop validation logic.
       </p>
 
-      <h2>The Card Order Problem and Fractional Indexing</h2>
+      <h3>The Card Order Problem and Fractional Indexing</h3>
       <p>
         Storing card order in a database is harder than it looks. Naive approaches fail:
       </p>
@@ -105,7 +104,7 @@ export default function KanbanBoardArticle() {
         single UPDATE to the moved card's rank field.
       </HighlightBlock>
 
-      <h2>The Drag and Drop State Machine</h2>
+      <h3>The Drag and Drop State Machine</h3>
       <p>
         Drag-and-drop on a Kanban board involves multiple possible states: no drag
         in progress, dragging a card within the same column, dragging a card to a
@@ -135,7 +134,7 @@ export default function KanbanBoardArticle() {
         O(n) in cards per column but fast in practice since columns have few cards.
       </p>
 
-      <h2>Optimistic Reordering</h2>
+      <h3>Optimistic Reordering</h3>
       <p>
         On drop, commit the move optimistically: immediately update the local state
         with the new column assignment and position, then send the move event to the
@@ -155,7 +154,7 @@ export default function KanbanBoardArticle() {
         to match the server-confirmed position after the optimistic move is acknowledged.
       </p>
 
-      <h2>Real-Time Multi-User Sync</h2>
+      <h3>Real-Time Multi-User Sync</h3>
       <p>
         In a collaborative board, changes made by other users appear in real-time via
         WebSocket. The server broadcasts card events: card_moved (with card ID, new
@@ -180,7 +179,7 @@ export default function KanbanBoardArticle() {
         multiplayer cursor feature seen in Figma and Linear.
       </p>
 
-      <h2>Column Reordering</h2>
+      <h3>Column Reordering</h3>
       <p>
         Columns themselves are ordered and can be dragged to reorder. Column order uses
         the same fractional indexing approach as card order — each column has a rank
@@ -194,7 +193,7 @@ export default function KanbanBoardArticle() {
         the drag state before initiating a new drag.
       </p>
 
-      <h2>Swimlanes</h2>
+      <h3>Swimlanes</h3>
       <p>
         Swimlanes add a second grouping dimension. Each card belongs to both a column
         (the workflow stage: To Do, In Progress, Done) and a swimlane (e.g., the
@@ -217,7 +216,7 @@ export default function KanbanBoardArticle() {
         expanding the swimlane.
       </p>
 
-      <h2>Keyboard Accessibility</h2>
+      <h3>Keyboard Accessibility</h3>
       <p>
         Drag and drop is completely inaccessible via keyboard in its native form. The
         accessible alternative is a keyboard-driven card move mode. When the user
@@ -239,7 +238,7 @@ export default function KanbanBoardArticle() {
         activates keyboard move mode.
       </p>
 
-      <h2>WIP Limits</h2>
+      <h3>WIP Limits</h3>
       <p>
         WIP limits are column-level constraints on the maximum number of cards in a
         column. When a column is at or over its limit, visual warnings appear (the
@@ -255,85 +254,12 @@ export default function KanbanBoardArticle() {
         state's drop target to this column — the placeholder does not appear in
         over-limit columns. The user can still proceed if the product allows "warn only"
         rather than "block" behavior.
-      </p>
-
-      <h2>Interview Q&A</h2>
-
-      <h3>Q: Why is fractional indexing better than a linked list (storing prev/next card IDs) for card order?</h3>
-      <p>
-        A linked list (each card has a next_id pointer) supports O(1) reordering —
-        update two pointers. But reading the cards in order requires a traversal from
-        the head: O(n) queries or a recursive CTE in SQL. Sorting by a rank string is
-        a simple ORDER BY on an indexed column — O(log n) with a B-tree index. For
-        rendering a column (which is always a full-order operation), ORDER BY rank
-        is dramatically faster than traversing a linked list. Additionally, a linked
-        list can have corrupted state (two cards pointing to the same next, or a cycle)
-        from concurrent updates; a rank field can only be invalid (two cards with the
-        same rank from a race condition), which is easier to detect and resolve.
-      </p>
-
-      <h3>Q: How do you handle two users moving the same card to different columns simultaneously?</h3>
-      <p>
-        This is a concurrent update conflict. Both users' moves are optimistically
-        applied locally. Both send PATCH requests to the server. The server processes
-        them sequentially (database serialization). The first request sets the card's
-        column to column A; the second request (arriving milliseconds later) sets it
-        to column B. The server broadcasts both confirmed events to all clients.
-        Client 1 (who moved to column A) receives the server confirmation for column A
-        and then the broadcast for column B — the card moves to column B (last write
-        wins, from the server's perspective). Client 2 receives the confirmation for
-        column B — consistent with their local state. The result is that column B wins,
-        and Client 1 sees the card move back to column B after a brief appearance in
-        column A. This is acceptable behavior for a "last write wins" policy. A
-        stricter policy would require a lock (optimistic locking: the PATCH request
-        includes a version ID, and the server rejects stale updates), but this is
-        rarely implemented in practice for Kanban boards.
-      </p>
-
-      <h3>Q: How does the drop target calculation work for cross-column drags?</h3>
-      <p>
-        During a cross-column drag, the cursor's x position determines which column
-        is the target (whichever column's horizontal bounds contain the cursor). The
-        cursor's y position within the target column determines the insertion position.
-        This requires knowing each column's bounding rect (cached on drag start, since
-        the layout does not change during drag) and each card's center y position within
-        the target column (recomputed as the cursor enters the column and as the placeholder
-        shifts other cards). The placeholder's insertion into the target column causes
-        other cards to animate downward to make room — using CSS transform transitions
-        on each card, driven by the preview state comparison.
-      </p>
-
-      <h3>Q: How do you make the drag animation smooth on mobile devices?</h3>
-      <p>
-        On mobile, there are two main issues: touch events require preventDefault() to
-        suppress native scrolling during a horizontal drag, and iOS momentum scrolling
-        can conflict with the drag. Use the Pointer Events API instead of touch events —
-        it provides a unified interface and setPointerCapture ensures continuous tracking
-        even if the pointer leaves the element. For iOS, add touch-action: none to
-        draggable card elements to suppress browser-handled touch behaviors. The drag
-        ghost follows the pointer using CSS transform: translate on a cloned element
-        appended to the body (positioned above everything else with a high z-index),
-        which avoids the performance cost of animating a complex card element. Apply
-        will-change: transform to the ghost and all animated cards for GPU compositing.
-      </p>
-
-      <h3>Q: How would you implement undo/redo for card moves?</h3>
-      <p>
-        Each card move is a command: MoveCardCommand with fromColumn, toColumn,
-        fromRank, and toRank fields. Undo is a move back to fromColumn with fromRank.
-        The undo stack holds the last N commands (typically 20–50). The complication
-        with real-time collaborative editing: another user's moves arrive between the
-        local user's move and their undo. If User A moved card 1 to column B, and then
-        User B moved card 2 out of column B, User A's undo would move card 1 back to
-        column B — but that's fine, since card 2 is already out. However, if User B
-        moved card 1 (the same card) again, undoing User A's original move should
-        arguably be a no-op (the card's current position no longer reflects A's move).
-        Most collaborative tools handle this by scoping undo to "my actions only" and
-        using the current state as the baseline — undoing A's move sends a new move
-        command for the card's current position back to fromColumn, even if fromColumn
-        was changed by B. This is deterministic and simple, though it may not always
-        produce the "intended" undo behavior.
-      </p>
-    </ArticleLayout>
-  );
-}
+      </p></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate input normalization, typed state transitions, derived projection, integration effects, and bounded telemetry. Preview state must not silently become durable state. Every timer, listener, observer, worker, request, pointer capture, and cache entry needs an explicit lifetime.</p><p>Keep committed card positions separate from drag projection. Persist ordering with stable card ids and position keys rather than rewriting whole arrays. Commit only after applying the latest policy and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/kanban-board-recovery.svg" alt="Design a Kanban Board recovery map" caption="Recovery decisions: contain pressure, retain committed truth, reconcile safely, and emit evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>A simple list reorder is enough for one user; versioned position keys are justified for concurrent boards and paged columns.</p><p>The server owns accepted card location and version. Local drag is optimistic; conflicts reconcile against the latest card version without silently losing user intent. The scale pressure is thousands of cards, hot columns, concurrent moves, filtered views, drag auto-scroll, reconnects, and permission drift. Bound work, cancel stale effects, cap memory, and degrade predictably.</p><p>Use optimistic UI only where rollback is deterministic and understandable. Keep authorization and destructive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit state unions, idempotency keys, generation guards, SSR-safe feature checks, and deterministic cleanup. Test keyboard use, accessibility output, stale responses, retries, unmount, constrained devices, and large datasets.</p><p>Measure interaction latency, blocked transitions, stale drops, rollbacks, cache pressure, retries, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing preview and commit, trusting arrival order, leaking resources, accepting stale async work, and implementing custom interaction without semantic fallbacks.</p><p>For this topic, cancel invalid drops, restore committed position after rejection, refresh affected columns, stop auto-scroll on cancel, and announce rollback. Security and privacy require the design to validate untrusted input, authorize durable mutations server-side, minimize sensitive telemetry, and bound resource consumption.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies where users repeatedly manipulate state while network, browser, and authorization boundaries can fail independently. Reuse the controller shell, but inject product-specific policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep committed card positions separate from drag projection. Persist ordering with stable card ids and position keys rather than rewriting whole arrays.</p><h3>What breaks at scale?</h3><p>thousands of cards, hot columns, concurrent moves, filtered views, drag auto-scroll, reconnects, and permission drift. I would bound expensive work and cancel obsolete effects.</p><h3>What consistency model applies?</h3><p>The server owns accepted card location and version. Local drag is optimistic; conflicts reconcile against the latest card version without silently losing user intent.</p><h3>How do you recover?</h3><p>I would cancel invalid drops, restore committed position after rejection, refresh affected columns, stop auto-scroll on cancel, and announce rollback.</p><h3>Why this architecture?</h3><p>A simple list reorder is enough for one user; versioned position keys are justified for concurrent boards and paged columns. The implementation cost is justified only when the required behavior needs it.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li></ul></section>
+</ArticleLayout>}

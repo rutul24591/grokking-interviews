@@ -1,6 +1,1 @@
-# Telemetry / Analytics Pipeline — Example 3
-
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+# Design a Telemetry Analytics Pipeline example 3\n\nConcrete low-level implementation exercise for Design a Telemetry Analytics Pipeline.\n

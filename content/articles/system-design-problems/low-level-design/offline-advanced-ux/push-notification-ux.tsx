@@ -2,147 +2,198 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
-import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-lld-push-notification-ux",
-  title: "Push Notification UX System",
-  description: "Designing push notifications with engagement, frequency capping, and user preference management",
+  title: "Design Push Notification UX",
+  description: "Implementation-heavy low-level design guide for design push notification ux, with offline state models, queues, conflict handling, fallback behavior, and production trade-offs.",
   category: "low-level-design",
   subcategory: "offline-advanced-ux",
   slug: "push-notification-ux",
-  wordCount: 6500,
-  readingTime: 39,
-  lastUpdated: "2026-05-06",
-  tags: ["lld", "push-notifications", "ux", "engagement", "service-worker"],
-  relatedTopics: ["offline-first-architecture", "background-sync"],
+  wordCount: 4700,
+  readingTime: 28,
+  lastUpdated: "2026-05-29",
+  tags: ["lld", "offline", "advanced-ux", "resilience", "principal-engineer"],
+  relatedTopics: ["network-failure-handling", "state-management", "progressive-enhancement"],
 };
 
-export default function PushNotificationUXArticle() {
+export default function PushNotificationUxArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">Push notifications engage users when the app is not running: "You have a new message", "Your order shipped". Without push, users only see notifications when they open the app. With push, they're notified proactively, improving engagement and retention.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">However, excessive push notifications drive users away: spamming notifications causes opt-out, uninstall, and poor app ratings. A user who receives 10 notifications daily will mute notifications. A user who receives 1 relevant notification weekly will engage. The art is balance: notify when there's genuinely important information, but not excessively.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">Key challenges: user preference management (users want control over notification frequency and topics), permission flow (requesting notification permission), handling dismissed/ignored notifications (was the user not interested or just busy?), analytics on engagement (which notifications drive action), and preventing notification spam (frequency capping, coalescing related notifications).</HighlightBlock>
-        <HighlightBlock as="p" tier="important"><strong>Explicit assumptions:</strong> Push API and Notification API available (modern browsers). Service Worker available for handling push events. Server infrastructure supports push message delivery (Firebase Cloud Messaging, Web Push standard). User consent (permission) obtained before sending notifications.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Permission request:</strong> Request notification permission from the user with clear explanation of notification types.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>User preferences:</strong> Allow users to customize frequency (instant, daily digest, weekly), categories (messages only, orders, promotions), and quiet hours (9pm-8am no notifications).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Push reception:</strong> Receive push events from server even when app is closed (via Service Worker push event).</HighlightBlock>
-          <li><strong>Notification display:</strong> Display notification with title, body, icon, and action buttons (reply, dismiss, view).</li>
-          <li><strong>User interaction:</strong> Track when user clicks, dismisses, or acts on notification. Open app or perform action (e.g., navigate to order details).</li>
-          <li><strong>Frequency capping:</strong> Limit notifications per user per day (e.g., max 3 per day, max 1 per hour for same topic).</li>
-          <li><strong>Coalescing:</strong> Combine related notifications (e.g., 5 liked messages consolidated into "5 new interactions").</li>
-          <li><strong>Analytics:</strong> Track engagement: notification sent, user clicked, user dismissed, action taken.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="crucial"><strong>Latency:</strong> Notification delivery within 1-5 seconds of server sending (depends on push service).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Reliability:</strong> 99%+ delivery rate for critical notifications (order shipment, security alerts).</HighlightBlock>
-          <li><strong>Scalability:</strong> Support millions of subscriptions; server can dispatch millions of push messages daily.</li>
-          <li><strong>Privacy:</strong> User data (subscription tokens, preferences) protected and encrypted.</li>
-          <li><strong>Opt-out rate:</strong> Maintain under about 2% opt-out rate through careful notification design (indicates good targeting).</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="important">The system comprises three parts: client (web app), server (notification service), and push infrastructure (Firebase Cloud Messaging or Web Push standard).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Client: registers a Service Worker push event listener. When the user grants notification permission, the client requests a push subscription from the browser (via serviceWorkerRegistration.pushManager.subscribe). This returns an endpoint (unique per device/user) that the client sends to the server. The Service Worker listens for push events; when a push arrives, it displays a notification to the user.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Server: stores push subscriptions (endpoints) for each user. When an event occurs (message received, order shipped), the server checks user preferences (is this notification type enabled? within quiet hours?), applies frequency capping (did user get 3 notifications already today?), and sends a push message to the user's endpoint via the push service.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">Engagement tracking: when the user interacts with a notification (clicks it, dismisses it), the Service Worker notifies the server (via background sync or beacon API), logging the interaction. This drives analytics and machine learning on notification timing/content optimization.</HighlightBlock>
-      </section>
-
-      <section>
+        <h1>Design Push Notification UX</h1>
+        <h2>Definition &amp; Context</h2>
+        <p>
+          Design Push Notification UX is a low-level design problem about building a permission and notification preference coordinator that keeps a user journey coherent when the network, browser capability, storage, or server version cannot be trusted. A principal-ready answer should not stop at saying &quot;cache it&quot; or &quot;retry later&quot;. It should define the public API, local durability model, conflict semantics, privacy boundaries, and the exact user-visible states when the system cannot safely continue.
+        </p>
+        <p>
+          The implementation contract starts with requestPermission(context), registerDevice(token), routeNotification(event), revokeChannel(channel). The runtime should make these states explicit: unknown, explainerShown, permissionPrompted, granted, denied, muted, expired. The central invariant is: Notification prompts must respect user intent, privacy, and channel relevance instead of maximizing opt-in rate. The hard case to defend in an interview is when a user denies permission on one device, grants it later on another, and expects account preferences to stay consistent. That case forces the design to explain durability, ordering, rollback, and how much ambiguity the UI is allowed to hide.
+        </p>
         <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/offline-advanced-ux/push-notification-ux.svg"
-          alt="Push notification delivery pipeline from browser subscription through server push to service worker, with permission UX best practices and notification preferences"
-          caption="Push notification delivery pipeline from browser subscription through server push to service worker, with permission UX best practices and notification preferences"
+          src="/diagrams/system-design-problems/low-level-design/offline-advanced-ux/push-notification-ux-runtime.svg"
+          alt="Design Push Notification UX runtime architecture"
+          caption="Runtime architecture: user intent is captured locally first, classified by capability and connectivity, then replayed or resolved through guarded sync."
         />
-
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Permission Flow and Request Strategy</h3>
-        <p>Requesting notification permission is critical; poor timing causes users to deny it permanently. Best practice: request permission only after the user has experienced value (not on page load). Example: after user sends first message, show "Get notified when you receive replies?". Offer clear explanation: "We'll send 1-2 notifications daily about new messages."</p>
-        <p>Permission states: default (not requested), granted (user allowed), denied (user refused). If denied, the browser blocks further requests until the user manually changes it in browser settings. Never request multiple times; respect the user's decision.</p>
-        <p>Permission UI variants: simple (yes/no dialog), detailed (explanation + checkbox for categories), or integrated (in-app settings modal). Detailed variants convert better (higher grant rate) because users understand what they're consenting to.</p>
-        <p><strong>Permission Timing and Contextual Prompts:</strong> The optimal time to request permission is after the user has derived value from the app. In a messaging app, request after user sends first message (triggers the need to receive notifications). In a commerce app, request after first purchase or interaction with product. Avoid requesting on page load; deny rate is 50%+. Additionally, use contextual prompts: don't show a generic "Enable notifications?" popup. Instead, in context, ask: "Get notified when your order ships?" This frames the value clearly. Measure grant rate by timing: on-load (30% grant), after-value (60% grant), in-context (70% grant). Track deny rate per timing; if deny rate spikes, adjust timing.</p>
-        <p><strong>Permission Recovery and Browser UI Integration:</strong> If the user denies permission, the browser typically shows a "Permission blocked" message in the address bar. Some users don't notice this and think notifications are broken. Implement permission recovery: detect if permission is denied, and offer a help prompt: "Notifications are disabled. Click here to enable in browser settings." Additionally, integrate with browser permission delegation: some browsers support `permissions.query()` to check permission state. Use this to adapt UI: if permission is denied, don't keep asking; instead, link to browser settings. Additionally, handle permission grants correctly: after the user grants permission, immediately subscribe and save the subscription endpoint to the server. If subscription fails (network error), queue it for retry.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">User Preferences and Settings</h3>
-        <p>Store user preferences: notification types (messages, orders, promotions), frequency (instant, daily digest, never), quiet hours (start/end times), and do-not-disturb days (weekends). Make these configurable in the app settings.</p>
-        <p>Server-side enforcement: when deciding to send a notification, check user preferences. If the notification type is disabled, don't send. If in quiet hours, coalesce it into a digest for morning delivery. If frequency capped (3 per day already), queue it for next day or discard (depends on importance).</p>
-        <p>Client-side persistence: store preferences in localStorage for quick UI access. Server stores authoritative preferences in the database. Sync on page load; if preferences change, immediately update both client and server.</p>
-        <p><strong>Preference Hierarchy and Granularity:</strong> Implement preference hierarchy: global settings (all notifications), category-level settings (messages, orders), and per-conversation or per-item settings (mute this chat, unsubscribe from this seller). More granular control improves user satisfaction. Users appreciate being able to silence notifications from specific sources while keeping others. Schema includes preferences with global settings (enabled and frequency), categories with messages and orders settings, and perItem with conversation-specific settings. This allows users to customize at the granularity they prefer without overwhelming them with choices.</p>
-        <p><strong>Timezone-Aware Quiet Hours and Time-Based Scheduling:</strong> Quiet hours (e.g., 9pm-8am) should respect user's timezone, not server timezone. Store timezone in user profile (using browser Intl API). When checking if current time is in quiet hours, calculate local time for the user. Additionally, support smart scheduling: if a notification arrives during quiet hours, queue it and deliver at the first available time (8am). For digest notifications, send at a preferred time (e.g., user prefers digests at 8am). Implement this via a notification queue: when a notification is blocked by quiet hours, save it with deliver_at timestamp calculated from user preferences. A background job processes the queue at scheduled times.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Frequency Capping and Coalescing</h3>
-        <p>Naive approach: every event (message received, like on post) triggers a notification. If user gets 100 messages, they get 100 notifications (spam). Better: cap frequency (max 3 notifications per day) and coalesce (combine similar notifications).</p>
-        <p>Capping: track notifications sent per user per day (in Redis or database). Before sending, check the count. If the count is at or above the cap (for example 3), queue the notification for next day (add to digest) instead of sending immediately. Reset count at midnight.</p>
-        <p>Coalescing: when 5 messages arrive from the same person, send 1 notification: "5 new messages from Alice" instead of 5 separate notifications. Implement at server: check if similar notification was sent in last hour; if yes, increment counter instead of sending new notification.</p>
-        <HighlightBlock as="p" tier="important"><strong>Multi-Level Frequency Capping and Priority-Based Bypass:</strong> Implement tiered capping: total daily cap (max 5 notifications any type), per-category cap (max 3 messages, max 2 order updates), and per-sender cap (max 1 notification per sender per hour). When approaching a cap, queue for digest instead of dropping. Additionally, support priority bypass: critical notifications (security alerts, high-urgency messages) bypass all caps and always send immediately. Medium-priority notifications subject to daily cap. Low-priority (promotions) subject to all caps. Implement via notification priority field: `priority: 'critical' | 'high' | 'medium' | 'low'`. Critical always sends; high bypasses hourly but respects daily cap; medium respects all caps; low can be queued for digest.</HighlightBlock>
-        <p><strong>Coalescing Strategies and Conflict Detection:</strong> Three coalescing strategies: (1) Counter coalescing: "5 new likes on your post" (increment counter, same notification). (2) Grouped coalescing: "Messages from Alice, Bob, Carol" (list senders, max 3, rest as "and 2 more"). (3) Digest coalescing: if coalescing would create a long list, convert to digest summary: "You have 23 new interactions today". Choose based on context: counter for high-frequency events (likes), grouped for moderately-frequent (new followers), digest for low-frequency but potentially many. Additionally, detect conflicts: if two notifications coalesce (same thread), use the same `tag` attribute in the notification. The browser will replace older notification with the newer one instead of stacking. Example: `tag: 'messages_alice'` ensures only latest message from Alice is shown in notification center.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Service Worker Push Event Handling</h3>
-        <p>In the Service Worker, register a push event listener. When a push arrives, the push event contains data (notification details sent by the server). The Service Worker parses the data and calls showNotification with a title and options to display the notification.</p>
-        <p>Notification options include: title, body, icon (app icon), badge (small icon for notification bar), tag (grouping key for coalescing on-device), actions (buttons like "Reply", "Dismiss"), and data (context to pass back if user interacts).</p>
-        <p>Example: a push event contains fields like title, body, and a tag used for grouping. Service Worker displays the notification. If the user clicks, a click event fires and the Service Worker can open the app or navigate to the relevant page.</p>
-        <p><strong>Push Event Parsing and Notification Decoration:</strong> Push events contain encrypted data from the server. Decrypt using the push subscription's key (handled automatically by browsers). Extract fields: title, body, tag, actions, image (large image for rich notification), badge (small icon). Additionally, add app-level metadata: append app name to title, use branded icon/badge, include deep link in data (with url pointing to messages). Gracefully handle missing fields: if image is missing, use a default. If body is too long (500+ chars), truncate and append "...". For actions, limit to 2 buttons (platform constraint). If the server sends 5 actions, prioritize the most important 2.</p>
-        <p><strong>Notification Interaction and Handler Routing:</strong> The notification includes action buttons and click handlers. Register notificationclick and notificationclose listeners in the Service Worker. On click, check the action: if action is reply, open a reply modal. If action is open, open the app/deep link. If no action (user clicked notification body), open the app to a relevant page (e.g., messages page for message notification). Use data field to route notifications by including url information. Additionally, implement smart window focus: if the app is already open in a tab, focus that tab instead of opening a new one. Use clients.matchAll() and client.focus() to find and focus existing windows.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Engagement and Analytics</h3>
-        <p>Track three events: notification sent (server logs when push is dispatched), notification interacted (user clicks), notification dismissed (user swipes away or ignores). Log all three with timestamp, notification ID, and user ID.</p>
-        <p>Engagement rate: (clicks + actions) divided by sent. If a notification achieves under about 5% engagement, it is not resonating; improve content or timing. If it is above about 20%, it is excellent (users find it valuable).</p>
-        <p>Use engagement data to optimize: identify high-engagement notification types and increase frequency. Identify low-engagement types and decrease or redesign. Machine learning: predict which users will engage with which topics; personalize sending to maximize engagement without annoying.</p>
-        <HighlightBlock as="p" tier="crucial"><strong>Event Tracking Pipeline and Attribution:</strong> Set up event tracking: when server sends push, log `notification:sent` with fields: user_id, notification_id, type, timestamp, capping_status (was it capped or sent immediately), priority. When Service Worker detects interaction, log `notification:clicked` with action type (opened app, clicked action, dismissed). Link events via notification_id. Calculate engagement: for each notification_id, check if there's a click within 60 seconds of send (typical engagement window). Build cohort analysis: users who engaged with message notifications have 40% higher retention than those who didn't. This drives product decisions: should we increase message notification frequency? This data should inform the model for personalization.</HighlightBlock>
-        <HighlightBlock as="p" tier="important"><strong>A/B Testing and Personalization Models:</strong> Run A/B tests on notification content/timing. Example: test "You have a message from Alice" vs "New message: 'Hello...'" (first 20 chars). Split users 50/50, measure engagement. High-engagement variant wins; use it for all future. Implement via feature flags: `experiment: 'notification_format_v1'` controls which variant each user sees. Additionally, build personalization models: collect features (user's timezone, preferred notification type, historical engagement rate), train a model to predict engagement, use predictions to decide: should we send this notification to this user now, or queue for digest? A simple heuristic: if predicted engagement is below 10%, don't send (or send only in digest). This maintains low opt-out rate by avoiding low-engagement notifications.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Opt-Out and Re-Engagement</h3>
-        <p>Users can opt-out (disable notifications entirely) or soft-opt-out (mute push permission in browser, but don't revoke). High opt-out rate (for example above about 5%) indicates too many notifications. Low opt-out (for example under about 1%) with continued high engagement is a sign of good strategy.</p>
-        <p>Re-engagement flow: if a user hasn't opened the app in 30 days, send a re-engagement notification (e.g., "We miss you! See what's new."). If user engages, note it in CRM. If they continue to ignore, stop sending re-engagement notifications (likely lost user).</p>
-        <HighlightBlock as="p" tier="important"><strong>Opt-Out Monitoring and Churn Analysis:</strong> Track opt-out rate as a key metric. An increasing opt-out rate signals a problem: either too many notifications, irrelevant content, or poor timing. Investigate: correlate opt-out with notification history. Did the user receive 10 notifications in one day before opting out? They were likely overwhelmed by capping failure. Did they receive irrelevant notifications (promotions when they prefer messages)? Preference-based targeting failed. Use churn funnels: identify cohorts of heavy opt-outers and analyze their notification history. Additionally, offer in-app preference adjustment before opt-out: if user is about to disable notifications, show a modal: "You're about to disable notifications. Would you prefer to adjust frequency instead?" Many users prefer granular control over total opt-out.</HighlightBlock>
-        <p><strong>Winback Campaigns and Lapsed User Recovery:</strong> Implement intelligent re-engagement: when a user hasn't engaged with the app for 14 days (lapsed), start sending re-engagement notifications (once per 3 days, max 3 total). Change tone: "We've added new features" (value proposition) instead of routine notifications. If user re-engages (opens app), immediately stop re-engagement and resume normal notification schedule. Track success: what percentage of lapsed users re-engage after re-engagement campaign? Goal: 10-15%. If lower, try different messaging. Additionally, segment users: VIP users (high lifetime value) might get more aggressive re-engagement. Inactive free users might get none (cost not justified). Segment by user value, engagement history, and predict likelihood to re-engage before sending.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Privacy and Security</h3>
-        <p>Push subscriptions (endpoints) are long-lived tokens. If leaked, an attacker can send notifications to the user impersonating the app. Protect subscription endpoints: use HTTPS, store securely on server (encrypted at rest), and rotate periodically.</p>
-        <p>User data in notifications: never include PII (passwords, SSNs) in notification bodies; they're not end-to-end encrypted. Use generic wording: "You have a new message" not "Alice sent: 'secret info'". Sensitive details are revealed only after user clicks and opens the app.</p>
-        <HighlightBlock as="p" tier="important"><strong>Subscription Endpoint Security and VAPID Key Management:</strong> Push subscriptions contain sensitive endpoint URLs and encryption keys. Store them encrypted in the database (use a vault or KMS). Additionally, use VAPID (Voluntary Application Server Identification) keys: asymmetric key pair that authenticates your server to the push service. Keep the private key secret; if leaked, attackers can impersonate your app and send fake notifications. Rotate VAPID keys periodically (e.g., yearly). When storing subscription endpoints, encrypt them at rest. When transmitting between client and server, use HTTPS. Additionally, implement subscription validation: periodically test subscriptions (send a silent push to verify they're still valid). Remove invalid subscriptions (user unsubscribed in browser, endpoint expired). This prevents accumulation of stale subscriptions.</HighlightBlock>
-        <p><strong>Data Minimization and Consent Management:</strong> Only send data necessary in the notification. Avoid including user IDs, message content, or any identifying information in the push payload. Example: instead of "Alice sent: 'Meeting at 3pm'", use "You have a new message" (user already knows it's from Alice when they open the app). Additionally, implement strict consent management: only send push to users who have explicitly granted permission. Track permission state server-side (when user enables/disables notifications). Implement unsubscribe links in email-based notifications (if you also send emails). For GDPR compliance, allow users to download their notification history and delete it. Document in privacy policy what data is collected (subscription endpoint, interaction events, timestamps).</p>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="crucial">Instant vs digest: instant notifications are timely but can overwhelm. Digest (hourly, daily) is less intrusive but less timely. Balance based on notification type: urgent (security alerts, high-priority messages) instant; informational (promotions, likes) digest.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Server-side vs client-side logic: capping and coalescing can be done on server (consistent, easy to adjust) or client (less load on server, faster local logic). Server-side is preferred for consistency; all users get same behavior regardless of client implementation.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Engagement optimization: aggressive personalization (send only high-predicted-engagement notifications) maximizes short-term engagement but may reduce long-term habit formation (users don't develop expectation to check app). Conservative approach (send on schedule, regardless of prediction) trains habit but may frustrate users with irrelevant notifications.</HighlightBlock>
+        <h2>Core Concepts</h2>
+        <p>
+          The first concept is local intent capture. Offline systems should record what the user meant to do, not only the final rendered value. A durable intent contains an operation id, actor id, target resource, base version, payload, timestamp, dependency list, and idempotency key. Capturing intent gives the implementation enough information to replay, rebase, reject, or ask for human resolution after reconnect.
+        </p>
+        <p>
+          The second concept is capability-aware degradation. Browser online status, service worker availability, storage access, push permission, background sync support, and server reachability are separate signals. A robust runtime combines them into a health state instead of making one boolean decide the user experience. This is especially important on mobile browsers, private browsing modes, captive portals, enterprise proxies, and low-memory devices.
+        </p>
+        <p>
+          The third concept is convergence with evidence. The system should know which local operations are pending, which server acknowledgements have been received, which conflicts were auto-merged, and which conflicts were shown to the user. The durable structures are permission state, device token, channel preferences, quiet-hours policy, dedupe key, delivery receipt. These structures are the difference between a demo and a production design that can survive reloads, retries, and support investigations.
+        </p>
+        <h3>Implementation contract</h3>
+        <p>
+          The runtime should define which calls are synchronous, which are asynchronous, which require storage, and which can be safely retried. Public methods should return typed outcomes such as accepted, queued, blocked, conflicted, degraded, or rejected. They should not expose raw browser exceptions to product components because those components cannot make consistent decisions across browsers and network states.
+        </p>
+        <p>
+          Local state must be scoped by user, tenant, device, app version, and feature flag where applicable. Without that scope, an offline cache can leak data after account switch, replay old writes under a new identity, or resurrect a feature that has been remotely disabled. A principal-level answer should call this out because offline UX and privacy are tightly coupled.
+        </p>
+        <h3>Operation classes</h3>
+        <p>
+          Not every operation deserves the same offline behavior. Draft edits, UI preferences, and local annotations can usually be accepted locally and reconciled later. Inventory reservations, payments, permission changes, and destructive admin actions should either require server confirmation or use a narrow pending state that cannot be mistaken for completion. Classifying operations early keeps the design from promising offline availability where the business invariant requires server authority.
+        </p>
+        <p>
+          Each operation class should define durability, replay, merge, rollback, and privacy rules. A draft update may store the full payload locally, while a sensitive workflow may store only a redacted intent and require reauthentication before replay. A push notification preference may require consent state and device token freshness. A progressive enhancement may require a baseline fallback rather than persistence. These distinctions make the design defendable under interviewer pressure.
+        </p>
       </section>
 
       <section>
-        <h2>Implementation Patterns</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Pattern 1: Permission Request with Value Proposition</h3>
-        <HighlightBlock as="p" tier="important">Request notification permission only after user experiences value. Show permission prompt after user's first action (send message, create post), with clear explanation of notification frequency and types. Improves grant rate from 30% (on load) to 60%+ (after value demonstrated).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Pattern 2: Frequency Capping with Priority Levels</h3>
-        <HighlightBlock as="p" tier="crucial">Implement tiered notifications: urgent (security, high-priority messages) bypass caps, high (likes, followers) subject to daily cap, low (promotions, digests) only in digest or disabled by default. Ensures critical notifications reach users while maintaining low spam.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Pattern 3: Engagement-Driven Re-sending</h3>
-        <HighlightBlock as="p" tier="important">If user didn't interact with notification in 24 hours, automatically re-send it once with slightly different messaging. Increases engagement without doubling spam (re-send only for ignored, not for clicked).</HighlightBlock>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          The architecture has six layers. The interaction layer captures the user action and assigns an operation identity. The local durability layer writes intent to IndexedDB, Cache Storage, or a scoped in-memory fallback before showing success-like UI. The health coordinator classifies network and capability state. The sync engine drains eligible operations using idempotency keys and retry budgets. The conflict engine compares base, local, and remote versions. The presentation layer shows current, stale, queued, conflicted, or blocked state with accessible controls.
+        </p>
+        <p>
+          The normal flow starts with the user action entering the facade. The facade validates scope, writes an intent record, updates the local projection, and emits a snapshot. If the system is healthy, the sync engine sends the operation immediately. If the system is offline or degraded, the operation remains queued and visible. When connectivity returns, the engine drains operations in dependency order, applies server acknowledgements, compacts acknowledged records, and moves conflicts to a review state instead of silently overwriting data.
+        </p>
+        <p>
+          The design should treat reconnect as a reconciliation phase, not just a retry trigger. Reconnect can reveal schema changes, expired auth, revoked permissions, server-side validation changes, or remote edits. The runtime must revalidate credentials, refresh configuration, migrate local data, and compare versions before replaying writes. That extra work is what prevents offline UX from becoming a data integrity risk.
+        </p>
+        <h3>Data model and invariants</h3>
+        <p>
+          A practical data model contains a local entity table, an operation log, a server acknowledgement ledger, a sync cursor, and a projection table optimized for rendering. The entity table answers current reads. The operation log preserves intent. The acknowledgement ledger prevents duplicate replay after reload. The sync cursor supports incremental server pulls. The projection table lets the UI show local and remote facts together without recomputing the whole world on every render.
+        </p>
+        <p>
+          Invariants should be asserted at every boundary. An operation cannot be compacted until its acknowledgement is durable. A conflict cannot be marked resolved until the chosen resolution passes validation against the latest server version. A notification cannot be routed until permission and preference state agree. An enhanced experience cannot replace the baseline path unless the core task still completes when the enhancement fails.
+        </p>
+        <h3>Failure matrix</h3>
+        <p>
+          The implementation should maintain a failure matrix that maps cause to action. Storage quota failure moves the feature to read-only or in-memory pending state. Expired auth blocks replay and asks for reauthentication. Version mismatch enters conflict review or rebase. API timeout keeps the operation queued with backoff. Unsupported capability falls back to the baseline experience. Permission denial changes the prompt strategy and prevents repeated prompting. Each branch should be observable and user-visible enough to avoid silent data loss.
+        </p>
+        <p>
+          Reconciliation should be transactional from the client&apos;s point of view. Pull the latest remote metadata, validate local schema, check auth and tenant scope, choose eligible operations, send them with idempotency keys, persist acknowledgements, update local projections, and only then compact. If the browser closes in the middle, the next boot should resume from durable evidence rather than guessing which work completed.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/offline-advanced-ux/push-notification-ux-reconciliation.svg"
+          alt="Design Push Notification UX reconciliation and failure model"
+          caption="Reconciliation model: local intent, remote version, permissions, and capability signals converge through explicit guardrails rather than hidden retries."
+        />
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Trade-offs include instant (timely, risky spam) versus digest (less intrusive, less timely), and server-side logic (consistent) versus client-side (performant). Real-world systems aim to</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">keep opt-out rates low through careful targeting, relevant content, and conservative frequency. For best results, request permission after value demonstration, cap at a small number of high-quality notifications daily, analyze engagement metrics, and continuously test and optimize timing, frequency, and content. Monitor opt-out trends; sustained increases indicate over-notification.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>
+          A network-first design is simpler and easier to reason about because the server remains the immediate source of truth. It breaks down when users expect creation, editing, reading, or notification management to keep working during poor connectivity. An offline-first design improves perceived reliability, but it moves consistency, privacy, storage limits, and conflict resolution into the client. The right choice depends on whether the task is critical enough to justify that client complexity.
+        </p>
+        <p>
+          The key consistency trade-off is user-consented delivery with per-channel preferences, dedupe, and respectful prompt timing. Strong consistency would block more actions until the server confirms them, reducing merge complexity but hurting availability. Eventual consistency keeps the user moving, but it requires durable intent, visible pending state, replay safety, and conflict handling. For principal interviews, the strongest answer is to pick consistency per operation: low-risk drafts can be queued, destructive operations may require confirmation, and security-sensitive changes should fail closed.
+        </p>
+        <p>
+          There is also a cost trade-off. More local durability increases storage use, migration burden, and privacy review surface. More aggressive retries improve time-to-sync but risk retry storms and battery drain. More detailed conflict visualization improves trust but slows the user down. These are not abstract trade-offs; they should map to metrics such as queue age, conflict rate, replay success rate, storage quota errors, retry count, stale view duration, and user abandonment during conflict resolution.
+        </p>
+        <p>
+          A principal-level answer should also compare optimistic completion with explicit pending completion. Optimistic completion feels fast, but it can mislead the user when the server later rejects the operation. Explicit pending completion is more honest, but it can make the product feel slower. The compromise is to make low-risk operations appear locally complete while preserving a visible sync status and to keep high-risk operations in a pending or blocked state until the authoritative system confirms them.
+        </p>
+      </section>
+
+      <section>
+        <h2>Best practices</h2>
+        <p>
+          Persist intent before optimistic UI when the operation matters. If the UI updates first and the tab closes before durability, the user will believe work was saved when it was not. For lower-risk interactions, an in-memory pending state may be acceptable, but the UI should not imply durable completion until the write has crossed the chosen durability boundary.
+        </p>
+        <p>
+          Use idempotency keys and monotonic local sequence numbers for replay. Assume the client may send the same operation more than once after reload, timeout, service worker restart, or ambiguous server response. Server APIs should accept the idempotency key and return the prior result when replay is duplicated. Client code should still keep an acknowledgement ledger so it can compact safely.
+        </p>
+        <p>
+          Design user-visible states deliberately. A subtle banner, disabled action, merge review sheet, retry affordance, or stale data indicator should correspond to a real runtime state. Avoid generic &quot;something went wrong&quot; messaging for offline flows because the corrective action differs: wait, retry, reconnect, reauthenticate, resolve conflict, or discard local changes.
+        </p>
+        <p>
+          Build observability into the client. Track queue depth, oldest pending operation age, storage quota failures, conflict types, retry budget exhaustion, permission prompt outcomes, and degraded-mode duration. These metrics tell whether the offline design is protecting the journey or creating hidden support debt.
+        </p>
+        <p>
+          Test with deterministic adapters. Replace timers, network probes, storage, service worker messages, permission prompts, and clocks with test doubles so edge cases can be reproduced. Important tests include reload after enqueue, duplicate acknowledgement, storage write failure, conflict after reconnect, account switch with pending operations, schema migration during offline edit, and retry exhaustion while the UI remains mounted.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>
+          The most common pitfall is using a single online boolean as the system truth. Browser connectivity APIs are hints, not guarantees. A device can be online but unable to reach your API, authenticated but forbidden to replay an old mutation, or capable of service workers but blocked from persistent storage. The runtime needs active probes and failure classification.
+        </p>
+        <p>
+          Another pitfall is silently resolving conflicts with last-write-wins. That policy is acceptable for low-value telemetry or ephemeral preferences, but it is dangerous for collaborative documents, settings, payments, and enterprise workflows. If user intent is ambiguous, surface the conflict with enough context to choose, preview, and audit the resolution.
+        </p>
+        <p>
+          Teams also underinvest in migration and cleanup. Offline stores live longer than a page session. Schema changes, feature removal, auth changes, and tenant switching all need migration or quarantine paths. Without cleanup, local data becomes a privacy risk and sync performance degrades as obsolete operations accumulate.
+        </p>
+        <p>
+          Another common mistake is hiding stale state behind normal UI. If the user cannot tell whether they are seeing fresh server data, local pending data, or a conflicted projection, they cannot make a safe decision. The UI does not need to be noisy, but it must show the right affordance at the right time: sync pending, retry, conflict review, read-only, permission required, or stale data.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          Offline and advanced UX patterns appear in field-service apps, document editors, dashboards, e-commerce carts, travel products, creator tools, messaging interfaces, and enterprise admin consoles. The common thread is that a user journey crosses unreliable boundaries: network, storage, permissions, browser capability, or multi-device state.
+        </p>
+        <p>
+          In a staff or principal role, this design is often a platform concern. Product teams provide domain operations and conflict policy, while the platform runtime owns durable queues, capability detection, replay, conflict surfaces, privacy scoping, and instrumentation. That split prevents each feature from inventing its own fragile offline behavior.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you design this system end to end?</h3>
+        <p>
+          I would start with the user journey and classify which operations must work offline, which can be read-only, and which must fail closed. Then I would define the facade API, durable intent model, health coordinator, sync engine, conflict engine, and presentation states. The implementation would persist operation records with idempotency keys, update a local projection, drain the queue when healthy, reconcile against remote versions, and surface conflicts when the merge policy cannot preserve intent safely.
+        </p>
+        <h3>Why this architecture over a simple retry wrapper?</h3>
+        <p>
+          A retry wrapper handles transient failures for one request. It does not preserve user intent across reloads, classify capability failures, prevent duplicate replay, compare base and remote versions, or show conflict states. This architecture is heavier, but it solves the full lifecycle: capture, durability, replay, reconciliation, compaction, and user-visible recovery.
+        </p>
+        <h3>What breaks at scale?</h3>
+        <p>
+          Queue depth, storage quota, schema migration, conflict volume, battery usage, retry storms, and support visibility become the pressure points. The design needs compaction, retry budgets, backoff with jitter, storage quotas, migration versioning, per-operation metrics, and admin tools or logs that explain why a local operation was blocked or conflicted.
+        </p>
+        <h3>What consistency model applies?</h3>
+        <p>
+          Most offline UX uses eventual consistency for user intent and stronger consistency for safety-sensitive operations. The client can be locally authoritative for drafts, pending edits, and cached reads, but the server remains authoritative for permissions, payment state, inventory, and shared records. The runtime should encode that difference per operation instead of pretending one consistency model fits every action.
+        </p>
+        <h3>How do you handle failure, rollback, abuse, privacy, cost, and observability?</h3>
+        <p>
+          Failure is handled with typed states and replay policies. Rollback uses inverse patches or conflict review when an optimistic projection cannot be committed. Abuse is controlled with idempotency, rate limits, permission checks before replay, and feature flags that can disable unsafe queues. Privacy is handled through user and tenant scoping, encryption where appropriate, cache cleanup, and avoiding sensitive payloads in telemetry. Cost is controlled through compaction, bounded retries, and selective caching. Observability tracks queue age, replay outcomes, conflicts, storage errors, and degraded-mode duration.
+        </p>
+        <h3>How would you defend the trade-offs under pressure?</h3>
+        <p>
+          I would state that the design optimizes for task continuity without hiding correctness risk. If the interviewer pushes on complexity, I would narrow offline support to critical operations and keep risky operations server-confirmed. If they push on consistency, I would separate local availability from server authority. If they push on privacy, I would explain scoped storage, cleanup, and fail-closed replay checks. Then I would walk through the hard edge case: a user denies permission on one device, grants it later on another, and expects account preferences to stay consistent.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API" target="_blank" rel="noreferrer">MDN Service Worker API</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API" target="_blank" rel="noreferrer">MDN IndexedDB API</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Background_Synchronization_API" target="_blank" rel="noreferrer">MDN Background Synchronization API</a></li>
+          <li><a href="https://web.dev/learn/pwa/" target="_blank" rel="noreferrer">web.dev Progressive Web Apps guidance</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API" target="_blank" rel="noreferrer">MDN Notifications API</a></li>
+        </ul>
       </section>
     </ArticleLayout>
   );

@@ -1,6 +1,1 @@
-# Audit Log Viewer UI — Example 2
-
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+# Design an Audit Log Viewer UI example 2\n\nConcrete low-level implementation exercise for Design an Audit Log Viewer UI.\n

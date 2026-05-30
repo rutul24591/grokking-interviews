@@ -33,11 +33,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function TreeViewFolderExplorerArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function TreeViewFolderExplorerArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Tree View Folder Explorer</h1><h2>Definition &amp; Context</h2><p>Design a Tree View Folder Explorer is an implementation-heavy low-level design problem covering normalized nodes, lazy child pagination, expansion, keyboard traversal, virtual flattening, mutation journal, permission drift, and focus restoration. A principal-level answer must define state ownership, consistency, lifecycle cleanup, scale limits, rollback, privacy, cost, and observability.</p><p>Store nodes by stable id and derive the visible preorder list from expanded branches. Mutable paths and labels must not become identity. The core structures are node map, parent-child index, loaded-child cursors, expanded set, visible preorder list, focused id, selected ids, mutation journal, and version etag.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/tree-view-folder-explorer-runtime.svg" alt="Design a Tree View Folder Explorer runtime" caption="Topic-specific data flow from input or payload through guarded projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -110,7 +109,7 @@ export default function TreeViewFolderExplorerArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -154,7 +153,7 @@ export default function TreeViewFolderExplorerArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -206,14 +205,10 @@ export default function TreeViewFolderExplorerArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/tree-view-folder-explorer-architecture.svg"
-        alt="Tree View / Folder Explorer Architecture"
-        caption="Tree Source (lazy or eager) → Tree Engine (flatten visible nodes, expand state, selection, drag state) → Virtualizer over flattened list → Node Renderer with chevron, indent, label, hover actions. ARIA tree pattern with single tabstop and arrow-key navigation."
-      />
+      
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <HighlightBlock as="p" tier="important">
           The tree is structured around a <strong>tree
           source adapter</strong> (uniform interface over
@@ -330,14 +325,14 @@ export default function TreeViewFolderExplorerArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial">TreeVirtualizer handles 1D virtualization over the flattened list. TreeNode renders one node</HighlightBlock>
 <HighlightBlock as="p" tier="important">with chevron, indent, label, hover actions. SelectionPlugin tracks selected ids.</HighlightBlock>
 <HighlightBlock as="p" tier="important">DragDropPlugin handles drag-and-drop with valid-target detection. SearchPlugin handles search and reveal.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">The engine&rsquo;s state — expand set, flattened
           list, focused node id — lives in an external
           store. Per-node data lives in a node cache keyed
@@ -349,7 +344,7 @@ export default function TreeViewFolderExplorerArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important">Inputs:{" "}
           <code>source</code> (adapter),
           </Highlight><code> renderNode(node, props)</code>,
@@ -365,7 +360,7 @@ export default function TreeViewFolderExplorerArticle() {
       </section>
 
       <section>
-        <h2>⚡ Rendering &amp; Performance</h2>
+        <h3>⚡ Rendering &amp; Performance</h3>
         <HighlightBlock as="p" tier="crucial">Virtualization scopes mounted DOM to ~30 nodes.
           Node components memoize by (node id, expand
           state, selection state). The flattened list is
@@ -379,21 +374,21 @@ export default function TreeViewFolderExplorerArticle() {
       </section>
 
       <section>
-        <h2>🎨 UI/UX</h2>
+        <h3>🎨 UI/UX</h3>
         <HighlightBlock as="p" tier="crucial">Drag-over indicators are clear (a highlight on the drop target plus an indicator line for</HighlightBlock>
 <HighlightBlock as="p" tier="important">&ldquo;before&rdquo; or &ldquo;inside&rdquo; drops). Multi-select with parent confirmation prevents accidental</HighlightBlock>
 <HighlightBlock as="p" tier="important">bulk selection. Inline rename: double-click the name, edit in place, Enter commits, Escape cancels.</HighlightBlock>
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">Single tabstop on the focused node; others tabIndex=-1 . Arrow-key navigation</HighlightBlock>
 <HighlightBlock as="p" tier="important">per pattern. Drag-and-drop is keyboard-accessible via Cut/Paste shortcuts.</HighlightBlock>
 <HighlightBlock as="p" tier="important">Selection and expand state announce via live region. Loading and error states announce.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="crucial">Node names render as text; HTML opt-in per node
           type with sanitizer. Server-side authorization</HighlightBlock>
 <HighlightBlock as="p" tier="important">is
@@ -405,7 +400,7 @@ export default function TreeViewFolderExplorerArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important">Unit tests for the engine: flatten correctness,
           incremental flatten on expand/collapse, lazy-
           load state machine.</Highlight></HighlightBlock>
@@ -418,7 +413,7 @@ export default function TreeViewFolderExplorerArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="important">User expands a node, navigates away before the children load, comes back: the load completes and the children appear,</HighlightBlock>
 <HighlightBlock as="p" tier="important">with the user&rsquo;s intent preserved. User collapses a node mid- load: the load completes silently into the cache; on</HighlightBlock>
 <HighlightBlock as="p" tier="important">next expand, children render immediately. Drag a node into one of its descendants: rejected by valid-target detection.</HighlightBlock>
@@ -435,7 +430,7 @@ export default function TreeViewFolderExplorerArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="crucial">The tree engine is generic over node type. The
           source adapter pattern lets consumers wire any
           backend.</HighlightBlock>
@@ -446,7 +441,7 @@ export default function TreeViewFolderExplorerArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="crucial">Node labels and action strings via i18n. RTL
           flips indentation direction</HighlightBlock>
 <HighlightBlock as="p" tier="important">(padding-inline-start
@@ -458,7 +453,7 @@ export default function TreeViewFolderExplorerArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Eager vs lazy data source</h3>
         <HighlightBlock as="p" tier="important">
@@ -502,7 +497,7 @@ export default function TreeViewFolderExplorerArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">Server-side search with full-text indexing.
           Filter that hides non-matching nodes while
           preserving ancestor context. Bulk operations
@@ -511,89 +506,12 @@ export default function TreeViewFolderExplorerArticle() {
           collaborative tree editing via CRDTs. Offline
           mode with sync on reconnect. Custom node groups
           and pinned favorites.</Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. How is the tree virtualized?</strong> By
-          flattening the visible (expanded) tree to a 1D
-          list, then applying standard 1D virtualization.
-          Expand and collapse update the flattened list
-          incrementally.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How do you handle lazy loading?</strong>{" "}
-          On expand, if children aren&rsquo;t loaded, ask
-          the source. Show a placeholder while loading.
-          Replace with real children on response; show
-          error with retry on failure. Parent stays
-          expanded throughout.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>3. How is drag-and-drop made
-          accessible?</strong> Keyboard-accessible via
-          Cut/Paste shortcuts. The drag flow is mirrored:
-          select the source, navigate to target, paste.
-          ARIA announcements update the user on progress.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. How do you prevent dropping a node into
-          its descendant?</strong> Valid-target detection at
-          drag-over time: walk up from the candidate target
-          to the root; if the dragged node is encountered,
-          reject. The visual indicator reflects the
-          decision in real time.
-        </HighlightBlock>
-
-        <p>
-          <strong>5. How does search and reveal work?</strong>{" "}
-          Search returns a list of matching node ids
-          (locally for in-memory trees, server-side for
-          lazy trees). For each match, the engine expands
-          ancestors, scrolls to the node, and highlights
-          it. Arrow keys cycle through subsequent matches.
-        </p>
-
-        <p>
-          <strong>6. What happens to selection on
-          collapse?</strong> Selected descendants remain
-          selected but become invisible; they re-appear
-          when the parent re-expands. The selection set
-          is by id, so structural changes don&rsquo;t lose
-          selection.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>7. How is keyboard navigation handled?</strong>{" "}
-          ARIA tree pattern: arrow keys move through the
-          visible flattened list (Up/Down), expand/collapse
-          (Right/Left), and Home/End. Type-to-search jumps
-          to matching nodes. Single tabstop on the focused
-          node.
-        </HighlightBlock>
-
-        <p>
-          <strong>8. How does this scale to a million
-          nodes?</strong> Lazy loading: never fetch all
-          million; fetch children on demand.
-          Virtualization on the flattened visible list
-          keeps DOM bounded. Server-side search handles
-          finds across the full tree without local
-          materialization.
-        </p>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">The adapter pattern handles eager and lazy data sources interchangeably. Virtualizing the</HighlightBlock>
-<HighlightBlock as="p" tier="important">flattened list (not the hierarchy) is the architectural insight that makes everything</HighlightBlock>
-<HighlightBlock as="p" tier="important">tractable. Done well, the tree feels like the OS file explorer — instant, predictable, accessible.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate canonical data, user intent, transient projection, remote effects, and bounded telemetry. Every cursor, subscription, cache entry, request, timer, observer, and worker requires an explicit owner and cleanup path. Stable ids are mandatory because indexes and DOM nodes are disposable views.</p><p>Store nodes by stable id and derive the visible preorder list from expanded branches. Mutable paths and labels must not become identity. Commit durable changes only after applying the current policy and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/tree-view-folder-explorer-recovery.svg" alt="Design a Tree View Folder Explorer recovery" caption="Recovery flow: validate versions, contain scale pressure, preserve stable truth, and explain the result." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Nested lists suffice for small trees; normalized lazy trees are justified for scale, mutations, keyboard traversal, and virtualization.</p><p>The server tree is authoritative. Expansion and focus are local projections; optimistic mutation requires stable ids, versions, and deterministic rollback. Scale pressure comes from deep trees, huge folders, rapid expansion, recursive moves, lazy branches, permission drift, and concurrent rename. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic projection only where rollback is deterministic and visible. Keep authorization and conflict-sensitive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit versions, cursor validation, generation guards, bounded caches, semantic HTML, and idempotent cleanup. Test keyboard use, accessibility output, stale responses, reconnects, retries, scroll restoration, and large datasets.</p><p>Measure interaction latency, render cost, cache pressure, stale drops, conflicts, retries, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include confusing visible data with complete data, trusting arrival order, leaking subscriptions, accepting stale completion, using indexes as identity, and hiding rollback.</p><p>For this topic, dedupe child loads, cancel collapsed requests, reject recursive moves, refresh affected parents after conflicts, retain focus by id, and announce rollback. Validate untrusted inputs, authorize durable actions server-side, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to operational interfaces where users manipulate large, changing datasets under partial failure. Reuse the controller shape while injecting query, authorization, persistence, and fallback policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Store nodes by stable id and derive the visible preorder list from expanded branches. Mutable paths and labels must not become identity.</p><h3>What breaks at scale?</h3><p>deep trees, huge folders, rapid expansion, recursive moves, lazy branches, permission drift, and concurrent rename. I would bound expensive work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>The server tree is authoritative. Expansion and focus are local projections; optimistic mutation requires stable ids, versions, and deterministic rollback.</p><h3>How do you recover?</h3><p>I would dedupe child loads, cancel collapsed requests, reject recursive moves, refresh affected parents after conflicts, retain focus by id, and announce rollback.</p><h3>Why this architecture?</h3><p>Nested lists suffice for small trees; normalized lazy trees are justified for scale, mutations, keyboard traversal, and virtualization.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

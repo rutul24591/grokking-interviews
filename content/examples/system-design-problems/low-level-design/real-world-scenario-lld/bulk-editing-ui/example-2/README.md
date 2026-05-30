@@ -1,6 +1,1 @@
-# Bulk Editing UI — Example 2
-
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+# Design Bulk Editing UI example 2\n\nConcrete low-level implementation exercise for Design Bulk Editing UI.\n

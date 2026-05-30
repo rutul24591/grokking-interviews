@@ -1,6 +1,3 @@
-# Native Drag-and-Drop File System — Example 2
+# Design Native Drag Drop File Handling example 2
 
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+Concrete browser API runtime example for Design Native Drag Drop File Handling. It covers capability gates, lifecycle-safe execution, fallback decisions, and privacy-safe telemetry.

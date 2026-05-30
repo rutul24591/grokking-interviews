@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function FileUploadSystemArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function FileUploadSystemArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a File Upload System</h1><h2>Definition &amp; Context</h2><p>Design a File Upload System is an implementation-heavy low-level design problem covering file intake, validation, preview, multipart session creation, chunk scheduling, pause-resume, retry, checksum verification, and completion. A principal-level answer must explain state ownership, browser or worker boundaries, scale limits, consistency, rollback, privacy, cost, and observability.</p><p>Represent every file as a state machine with stable identity, upload session, confirmed chunk ledger, retry budget, and abort handles. The core structures are file queue, validation result, preview URL, upload session, chunk ledger, checksum, concurrency semaphore, retry schedule, abort controllers, and completion receipt.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/file-media-content-systems/file-upload-system-runtime.svg" alt="Design a File Upload System runtime" caption="Topic-specific runtime from source intake through guarded projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -114,7 +113,7 @@ export default function FileUploadSystemArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -160,7 +159,7 @@ export default function FileUploadSystemArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -209,14 +208,10 @@ export default function FileUploadSystemArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/file-upload-widget-architecture.svg"
-        alt="File Upload System Architecture"
-        caption="File ingest → Chunker (File.slice) → Hash worker → Upload queue with concurrency cap → Per-chunk uploader (fetch + AbortController + retry/backoff) → Server resume probe on reconnect → Progress aggregator. State persists to IndexedDB so refresh resumes mid-upload."
-      />
+      
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <HighlightBlock as="p" tier="important">
           The system is structured as a <strong>per-file
           state machine</strong> orchestrating a
@@ -339,7 +334,7 @@ export default function FileUploadSystemArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial"><strong> ProtocolAdapter</strong> abstracts the
           backend protocol (tus, S3 multipart, custom).
           <strong> ServiceWorkerBridge</strong> handles
@@ -351,7 +346,7 @@ export default function FileUploadSystemArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">Progress aggregates are
           throttled-published to subscribers. Service
           Worker</HighlightBlock>
@@ -360,7 +355,7 @@ export default function FileUploadSystemArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="crucial">Public API:{" "}
           <code>{` upload(file, options) → { id, status, progress, pause, resume, cancel } `}</code>.</HighlightBlock>
         <HighlightBlock as="p" tier="important">
@@ -371,7 +366,7 @@ export default function FileUploadSystemArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance Strategy</h2>
+        <h3>⚡ Performance Strategy</h3>
         <HighlightBlock as="p" tier="crucial">IndexedDB
           writes are debounced (one per chunk completion
           batch). Memory is bounded: we</HighlightBlock>
@@ -381,7 +376,7 @@ export default function FileUploadSystemArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">Completed uploads optionally
           fade out after a delay or remain for the
           session. Bulk</HighlightBlock>
@@ -391,7 +386,7 @@ export default function FileUploadSystemArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">Status changes (started, paused, completed,
           failed) announce via polite live region</HighlightBlock>
 <HighlightBlock as="p" tier="important"><Highlight tier="important">with
@@ -400,7 +395,7 @@ export default function FileUploadSystemArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="crucial">Server-side authorization on every chunk
           (the upload session is tied to a user; the
           server rejects chunks for sessions the user</HighlightBlock>
@@ -410,7 +405,7 @@ export default function FileUploadSystemArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="crucial">Integration tests with a mock server: simulate
           chunk failures, verify retry; simulate
           disconnect, verify resume on reconnect; simulate
@@ -422,14 +417,14 @@ export default function FileUploadSystemArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases &amp; Failure Handling</h2>
+        <h3>🚨 Edge Cases &amp; Failure Handling</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">separately. Concurrent uploads from two tabs for the same file: each tab has its own upload</Highlight></HighlightBlock>
 <HighlightBlock as="p" tier="important">session; the second is independent or (with deduplication) recognizes the first&rsquo;s progress and</HighlightBlock>
 <HighlightBlock as="p" tier="important">joins. Quota exceeded server-side mid-upload: server rejects; we surface and allow user action.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🔁 Reusability &amp; Extensibility</h2>
+        <h3>🔁 Reusability &amp; Extensibility</h3>
         <HighlightBlock as="p" tier="crucial">Protocol adapter lets us plug in any backend
           chunked upload protocol. Custom progress
           renderers. Custom retry policies.</HighlightBlock>
@@ -440,7 +435,7 @@ export default function FileUploadSystemArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Status strings, action labels, time-remaining
           estimates via i18n. File <Highlight tier="important">sizes formatted via
@@ -451,7 +446,7 @@ export default function FileUploadSystemArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Chunked vs single-request upload</h3>
         <HighlightBlock as="p" tier="important">
@@ -510,110 +505,18 @@ export default function FileUploadSystemArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">Estimated
           finish time improvements via per-network-type
           modeling.</HighlightBlock>
 <HighlightBlock as="p" tier="important"><Highlight tier="important">Cross-tab upload sharing (multiple
           tabs see the same upload progress).</Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>1. Why chunk uploads?</strong> Chunking
-          enables resumability (re-upload only failed
-          chunks), parallelism (multiple chunks at
-          once), and bounded retry (smaller units mean
-          smaller failure cost). Single-request uploads
-          break at the first interruption for any
-          large file.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How does resume after disconnect
-          work?</strong> Persist upload state to
-          IndexedDB. On reconnect, probe the server to
-          ask which chunks have arrived. Reconcile
-          local and server state. Continue from the
-          first missing chunk.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>3. How is integrity verified?</strong>{" "}
-          Per-chunk hashes (SHA-256) shipped with each
-          chunk; server verifies. Whole-file hash sent
-          on completion; server verifies the assembled
-          file. Per-chunk failures localize the problem
-          to one chunk for re-upload.
-        </HighlightBlock>
-
-        <p>
-          <strong>4. How do you handle concurrency without
-          saturating the network?</strong> Configurable
-          per-file concurrency (default 4) plus a
-          global cap across all uploads (default 12).
-          Adaptive parallelism adjusts based on
-          observed chunk durations.
-        </p>
-
-        <p>
-          <strong>5. How does background upload after tab
-          close work?</strong> Where supported,
-          Background Fetch via a Service Worker. The
-          service worker continues the upload
-          independently. On tab reopen, we query its
-          state and resume orchestration. Where not
-          supported, IndexedDB-based resume kicks in
-          on next mount.
-        </p>
-
-        <p>
-          <strong>6. How is progress accurate including
-          for resumed uploads?</strong> The orchestrator
-          tracks completed bytes (sum of completed
-          chunk sizes). On resume, we know which chunks
-          were complete from server probe; progress
-          starts at the right point.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>7. What happens on retry-spam (server
-          5xx loop)?</strong> Exponential backoff with
-          jitter and a max retry count. After max
-          retries, mark the chunk error; user must
-          explicitly Retry. This prevents the client
-          from hammering an unhealthy server.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>8. How does this scale to many concurrent
-          uploads?</strong> Global concurrency cap
-          serializes excess uploads. Per-file
-          concurrency parallelizes within budget.
-          Memory is bounded (chunks held only when
-          active). The orchestrator scales linearly
-          with active upload count.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">Chunking enables resumability and
-          parallelism; per-chunk hashes give
-          integrity localization; IndexedDB
-          persistence covers refresh and tab close;
-          Service Worker Background Fetch covers
-          tab-close-and-leave when available;</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">adaptive
-          parallelism handles varying network
-          conditions. The result is uploads that
-          feel reliable: nothing is lost, progress
-          is accurate, and recovery is automatic
-          across the messy real-world conditions
-          users face.</Highlight></HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate durable source data, transient interaction state, derived render state, remote or worker effects, and bounded telemetry. Every object URL, request, worker, listener, timer, cache entry, and decoder task needs an explicit owner and cleanup path.</p><p>Represent every file as a state machine with stable identity, upload session, confirmed chunk ledger, retry budget, and abort handles. Commit durable changes only after policy validation and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/file-media-content-systems/file-upload-system-recovery.svg" alt="Design a File Upload System recovery" caption="Recovery flow: classify failure, preserve stable state, and degrade predictably." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Single-request upload is simplest for small files; multipart resume is justified when file size and unreliable networks make restart cost unacceptable.</p><p>Confirmed chunks are server-authoritative and idempotent. The client resumes only from acknowledged ledger entries; completion requires server verification. Scale pressure comes from multi-gigabyte files, duplicates, flaky networks, expired sessions, refresh recovery, checksum mismatch, quotas, and server backpressure. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic projection only when rollback is deterministic and visible. Keep authorization, validation, and destructive actions server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed states, generation guards, bounded queues, abortable effects, semantic HTML, and idempotent cleanup. Test accessibility, stale work, retries, unmount, constrained devices, large files, and corrupted input.</p><p>Measure latency, memory, queue pressure, stale drops, retries, fallbacks, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include treating rendered output as durable truth, leaking resources, accepting stale worker completion, unbounded prefetch, and hiding degraded behavior.</p><p>For this topic, revoke previews, bound concurrency, refresh sessions, retry transient chunks with jitter, surface terminal rejection, and persist safe resume metadata. Validate untrusted content, authorize durable mutations, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to content-heavy product surfaces where browser APIs, workers, networks, and remote policy fail independently. Reuse the controller boundary while injecting product-specific fallback and retention policy.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Represent every file as a state machine with stable identity, upload session, confirmed chunk ledger, retry budget, and abort handles.</p><h3>What breaks at scale?</h3><p>multi-gigabyte files, duplicates, flaky networks, expired sessions, refresh recovery, checksum mismatch, quotas, and server backpressure. I would bound work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>Confirmed chunks are server-authoritative and idempotent. The client resumes only from acknowledged ledger entries; completion requires server verification.</p><h3>How do you recover?</h3><p>I would revoke previews, bound concurrency, refresh sessions, retry transient chunks with jitter, surface terminal rejection, and persist safe resume metadata.</p><h3>Why this architecture?</h3><p>Single-request upload is simplest for small files; multipart resume is justified when file size and unreliable networks make restart cost unacceptable.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API" target="_blank" rel="noreferrer">MDN Web Workers API</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

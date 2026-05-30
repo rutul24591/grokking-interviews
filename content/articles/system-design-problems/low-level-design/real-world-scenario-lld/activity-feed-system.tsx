@@ -1,127 +1,48 @@
 "use client";
-
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
-import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
-
-export const metadata: ArticleMetadata = {
-  id: "article-lld-activity-feed-system",
-  title: "Design Activity Feed System",
-  description:
-    "Production-grade activity feed with real-time updates, pagination, filtering, and aggregation.",
-  category: "low-level-design",
-  subcategory: "real-world-scenario-lld",
-  slug: "activity-feed-system",
-  wordCount: 5400,
-  readingTime: 33,
-  lastUpdated: "2026-05-06",
-  tags: ["lld", "activity-feed", "real-time", "pagination", "aggregation"],
-  relatedTopics: ["notifications-badge-system", "comments-system"],
-};
-
-export default function ActivityFeedSystemArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">An activity feed surfaces what is happening in a system: teammate Alice commented on a document, three people liked a post, a pull request was approved, a deployment completed. Without a well-designed feed, users have no ambient awareness of system activity and must manually poll resources to see updates. With a poorly designed feed, high-volume systems produce noise so dense that the feed becomes useless—every minor action generating its own row, burying significant events.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The frontend challenges are distinct from the backend: the feed must render efficiently for long lists (virtual scrolling), prepend new items without disrupting the user's scroll position, aggregate similar events into summary rows ("Alice, Bob, and 3 others liked your post"), support cursor-based pagination for loading older items, and handle real-time updates via WebSocket without race conditions between the initial load and the streaming updates.</HighlightBlock>
-        <HighlightBlock as="p" tier="important"><strong>Explicit assumptions:</strong> Activities are generated server-side by an event pipeline and stored in a database. The frontend subscribes to real-time updates via WebSocket for the active session. The feed is user-specific (each user sees a feed relevant to them, not a global firehose). Aggregation of similar events (e.g., multiple likes) happens server-side for the initial load and client-side for real-time appends. Cursor-based pagination is used (not offset-based) to handle concurrent inserts correctly.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Initial load:</strong> Fetch the most recent N activities (typically 20-50) on page load, sorted by recency descending.</HighlightBlock>
-          <li><strong>Real-time prepend:</strong> New activities appear at the top of the feed as they occur, without requiring a page refresh.</li>
-          <HighlightBlock as="li" tier="important"><strong>Infinite scroll:</strong> Loading older activities as the user scrolls down, fetching the next page via cursor.</HighlightBlock>
-          <li><strong>Aggregation:</strong> Group similar events by type and target within a time window: "Alice, Bob, and 5 others liked your photo" instead of 7 separate rows.</li>
-          <li><strong>Filtering:</strong> User can filter by activity type (comments only, likes only, mentions only).</li>
-          <li><strong>Mark as read:</strong> Activities can be marked read individually or in bulk (mark all read).</li>
-          <li><strong>Click navigation:</strong> Clicking an activity navigates to the relevant resource (the comment, the post, the PR).</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Render performance:</strong> Feed of 1000+ items renders without jank; virtual scrolling limits DOM nodes to the visible viewport.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Real-time latency:</strong> New activities appear within 1 second of the triggering event.</HighlightBlock>
-          <li><strong>Scroll stability:</strong> Prepending new items does not jump the user's scroll position.</li>
-          <HighlightBlock as="li" tier="crucial"><strong>Pagination correctness:</strong> Cursor-based pagination handles concurrent inserts without duplicates or gaps.</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="important">The feed is a virtualized list driven by a cursor-paginated data store. On initial render, the application fetches the first page of activities from the server and stores them in a local list with their cursor. A WebSocket subscription is established for real-time updates; incoming events are prepended to the list.</HighlightBlock>
-<HighlightBlock as="p" tier="important">As the user scrolls to the bottom, the next page is fetched using the last item's cursor as the page token. The list is rendered with a virtual scroll library (react-window or react-virtual) that maintains only visible rows in the DOM.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">Prepending real-time items requires scroll position anchoring: if the user is at the top of the feed, new items prepend and the scroll position shifts down to remain on the same visual content. If the user has scrolled down, new items are queued in a "N new activities" banner rather than silently prepending (which would shift content out of view mid-read). The user clicks the banner to jump to the top and see the new items—a pattern familiar from Twitter and LinkedIn feeds.</HighlightBlock>
-      </section>
-
-      <section>
-                <h2>Diagram Walkthrough</h2>
-
-<ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/real-world-scenario-lld/activity-feed-system.svg"
-          alt="Activity feed system showing event pipeline from sources through Kafka and Redis to WebSocket push, real-time prepend with new-activity banner, cursor pagination, and fan-out delivery strategy"
-          caption="Activity feed system showing event pipeline from sources through Kafka and Redis to WebSocket push, real-time prepend with new-activity banner, cursor pagination, and fan-out delivery strategy"
-        />
-
-        <HighlightBlock as="p" tier="crucial">
-          Interview signal: the diagram captures the end-to-end flow for <strong>Design Activity Feed System</strong>. You should be able to explain the happy path and the failure paths (retries, cancellation, backpressure), not just the API surface.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Look for the &ldquo;control points&rdquo; where correctness is enforced: idempotency keys, monotonic request/version tokens, single-flight coordination, and durable persistence boundaries.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          In interviews, call out observability and operability: what you log/measure (p95 latency, error rates, retries/queue depth) and how you keep degraded modes user-safe (read-only, queued, or cached fallbacks).
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Activity Data Model</h3>
-        <HighlightBlock as="p" tier="important">Each activity record has: activityId (UUID), actorId (who performed the action), actorDisplayName and avatarUrl (denormalized for display without joins), verb (the action type: "liked", "commented", "mentioned", "approved", "deployed"), targetType and targetId (what the action was performed on: post, comment, PR, document), targetTitle (denormalized display text), recipientId (whose feed this appears in), isRead (boolean), createdAt (timestamp, indexed for cursor pagination), and a groupingKey (for aggregation: verb + targetType + targetId, used to cluster similar activities).</HighlightBlock>
-        <p>The groupingKey is central to aggregation. All "liked" events on post #42 within a 30-minute window share the key "liked:post:42:YYYY-MM-DDTHH:mm". The server groups activities by this key before returning to the client: instead of returning 7 separate "liked post #42" records, it returns one record with actorIds ["alice", "bob", ...] and a count. The client renders "Alice, Bob, and 5 others liked your post." This grouping is done at query time, not at write time, so aggregation windows can be tuned without backfilling data.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Cursor-Based Pagination</h3>
-        <HighlightBlock as="p" tier="important">Offset-based pagination (LIMIT 20 OFFSET 40) is wrong for live feeds because concurrent inserts shift item positions. If 5 new activities are inserted between the first and second page fetch, the second page duplicates 5 items that the first page already returned. Cursor-based pagination solves this: the cursor encodes the exact position in the result set (typically the createdAt timestamp and activityId of the last item on the previous page), and the next page query fetches items strictly older than that cursor.</HighlightBlock>
-        <p>The cursor is opaque to the client—it's a base64-encoded JSON object containing {"{"}createdAt: "2026-05-10T12:00:00Z", activityId: "uuid-xyz"{"}"} on the server side. The client receives it as a string and passes it back verbatim for the next page. The query condition is: WHERE (createdAt, activityId) &lt; (cursor.createdAt, cursor.activityId) ORDER BY createdAt DESC, activityId DESC LIMIT 20. The composite key (timestamp + ID) handles ties when multiple activities have the same createdAt millisecond.</p>
-        <p>The client tracks whether more pages exist via a hasNextPage flag returned with each page. When the user scrolls within 200px of the bottom of the list, a new page fetch is triggered if hasNextPage is true and no fetch is already in progress. A loading indicator appears at the bottom during the fetch.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-Time Updates via WebSocket</h3>
-        <p>The WebSocket connection is established on feed mount and kept alive for the session. The server pushes new activity events to the client as they are created. Each pushed event matches the same schema as the fetched activity records, so the client can prepend them without transformation.</p>
-        <p>Race condition handling: there is a window between when the initial page fetch begins and when the WebSocket subscription is established. Activities created in this window may be missed. The solution is to establish the WebSocket subscription first, buffer any incoming events, then fetch the initial page. After the page arrives, apply any buffered events that are newer than the newest item in the initial page (compare createdAt timestamps). Events older than or equal to the newest initial item are discarded (they're already in the fetched page). This sequence ensures no events are missed and no events are duplicated.</p>
-        <p>When the WebSocket connection drops (network blip, server restart), the client reconnects with a timestamp of the last received event. On reconnect, the server sends all events created since that timestamp as a "catch-up" batch. The client applies the catch-up batch to the list. If the gap is large (the client was offline for hours), the catch-up batch may be truncated; in this case the client refreshes the feed entirely rather than applying a partial update.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Scroll Position Anchoring and New Items Banner</h3>
-        <HighlightBlock as="p" tier="important">Prepending items to the top of a scrollable list increases the total scroll height. If the user is scrolled to the top (scrollTop === 0), prepending and shifting scroll position down by the height of the new items keeps them visually on the same content—scroll anchoring. Modern browsers support this natively via the CSS overflow-anchor: auto property combined with a sentinel element at the top of the list. React's experimental useId-based key strategy for list items also helps the virtual DOM avoid re-ordering existing items during prepend.</HighlightBlock>
-        <p>If the user is not at the top (they have scrolled down to read older items), silently prepending items would shift the content they are reading downward, which is disorienting. Instead, incoming real-time items are queued in a pendingItems buffer. A sticky banner appears at the top of the feed: "5 new activities." Clicking the banner scrolls the user to the top and flushes the pending buffer into the visible list. The banner count updates as more items arrive while the user continues reading. This pattern is standard in LinkedIn, GitHub, and Twitter-style feeds.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Virtual Scrolling for Long Feeds</h3>
-        <HighlightBlock as="p" tier="important">A feed with thousands of items cannot have all items in the DOM simultaneously. At 60px per item, 10,000 items would create 600,000px of scroll height with 10,000 DOM nodes—rendering and scrolling would be visibly slow. Virtual scrolling renders only the items currently visible in the viewport (plus a small overscan buffer above and below). As the user scrolls, items leaving the viewport are unmounted and items entering are mounted, keeping the DOM node count constant regardless of the total item count.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The challenge with variable-height items (activities with previews, aggregated items, or long text) is that virtual scrollers need to know each item's height to calculate scroll positions. The two approaches are: measure-on-render (mount each item off-screen, measure its height, then position it correctly) or estimate-then-correct (use an estimated height for layout, correct after rendering). The estimate-then-correct approach is more performant for large lists because it doesn't require all items to render before the list is interactive.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Read State Management</h3>
-        <p>Unread activities are visually distinguished (background color, bold text, unread dot). Marking as read happens optimistically: clicking an activity immediately marks it read in local state and sends a background PATCH request to the server. If the server rejects (unusual—marking read is almost always accepted), the local state reverts.</p>
-        <p>Mark all read sends a single request with a "mark all before this timestamp as read" semantic rather than an array of IDs. This is important for high-volume feeds where the unread count might be in the hundreds. The server accepts a cutoff timestamp and marks everything before it read for the current user in a single UPDATE query. The client updates local state to mark all visible activities as read. Activities that arrive via WebSocket after the "mark all" are unread by default.</p>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="crucial">Aggregation at query time versus write time: query-time aggregation (group activities on the fly when the feed is fetched) is flexible—aggregation windows can be changed without reprocessing stored data—but adds query complexity and latency. Write-time aggregation (store activities pre-grouped, update the group record when a new similar event arrives) is faster to read but requires write-time logic and is harder to change. Most feeds use query-time aggregation for flexibility and add database indexes on the groupingKey to keep it fast.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Fan-out on write versus fan-out on read: for each activity event, "fan-out on write" pre-writes the activity record to every recipient's feed table (fast reads, expensive writes for users with many followers). "Fan-out on read" stores activities once in a central table and queries per recipient at read time (cheap writes, complex reads). Hybrid: fan-out on write for users with few followers (under 1000), fan-out on read for high-follower users (celebrities, public figures) to avoid extremely expensive write fan-outs. The frontend implementation is identical in both cases—the difference is entirely server-side.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">WebSocket versus Server-Sent Events for real-time delivery: SSE (server-to-client, unidirectional) is simpler to implement and works through HTTP proxies and CDNs without special configuration. WebSocket (bidirectional) is more complex but necessary if the client also needs to send messages to the server (typing indicators, presence updates). For a read-only activity feed, SSE is often sufficient and preferable. For a combined feed + messaging surface, WebSocket is required.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Virtual scrolling keeps render performance constant regardless of feed length. Query-time aggregation groups similar events</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">(multiple likes) into summary rows. Read state is managed optimistically with "mark all read" using a timestamp cutoff rather than ID arrays. The frontend patterns here apply equally to notification feeds, audit logs, and any other chronological, live-updating event stream.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+export const metadata: ArticleMetadata = { id:"article-lld-activity-feed-system", title:"Design an Activity Feed System", description:"Implementation-heavy low-level design guide for design an activity feed system.", category:"low-level-design", subcategory:"real-world-scenario-lld", slug:"activity-feed-system", wordCount:4700, readingTime:28, lastUpdated:"2026-05-30", tags:["lld","real-world","principal-engineer"], relatedTopics:["state-management","reliability","observability"] };
+export default function ActivityFeedSystemArticle(){ return <ArticleLayout metadata={metadata}>
+<section><h1>Design an Activity Feed System</h1><h2>Definition &amp; Context</h2>
+<p>Design an Activity Feed System is a low-level design problem about building a production-grade cursor-paginated feed projection. The answer must move beyond screen composition and define public methods, internal state, persistence boundaries, concurrency rules, recovery, and telemetry. The facade is loadInitial, loadMore, prependEvent, dedupe, invalidate, refresh. Runtime states are idle, loading, ready, loadingMore, refreshing, stale, failed.</p>
+<p>The governing invariant is: Feed rendering must remain stable while pagination and real-time inserts overlap. The edge case to defend is when a new event arrives while the user loads the next cursor page containing duplicates. This forces the implementation to distinguish user intent from server authority and to expose honest pending, blocked, stale, conflicted, and recovered states.</p>
+<ArticleImage src="/diagrams/system-design-problems/low-level-design/real-world-scenario-lld/activity-feed-system-runtime.svg" alt="Design an Activity Feed System runtime" caption="Runtime model: product intent enters a guarded coordinator, durable state is versioned, and user-visible snapshots remain honest under failure." /></section>
+<section><h2>Core Concepts</h2>
+<p>Start with a narrow aggregate boundary. The coordinator owns legal transitions and the structures required to defend them: feed entity map, ordered ids, cursor, dedupe set, viewport anchor, freshness watermark. UI components request operations and render snapshots; they should not scatter validation, deduplication, permissions, timers, and retries across event handlers.</p>
+<p>Separate optimistic projection from authoritative confirmation. Fast UI may show local intent immediately, but the snapshot must retain pending identity, base revision, and rollback information until the authoritative boundary accepts the operation. That makes ambiguous timeouts, retries, cross-tab races, and external updates explainable.</p>
+<h3>Implementation contract</h3><p>Each public method returns a typed outcome: accepted, pending, rejected, conflicted, degraded, or completed. Each mutation carries operation id, scope, revision, and idempotency key where repeated delivery is possible. Every state transition records a reason and leaves enough evidence for debugging without logging private payloads.</p>
+<p>Classify operations by risk. Cosmetic preferences can converge eventually. Destructive, authorization-sensitive, inventory-sensitive, or payment-adjacent operations need stronger confirmation or fail-closed behavior. This operation-level consistency decision is more credible than claiming one policy for the whole feature.</p></section>
+<section><h2>Architecture &amp; Flow</h2>
+<p>The architecture has six layers: component facade, validator, state machine, effect runner, durable adapter, and observer layer. The facade normalizes intent. The validator checks schema, permission, scope, and revision. The state machine commits the next snapshot. The effect runner performs network, storage, SDK, or worker work after commit. The durable adapter preserves evidence. The observer layer publishes selector-scoped snapshots and metrics.</p>
+<p>A normal mutation validates input, captures rollback state, assigns identity, applies the local projection, invokes the effect, and settles only if operation identity and revision still match. Late responses are ignored or reconciled; they must not overwrite newer intent. Cleanup on navigation, tenant switch, unmount, or cancellation is idempotent.</p>
+<h3>Data model and failure matrix</h3><p>The model should include entity or aggregate id, actor scope, tenant scope when relevant, operation id, base revision, current revision, pending state, last error, timestamps, and trace fields. Store only the payload needed for recovery. Sensitive fields belong behind tokenization, redaction, or server-owned boundaries.</p>
+<p>Define a failure matrix before coding. Validation failure blocks locally. Permission change fails closed. Timeout preserves pending identity for reconciliation. Version mismatch enters merge, refresh, or review. Partial batch failure records per-item outcomes. External dependency outage trips degradation or a circuit breaker. Duplicate delivery returns the prior idempotent result.</p>
+<h3>Lifecycle and concurrency</h3><p>Concurrency is normal input, not an exceptional corner case. Users click twice, navigate during a request, open several tabs, switch accounts, and return after background throttling. Server pushes, SDK callbacks, timers, and network settlements may arrive after the UI intent has changed. Accept a settlement only when operation id, actor scope, tenant scope, and revision still match the active snapshot.</p>
+<p>Lifecycle events need explicit handlers: bootstrap, hydrate, mount, unmount, focus, blur, reconnect, tenant switch, logout, and rollout disablement. A coordinator that only handles button clicks will leak work or display stale data. Cleanup must cancel active effects, detach listeners, invalidate scoped caches, and preserve only the minimum recovery evidence needed for the next safe transition.</p>
+<ArticleImage src="/diagrams/system-design-problems/low-level-design/real-world-scenario-lld/activity-feed-system-failure.svg" alt="Design an Activity Feed System failure handling" caption="Failure model: stale revisions, ambiguous results, authorization changes, and partial failures route through explicit recovery decisions." /></section>
+<section><h2>Trade offs &amp; Comparison</h2>
+<p>Local component state is cheaper for a small page, but it breaks when multiple components, tabs, routes, or teams depend on the same invariant. A domain coordinator adds code and tests, but centralizes revision checks, cancellation, rollback, persistence, and observability.</p>
+<p>Optimistic UX improves perceived latency but creates rollback and reconciliation work. Pessimistic confirmation is easier to reason about but can feel slow. Choose per operation: use optimistic projection for reversible low-risk actions and authoritative confirmation for destructive or externally constrained actions.</p>
+<p>Normalization improves deduplication and partial updates, while snapshots simplify reads and rollback. Durable history improves recovery and auditability, but costs storage and compaction work. The interview answer should tie these choices to latency, correctness, privacy, support burden, and rollout risk.</p>
+<p>There is also a build-versus-platform trade-off. A feature-local implementation moves quickly when the workflow is genuinely isolated. A shared runtime becomes worthwhile when several flows need revision guards, typed errors, permission checks, audit evidence, or rollout controls. The principal-level answer should avoid both extremes: do not create a framework for one button, and do not let high-risk invariants fragment across teams.</p>
+<p>Fail-open and fail-closed choices must be explicit. A stale feed badge can degrade gracefully. A tenant switch, payment attempt, authorization rule, kill switch, or audit export should fail closed when scope or authority is uncertain. This is where implementation details connect directly to abuse prevention and privacy.</p></section>
+<section><h2>Best practices</h2>
+<p>Make illegal states unrepresentable with explicit status unions and guarded transitions. Add operation identity and revision checks at settlement boundaries. Keep effect adapters injectable so timeouts, retries, SDK failures, server errors, and browser lifecycle changes can be tested deterministically.</p>
+<p>Build observability into the coordinator: rejected transitions, stale settlements, retry count, pending age, conflict rate, partial failure count, queue depth, rollback count, and slow subscribers. Add feature flags and kill switches for risky flows. Scope caches and persisted state by user and tenant, and clear them on identity changes.</p>
+<p>Test rapid interaction, duplicate delivery, navigation mid-flight, permission changes, stale revisions, empty states, large datasets, retry exhaustion, and recovery after reload. These cases reveal whether the abstraction protects the product or merely organizes happy-path code.</p>
+<p>Prefer selector-based subscriptions and immutable snapshots so unrelated UI does not re-render. Bound retained history, cached entities, retry ledgers, and debug events. Provide support-friendly evidence such as correlation id, operation phase, revision gap, and sanitized failure reason. These practices reduce mean time to recovery without leaking customer data.</p></section>
+<section><h2>Common Pitfalls</h2><p>Do not model the workflow as unrelated booleans. That permits impossible combinations and ordering bugs. Do not silently swallow stale responses or partial failures. Do not let observers mutate coordinator internals. Do not log sensitive payloads in telemetry.</p>
+<p>Avoid unbounded queues, histories, selections, markers, feed entities, or retries. Add compaction, pagination, virtualization, batching, and backpressure where volume can grow. Treat accessibility, privacy, and degraded UX as runtime behavior, not documentation notes.</p>
+<p>Another pitfall is treating server success as the only settlement state. Timeouts create ambiguous outcomes: the server may have committed while the client saw failure. Reconciliation and idempotency are required whenever repeating the operation could create duplicate side effects or overwrite newer state.</p></section>
+<section><h2>Real-world use cases</h2><p>This pattern appears in high-traffic consumer products and enterprise tools where a seemingly small UI feature crosses network, permission, identity, or external-service boundaries. Platform ownership is useful when several teams need the same transition safety, recovery, and metrics.</p>
+<p>For a principal interview, connect the local implementation to the wider system: server idempotency, authorization, versioning, audit logs, rollout controls, SLOs, and support tooling. The UI runtime is not isolated; it is the final consistency and trust boundary visible to the user.</p>
+<p>Operational ownership should be explicit: define alerts, dashboards, runbooks, rollback controls, and the team responsible for resolving stuck or ambiguous states.</p></section>
+<section><h2>Common interview question with detailed answer</h2>
+<h3>How would you design this end to end?</h3><p>I would define the facade, state machine, data model, effect adapters, and observer snapshots. Every mutation carries identity and revision, every effect settles through guards, and every failure maps to a typed user-visible recovery path.</p>
+<h3>Why this architecture over local state?</h3><p>Local state duplicates invariants and fails under races. The coordinator makes Feed rendering must remain stable while pagination and real-time inserts overlap. enforceable and testable across components.</p>
+<h3>What breaks at scale?</h3><p>Pending work, memory retention, stale responses, partial failures, permission drift, and observability gaps become bottlenecks. Use bounds, compaction, pagination, backpressure, metrics, and rollout controls.</p>
+<h3>What consistency model applies?</h3><p>Use operation-level consistency: optimistic eventual convergence for reversible work, stronger confirmation for destructive or authority-sensitive work, and explicit conflict states when intent is ambiguous.</p>
+<h3>How do you defend failure, rollback, abuse, privacy, and cost?</h3><p>Use typed errors, inverse patches or refresh, idempotency, authorization checks, rate limits, data minimization, redacted telemetry, bounded retention, and kill switches. Then walk through a new event arrives while the user loads the next cursor page containing duplicates.</p></section>
+<section><h2>References</h2><ul><li><a href="https://react.dev/learn/managing-state" target="_blank" rel="noreferrer">React: Managing State</a></li><li><a href="https://redux.js.org/style-guide/" target="_blank" rel="noreferrer">Redux Style Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://web.dev/articles/vitals" target="_blank" rel="noreferrer">web.dev Web Vitals</a></li></ul></section>
+</ArticleLayout>;}

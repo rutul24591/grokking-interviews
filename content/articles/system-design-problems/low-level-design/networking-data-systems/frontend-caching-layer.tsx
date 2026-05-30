@@ -2,456 +2,130 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
-import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-lld-frontend-caching-layer",
   title: "Design a Frontend Caching Layer",
-  description:
-    "Production-grade client-side caching system with TTL, tag-based invalidation, LRU eviction, stale-while-revalidate, and memory management for high-traffic SPAs.",
+  description: "LLD for a browser-side cache with memory, persistent storage, freshness policy, invalidation, eviction, and stale rendering states.",
   category: "low-level-design",
   subcategory: "networking-data-systems",
   slug: "frontend-caching-layer",
-  wordCount: 6800,
-  readingTime: 40,
-  lastUpdated: "2026-05-06",
-  tags: [
-    "lld",
-    "caching",
-    "ttl",
-    "lru-eviction",
-    "stale-while-revalidate",
-    "memory-management",
-  ],
-  relatedTopics: [
-    "data-fetching-hook",
-    "cache-invalidation-strategy",
-    "request-deduplication-system",
-  ],
+  wordCount: 4200,
+  readingTime: 24,
+  lastUpdated: "2026-05-29",
+  tags: ["lld", "frontend-networking", "implementation-design", "react", "resilience"],
+  relatedTopics: ["data-fetching-hook", "frontend-caching-layer", "request-deduplication-system", "retry-mechanism", "token-refresh-system"],
 };
 
 export default function FrontendCachingLayerArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">
-          Frontend SPAs fetch data repeatedly from APIs. Without caching, each component fetch = network request. Consider: user navigates to profile page (GET /user/123), then navigates away, then back to profile (GET /user/123 again). Second fetch is redundant—server hasn't changed in 5 seconds. Naive solution: global cache storing all responses. Works, but problems emerge: cache grows unbounded (50MB limit on mobile—crash), stale data (user updates name, cached profile still shows old name), cache thrashing (too many evictions = slow).
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Solution: in-memory caching layer with smart invalidation. Cache stores responses with TTLs (expire after 5 minutes). Use tag-based invalidation (tag user data with 'user' label; when user updates, invalidate all queries tagged 'user'). Support stale-while-revalidate (serve stale data immediately, refetch in background). Manage memory (LRU eviction when size exceeds limit). At scale (100+ queries, millions of users), caching layer is critical for performance.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Key challenges: (1) Staleness vs freshness (short TTL = fresh data, more refetches; long TTL = fewer requests, stale data). (2) Memory management (unbounded cache causes memory leak on mobile). (3) Tag-based invalidation (complex to track which queries have which tags). (4) Offline support (serve stale data when network down). (5) Performance (cache lookup must be &lt;1ms).
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          <strong>Explicit assumptions:</strong> React SPA with 100+ queries cached. Memory limited (~50MB on mobile). Different data has different freshness needs. Mutations trigger invalidation. Network may be intermittent. Cache lookup should be O(1).
-        </HighlightBlock>
+      <section className="space-y-5">
+        <h2>Definition &amp; Context</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Design a Frontend Caching Layer is a low-level implementation problem, not a broad architecture prompt. The interviewer expects you to describe the runtime module, public API, internal state, data structures, lifecycle transitions, failure semantics, and test cases that make the feature safe inside a large React or TypeScript application.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The core primitive is the cache coordinator. A principal-level answer should start from the user-visible behavior, then quickly move into the implementation contract: cache.read(key), cache.write(key, value, metadata), cache.invalidate(tags), cache.subscribe(key). That contract must be stable enough for many components to depend on it, but small enough that teams cannot bypass the lifecycle rules accidentally.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The design boundary is the browser client. The server may provide HTTP, GraphQL, WebSocket, upload, or auth endpoints, but the article focuses on client orchestration: when to call, when to cancel, what to cache, how to avoid duplicate work, how to surface errors, and how to keep UI state consistent under slow networks and rapid user interaction.</p>
       </section>
 
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">
-            <strong>Cache Storage:</strong> Store API responses by cache key.
-          </HighlightBlock>
-          <li>
-            <strong>TTL Expiration:</strong> Each entry has a time-to-live. After
-            expiration, mark stale.
-          </li>
-          <li>
-            <strong>Tag-Based Invalidation:</strong> Queries tagged with labels
-            (e.g., &apos;user&apos;, &apos;feed&apos;). Invalidate all queries with a tag.
-          </li>
-          <li>
-            <strong>Stale-While-Revalidate:</strong> Serve stale data immediately,
-            refetch background.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Memory Management:</strong> Max cache size with LRU eviction.
-          </HighlightBlock>
-          <li>
-            <strong>Offline Support:</strong> Serve stale data when offline.
-          </li>
-          <li>
-            <strong>Manual Invalidation:</strong> Programmatic cache clearing via
-            tags or keys.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">
-            <strong>Lookup Performance:</strong> O(1) cache lookups via hash table.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="crucial">
-            <strong>Invalidation Performance:</strong> O(k) tag-based invalidation
-            where k is affected entries.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            <strong>Memory Bounded:</strong> Cache size never exceeds max size.
-          </HighlightBlock>
-          <li>
-            <strong>Persistence:</strong> Optionally persist to localStorage for
-            offline availability.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Edge Cases</h3>
-        <ul className="space-y-2">
-          <li>Cache full, new entry added → LRU eviction removes least-used entry.</li>
-          <li>Entry expired while refetch in-flight → serve stale, update when refetch completes.</li>
-          <li>Multiple mutations invalidate overlapping tags → coalesce invalidations.</li>
-          <li>Network comes online after offline period → refetch invalidated entries.</li>
-        </ul>
+      <section className="space-y-5">
+        <h2>Core Concepts</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The first concept is a typed request or operation identity. Every operation needs a stable key so the runtime can deduplicate, cache, cancel, retry, batch, or invalidate it. For design a frontend caching layer, the key should include the resource identity, security context, relevant parameters, and behavior-changing options. It should not include unstable values such as inline function identity or render-local object references.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The second concept is lifecycle state. This article uses these states as the baseline: fresh, stale, revalidating, expired, evicted. These states are deliberately more precise than a boolean loading flag. They let the UI distinguish initial load from background refresh, recoverable failure from terminal failure, stale data from absent data, and ignored stale work from committed work.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The third concept is a boundary between control-plane decisions and rendering. The control plane owns cancellation, timers, retry budgets, request sharing, storage, and telemetry. Rendering code should consume a compact view model and command callbacks. That separation is what keeps component trees from re-implementing inconsistent networking behavior.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The fourth concept is observability as part of the API. The runtime should emit operation key, attempt count, latency, status, retry reason, cancellation reason, cache source, stale age, and user-visible fallback. Without these signals, production failures look like random UI glitches instead of diagnosable lifecycle bugs.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The fifth concept is data-structure choice. Most networking LLD answers become credible when you name the actual structures: a Map for in-flight operations, a Map from resource key to subscriber set, a priority queue or timer wheel for delayed retries, an LRU list for memory cache, a tag-to-key index for invalidation, and an append-only operation journal for optimistic or resumable workflows. These structures are small enough to implement in an interview but powerful enough to explain scale behavior.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The sixth concept is authority. The client can decide rendering, caching, dedupe, retries, and local rollback, but it cannot decide authorization, final mutation success, or cross-device consistency alone. Every implementation should mark which state is speculative, which state is server-acknowledged, and which state is only a local projection used to keep the interface responsive.</p>
       </section>
 
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">On cache hit, return data (stale or fresh). On cache miss, initiate fetch and</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">cache result. On invalidation, mark matching entries as stale and queue refetch. Memory usage is monitored, and LRU eviction kicks in when size exceeds threshold.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Cache Entry Structure</h3>
-        <HighlightBlock as="p" tier="important">
-          Each cache entry encapsulates data, metadata, and state.
-        </HighlightBlock>
-        <ul className="space-y-2">
-          <li>
-            <strong>data:</strong> The cached API response.
-          </li>
-          <li>
-            <strong>timestamp:</strong> When entry was cached.
-          </li>
-          <li>
-            <strong>ttl:</strong> Time-to-live in milliseconds. Entry is stale after
-            timestamp + ttl.
-          </li>
-          <li>
-            <strong>tags:</strong> Set of tags (e.g., [&apos;user&apos;, &apos;profile&apos;]).
-          </li>
-          <li>
-            <strong>status:</strong> &apos;fresh&apos;, &apos;stale&apos;, or &apos;fetching&apos;.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>dependents:</strong> Set of cache keys that depend on this entry
-            (for cascading invalidation).
-          </HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">TTL-Based Expiration</h3>
-        <HighlightBlock as="p" tier="important">
-          Each entry has a configurable TTL. On access, the cache checks if current
-          time exceeds (timestamp + ttl). If so, mark as stale.
-        </HighlightBlock>
-        <ul className="space-y-2">
-          <li>
-            <strong>Lazy Expiration:</strong> Entries are not actively expired. Only
-            checked on access (avoid background timers).
-          </li>
-          <li>
-            <strong>Stale-While-Revalidate:</strong> Stale data is served immediately
-            while background refetch is triggered.
-          </li>
-          <li>
-            <strong>Different TTLs:</strong> Different queries can have different TTLs
-            (user profile: 5min, feed: 30sec).
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Tag-Based Invalidation</h3>
-        <p>
-          A tag index maps each tag to a set of cache keys. On invalidation, look up
-          all keys for a tag and mark them stale.
-        </p>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">
-            <strong>Tag Index:</strong> Map&lt;tag, Set&lt;cacheKey&gt;&gt; for O(1)
-            tag lookup.
-          </HighlightBlock>
-          <li>
-            <strong>Multi-tag Entries:</strong> An entry can have multiple tags. It
-            appears in multiple tag sets.
-          </li>
-          <li>
-            <strong>Cascading Invalidation:</strong> When a primary entry invalidates,
-            dependent entries also invalidate.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">LRU Eviction</h3>
-        <p>
-          When cache exceeds max size, remove the least-recently-used entry. LRU is
-          implemented using a doubly-linked list where the head is the most-used and
-          tail is least-used.
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Access Tracking:</strong> On each cache access, move entry to
-            head of list.
-          </li>
-          <li>
-            <strong>Eviction:</strong> When cache full, remove tail entry.
-          </li>
-          <li>
-            <strong>Cleanup:</strong> When evicting, also remove from tag index and
-            dependents.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Stale-While-Revalidate Pattern</h3>
-        <p>
-          When a cached entry is stale, return it immediately while triggering a
-          background refetch. Once refetch completes, update the cache and notify
-          subscribers.
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Immediate Return:</strong> Return stale data without waiting for
-            refetch.
-          </li>
-          <li>
-            <strong>Background Refetch:</strong> Queue fetch in background.
-          </li>
-          <li>
-            <strong>Notification:</strong> When refetch completes, notify subscribers
-            (via callback or event emitter).
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Memory Management</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Cache size is bounded. Memory pressure is monitored, and entries are
-          evicted aggressively when approaching limit.
-        </HighlightBlock>
-        <ul className="space-y-2">
-          <li>
-            <strong>Size Calculation:</strong> Estimate entry size via
-            JSON.stringify(data).length.
-          </li>
-          <li>
-            <strong>Max Size:</strong> Configurable (default 50MB). When exceeded,
-            trigger LRU eviction.
-          </li>
-          <li>
-            <strong>Eviction Threshold:</strong> Start eviction at 80% of max size to
-            avoid thrashing.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Persistence</h3>
-        <p>
-          Optionally persist cache to localStorage for offline availability. On app
-          load, hydrate from localStorage.
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Serialization:</strong> Serialize cache entries to JSON and store
-            in localStorage.
-          </li>
-          <li>
-            <strong>Hydration:</strong> On app startup, restore cache from
-            localStorage.
-          </li>
-          <li>
-            <strong>Size Limit:</strong> localStorage has size limit (~5-10MB). Only
-            persist critical data.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Subscription System</h3>
-        <p>
-          Components can subscribe to cache updates. When a cache entry updates,
-          notify subscribers.
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Subscribe:</strong> Components register listeners on specific
-            cache keys or tags.
-          </li>
-          <li>
-            <strong>Notify:</strong> On cache update, call all listeners.
-          </li>
-          <li>
-            <strong>Unsubscribe:</strong> Cleanup listeners on component unmount.
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Implementation Considerations</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Thread Safety</h3>
-        <HighlightBlock as="p" tier="important">
-          JavaScript is single-threaded, so race conditions are minimal. However,
-          async operations can interleave. Use proper synchronization for concurrent
-          mutations.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Clock Skew</h3>
-        <HighlightBlock as="p" tier="important">
-          Relying on system clock for TTL expiration is vulnerable to clock skew if
-          user changes system time. Consider using relative timers or persisting TTL
-          as a duration rather than timestamp.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Cache Invalidation Strategies</h3>
-        <HighlightBlock as="p" tier="important">
-          Support multiple invalidation triggers: manual invalidation, mutation-based
-          (post created → invalidate posts list), and time-based (TTL expiration).
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Compression</h3>
-        <HighlightBlock as="p" tier="crucial">
-          For large cached objects, consider compression (e.g., LZ4, Brotli) to
-          reduce memory footprint.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Cache Architecture and Data Flow</h2>
-
-        <HighlightBlock as="p" tier="important">
-          The caching layer sits between components and the network. Components request data via get(key). The cache checks: (1) Is entry in memory? (2) Is it fresh? If yes, return. If stale, serve stale + refetch. If miss, fetch from network, cache result. The cache maintains multiple indices: primary cache map (key → entry), tag index (tag → set of keys), LRU list (ordered by recency), and memory tracker (total size).
-        </HighlightBlock>
-
+      <section className="space-y-5">
+        <h2>Architecture &amp; Flow</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A production implementation has five cooperating pieces: a public adapter, a lifecycle reducer, a registry or cache, a transport adapter, and an observer. The public adapter exposes cache.read(key), cache.write(key, value, metadata), cache.invalidate(tags), cache.subscribe(key). The reducer owns transitions. The registry stores two-tier memory plus IndexedDB with tag indexes and byte budget accounting. The transport adapter talks to fetch, GraphQL, WebSocket, upload, or auth APIs. The observer emits metrics and debug events.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The normal flow starts when a component or command creates an operation. The runtime normalizes the key, checks local state, decides whether to serve cached data, dedupe with an existing operation, enqueue work, or issue a new transport call. When the transport resolves, the runtime validates that the response is still relevant, updates state, notifies subscribers, records metrics, and releases resources.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The hardest flow is the edge case: serving stale cached data while an online revalidation is racing with a mutation. The design must make that behavior deterministic. A late response, duplicate event, expired token, stale cache entry, failed retry, partial batch result, or dropped socket frame should have an explicit transition rather than relying on whichever promise settles last.</p>
         <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/networking-data-systems/frontend-caching-architecture.svg"
-          alt="Frontend caching layer architecture and data flow diagram"
+          src="/diagrams/system-design-problems/low-level-design/networking-data-systems/frontend-caching-layer-runtime-flow.svg"
+          alt="Design a Frontend Caching Layer runtime flow"
+          caption="Runtime flow: public API, lifecycle reducer, registry, transport adapter, cache, observer, and UI view model cooperate to keep networking state deterministic."
         />
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Cache Hit vs Miss Scenarios</h3>
-        <HighlightBlock as="p" tier="important">
-          Hit (Fresh): Entry exists, timestamp + ttl &gt; now. Return immediately. Latency: &lt;1ms. Hit (Stale): Entry exists, timestamp + ttl &lt;= now. Return stale data, trigger background refetch. Latency: &lt;1ms for data, async refetch. Miss: Entry not in cache. Initiate network fetch. Latency: network RTT (~100-300ms). Cache the response for future hits.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Tag Index Mechanics</h3>
-        <HighlightBlock as="p" tier="important">
-          Tag index enables efficient invalidation. Example: cache has entries user-123 (tags: [user, profile]), posts-123 (tags: [user, feed]). When user logs out, invalidate tag 'user'. Look up tag in index: get [user-123, posts-123]. Mark both stale. Cost: O(k) where k is affected entries. Without tag index, must scan all entries: O(n). Tag index makes invalidation practical.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">LRU Eviction Deep Dive</h3>
-        <HighlightBlock as="p" tier="important">
-          LRU tracks access recency. Doubly-linked list: head = most recent, tail = least recent. On access, move entry to head. When cache full, remove tail. Cost: O(1) per operation with doubly-linked list. Alternative: timestamp-based eviction (evict oldest). LRU better reflects actual usage patterns. Under memory pressure, LRU prevents evicting frequently-used entries.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Memory Pressure and Eviction Policies</h3>
-        <p>
-          When cache reaches 80% of max size, start evictions. This buffer prevents thrashing (constant eviction). Strategy: evict oldest LRU entry. If still over limit after one eviction, continue. Alternatively, batch eviction: when over limit, evict 10% of cache at once, then stop. Batch reduces eviction churn but more bursty. Monitor memory growth. If memory grows despite eviction, indicates leak (entries not being accessed, never reaching LRU tail).
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Cache Validation and Corruption Detection</h3>
-        <p>
-          Cache entries can become corrupted (malformed JSON, missing required fields). Validation on cache set ensures only valid data cached. Validation on cache get detects corruption. If corrupted, delete entry, return miss, refetch. Optional: store checksum with entry. On retrieval, verify checksum. If mismatch, data corrupted, discard. Prevents serving corrupted data to UI.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Expiration Policies and Staleness Visibility</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Different queries have different freshness needs. API config specifies TTL per query: GET /user → 5min, GET /feed → 30sec. Query returning stale data should include freshness indicator so UI can show "Showing cached data" badge. This transparency helps users understand data age. For critical data (financial, security), show stale clearly. For non-critical (timeline), show subtly or not at all.
-        </HighlightBlock>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The state reducer should be written as a small state machine, even if implemented with a switch statement or Zustand store. Events include start, cacheHit, cacheStale, transportStarted, transportSucceeded, transportFailed, retryScheduled, cancelled, superseded, invalidated, subscriberAdded, subscriberRemoved, and garbageCollected. Each event must define whether it changes visible data, metadata only, or no state at all.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A practical implementation also needs cleanup rules. When a subscriber unmounts, decrement the reference count. When the last subscriber leaves, either abort the transport or let it finish into cache depending on policy. Timers must be cleared on cancellation. Cache entries should have both freshness TTL and garbage-collection TTL. Journals should compact acknowledged operations. These details are what separate a usable LLD answer from a helper-function answer.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The testing flow mirrors the state machine. Unit tests drive reducer events directly. Integration tests mount two subscribers for the same key and verify sharing. Race tests resolve promises out of order. Timer tests advance fake clocks for debounce, retry, and stale TTL. Browser tests cover focus, blur, online/offline, visibility change, storage quota, and tab coordination where relevant.</p>
       </section>
 
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Memory vs Network</h3>
-        <HighlightBlock as="p" tier="important">
-          Caching trades memory for network savings. On constrained devices (mobile),
-          memory is precious. Balance cache size with device capabilities.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Consistency vs Availability</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Serving stale data improves availability but risks consistency. Indicate
-          staleness to users (&quot;Showing cached data&quot;).
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Eager vs Lazy Invalidation</h3>
-        <HighlightBlock as="p" tier="important">
-          Eager invalidation (immediately mark stale on mutation) ensures freshness
-          but triggers unnecessary refetches. Lazy invalidation (wait for next access)
-          reduces refetches but serves stale data longer.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Library vs Custom</h3>
-        <HighlightBlock as="p" tier="important">
-          Consider using a library like TanStack Query or Redux if caching needs
-          grow complex. Custom implementations work for simple cases.
-        </HighlightBlock>
+      <section className="space-y-5">
+        <h2>Trade offs &amp; Comparison</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Memory cache is fast and volatile; IndexedDB survives reloads but adds async complexity and schema migrations.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The main consistency trade-off is whether the UI favors latest known data, latest requested data, or latest acknowledged data. Latest known data gives fast rendering but can be stale. Latest requested data prevents older responses from committing but can show loading more often. Latest acknowledged data is safest for financial, auth, and destructive workflows but creates more waiting states.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The main performance trade-off is centralization versus local control. A central runtime reduces duplicated requests, gives shared telemetry, and standardizes failure behavior. It can also become a bottleneck or an overly complex abstraction if every product case is pushed into it. The senior answer is to define extension points for request factory, key derivation, retry classifier, cache policy, and user message mapping without allowing components to bypass lifecycle safety.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The main cost trade-off is how aggressively the client talks to the backend. Deduplication, caching, debounce, batching, and WebSocket subscriptions can reduce request volume, but each one introduces correctness questions. In interviews, defend the policy with observable numbers: p95 latency, request rate per active user, retry amplification, stale-render duration, memory usage, and dropped-event count.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A principal-level comparison should also explain when not to build this abstraction. If the product only has a few simple reads, a mature library is better than a bespoke runtime. If the system has regulated payments, healthcare, or admin control planes, the runtime needs stricter commit guards and audit logs. If the system is collaborative, eventual consistency and merge policy matter more than raw request count.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The design should explicitly choose a consistency model. Most UI networking state is read-your-own-writes for the current tab, monotonic reads for a resource key, and eventual consistency across tabs or devices. Strong consistency is reserved for destructive actions, permissions, token state, and payment-like flows. Naming this model helps defend why stale-while-revalidate is acceptable in one surface and unacceptable in another.</p>
       </section>
 
-      <section>
-        <h2>Advanced Production Patterns</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Cache Coherency in Distributed Settings</h3>
-        <HighlightBlock as="p" tier="important">
-          In multi-region deployments, users access from different regions with
-          different caches. Solutions: invalidate on mutation, emit server-to-client
-          events, or use version vectors for eventual consistency. Necessary for
-          consistency across regions.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Adaptive TTL & Cache Warming</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Implement policy-based TTL per data type (profiles: 5min, feeds: 30sec).
-          Pre-populate critical cache on startup to reduce perceived latency.
-          Smart retry: show app while warm-up pending, fill in as data arrives.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Cache Stampede Prevention</h3>
-        <p>
-          When popular entry expires, 1000 concurrent requests cause thundering herd.
-          Solutions: probabilistic early expiration, stale-while-revalidate, or
-          distributed locking. Critical at 1M user scale.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Compression & Metrics</h3>
-        <p>
-          Large objects consume memory; use LZ4/Brotli compression. Track hit rate,
-          miss rate, eviction rate, memory usage. Alert on unbounded growth
-          (indicates leak or misconfiguration).
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Testing & Storage Gotchas</h3>
-        <HighlightBlock as="p" tier="important">
-          Mock clock with jest.useFakeTimers() for TTL tests. localStorage is
-          synchronous and quota-limited (~5-10MB). Never block critical path;
-          load async. Use IndexedDB for large/persistent data.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Schema Versioning & Poisoning Prevention</h3>
-        <p>
-          Version cache entries; invalidate if format changes. Use checksums on
-          cached data to detect corruption. Implement circuit breaker: if 10% of
-          hits invalid, disable cache temporarily.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Multi-Tab Sync & Real-World Lessons</h3>
-        <HighlightBlock as="p" tier="important">
-          Sync cache across tabs via StorageEvent or BroadcastChannel API for
-          consistency. Avoid the localStorage performance trap: large objects block
-          main thread. Cache invalidation remains hard; use event-driven approach.
-          Stale-while-revalidate improves perception but users see old data briefly.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Integration & Scale Considerations</h3>
-        <HighlightBlock as="p" tier="important">
-          Tightly integrate cache with data fetching hook. On mutation, invalidate
-          related entries. Use tags to declare relationships. At 1M users, LRU
-          eviction non-negotiable. Modern browsers handle ~50MB reasonably.
-        </HighlightBlock>
+      <section className="space-y-5">
+        <h2>Best practices</h2>
+        <ul className="list-disc space-y-2 pl-6 text-slate-700 dark:text-slate-300">
+          <li>Define a stable operation key and test it with reordered object properties, optional parameters, tenant changes, auth changes, and pagination cursors.</li>
+          <li>Keep lifecycle transitions in a reducer or explicit state machine so cancellation, retry, stale response, and cleanup behavior can be tested without rendering React components.</li>
+          <li>Use AbortController where the transport supports it, but still keep a monotonic request token because not every transport or browser path cancels before a response resolves.</li>
+          <li>Separate retry classification from retry scheduling. Classification decides whether an error is retryable; scheduling decides when the next attempt is allowed under deadline and budget.</li>
+          <li>Emit diagnostics for every suppressed or ignored operation. Silent stale-response drops are correct behavior, but they still need debug visibility.</li>
+          <li>Treat auth, tenant, locale, feature flag, and privacy mode as key dimensions when they change returned data or access permissions.</li>
+        </ul>
       </section>
 
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Real-world systems face storage quota limits, serialization bottlenecks, and complex invalidation logic. Libraries like TanStack</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">Query/Redux handle many concerns, but deep understanding of underlying design is essential for optimizing, debugging, and extending at scale. Production systems require careful monitoring, testing, and incident response procedures for cache-related failures.</HighlightBlock>
+      <section className="space-y-5">
+        <h2>Common Pitfalls</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A common pitfall is treating design a frontend caching layer as a small helper instead of a runtime. A helper usually handles the happy path. A runtime owns cancellation, cleanup, concurrency, memory limits, stale work, metrics, and user-visible recovery.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Another pitfall is conflating transport success with UI success. A 200 response can still be stale, unauthorized for the current tenant, partial, incompatible with the current schema, or obsolete because a newer operation already committed. The commit guard must validate response relevance before updating UI state.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A third pitfall is hiding failures behind generic retry or generic error UI. quota eviction and corrupted persisted entries must not crash render paths. The user experience should make the correct state visible: stale data with a banner, retryable failure with a button, auth failure with re-login, conflict with resolution UI, or disabled action with a clear reason.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A fourth pitfall is failing to bound memory. A registry that never deletes settled operations, an LRU without byte accounting, a retry scheduler that keeps dead timers, or a WebSocket subscription map that keeps handlers after unmount will eventually create production-only failures. The cleanup story should be part of the design, not an implementation afterthought.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A fifth pitfall is making policy impossible to override. Product teams need different policies for admin tools, search inputs, checkout, collaboration, and analytics dashboards. The runtime should expose controlled extension points while keeping the invariants non-negotiable: no stale commit, no auth-scope leak, no unbounded retry, and no silent rollback.</p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/networking-data-systems/frontend-caching-layer-failure-model.svg"
+          alt="Design a Frontend Caching Layer failure and recovery model"
+          caption="Failure model: stale work, retry limits, cache invalidation, auth boundaries, and observer signals decide whether the UI commits, degrades, retries, or rolls back."
+        />
+      </section>
+
+      <section className="space-y-5">
+        <h2>Real-world use cases</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Design a Frontend Caching Layer appears in product surfaces where users move faster than networks: search boxes, dashboards, admin tools, checkout flows, upload forms, collaboration views, and authenticated SaaS consoles. In these surfaces, one bad race condition can show stale data, double-submit a mutation, hide a failure, or leak information across tenants.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">For staff/principal interviews, anchor the use case in a concrete screen. Example: a settings page loads current settings, the user changes a value, a mutation starts, cached views update optimistically, another tab invalidates the same resource, and the network returns a delayed response. Your answer should describe which event wins, what the user sees, what is persisted, and which metric would prove the runtime behaved correctly.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The production readiness bar includes rollback and abuse handling. Rollback means the UI can revert optimistic or stale state without erasing newer user intent. Abuse handling means the runtime limits request amplification caused by rapid typing, tab storms, retries during outages, reconnect loops, and repeated token refresh failures.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Another real-world use case is incident response. During an outage, this runtime should help operators answer whether the client is retrying too aggressively, whether users are seeing stale state, whether requests are being deduped, whether token refresh is stuck, and which user actions are degraded. That requires event names, counters, and sampled traces designed into the module from the beginning.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A third use case is migration. Teams often move from hand-written fetch calls to a shared networking runtime gradually. The module should support adapter wrappers so older callers can use the same dedupe, retry, and error handling policy without a full rewrite. Good LLD answers mention migration because principal engineers are judged on adoption paths, not only greenfield design.</p>
+      </section>
+
+      <section className="space-y-5">
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you implement the core module end to end?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">I would define the public API first: cache.read(key), cache.write(key, value, metadata), cache.invalidate(tags), cache.subscribe(key). Then I would implement a pure reducer for fresh, stale, revalidating, expired, evicted. The adapter would normalize keys, read the registry, decide whether to reuse, cache, enqueue, or start transport work, and expose a view model with data, status, error, stale age, retry state, and command callbacks.</p>
+        <h3>How do you prevent stale or duplicate work from corrupting the UI?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">I would use stable operation keys plus a monotonic sequence token. AbortController reduces wasted work, but the token decides whether a response can commit. If a newer operation has started, the older one resolves into an ignored event that updates telemetry but not visible state. For shared in-flight operations, subscriber reference counts decide cleanup without cancelling work still needed by another component.</p>
+        <h3>What breaks at scale?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Request amplification breaks first: retries, duplicate mounts, rapid typing, reconnect loops, and cache invalidation storms can multiply backend traffic. Memory breaks next if caches, timers, event listeners, and operation journals are never collected. Debuggability breaks if ignored responses and retry decisions are not observable.</p>
+        <h3>How do you handle failure and rollback?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The reducer needs explicit failed, stale, retrying, rolledBack, and degraded states. Rollback should use inverse patches or scoped snapshots instead of resetting an entire cache. User-visible state should distinguish retryable network failure, authorization failure, validation failure, conflict, and stale data. Every rollback or suppressed commit should emit a trace event with operation key and reason.</p>
+        <h3>How do you defend your trade-offs?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">I would defend them with invariants: no stale response can commit after a newer operation, no non-idempotent mutation retries without an idempotency key, no cache entry crosses auth or tenant boundaries, and no retry loop can exceed budget. Then I would show metrics that prove those invariants in production: duplicate suppression count, stale commit suppression count, retry amplification, cache hit rate, p95 stale age, and rollback success rate.</p>
+        <h3>What would you ask the interviewer before coding?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">I would ask which operations are reads versus mutations, which ones are idempotent, whether data is tenant- or permission-scoped, what latency target matters, whether stale data is acceptable, how many components may subscribe to the same resource, and what the expected offline or reconnect behavior is. These questions determine cache policy, retry policy, and commit strictness.</p>
+        <h3>What does the example implementation need to prove?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The examples should prove the non-happy paths: duplicate subscribers share work, stale responses are ignored, retry budgets are enforced, rollback does not erase newer state, cache keys include security scope, and telemetry records the reason for every degraded outcome. A one-line example is not enough for this category because the design is mostly about lifecycle behavior under pressure.</p>
+      </section>
+
+      <section className="space-y-4">
+        <h2>References</h2>
+        <ul className="list-disc space-y-2 pl-6 text-slate-700 dark:text-slate-300">
+          <li><a href="https://react.dev/reference/react" target="_blank" rel="noreferrer">React docs: Hooks and effects</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN: AbortController</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" target="_blank" rel="noreferrer">MDN: Fetch API</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket" target="_blank" rel="noreferrer">MDN: WebSocket API</a></li>
+          <li><a href="https://spec.graphql.org/" target="_blank" rel="noreferrer">GraphQL specification</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc9110" target="_blank" rel="noreferrer">HTTP Semantics RFC 9110</a></li>
+        </ul>
       </section>
     </ArticleLayout>
   );

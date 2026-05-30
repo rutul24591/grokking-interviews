@@ -1,6 +1,1 @@
-# Map-based UI System — Example 1
-
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+# Design a Map-based UI System example 1\n\nConcrete low-level implementation exercise for Design a Map-based UI System.\n

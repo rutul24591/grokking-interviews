@@ -34,12 +34,11 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function FormValidationEngineArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      {/* Section 1: Problem Clarification */}
+export default function FormValidationEngineArticle() { return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Form Validation Engine</h1><h2>Definition &amp; Context</h2><p>Design a Form Validation Engine is an implementation-heavy low-level design problem covering rule composition, dependency tracking, async validation, stale-response rejection, error projection, localization, and submission gating. A principal-level answer must define state ownership, local structures, lifecycle cleanup, browser semantics, server reconciliation, observability, privacy, and rollback.</p><p>Keep field values, touched state, sync errors, async generations, and submit status separate. Validation is a dependency graph, not a set of unrelated onChange handlers. The important structures are field registry, rule graph, dependency edges, sync error map, async generation map, debounce timers, abort controllers, locale messages, and submit snapshot.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/form-validation-engine-runtime.svg" alt="Design a Form Validation Engine runtime" caption="Runtime flow from intent through guarded state, semantic projection, and recovery." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the component-specific mechanics that an implementation discussion must defend.</p>{/* Section 1: Problem Clarification */}
       <section>
-        <h2>Problem Clarification</h2>
+        <h3>Problem Clarification</h3>
         <HighlightBlock as="p" tier="crucial">
           We need to design a reusable form validation engine for a large-scale React
           application. The engine must validate individual fields and entire forms using
@@ -87,7 +86,7 @@ export default function FormValidationEngineArticle() {
 
       {/* Section 2: Requirements */}
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
@@ -195,7 +194,7 @@ export default function FormValidationEngineArticle() {
 
       {/* Section 3: High-Level Approach */}
       <section>
-        <h2>High-Level Approach</h2>
+        <h3>High-Level Approach</h3>
         <HighlightBlock as="p" tier="important">
           The core idea is to separate the <strong>validation logic</strong> from the
           <strong>UI rendering</strong> using a modular architecture. The engine consists
@@ -244,7 +243,7 @@ export default function FormValidationEngineArticle() {
 
       {/* Section 4: System Design (LLD) */}
       <section>
-        <h2>System Design</h2>
+        <h3>System Design</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module Architecture</h3>
         <p>The engine consists of eight modules:</p>
@@ -419,7 +418,7 @@ export default function FormValidationEngineArticle() {
 
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
-        <h2>Data Flow / Execution Flow</h2>
+        <h3>Data Flow / Execution Flow</h3>
         <HighlightBlock as="p" tier="important">
           The execution flow follows a layered approach: field value changes trigger the
           sync validation layer, which may trigger the async validation layer, which may
@@ -492,7 +491,7 @@ export default function FormValidationEngineArticle() {
 
       {/* Section 6: Implementation */}
       <section>
-        <h2>Implementation</h2>
+        <h3>Implementation</h3>
         <HighlightBlock as="p" tier="important">
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
@@ -610,7 +609,7 @@ export default function FormValidationEngineArticle() {
 
       {/* Section 7: Performance & Scalability */}
       <section>
-        <h2>Performance &amp; Scalability</h2>
+        <h3>Performance &amp; Scalability</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Time and Space Complexity</h3>
         <div className="my-4 overflow-x-auto">
@@ -715,7 +714,7 @@ export default function FormValidationEngineArticle() {
 
       {/* Section 8: Security Considerations */}
       <section>
-        <h2>Security Considerations</h2>
+        <h3>Security Considerations</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Input Sanitization</h3>
         <HighlightBlock as="p" tier="important">
@@ -807,7 +806,7 @@ export default function FormValidationEngineArticle() {
 
       {/* Section 9: Testing Strategy */}
       <section>
-        <h2>Testing Strategy</h2>
+        <h3>Testing Strategy</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
@@ -893,7 +892,7 @@ export default function FormValidationEngineArticle() {
 
       {/* Section 10: Interview-Focused Insights */}
       <section>
-        <h2>Interview-Focused Insights</h2>
+        <h3>Interview-Focused Insights</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Common Mistakes Candidates Make</h3>
         <ul className="space-y-3">
@@ -1072,74 +1071,12 @@ export default function FormValidationEngineArticle() {
             </HighlightBlock>
           </div>
         </div>
-      </section>
-
-      {/* Section 11: References */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://react-hook-form.com/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              React Hook Form — Performant Form Validation Library
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://zod.dev/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Zod — TypeScript-First Schema Validation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              MDN — Form Validation Guide
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.w3.org/WAI/tutorials/forms/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              WAI-ARIA — Accessible Forms Patterns
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.developer.mozilla.org/en-US/docs/Web/API/AbortController"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              MDN — AbortController API Documentation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://web.dev/articles/debounce-input"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Web.dev — Debouncing Input for Performance
-            </a>
-          </li>
-        </ul>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Use five boundaries: an input adapter, a typed state controller, a projection layer, an integration adapter, and an observability adapter. Normalize events before they enter state. Keep previews separate from commits. Release timers, observers, listeners, abort controllers, workers, and pointer capture idempotently on cancel and unmount.</p><p>Keep field values, touched state, sync errors, async generations, and submit status separate. Validation is a dependency graph, not a set of unrelated onChange handlers. For durable changes, validate the latest intent and record enough evidence to rollback deterministically.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/form-validation-engine-scale-recovery.svg" alt="Design a Form Validation Engine scale and recovery" caption="Scale defense: bound pressure, validate policy, reconcile failures, and emit reasoned evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Inline field validation is sufficient for small forms; a graph engine is justified when dependencies, async checks, localization, and consistent submission behavior recur across products.</p><p>Client validation improves feedback but is advisory. Server validation remains authoritative; async client responses are accepted only for the generation and value that initiated them. The dominant scale risks are large forms, cross-field rules, async uniqueness checks, rapid typing, hidden fields, locale changes, and server-client rule drift. Control them with bounded work, stable ids, cancellation, generation guards, measured caching, and explicit degraded behavior.</p><p>Optimistic UI is appropriate only when rollback is deterministic and understandable. Authorization, destructive effects, and conflict-sensitive truth stay server-authoritative.</p></section>
+<section><h2>Best practices</h2><p>Use typed state unions, stable identities, idempotency keys, versioned writes, SSR-safe browser feature detection, abortable async work, bounded caches, and semantic HTML. Test keyboard-only use, screen-reader output, slow networks, stale completion, retries, unmount during work, and large datasets.</p><p>Measure blocked transitions, stale drops, rollback rates, latency percentiles, cache pressure, retry exhaustion, and accessibility regressions. Keep telemetry small and free of sensitive content.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing preview and committed state, trusting arrival order, leaking resources after unmount, accepting stale completion, assuming visible data is the complete dataset, and implementing custom controls without accessible semantics.</p><p>For this topic, cancel stale requests, debounce provider checks, recompute dependents deterministically, focus the first invalid field, preserve server errors, and avoid infinite dependency cycles. Security and privacy require the design to validate again server-side, sanitize messages, avoid leaking account existence, rate-limit async checks, minimize sensitive telemetry, and constrain custom rule plugins.</p></section>
+<section><h2>Real-world use cases</h2><p>This design appears in production surfaces where repeated interaction, large datasets, asynchronous completion, and partial failure are normal. Reuse the runtime shell, but inject product policy explicitly: authorization, latency budget, persistence boundary, fallback, and telemetry.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep field values, touched state, sync errors, async generations, and submit status separate. Validation is a dependency graph, not a set of unrelated onChange handlers. I would name preview, commit, derived projection, async generation, and rollback evidence separately.</p><h3>What breaks at scale?</h3><p>large forms, cross-field rules, async uniqueness checks, rapid typing, hidden fields, locale changes, and server-client rule drift. I would bound each expensive operation and cancel work that no longer affects the visible committed result.</p><h3>What consistency model applies?</h3><p>Client validation improves feedback but is advisory. Server validation remains authoritative; async client responses are accepted only for the generation and value that initiated them.</p><h3>How do you recover from failure?</h3><p>I would cancel stale requests, debounce provider checks, recompute dependents deterministically, focus the first invalid field, preserve server errors, and avoid infinite dependency cycles.</p><h3>How do you defend the architecture?</h3><p>Inline field validation is sufficient for small forms; a graph engine is justified when dependencies, async checks, localization, and consistent submission behavior recur across products. The added complexity is acceptable only when the required behavior and operational evidence justify it.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API" target="_blank" rel="noreferrer">MDN Intersection Observer API</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>; }

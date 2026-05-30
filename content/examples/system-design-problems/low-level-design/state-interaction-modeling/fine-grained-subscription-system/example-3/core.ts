@@ -1,90 +1,66 @@
-export type fineGrainedSubscriptionSystemRuntimeState = {
-  topic: "fine-grained-subscription-system";
-  mounted: boolean;
-  lastSuccessfulVersion: number;
-  pendingVersion: number;
-  lastInteractionAtMs: number;
-  lastRecoveryAtMs?: number;
-  signal: {
-    offlineAgeMs: number;
-    conflictCount: number;
-    logSize: number;
-    lastAckVersion: number;
-  };
-};
-
-export type fineGrainedSubscriptionSystemRecoveryPlan = {
-  mode: "continue" | "degrade" | "block-and-recover";
-  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
-  actions: Array<"replay-local-log" | "surface-conflict" | "compact-acknowledged-ops" | "emit-telemetry" | "keep-current-state">;
-  evidence: string[];
-};
-
-function minutes(ms: number) {
-  return Math.round(ms / 60_000);
+export interface DebugEvent {
+  topic: string;
+  operationId: string;
+  phase: "accepted" | "rejected" | "effect-started" | "effect-settled" | "disposed";
+  reason?: string;
+  at: number;
 }
 
-export function planFineGrainedSubscriptionSystemRecovery(
-  state: fineGrainedSubscriptionSystemRuntimeState,
-  nowMs: number,
-): fineGrainedSubscriptionSystemRecoveryPlan {
-  const evidence: string[] = [];
-  const actions: fineGrainedSubscriptionSystemRecoveryPlan["actions"] = ["emit-telemetry"];
-  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
-  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
+export class RuntimeDiagnostics {
+  private events: DebugEvent[] = [];
+  private counters = new Map<string, number>();
+  private openOperations = new Map<string, number>();
 
-  if (!state.mounted) evidence.push("component-unmounted-before-completion");
-  if (versionGap > 1) evidence.push("multiple-versions-pending");
-  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
-  if (state.signal.offlineAgeMs > 2_000) evidence.push("offlineAgeMs-breached");
-  if (state.signal.conflictCount > 0) evidence.push("conflictCount-requires-operator-attention");
-  if (state.signal.logSize > 0.2) evidence.push("logSize-unsafe-for-silent-commit");
-
-  if (!state.mounted) {
-    actions.push("replay-local-log");
-    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
+  record(event: DebugEvent): void {
+    this.events.push(event);
+    const key = event.reason ? `${event.phase}:${event.reason}` : event.phase;
+    this.counters.set(key, (this.counters.get(key) ?? 0) + 1);
+    if (event.phase === "accepted" || event.phase === "effect-started") this.openOperations.set(event.operationId, event.at);
+    if (event.phase === "effect-settled" || event.phase === "disposed" || event.phase === "rejected") this.openOperations.delete(event.operationId);
+    if (this.events.length > 200) this.events.shift();
   }
 
-  if (versionGap > 1 || state.signal.logSize > 0.2) {
-    actions.push("surface-conflict", "compact-acknowledged-ops");
-    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
+  explain(operationId: string): string[] {
+    return this.events
+      .filter((event) => event.operationId === operationId)
+      .map((event) => `${event.phase}@${event.at}${event.reason ? `:${event.reason}` : ""}`);
   }
 
-  actions.push("keep-current-state");
-  return { mode: "continue", userVisibleState: "current", actions, evidence };
+  summary(): Record<string, number> {
+    return Object.fromEntries(this.counters.entries());
+  }
+
+  hasRegressionSignal(): boolean {
+    const rejected = [...this.counters.entries()].filter(([key]) => key.startsWith("rejected")).reduce((sum, [, count]) => sum + count, 0);
+    const settled = this.counters.get("effect-settled") ?? 0;
+    return rejected > 5 || settled > 100 || this.openOperations.size > 20;
+  }
+
+  stuckOperations(now: number, timeoutMs: number): string[] {
+    return [...this.openOperations.entries()]
+      .filter(([, startedAt]) => now - startedAt > timeoutMs)
+      .map(([operationId]) => operationId);
+  }
+
+  latestFailureReason(): string | undefined {
+    for (let i = this.events.length - 1; i >= 0; i -= 1) {
+      const event = this.events[i];
+      if (event.phase === "rejected" || event.reason) return event.reason ?? event.phase;
+    }
+    return undefined;
+  }
 }
 
-export function runFineGrainedSubscriptionSystemEdgeCaseScenario() {
-  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
-  const normal = planFineGrainedSubscriptionSystemRecovery(
-    {
-      topic: "fine-grained-subscription-system",
-      mounted: true,
-      lastSuccessfulVersion: 21,
-      pendingVersion: 22,
-      lastInteractionAtMs: nowMs - 90_000,
-      signal: { offlineAgeMs: 160, conflictCount: 0, logSize: 0.01, lastAckVersion: 0 },
-    },
-    nowMs,
-  );
+export function createOperationId(scope: string, version: number): string {
+  return `${scope}:${version}:${Date.now()}`;
+}
 
-  const failure = planFineGrainedSubscriptionSystemRecovery(
-    {
-      topic: "fine-grained-subscription-system",
-      mounted: true,
-      lastSuccessfulVersion: 21,
-      pendingVersion: 25,
-      lastInteractionAtMs: nowMs - 18 * 60_000,
-      signal: { offlineAgeMs: 2_900, conflictCount: 2, logSize: 0.42, lastAckVersion: 4 },
-    },
-    nowMs,
-  );
-
-  return {
-    topic: "Fine Grained Subscription System",
-    subcategory: "state-interaction-modeling",
-    invariant: "Local state must survive reloads and converge after reconnect without losing user intent.",
-    normal,
-    failure,
-  };
+export function recordFineGrainedSubscriptionSystemFailure(diagnostics: RuntimeDiagnostics, operationId: string, reason: string): void {
+  diagnostics.record({
+    topic: "fine-grained-subscription-system",
+    operationId,
+    phase: "rejected",
+    reason,
+    at: Date.now(),
+  });
 }

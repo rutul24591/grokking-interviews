@@ -1,89 +1,65 @@
-export type offlineFirstAppSignal = {
-  offlineAgeMs: number;
-  conflictCount: number;
-  logSize: number;
-  lastAckVersion: number;
-};
+export type OfflineFirstAppHealth = "healthy" | "degraded" | "offline" | "blocked";
 
-export type offlineFirstAppEvent = {
-  id: string;
-  topic: "offline-first-app";
-  actorId: string;
-  sequence: number;
-  receivedAtMs: number;
-  expectedVersion: number;
-  currentVersion: number;
-  payloadSize: number;
-  signal: offlineFirstAppSignal;
-};
-
-export type offlineFirstAppDecision = {
-  accepted: boolean;
-  action: "replay-local-log" | "surface-conflict" | "compact-acknowledged-ops" | "commit";
-  nextVersion: number;
-  reasons: string[];
-  audit: string[];
-};
-
-const topicInvariant = "Local state must survive reloads and converge after reconnect without losing user intent.";
-
-export function evaluateOfflineFirstAppEvent(event: offlineFirstAppEvent): offlineFirstAppDecision {
-  const reasons: string[] = [];
-
-  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
-  if (event.sequence <= 0) reasons.push("invalid-sequence");
-  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
-  if (event.signal.offlineAgeMs > 2_000) reasons.push("offlineAgeMs-outside-slo");
-  if (event.signal.logSize > 0.2) reasons.push("logSize-requires-guardrail");
-
-  let action: offlineFirstAppDecision["action"] = "commit";
-  if (reasons.includes("version-mismatch")) action = "replay-local-log";
-  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "surface-conflict";
-  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "compact-acknowledged-ops";
-
-  return {
-    accepted: reasons.length === 0,
-    action,
-    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
-    reasons,
-    audit: [
-      "topic:Offline First App",
-      "subcategory:offline-advanced-ux-systems",
-      "entity:local mutation",
-      "state:client state log",
-      "operation:sync reconciliation",
-      "invariant:" + topicInvariant,
-      "actor:" + event.actorId,
-      "event:" + event.id,
-    ],
-  };
+export interface OfflineFirstAppSignal {
+  onlineHint: boolean;
+  apiProbeOk: boolean;
+  storageWritable: boolean;
+  permissionOk: boolean;
+  authFresh: boolean;
+  failureCount: number;
+  quotaUsedRatio: number;
 }
 
-export function runOfflineFirstAppContractScenario() {
-  const base = Date.parse("2026-05-29T09:00:00.000Z");
-  const accepted = evaluateOfflineFirstAppEvent({
-    id: "offline-first-app-evt-1",
-    topic: "offline-first-app",
-    actorId: "user-42",
-    sequence: 7,
-    receivedAtMs: base,
-    expectedVersion: 12,
-    currentVersion: 12,
-    payloadSize: 18_500,
-    signal: { offlineAgeMs: 180, conflictCount: 0, logSize: 0.01, lastAckVersion: 1 },
-  });
+export interface OfflineFirstAppDecision {
+  health: OfflineFirstAppHealth;
+  userVisibleState: "current" | "queued-with-banner" | "read-only" | "requires-action";
+  allowedActions: Array<"read-cache" | "write-local" | "flush" | "prompt" | "reauthenticate">;
+  reasons: string[];
+}
 
-  const guarded = evaluateOfflineFirstAppEvent({
-    id: "offline-first-app-evt-late",
-    topic: "offline-first-app",
-    actorId: "user-42",
-    sequence: 8,
-    receivedAtMs: base + 4_000,
-    expectedVersion: 12,
-    currentVersion: 14,
-    payloadSize: 310_000,
-    signal: { offlineAgeMs: 2_700, conflictCount: 3, logSize: 0.34, lastAckVersion: 2 },
-  });
+export function classifyOfflineFirstAppHealth(signal: OfflineFirstAppSignal): OfflineFirstAppDecision {
+  const reasons: string[] = [];
+  if (!signal.onlineHint) reasons.push("browser-offline");
+  if (!signal.apiProbeOk) reasons.push("api-unreachable");
+  if (!signal.storageWritable) reasons.push("storage-unavailable");
+  if (!signal.permissionOk) reasons.push("permission-missing");
+  if (!signal.authFresh) reasons.push("auth-stale");
+  if (signal.failureCount >= 3) reasons.push("circuit-open");
+  if (signal.quotaUsedRatio > 0.85) reasons.push("quota-pressure");
 
-  return { accepted, guarded };
+  if (!signal.authFresh) {
+    return { health: "blocked", userVisibleState: "requires-action", allowedActions: ["read-cache", "reauthenticate"], reasons };
+  }
+  if (!signal.storageWritable || signal.quotaUsedRatio > 0.95) {
+    return { health: "blocked", userVisibleState: "read-only", allowedActions: ["read-cache"], reasons };
+  }
+  if (!signal.onlineHint || !signal.apiProbeOk || signal.failureCount >= 3) {
+    return { health: "offline", userVisibleState: "queued-with-banner", allowedActions: ["read-cache", "write-local"], reasons };
+  }
+  if (!signal.permissionOk || signal.quotaUsedRatio > 0.85) {
+    return { health: "degraded", userVisibleState: "queued-with-banner", allowedActions: ["read-cache", "write-local", "flush", "prompt"], reasons };
+  }
+  return { health: "healthy", userVisibleState: "current", allowedActions: ["read-cache", "write-local", "flush"], reasons };
+}
+
+export function runOfflineFirstAppHealthScenario() {
+  const healthy = classifyOfflineFirstAppHealth({
+    onlineHint: true,
+    apiProbeOk: true,
+    storageWritable: true,
+    permissionOk: true,
+    authFresh: true,
+    failureCount: 0,
+    quotaUsedRatio: 0.2,
+  });
+  const blocked = classifyOfflineFirstAppHealth({
+    onlineHint: true,
+    apiProbeOk: false,
+    storageWritable: true,
+    permissionOk: false,
+    authFresh: false,
+    failureCount: 4,
+    quotaUsedRatio: 0.91,
+  });
+  return { invariant: "Critical journeys must remain usable without network while freshness and conflict risk stay visible.", healthy, blocked };
 }

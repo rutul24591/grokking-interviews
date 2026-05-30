@@ -20,10 +20,9 @@ export const metadata: ArticleMetadata = {
   relatedTopics: ["code-editor-component", "image-gallery-lightbox", "rich-text-editor"],
 };
 
-export default function PDFViewerArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <p>
+export default function PDFViewerArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a PDF Viewer</h1><h2>Definition &amp; Context</h2><p>Design a PDF Viewer is an implementation-heavy low-level design problem covering document fetch, range requests, worker parsing, page virtualization, render scheduling, zoom, text layers, annotations, and fallback. A principal-level answer must make state ownership, data structures, lifecycle, failure containment, consistency, privacy, cost, and observability explicit.</p><p>Keep document bytes, parsed metadata, page render tasks, text layers, and annotation state separate. A rendered canvas is a disposable projection. The implementation structures are document source, range cache, worker channel, page metadata, visible range, render queue, scale, text-layer cache, annotation journal, and abort handles.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/pdf-viewer-runtime.svg" alt="Design a PDF Viewer runtime" caption="Topic-specific runtime stages from user intent through durable projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below contains the topic-specific implementation mechanics.</p><p>
         A PDF viewer is one of the harder document rendering components to build correctly. The challenges are not
         just functional — page navigation, zoom, search — but architectural: how to render 500-page documents
         without exhausting memory, how to make canvas-rendered content accessible to screen readers, how to overlay
@@ -38,7 +37,7 @@ export default function PDFViewerArticle() {
         caption="PDF.js pipeline, virtualized page rendering, text layer, and annotation overlay"
       />
 
-      <h2>PDF.js Rendering Model</h2>
+      <h3>PDF.js Rendering Model</h3>
       <p>
         PDF.js is the standard browser-side PDF rendering library (originally by Mozilla). Understanding its
         architecture is essential because it directly shapes the component design.
@@ -72,7 +71,7 @@ export default function PDFViewerArticle() {
         pixel density.
       </HighlightBlock>
 
-      <h2>Virtualized Page Rendering</h2>
+      <h3>Virtualized Page Rendering</h3>
       <p>
         A 200-page PDF rendered as 200 simultaneous Canvas elements would consume several gigabytes of GPU memory
         and make the browser unresponsive. Virtualization renders only the pages currently visible in the viewport,
@@ -123,7 +122,7 @@ export default function PDFViewerArticle() {
         canvas is evicted.</li>
       </ul>
 
-      <h2>Text Layer for Accessibility and Search</h2>
+      <h3>Text Layer for Accessibility and Search</h3>
       <p>
         Canvas rendering produces pixels — screen readers cannot read pixels. Without a text layer, a PDF viewer
         is inaccessible to the 1 in 8 people who use assistive technology. The text layer also enables text
@@ -170,7 +169,7 @@ export default function PDFViewerArticle() {
         pages to complete before enabling search.
       </p>
 
-      <h2>Annotation Layer</h2>
+      <h3>Annotation Layer</h3>
       <p>
         Annotations — highlights, sticky notes, freehand drawings, shapes — sit in a third layer above both the
         canvas and the text layer. The annotation layer is an SVG element (or a Canvas element for freehand)
@@ -211,7 +210,7 @@ export default function PDFViewerArticle() {
         simple note edits, and operational transform for concurrent position changes.
       </p>
 
-      <h2>Zoom and Viewport Management</h2>
+      <h3>Zoom and Viewport Management</h3>
       <p>
         Zoom is implemented by changing the scale factor in the PDF.js viewport. All visual elements — canvas
         size, text layer positions, annotation positions — scale proportionally.
@@ -237,7 +236,7 @@ export default function PDFViewerArticle() {
         trigger — re-render only when the pinch gesture completes, not on every touchmove event.
       </p>
 
-      <h2>Page Navigation</h2>
+      <h3>Page Navigation</h3>
       <p>
         Two navigation patterns serve different user intents:
       </p>
@@ -256,7 +255,7 @@ export default function PDFViewerArticle() {
         the main viewer to that page. The active page's thumbnail is highlighted.
       </p>
 
-      <h2>Password-Protected PDFs</h2>
+      <h3>Password-Protected PDFs</h3>
       <p>
         PDF.js throws a <code>PasswordException</code> when attempting to load a password-protected PDF without
         the password. The correct handling:
@@ -270,7 +269,7 @@ export default function PDFViewerArticle() {
         <li>Never log or store the password anywhere — it's sensitive data.</li>
       </ol>
 
-      <h2>Accessibility</h2>
+      <h3>Accessibility</h3>
       <p>
         A PDF viewer's a11y strategy:
       </p>
@@ -286,71 +285,12 @@ export default function PDFViewerArticle() {
         thumbnail, move focus to the start of that page's text layer.</li>
         <li><strong>Search result announcement:</strong> When search finds matches, announce via an ARIA live
         region: "Found 17 matches. Viewing match 1."</li>
-      </ul>
-
-      <h2>Interview Q&A</h2>
-
-      <h3>Q: How would you handle a 500-page PDF without the page crashing?</h3>
-      <p>
-        Three mechanisms working together: virtualized rendering (only 3–5 pages in the viewport are ever
-        rendered as full-resolution canvas elements), memory capping (evict rendered pages beyond a limit based
-        on device memory), and render cancellation (cancel in-progress renders for pages that have scrolled off
-        before the render completes).
-      </p>
-      <p>
-        For the thumbnail sidebar with 500 thumbnails: render thumbnails at 0.1× scale and virtualize the sidebar
-        independently. Only the visible thumbnails in the sidebar render — the same IntersectionObserver pattern
-        applies to the thumbnail list.
-      </p>
-      <p>
-        Text extraction for search across 500 pages: stream extraction page by page in the worker, enabling
-        search as pages are processed rather than waiting for all 500.
-      </p>
-
-      <h3>Q: Why is canvas-based rendering inaccessible and how do you fix it?</h3>
-      <p>
-        Canvas elements are rasterized bitmap images from the browser's perspective — they have no text content,
-        no semantic structure, and no accessibility tree representation. A screen reader sees a canvas element as
-        a generic interactive region with no describable content.
-      </p>
-      <p>
-        The fix is the text layer: extract all text items from the PDF using PDF.js's <code>getTextContent()</code>,
-        render them as absolutely positioned transparent HTML elements precisely overlaid on the corresponding
-        canvas areas. Screen readers read the HTML text elements; sighted users see the canvas rendering. The
-        two representations must be kept in sync — when canvas re-renders at a new zoom level, the text layer
-        repositions to match.
-      </p>
-
-      <h3>Q: How do you implement annotations that survive zoom changes?</h3>
-      <p>
-        Store all annotation positions in PDF coordinate space (the coordinate system used inside the PDF file,
-        origin at bottom-left, units in PDF points). When rendering an annotation, transform from PDF coordinates
-        to screen coordinates using the current viewport transform matrix. When the user zooms, apply the new
-        viewport transform to all stored PDF-coordinate positions — no stored data changes, only the rendering
-        transform.
-      </p>
-      <p>
-        This is the same principle PDF.js uses internally: all PDF content is in PDF coordinates, the viewport
-        transform maps it to screen pixels. Your annotation layer applies the same viewport transform.
-      </p>
-
-      <h3>Q: How would you build a PDF form filling feature?</h3>
-      <p>
-        PDF files can contain form field definitions (AcroForm or XFA forms) specifying text inputs, checkboxes,
-        radio buttons, dropdowns, and signature fields with their positions and sizes in PDF coordinates.
-        PDF.js's <code>page.getAnnotations()</code> returns these field definitions.
-      </p>
-      <p>
-        Render HTML form elements as an overlay layer (above canvas and text, below annotation layer) at the
-        PDF-coordinate positions transformed to screen space. Each form field type maps to an HTML form element:
-        text field → <code>&lt;input type="text"&gt;</code>, checkbox → <code>&lt;input type="checkbox"&gt;</code>.
-        Style each element to match the PDF's original field styling.
-      </p>
-      <p>
-        Saving the filled form: PDF.js cannot modify PDF files. Use a server-side PDF manipulation library
-        (PDFKit, PyPDF2, iText) to apply the form values to the PDF and return a new PDF. The client sends the
-        form field values as JSON; the server produces the filled PDF.
-      </p>
-    </ArticleLayout>
-  );
-}
+      </ul></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate input normalization, typed state transitions, derived projection, integration effects, and bounded telemetry. Preview state must not silently become durable state. Every timer, listener, observer, worker, request, pointer capture, and cache entry needs an explicit lifetime.</p><p>Keep document bytes, parsed metadata, page render tasks, text layers, and annotation state separate. A rendered canvas is a disposable projection. Commit only after applying the latest policy and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/pdf-viewer-recovery.svg" alt="Design a PDF Viewer recovery map" caption="Recovery decisions: contain pressure, retain committed truth, reconcile safely, and emit evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Embedding the browser viewer is cheaper; a custom runtime is justified for controlled annotations, search, telemetry, access policy, and consistent interaction.</p><p>Document bytes and annotation versions are authoritative. Canvas renders are generation-tagged and disposable; stale render tasks must never replace newer zoom results. The scale pressure is large documents, rapid zoom, encrypted files, malformed content, memory pressure, worker failures, and print or download policy. Bound work, cancel stale effects, cap memory, and degrade predictably.</p><p>Use optimistic UI only where rollback is deterministic and understandable. Keep authorization and destructive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit state unions, idempotency keys, generation guards, SSR-safe feature checks, and deterministic cleanup. Test keyboard use, accessibility output, stale responses, retries, unmount, constrained devices, and large datasets.</p><p>Measure interaction latency, blocked transitions, stale drops, rollbacks, cache pressure, retries, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing preview and commit, trusting arrival order, leaking resources, accepting stale async work, and implementing custom interaction without semantic fallbacks.</p><p>For this topic, cancel obsolete renders, evict distant pages, isolate worker failure, preserve download fallback, validate annotation writes, and surface unsupported documents. Security and privacy require the design to validate untrusted input, authorize durable mutations server-side, minimize sensitive telemetry, and bound resource consumption.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies where users repeatedly manipulate state while network, browser, and authorization boundaries can fail independently. Reuse the controller shell, but inject product-specific policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep document bytes, parsed metadata, page render tasks, text layers, and annotation state separate. A rendered canvas is a disposable projection.</p><h3>What breaks at scale?</h3><p>large documents, rapid zoom, encrypted files, malformed content, memory pressure, worker failures, and print or download policy. I would bound expensive work and cancel obsolete effects.</p><h3>What consistency model applies?</h3><p>Document bytes and annotation versions are authoritative. Canvas renders are generation-tagged and disposable; stale render tasks must never replace newer zoom results.</p><h3>How do you recover?</h3><p>I would cancel obsolete renders, evict distant pages, isolate worker failure, preserve download fallback, validate annotation writes, and surface unsupported documents.</p><h3>Why this architecture?</h3><p>Embedding the browser viewer is cheaper; a custom runtime is justified for controlled annotations, search, telemetry, access policy, and consistent interaction. The implementation cost is justified only when the required behavior needs it.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li></ul></section>
+</ArticleLayout>}

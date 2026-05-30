@@ -2,486 +2,207 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
-import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-lld-observer-apis",
-  title: "Design Observer APIs",
-  description:
-    "Production-grade Intersection, Mutation, and Resize Observers for efficient DOM monitoring, lazy loading, and responsive layouts without polling.",
+  title: "Design Observer API Systems",
+  description: "Implementation-heavy low-level design for design observer api systems, covering browser capability checks, state machines, fallbacks, security, performance, and observability.",
   category: "low-level-design",
   subcategory: "web-platform-browser-apis",
   slug: "observer-apis",
-  wordCount: 5400,
-  readingTime: 33,
-  lastUpdated: "2026-05-06",
-  tags: [
-    "lld",
-    "observers",
-    "intersection",
-    "mutation",
-    "resize",
-    "performance",
-  ],
-  relatedTopics: [
-    "web-performance-optimization",
-    "progressive-image-loading",
-    "dom-and-virtual-dom",
-  ],
+  wordCount: 4700,
+  readingTime: 28,
+  lastUpdated: "2026-05-29",
+  tags: ["lld", "browser-apis", "web-platform", "frontend-architecture", "principal-engineer"],
+  relatedTopics: ["offline-first-architecture", "performance", "permissions-ux"],
 };
 
-export default function ObserverAPIsArticle() {
+export default function ObserverApisArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">
-          DOM polling (setInterval checking visibility, size) expensive: wasteful
-          CPU, batteries drained (mobile), janky UX. Observer APIs solve: monitor
-          DOM asynchronously, fire callback only when change detected. Key
-          challenges: efficient threshold handling (intersection), batching
-          mutations, handling nested observers, and managing observer lifecycles
-          (prevent memory leaks).
-        </HighlightBlock>
+        <h1>Design Observer API Systems</h1>
+        <h2>Definition &amp; Context</h2>
         <p>
-          <strong>Assumptions:</strong>
+          Design Observer API Systems is a low-level design problem about wrapping a powerful but inconsistent browser capability in a production-safe IntersectionObserver and ResizeObserver orchestration layer. Browser APIs are not normal libraries: availability differs by browser, permissions can change at runtime, callbacks may fire on the main thread, and user activation, privacy, storage, and lifecycle rules can invalidate a happy-path implementation.
         </p>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">Need to detect visibility (element in viewport or hidden).</HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            Need to detect DOM changes (attributes, text content, children).
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">Need to detect size changes (responsive layout).</HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            Polling (setInterval) too expensive, need event-driven approach.
-          </HighlightBlock>
-          <li>Performance-critical (optimize battery, CPU usage).</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">
-            <strong>Intersection Observer:</strong> Detect when element enters
-            viewport.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            <strong>Mutation Observer:</strong> Detect DOM changes (attribute,
-            text, children).
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            <strong>Resize Observer:</strong> Detect element size changes.
-          </HighlightBlock>
-          <li>
-            <strong>Thresholds:</strong> Trigger at specific visibility %
-            (0%, 50%, 100%).
-          </li>
-          <li>
-            <strong>Batching:</strong> Collect changes, fire once per frame
-            (efficient).
-          </li>
-          <li>
-            <strong>Unobserve:</strong> Stop observing when no longer needed
-            (cleanup).
-          </li>
-          <li>
-            <strong>Root Element:</strong> Observe relative to specific root
-            (viewport or container).
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">
-            <strong>Latency:</strong> Callback fires within 100ms of change.
-          </HighlightBlock>
-          <li>
-            <strong>CPU:</strong> Minimal overhead (event-driven, not polling).
-          </li>
-          <li>
-            <strong>Memory:</strong> Observer instance &lt;1KB overhead.
-          </li>
-          <li>
-            <strong>Accuracy:</strong> Detect all changes (no missed events).
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Edge Cases</h3>
-        <ul className="space-y-2">
-          <li>
-            Element hidden (display: none) then shown. Should fire visibility
-            change.
-          </li>
-          <li>
-            Document size changes (window resize). All observers fire.
-          </li>
-          <li>
-            Nested observers (observer callbacks modify DOM). Risk infinite
-            loop (careful).
-          </li>
-          <HighlightBlock as="li" tier="crucial">
-            Observer garbage collected while observing. Risk: callback never
-            fires, memory leak.
-          </HighlightBlock>
-          <li>
-            Rapid mutations (add/remove 1000 elements). Observer batches, fires
-            once.
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="crucial">Observer APIs: register observer, watch elements asynchronously,
-          browser fires callback on change (batched, async). No polling.</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">Three
-          main APIs: Intersection (visibility), Mutation (DOM changes), Resize
-          (size changes). Unobserve when done (cleanup). Monitor multiple
-          elements efficiently.</Highlight></HighlightBlock>
-      </section>
-
-      <section>
-                <h2>Diagram Walkthrough</h2>
-
-<ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/web-platform-browser-apis/observer-apis.svg"
-          alt="Observer APIs showing IntersectionObserver, MutationObserver, and ResizeObserver patterns, use cases, and configuration options"
-          caption="Observer APIs showing IntersectionObserver, MutationObserver, and ResizeObserver patterns, use cases, and configuration options"
+        <p>
+          The implementation contract starts with observeTarget(target, policy), unobserve(target), batchRecords(records), recomputeLayout(reason). The runtime should model these states explicitly: unobserved, observing, intersecting, resized, throttled, disconnected. The invariant is: Visibility and layout reactions must be batched so browser observer callbacks do not create render loops. The hard case is when a resize callback mutates layout and triggers another resize callback in the same frame. A principal-ready answer should explain the API facade, capability detection, fallback behavior, lifecycle cleanup, privacy and security constraints, and the telemetry that proves the abstraction works in the field.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/web-platform-browser-apis/observer-apis-runtime.svg"
+          alt="Design Observer API Systems runtime model"
+          caption="Runtime model: browser capability checks, permission and lifecycle gates, guarded execution, fallback path, and observability are owned by the abstraction."
         />
-
-        <HighlightBlock as="p" tier="crucial">
-          Interview signal: the diagram captures the end-to-end flow for <strong>Design Observer APIs</strong>. You should be able to explain the happy path and the failure paths (retries, cancellation, backpressure), not just the API surface.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Look for the &ldquo;control points&rdquo; where correctness is enforced: idempotency keys, monotonic request/version tokens, single-flight coordination, and durable persistence boundaries.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          In interviews, call out observability and operability: what you log/measure (p95 latency, error rates, retries/queue depth) and how you keep degraded modes user-safe (read-only, queued, or cached fallbacks).
-        </HighlightBlock>
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Intersection Observer</h3>
-        <p>Detect when element enters/leaves viewport.</p>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">
-            <strong>Use Case:</strong> Lazy loading images, infinite scroll,
-            analytics tracking.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="crucial">
-            <strong>Configuration:</strong> root (viewport default), rootMargin
-            (offset), threshold (visibility %).
-          </HighlightBlock>
-          <li>
-            <strong>Threshold:</strong> 0 (just visible), 0.5 (50% visible), 1
-            (fully visible).
-          </li>
-          <li>
-            <strong>Callback:</strong> Fired when intersection changes, receives
-            IntersectionObserverEntry (ratio, bounds).
-          </li>
-          <li>
-            <strong>Efficiency:</strong> Browser optimized (skips offscreen,
-            uses native compositing).
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Mutation Observer</h3>
-        <p>Detect changes to DOM tree.</p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Use Case:</strong> Monitor dynamic content, form changes,
-            undo/redo.
-          </li>
-          <li>
-            <strong>Watched Changes:</strong> childList (children added/removed),
-            attributes, characterData (text).
-          </li>
-          <li>
-            <strong>Options:</strong> subtree (watch descendants), attributeFilter
-            (only specific attributes).
-          </li>
-          <li>
-            <strong>Callback:</strong> Batched, fired once per frame (async).
-            Contains MutationRecord array.
-          </li>
-          <li>
-            <strong>Caution:</strong> Callback modifies DOM → new mutations →
-            callback again. Risk infinite loop.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Resize Observer</h3>
-        <p>Detect element size changes.</p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Use Case:</strong> Responsive layout (adapt to container
-            width), charts (resize canvas).
-          </li>
-          <li>
-            <strong>Triggers:</strong> Element size changes (via CSS, parent
-            resize, explicit style).
-          </li>
-          <li>
-            <strong>Callback:</strong> Receives ResizeObserverEntry (new size,
-            old size).
-          </li>
-          <li>
-            <strong>Batched:</strong> Multiple resize events batched into one
-            callback.
-          </li>
-          <li>
-            <strong>Timing:</strong> Fires before paint (can modify layout
-            safely).
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Observer Lifecycle</h3>
-        <p>Create, observe, cleanup.</p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Create:</strong> new IntersectionObserver(callback,
-            options).
-          </li>
-          <li>
-            <strong>Observe:</strong> observer.observe(element) starts watching.
-          </li>
-          <li>
-            <strong>Unobserve:</strong> observer.unobserve(element) stops
-            watching (individual).
-          </li>
-          <li>
-            <strong>Disconnect:</strong> observer.disconnect() stops all
-            (cleanup on unmount).
-          </li>
-          <li>
-            <strong>Takerecords:</strong> observer.takeRecords() returns pending
-            entries (manual flush).
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Performance Optimization</h3>
-        <p>Efficient observer usage.</p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Root Margin:</strong> Trigger before element fully visible
-            (early load).
-          </li>
-          <li>
-            <strong>Threshold Array:</strong> Multiple thresholds (0, 0.5, 1)
-            fires once per transition.
-          </li>
-          <li>
-            <strong>Reuse Observer:</strong> Single observer watches many
-            elements (shared).
-          </li>
-          <li>
-            <strong>Unobserve Early:</strong> Stop watching after action taken
-            (lazy load done).
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Debounce Callback:</strong> Resize observer fires frequently,
-            debounce update.
-          </HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Lazy Loading Pattern</h3>
-        <p>Efficient image loading with Intersection Observer.</p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Placeholder:</strong> LQIP (low-quality image placeholder)
-            initially.
-          </li>
-          <li>
-            <strong>Detect Visibility:</strong> Intersection Observer detects
-            enter viewport.
-          </li>
-          <li>
-            <strong>Load Full Image:</strong> Set src (or fetch) when visible,
-            fade in.
-          </li>
-          <li>
-            <strong>Unobserve:</strong> After loading, unobserve (save CPU).
-          </li>
-          <li>
-            <strong>Benefits:</strong> Faster initial load (skip off-screen
-            images), reduced bandwidth.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Infinite Scroll Pattern</h3>
-        <p>Load more items as user scrolls.</p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Sentinel:</strong> Last item or sentinel element at end of
-            list.
-          </li>
-          <li>
-            <strong>Observe:</strong> Watch sentinel with Intersection Observer.
-          </li>
-          <li>
-            <strong>Trigger:</strong> Sentinel enters viewport → load next batch
-            (append).
-          </li>
-          <li>
-            <strong>Update Sentinel:</strong> Move sentinel to new last item.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Benefits:</strong> Efficient pagination (no manual buttons),
-            smooth UX.
-          </HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Analytics Tracking</h3>
-        <p>Track element visibility for analytics.</p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Ad Visibility:</strong> Track when ads visible (for
-            impression counting).
-          </li>
-          <li>
-            <strong>Content Sections:</strong> Track which sections user sees
-            (engagement).
-          </li>
-          <li>
-            <strong>Threshold:</strong> Use 50% visible threshold (threshold:
-            0.5).
-          </li>
-          <li>
-            <strong>Report:</strong> On visibility change, send analytics event
-            (visible/hidden).
-          </li>
-          <li>
-            <strong>Unobserve:</strong> After 1st visible event, unobserve
-            (don't re-track).
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Monitoring & Observability</h3>
-        <p>Track observer health.</p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Callback Time:</strong> How long do callbacks take? (avoid
-            blocking).
-          </li>
-          <li>
-            <strong>Mutation Count:</strong> How many mutations per second?
-            (detect pathological patterns).
-          </li>
-          <li>
-            <strong>Observer Count:</strong> How many active observers?
-            (resource usage).
-          </li>
-          <li>
-            <strong>Memory:</strong> Observer overhead (should be small).
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Latency:</strong> Time from change to callback (should be
-            &lt;100ms).
-          </HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Implementation Considerations</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Browser Support</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Intersection Observer: modern browsers (IE 11 no). Mutation Observer:
-          universal support. Resize Observer: modern browsers (IE no).
-          Polyfills available for older browsers.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">React Integration</h3>
-        <HighlightBlock as="p" tier="important">
-          useEffect hook for lifecycle. useRef for element. Cleanup:
-          unobserve/disconnect on unmount. Hook libraries (react-intersection-observer)
-          abstract this.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing Observers</h3>
-        <HighlightBlock as="p" tier="important">
-          Mock IntersectionObserver in tests (real browser integration tests
-          needed). Simulate visibility changes, mutations, resizes. Verify
-          callbacks fire.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Advanced Production Patterns</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Composite Observers</h3>
+        <h2>Core Concepts</h2>
         <p>
-          Combine observers: lazy load image (intersection) and track size
-          (resize). Efficient: single callback for both.
+          The first concept is feature detection with a policy decision. The runtime should not only check whether an API exists. It should decide whether the API is allowed for this user journey, browser, security context, permission state, and product risk. For example, an API may exist but require HTTPS, transient user activation, foreground tab state, same-origin constraints, or a browser-specific fallback.
         </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Observer Pooling</h3>
-        <HighlightBlock as="p" tier="important">
-          Reuse observer instances for many elements (single observer, observe
-          multiple). Reduces memory, speeds up init.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">IntersectionObserver with Delay</h3>
-        <HighlightBlock as="p" tier="important">
-          Don't load immediately on visibility. Debounce or delay: load only if
-          visible for 2+ seconds (prevent preloading off-screen).
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing at Scale</h3>
-        <HighlightBlock as="p" tier="important">
-          1000 observed elements, rapid mutations. Verify callbacks don't
-          block UI (no jank). Memory remains stable.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-World Pitfalls</h3>
-        <HighlightBlock as="p" tier="important">
-          Common: forget disconnect() → memory leak (observers keep firing).
-          Solution: cleanup in useEffect return. Another: mutation observer
-          creates infinite loop. Solution: guard against self-modifications.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Incident Response</h3>
-        <HighlightBlock as="p" tier="crucial">
-          High callback latency: check if callback does heavy work (defer to
-          worker). Memory growing: verify disconnect() called. UI jank: profile
-          callback time.
-        </HighlightBlock>
+        <p>
+          The second concept is a small state machine around the browser boundary. Directly calling browser APIs from components spreads permission prompts, unsupported states, cleanup, and errors across the app. A runtime with explicit states can reject unsafe calls, produce consistent UI states, and shield product code from browser-specific exception shapes.
+        </p>
+        <p>
+          The third concept is lifecycle ownership. Browser API handles often outlive a render: observers must disconnect, workers must terminate, file references must be released, permission watches must stop, callbacks must be batched, and hidden tabs may throttle timers. The durable structures are observer pool, target registry, threshold policy, resize box model, batched callback queue, layout invalidation map. These structures give the implementation enough evidence to clean up safely and debug incidents.
+        </p>
+        <h3>Implementation contract</h3>
+        <p>
+          Public methods should return typed outcomes such as accepted, unsupported, permission-denied, queued, cancelled, throttled, or fallback-used. Components should not infer these outcomes from thrown DOM exceptions. The runtime should also expose a snapshot with capability state, active work, last error, and recovery action so the UI can render coherent affordances.
+        </p>
+        <p>
+          Every browser-facing operation should define input validation, output normalization, cancellation semantics, and cleanup requirements. Sensitive operations need data minimization and audit events. Expensive operations need budgets and backpressure. User-gesture operations need a short-lived activation window and a fallback path when the activation is lost.
+        </p>
+        <h3>Operation classes</h3>
+        <p>
+          Browser work should be classified before implementation. User-activation operations, long-running computation, observer callbacks, permission prompts, file intake, and background work have different safety rules. A copy action may need a foreground click, a worker job may need transferable ownership, an observer may need frame batching, and a location request may need a purpose-specific explanation. Grouping operations this way prevents a single generic wrapper from hiding important browser constraints.
+        </p>
+        <p>
+          Each operation class should define retry behavior, cancellation, privacy limits, and UI fallback. Some operations are safe to retry, some are not; some can run in the background, while others must pause when the document is hidden. Principal-level design means naming those classes and refusing unsafe execution when the browser context no longer matches the operation contract.
+        </p>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Precision vs Efficiency</h3>
-        <HighlightBlock as="p" tier="crucial">
-          High threshold precision (many values): fires often. Single threshold
-          (0 or 1): fewer fires. Balance: use 0.5 for most use cases.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Root Margin Tradeoff</h3>
-        <HighlightBlock as="p" tier="important">
-          Large root margin: early load (smooth scrolling) but more prefetch.
-          Small: accurate visibility but late load. Typical: 50px (start loading
-          before visible).
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Observer Overhead</h3>
-        <HighlightBlock as="p" tier="important">
-          Each observer has overhead. Reuse observers (single, watch many) vs
-          unique (per element). Reuse more efficient.
-        </HighlightBlock>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          The architecture has five layers. The component facade accepts product intent. The capability layer checks API support, secure context, permissions, user activation, and document lifecycle. The execution engine calls the browser API through adapters. The fallback layer provides an alternate path when the capability is missing or unsafe. The observer layer records metrics and exposes state changes to UI subscribers.
+        </p>
+        <p>
+          A normal flow starts with a product component calling the facade. The facade validates the request and attaches an operation id. The capability layer returns allowed, denied, unsupported, or deferred. If allowed, the execution engine invokes the browser adapter with cancellation and timeout guards. If denied or unsupported, the fallback layer returns a user-safe alternative rather than throwing a raw browser error into the UI.
+        </p>
+        <p>
+          Cleanup is part of the flow, not a separate afterthought. On unmount, navigation, tab hide, permission change, abort, or worker termination, the runtime should cancel active operations, release resources, and emit a final snapshot. The cleanup path must be idempotent because React remounts, route transitions, service worker updates, and browser lifecycle events can call it more than once.
+        </p>
+        <h3>Data model and invariants</h3>
+        <p>
+          A practical data model includes operation id, capability snapshot, permission state, caller scope, lifecycle state, active handles, timeout deadline, fallback reason, and telemetry fields. Invariants should be enforced before the browser call: no privileged action without the required user activation, no observer callback that mutates layout recursively without batching, no worker result accepted after cancellation, and no sensitive payload logged.
+        </p>
+        <p>
+          The runtime should separate browser adapters from policy. Adapters know how to call Clipboard, Geolocation, Worker, Observer, Visibility, Drag and Drop, or Background Sync APIs. Policy decides whether a call is safe, what fallback to use, what to show the user, and what to record. That split makes tests deterministic and lets product policy evolve without rewriting browser integration code.
+        </p>
+        <h3>Failure matrix</h3>
+        <p>
+          The design should include a failure matrix from browser cause to product response. Unsupported API routes to fallback. Permission denied routes to explanation and manual alternatives. Expired user activation routes to a fresh user action. Hidden document routes to pause or defer. Large payload routes to worker or chunking. Observer loop risk routes to batching and layout guards. This matrix makes the implementation inspectable and keeps feature teams from inventing inconsistent behavior.
+        </p>
+        <p>
+          Browser lifecycle transitions should be modeled as first-class events. Visibility change, page freeze, navigation, bfcache restore, service worker update, worker termination, and permission revocation can all invalidate active handles. The runtime should move to a typed state, cancel or resume work safely, and emit a snapshot that lets the UI explain what happened.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/web-platform-browser-apis/observer-apis-failure.svg"
+          alt="Design Observer API Systems failure and fallback model"
+          caption="Failure model: unsupported APIs, permission denial, lifecycle changes, and expensive callbacks are routed through explicit fallbacks and telemetry."
+        />
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Batching for efficiency (fires once per frame). Monitoring callback latency and observer count. Testing with mocks and</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">integration tests. Common patterns: lazy loading images (LQIP + Intersection), infinite scroll, ad impression tracking. Real-world systems use observer pooling (reuse instances), cleanup in React useEffect, and libraries (react-intersection-observer) for abstraction.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>
+          Calling browser APIs directly is fast to ship and works for prototypes. It becomes fragile when multiple screens need consistent permission prompts, fallbacks, cleanup, security handling, and observability. A centralized runtime adds indirection, but it turns browser unpredictability into a stable application contract.
+        </p>
+        <p>
+          The main trade-off is control versus native behavior. Native APIs provide capabilities that JavaScript cannot reproduce efficiently, but they come with browser rules that can change or vary. A custom fallback is more predictable, but may be less capable or less performant. A principal-ready design uses native capability when it is safe and valuable, and falls back only for the degraded core journey.
+        </p>
+        <p>
+          Performance trade-offs depend on the API. Observers and visibility can reduce work, but callback storms can create layout thrash. Workers can improve responsiveness, but serialization and transfer overhead can dominate small jobs. Clipboard and permission APIs improve UX when used with user intent, but aggressive prompting harms trust. Background sync improves reliability, but requires idempotency and durable state.
+        </p>
+        <p>
+          Security and privacy are first-class trade-offs. Clipboard, location, file drops, push-like background actions, and worker payloads can expose sensitive data or create abuse paths. The design should minimize payloads, sanitize inputs, respect permissions, avoid logging secrets, and fail closed when the browser cannot prove the user or document state required by the operation.
+        </p>
+        <p>
+          There is also a portability trade-off. A browser-native path may be excellent in Chromium and limited or absent elsewhere. The design should isolate adapters, ship capability metrics, and support feature-flagged rollout. That lets the team use advanced APIs where they are reliable without breaking the baseline journey for users on constrained browsers or enterprise-managed devices.
+        </p>
+      </section>
+
+      <section>
+        <h2>Best practices</h2>
+        <p>
+          Always wrap browser APIs with capability detection, typed errors, and cleanup. Treat browser support as a runtime condition, not a build-time assumption. Check secure context, permissions, document visibility, user activation, and lifecycle state close to the call site because those values can change between render and execution.
+        </p>
+        <p>
+          Batch and budget callbacks. Observer APIs, visibility changes, drag events, worker progress, and sync status messages can fire frequently. Use requestAnimationFrame, microtask batching, or priority queues to avoid re-render storms. Track the cost of callbacks and expose slow-path metrics so the abstraction does not become a hidden performance problem.
+        </p>
+        <p>
+          Provide accessible, honest fallbacks. A disabled button, manual copy field, file input fallback, approximate location mode, read-only state, or visible retry queue should correspond to a real runtime state. The user should understand whether the issue is unsupported browser, denied permission, background throttling, failed validation, or temporary unavailability.
+        </p>
+        <p>
+          Test with browser API adapters rather than real global APIs in most unit tests. Use integration tests for permission denial, unsupported APIs, hidden tab behavior, worker cancellation, observer disconnect, large file drops, and activation expiry. Deterministic adapters make edge cases repeatable instead of timing-dependent.
+        </p>
+        <p>
+          Add operational guardrails. Cap active observers, worker jobs, queued background tasks, pasted payload size, drag-drop file count, and location watcher lifetime. Release resources on route change and expose counts in debug snapshots. These limits are part of the low-level design because browser APIs can exhaust memory, drain battery, or degrade input latency when left unbounded.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>
+          The most common pitfall is assuming support means safe use. A method can exist but still fail because the page is not secure, the tab is hidden, the user activation expired, the permission was denied, the payload is too large, or the browser throttled the callback. The runtime must treat these as normal states.
+        </p>
+        <p>
+          Another pitfall is leaking resources. Observers left connected, workers left running, file object URLs not revoked, geolocation watchers not cleared, and queues not compacted all create slow production failures. Cleanup should be idempotent and connected to component scope, route scope, and document lifecycle.
+        </p>
+        <p>
+          Teams also under-observe browser API failures. Browser-specific issues are hard to reproduce without telemetry. Capture capability state, permission outcome, fallback reason, operation duration, cancellation, and sanitized error class. Avoid capturing payloads, clipboard text, location coordinates, or file names unless the privacy policy explicitly permits it and the data is necessary.
+        </p>
+        <p>
+          A subtle pitfall is mixing rendering state with browser handle state. A component can re-render many times while the underlying observer, worker, permission watch, or drag session should remain stable. Conversely, a route transition can invalidate a handle even if React state still exists. The runtime should own handles explicitly and expose derived UI state rather than letting components hold raw browser objects.
+        </p>
+        <p>
+          Finally, avoid assuming the fallback is only for old browsers. Fallbacks also handle enterprise policies, denied permissions, embedded webviews, privacy modes, hidden tabs, quota pressure, and temporary platform regressions. If the fallback path is not tested and observable, it will fail exactly for the users who need it most.
+        </p>
+        <p>
+          A production-ready implementation should make these fallback transitions as visible in design review as the happy path.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          Browser API runtimes appear in productivity suites, internal admin tools, design editors, field-service apps, analytics dashboards, media uploaders, real-time collaboration products, and offline-capable PWAs. These products need capabilities that are close to the device and browser lifecycle, but they also need predictable behavior across teams and browsers.
+        </p>
+        <p>
+          At staff and principal level, the browser API layer is often platform-owned. Feature teams declare intent and policy, while the platform runtime owns capability checks, adapters, cleanup, fallbacks, accessibility, privacy review, and metrics. This prevents every feature from rediscovering browser edge cases in production.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you design this system end to end?</h3>
+        <p>
+          I would design a facade around the browser API, a capability and permission gate, a state machine, browser adapters, fallback renderers, and telemetry. The facade accepts product intent and returns typed outcomes. The gate checks secure context, support, permission, activation, and lifecycle. The adapter executes the browser call with cancellation and timeout guards. The fallback path keeps the core task usable when the native path is unavailable.
+        </p>
+        <h3>Why this architecture over direct browser calls?</h3>
+        <p>
+          Direct calls duplicate edge handling across components and make behavior inconsistent. A runtime centralizes invariants: Visibility and layout reactions must be batched so browser observer callbacks do not create render loops. It also makes permissions, fallbacks, cleanup, and metrics testable. The cost is an abstraction layer, but the benefit is predictable behavior across browsers and product surfaces.
+        </p>
+        <h3>What breaks at scale?</h3>
+        <p>
+          At scale, browser differences, permission churn, callback storms, memory leaks, hidden-tab throttling, serialization cost, and unsupported fallback paths become the main failures. The design needs adapter tests, capability metrics, bounded queues, idempotent cleanup, callback batching, privacy-safe logging, and rollout flags to disable unsafe paths.
+        </p>
+        <h3>What consistency model applies?</h3>
+        <p>
+          The consistency model is usually local and lifecycle-bound. The browser can confirm that an operation was requested or accepted by the API, but the application may still need server authority, user permission, or visible fallback state. The runtime should expose whether state is confirmed, pending, approximate, stale, cancelled, or fallback-derived instead of presenting every result as equally authoritative.
+        </p>
+        <h3>How do you handle failure, rollback, abuse, privacy, cost, and observability?</h3>
+        <p>
+          Failure becomes typed runtime state. Rollback means cancelling handles, ignoring late results, revoking previews, or returning to fallback UI. Abuse is controlled through user activation, permission checks, payload limits, rate limits, and feature flags. Privacy is protected through data minimization and sanitized telemetry. Cost is managed through batching, cancellation, worker thresholds, and cleanup. Observability records capability, permission outcome, fallback reason, duration, and resource counts.
+        </p>
+        <h3>How would you defend the trade-offs under interviewer pressure?</h3>
+        <p>
+          I would explain that browser APIs are powerful but non-deterministic across environments, so the abstraction optimizes for correctness and user trust. If challenged on complexity, I would scope the runtime to shared invariants and keep product policy injectable. If challenged on performance, I would show batching, budgets, and cancellation. Then I would walk through a resize callback mutates layout and triggers another resize callback in the same frame and explain the exact state transitions.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API" target="_blank" rel="noreferrer">MDN reference for the primary browser API</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API" target="_blank" rel="noreferrer">MDN Permissions API</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API" target="_blank" rel="noreferrer">MDN Page Visibility API</a></li>
+          <li><a href="https://web.dev/articles/rendering-performance" target="_blank" rel="noreferrer">web.dev Rendering Performance</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li>
+        </ul>
       </section>
     </ArticleLayout>
   );

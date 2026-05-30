@@ -20,10 +20,9 @@ export const metadata: ArticleMetadata = {
   relatedTopics: ["data-table", "rich-text-editor", "form-builder"],
 };
 
-export default function SpreadsheetLikeGridArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <p>
+export default function SpreadsheetLikeGridArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Spreadsheet-Like Grid</h1><h2>Definition &amp; Context</h2><p>Design a Spreadsheet-Like Grid is an implementation-heavy low-level design problem covering cell addressing, range selection, formula parsing, dependency tracking, recalculation, virtualization, clipboard, undo, and edit commit. A principal-level answer must make state ownership, data structures, lifecycle, failure containment, consistency, privacy, cost, and observability explicit.</p><p>Separate cell source values from computed values and rendered viewport state. Formula recalculation follows a dependency graph and must detect cycles deterministically. The implementation structures are cell map, row-column ids, formula AST, dependency graph, reverse edges, dirty queue, selection ranges, edit draft, undo journal, and viewport window.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/spreadsheet-like-grid-runtime.svg" alt="Design a Spreadsheet-Like Grid runtime" caption="Topic-specific runtime stages from user intent through durable projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below contains the topic-specific implementation mechanics.</p><p>
         A spreadsheet-like grid is one of the most architecturally ambitious UI
         components in enterprise software. It combines a high-performance virtualized
         rendering engine, a formula evaluation system with dependency tracking, a
@@ -39,7 +38,7 @@ export default function SpreadsheetLikeGridArticle() {
         caption="Spreadsheet grid architecture: cell model, formula engine, selection and range, conditional formatting and undo"
       />
 
-      <h2>Clarifying the Requirements</h2>
+      <h3>Clarifying the Requirements</h3>
       <p>
         The scope of a "spreadsheet-like grid" varies enormously between a simple inline
         data editor and a full Excel-equivalent browser application. Establish the
@@ -65,7 +64,7 @@ export default function SpreadsheetLikeGridArticle() {
         the grid.
       </p>
 
-      <h2>The Cell Data Model</h2>
+      <h3>The Cell Data Model</h3>
       <p>
         Each cell in the grid stores multiple pieces of data: the raw input (the string
         the user typed), the computed value (the result of formula evaluation or the
@@ -99,7 +98,7 @@ export default function SpreadsheetLikeGridArticle() {
         when format changes do not affect computation.
       </HighlightBlock>
 
-      <h2>The Formula Engine</h2>
+      <h3>The Formula Engine</h3>
       <p>
         A formula engine has two components: a parser (tokenizes and parses the formula
         string into an AST) and an evaluator (traverses the AST to produce a value).
@@ -138,7 +137,7 @@ export default function SpreadsheetLikeGridArticle() {
         dependency graph.
       </p>
 
-      <h2>Virtualized Rendering</h2>
+      <h3>Virtualized Rendering</h3>
       <p>
         Rendering a 1,000×1,000 grid means 1,000,000 DOM nodes if every cell is rendered.
         This is catastrophically slow. Virtualization renders only the cells visible in
@@ -169,7 +168,7 @@ export default function SpreadsheetLikeGridArticle() {
         for scrolling cells and top/left for frozen rows/columns that do not scroll.
       </HighlightBlock>
 
-      <h2>Multi-Cell Selection Model</h2>
+      <h3>Multi-Cell Selection Model</h3>
       <p>
         Selection in a spreadsheet is a range — typically a rectangular region defined
         by an anchor cell (where the selection started) and an active cell (where the
@@ -192,7 +191,7 @@ export default function SpreadsheetLikeGridArticle() {
         the anchor fixed.
       </p>
 
-      <h2>Inline Cell Editing</h2>
+      <h3>Inline Cell Editing</h3>
       <p>
         When the user double-clicks a cell or starts typing into the active cell, the
         cell enters edit mode. In view mode, the cell shows the formatted value as
@@ -221,7 +220,7 @@ export default function SpreadsheetLikeGridArticle() {
         during partial typing.
       </p>
 
-      <h2>Undo/Redo Stack</h2>
+      <h3>Undo/Redo Stack</h3>
       <p>
         The undo/redo stack is a command history. Each command records the before-state
         and after-state of the affected cells. A command might be: "set cell A1 from
@@ -246,7 +245,7 @@ export default function SpreadsheetLikeGridArticle() {
         formula dependency graph after undo/redo.
       </p>
 
-      <h2>Conditional Formatting</h2>
+      <h3>Conditional Formatting</h3>
       <p>
         Conditional formatting applies styles to cells based on their values or formulas.
         Rules are ordered (higher-priority rules override lower-priority ones) and
@@ -270,7 +269,7 @@ export default function SpreadsheetLikeGridArticle() {
         or the other way depending on product requirements).
       </p>
 
-      <h2>Clipboard Integration</h2>
+      <h3>Clipboard Integration</h3>
       <p>
         Copy (Ctrl+C) serializes the selected range to multiple clipboard formats:
         text/plain (TSV — tab-separated values), text/html (an HTML table for rich
@@ -289,84 +288,12 @@ export default function SpreadsheetLikeGridArticle() {
         region starting at the active cell. If the pasted data is larger than the
         available space (pasting beyond the grid boundary), expand the grid or truncate
         with a user warning.
-      </p>
-
-      <h2>Interview Q&A</h2>
-
-      <h3>Q: How do you detect circular references in formulas without infinite recursion?</h3>
-      <p>
-        During formula evaluation, maintain a "currently evaluating" set of cell
-        addresses. When evaluating cell C1, add C1 to this set. If, during C1's
-        evaluation, a dependency on C1 is encountered again (directly or transitively),
-        detect this by checking if C1 is already in the "currently evaluating" set and
-        return a circular reference error instead of recursing. After C1's evaluation
-        completes (or errors), remove it from the set. This is essentially DFS cycle
-        detection with a visited stack. Alternatively, detect cycles statically in the
-        dependency graph after each formula change using topological sort — if
-        topological sort fails (the graph has a cycle), mark all cells in the cycle as
-        circular reference errors without attempting evaluation.
-      </p>
-
-      <h3>Q: How do you virtualize a grid with variable row heights efficiently?</h3>
-      <p>
-        Maintain a cumulative height array indexed by row number. Cumulative heights[i]
-        is the total height of rows 0 through i-1 (the top edge of row i). To find the
-        first visible row given a scroll offset, binary search this array for the largest
-        cumulative height less than or equal to scrollTop. This is O(log N) rather than
-        O(N). When a row height changes (e.g., the user resizes row 50 to a new height),
-        update the cumulative array from row 50 onward — O(N) in the worst case, but
-        with a sorted typed array this update is a fast memory operation. For grids
-        with millions of rows, use a Fenwick tree (Binary Indexed Tree) which supports
-        O(log N) point updates and prefix sum queries, giving O(log N) for both height
-        updates and scroll position queries.
-      </p>
-
-      <h3>Q: How does the formula engine handle function evaluation that needs the full range values, like SUM(A1:A1000)?</h3>
-      <p>
-        Range functions receive a range reference as their argument, not individual
-        cell values. The evaluator resolves a range reference to an iterator over the
-        cells in that range. The SUM function iterates this lazily, accumulating the
-        sum without materializing all 1000 cell values into an intermediate array.
-        Each cell in the range is resolved by looking up its computed value from the
-        cell map (O(1) per cell). For large ranges, this is O(N) in range size, which
-        is unavoidable — there is no way to sum 1000 values without visiting each one.
-        Optimization: cache the range aggregate (sum, count, average) on the dependency
-        graph edge and invalidate only when a cell in the range changes. This memoizes
-        the expensive O(N) computation and makes subsequent reads O(1) for unchanged
-        ranges.
-      </p>
-
-      <h3>Q: How would you implement collaborative editing on the spreadsheet grid?</h3>
-      <p>
-        Collaborative editing requires an Operational Transform (OT) or CRDT approach.
-        Each cell edit is an operation: set cell [row, col] to value V. Operations are
-        sent to a server; the server maintains the canonical state and applies
-        operations in order, broadcasting each to all clients. Clients apply incoming
-        operations from other users as patches to their local state. The OT challenge
-        for spreadsheets is that operations can conflict: two users editing the same cell
-        simultaneously must be resolved (last-write-wins is common for single-cell edits,
-        merge-semantics for range operations). CRDT-based approaches use data structures
-        (like fractional indexing for row ordering) that automatically resolve conflicts
-        without server coordination. For a staff-level answer, frame the choice around
-        consistency guarantees: OT with a server guarantees a single linearized history;
-        CRDTs guarantee availability under network partition but may diverge on concurrent
-        edits of the same cell.
-      </p>
-
-      <h3>Q: How do you handle copy-paste of cells with relative formula references?</h3>
-      <p>
-        Excel-style formula copying adjusts relative cell references by the paste offset.
-        If cell A1 contains "=B1+C1" and the user copies it and pastes at A2, the
-        formula becomes "=B2+C2" (references shift down by one row). Absolute references
-        (with $ prefix, like $B$1) do not shift. The paste operation must parse the
-        copied formula, identify each cell reference and whether it is relative or
-        absolute in each dimension, then rewrite the formula with the appropriate offset
-        applied to relative references. This requires the formula AST — which already
-        classifies references as absolute or relative during parsing — to be preserved
-        through the copy/paste operation (the proprietary clipboard format includes the
-        parsed AST or the raw formula string, from which the paste handler rebuilds the
-        shifted formula).
-      </p>
-    </ArticleLayout>
-  );
-}
+      </p></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate input normalization, typed state transitions, derived projection, integration effects, and bounded telemetry. Preview state must not silently become durable state. Every timer, listener, observer, worker, request, pointer capture, and cache entry needs an explicit lifetime.</p><p>Separate cell source values from computed values and rendered viewport state. Formula recalculation follows a dependency graph and must detect cycles deterministically. Commit only after applying the latest policy and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/spreadsheet-like-grid-recovery.svg" alt="Design a Spreadsheet-Like Grid recovery map" caption="Recovery decisions: contain pressure, retain committed truth, reconcile safely, and emit evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>An HTML table is enough for display; a grid runtime is justified for editing, formulas, range operations, virtualization, and deterministic recalculation.</p><p>Cell edits are ordered transactions. Computed values derive from a versioned dependency graph; collaborative persistence must reconcile cell versions or operations explicitly. The scale pressure is millions of cells, dependency fan-out, cycles, paste bursts, variable widths, collaborative edits, and expensive formulas. Bound work, cancel stale effects, cap memory, and degrade predictably.</p><p>Use optimistic UI only where rollback is deterministic and understandable. Keep authorization and destructive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit state unions, idempotency keys, generation guards, SSR-safe feature checks, and deterministic cleanup. Test keyboard use, accessibility output, stale responses, retries, unmount, constrained devices, and large datasets.</p><p>Measure interaction latency, blocked transitions, stale drops, rollbacks, cache pressure, retries, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing preview and commit, trusting arrival order, leaking resources, accepting stale async work, and implementing custom interaction without semantic fallbacks.</p><p>For this topic, detect cycles, batch dirty recalculation, virtualize viewport cells, cap formula cost, sanitize clipboard input, preserve edit draft, and expose calculation errors. Security and privacy require the design to validate untrusted input, authorize durable mutations server-side, minimize sensitive telemetry, and bound resource consumption.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies where users repeatedly manipulate state while network, browser, and authorization boundaries can fail independently. Reuse the controller shell, but inject product-specific policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Separate cell source values from computed values and rendered viewport state. Formula recalculation follows a dependency graph and must detect cycles deterministically.</p><h3>What breaks at scale?</h3><p>millions of cells, dependency fan-out, cycles, paste bursts, variable widths, collaborative edits, and expensive formulas. I would bound expensive work and cancel obsolete effects.</p><h3>What consistency model applies?</h3><p>Cell edits are ordered transactions. Computed values derive from a versioned dependency graph; collaborative persistence must reconcile cell versions or operations explicitly.</p><h3>How do you recover?</h3><p>I would detect cycles, batch dirty recalculation, virtualize viewport cells, cap formula cost, sanitize clipboard input, preserve edit draft, and expose calculation errors.</p><h3>Why this architecture?</h3><p>An HTML table is enough for display; a grid runtime is justified for editing, formulas, range operations, virtualization, and deterministic recalculation. The implementation cost is justified only when the required behavior needs it.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li></ul></section>
+</ArticleLayout>}

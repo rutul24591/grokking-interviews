@@ -23,7 +23,17 @@ export const metadata: ArticleMetadata = {
 export default function ColorPickerArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      <p>
+      <section>
+        <h1>Design a Color Picker</h1>
+        <h2>Definition &amp; Context</h2>
+        <p>Design a Color Picker is a low-level design problem about implementing pointer sampling, color-space conversion, channel editing, palette persistence, contrast evaluation, eyedropper permission, and keyboard adjustment. A principal-level interview answer must define ownership boundaries, browser and accessibility semantics, local data structures, lifecycle cleanup, server reconciliation, and explicit degraded behavior.</p>
+        <p>Use one canonical color representation internally and derive HSV, HSL, RGB, hex, alpha, and contrast projections to prevent rounding drift across editors. The central structures are canonical RGBA value, hue position, saturation-value plane, alpha channel, parsed input draft, palette history, contrast target, and eyedropper capability. The implementation is not complete until cancellation, stale work, SSR behavior, privacy, metrics, and rollback are deliberate rather than incidental.</p>
+        <ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/color-picker-runtime.svg" alt="Design a Color Picker runtime flow" caption="Runtime flow: input becomes a guarded state transition, a semantic projection, and a recoverable outcome." />
+      </section>
+      <section>
+        <h2>Core Concepts</h2>
+        <p>The following deep dive preserves the component-specific mechanics and browser constraints that determine the implementation.</p>
+        <p>
         A color picker is one of the most technically demanding UI components in a design
         system. It requires a working understanding of color spaces, gamut mapping,
         floating-point precision, WCAG contrast algorithms, pointer capture APIs, and
@@ -39,7 +49,7 @@ export default function ColorPickerArticle() {
         caption="Color picker architecture: color state, space conversions, contrast engine, accessibility and palette"
       />
 
-      <h2>Clarifying the Requirements</h2>
+      <h3>Clarifying the Requirements</h3>
       <p>
         The design space for a color picker spans from a simple hex input field to a
         full design tool panel with multiple color space modes, opacity control, and
@@ -71,7 +81,7 @@ export default function ColorPickerArticle() {
         progressive enhancement — offer it when available, fall back gracefully.
       </p>
 
-      <h2>The Internal Color Representation</h2>
+      <h3>The Internal Color Representation</h3>
       <p>
         The most important architectural decision is what format to use for the internal
         (canonical) color representation. The wrong choice — using the display format
@@ -102,7 +112,7 @@ export default function ColorPickerArticle() {
         using it when saturation or chroma returns to a non-zero value.
       </HighlightBlock>
 
-      <h2>Color Space Conversions</h2>
+      <h3>Color Space Conversions</h3>
       <p>
         A production color picker needs accurate, well-tested conversion functions
         between all supported color spaces. The conversion chain for most spaces is:
@@ -133,7 +143,7 @@ export default function ColorPickerArticle() {
         contrast.
       </p>
 
-      <h2>The Saturation/Brightness Canvas</h2>
+      <h3>The Saturation/Brightness Canvas</h3>
       <p>
         The two-dimensional gradient picker (the large square where the user picks
         saturation and brightness by clicking or dragging) is typically rendered on a
@@ -164,7 +174,7 @@ export default function ColorPickerArticle() {
         input moves the cursor.
       </p>
 
-      <h2>Hue and Alpha Sliders</h2>
+      <h3>Hue and Alpha Sliders</h3>
       <p>
         The hue slider is a horizontal or vertical range input styled with a
         CSS gradient background cycling through the full hue spectrum. The range
@@ -187,7 +197,7 @@ export default function ColorPickerArticle() {
         white/checkered background.
       </p>
 
-      <h2>Hex and Channel Inputs</h2>
+      <h3>Hex and Channel Inputs</h3>
       <p>
         The hex input is a text field that accepts a 3 or 6 digit hex string (with or
         without the leading hash). The tricky part: the input must allow intermediate
@@ -215,7 +225,7 @@ export default function ColorPickerArticle() {
         user is in the middle of typing.
       </HighlightBlock>
 
-      <h2>WCAG Contrast Computation</h2>
+      <h3>WCAG Contrast Computation</h3>
       <p>
         Showing the contrast ratio of the selected color against a reference (typically
         white and black) is a high-value feature for design system pickers. The
@@ -241,7 +251,7 @@ export default function ColorPickerArticle() {
         algorithms behind a toggle for forward compatibility.
       </p>
 
-      <h2>Saved Palettes</h2>
+      <h3>Saved Palettes</h3>
       <p>
         A saved palette allows users to store frequently used colors and recall them
         quickly. The palette is an array of color values persisted to localStorage.
@@ -257,7 +267,7 @@ export default function ColorPickerArticle() {
         select saved colors without reaching for the mouse.
       </p>
 
-      <h2>Eyedropper API Integration</h2>
+      <h3>Eyedropper API Integration</h3>
       <p>
         The EyeDropper API (window.EyeDropper) allows sampling any pixel on screen,
         including outside the browser window. The API is supported in Chrome 95+ and
@@ -274,7 +284,7 @@ export default function ColorPickerArticle() {
         a color (by pressing Escape).
       </p>
 
-      <h2>Accessibility Model</h2>
+      <h3>Accessibility Model</h3>
       <p>
         A color picker is notoriously difficult to make accessible because the primary
         interaction — clicking a point on a gradient canvas — is purely visual. The
@@ -298,78 +308,50 @@ export default function ColorPickerArticle() {
         interactive element inside the panel (typically the hex input). When the panel
         closes, return focus to the triggering element.
       </p>
-
-      <h2>Interview Q&A</h2>
-
-      <h3>Q: Why use oklch instead of HSL for a modern color picker?</h3>
-      <p>
-        HSL was designed as a more human-friendly alternative to RGB, but it is
-        perceptually non-uniform. Two colors with the same HSL lightness value can
-        look dramatically different in perceived brightness — for example, pure yellow
-        (hsl(60, 100%, 50%)) looks much brighter than pure blue (hsl(240, 100%, 50%))
-        even though they have the same L. This makes HSL unreliable for generating
-        accessible color scales, harmonious palettes, and predictable gradients.
-        Oklch (from the OKLab color space) is perceptually uniform: equal steps in L,
-        C, or H produce approximately equal perceptual differences. A 10-step lightness
-        scale in oklch looks like 10 evenly spaced brightness steps to the human eye.
-        This makes it significantly more useful for design work. CSS Color 4 natively
-        supports oklch(), so conversions for display in CSS are straightforward.
-      </p>
-
-      <h3>Q: How do you handle colors outside the sRGB gamut when working in oklch?</h3>
-      <p>
-        The oklch color space can represent colors beyond the sRGB gamut (the range of
-        colors a standard screen can display). When the user picks an oklch value that
-        maps to a color with R, G, or B outside [0, 1] in sRGB, the color cannot be
-        displayed accurately on most screens. The options are: clamp each channel to
-        [0, 1] (fast but may shift hue significantly), use the CSS gamut mapping
-        algorithm (reduce chroma C while keeping L and H constant until the color falls
-        within sRGB — this preserves hue fidelity at the cost of saturation), or display
-        the out-of-gamut color with a warning indicator. Modern design tools use gamut
-        mapping by default. For a browser-based picker targeting sRGB displays, reduce
-        chroma incrementally (binary search between 0 and the current C value) until
-        all channels are within [0, 1], then use that gamut-mapped value for display.
-      </p>
-
-      <h3>Q: How do you prevent the hex input from disrupting the user mid-type?</h3>
-      <p>
-        Maintain a "draft" string in the input's local state, separate from the picker's
-        color state. The draft string is the raw text the user is typing. On change,
-        update only the draft. On every keystroke, attempt to parse the draft as a valid
-        color. If valid (e.g., exactly 6 hex digits, all valid hex characters), update
-        the picker's internal color state. If invalid, do nothing to the color state —
-        the color remains at its last valid value while the user continues typing. On
-        blur, commit the draft (clamping or correcting if needed) and reset the draft
-        to match the current internal color. Track focus with a ref; never push a new
-        value into the input from outside while it is focused.
-      </p>
-
-      <h3>Q: How do you implement the 2D saturation/brightness canvas interaction accessibly?</h3>
-      <p>
-        Render the canvas inside a container div that has role="group" with an aria-label
-        like "Color gradient picker." Inside, place two hidden range inputs: one for
-        saturation (0–100), one for brightness (0–100). These inputs are visually hidden
-        but reachable by keyboard. Screen reader users interact with these inputs to set
-        saturation and brightness; sighted mouse users interact with the canvas directly.
-        Both update the same underlying state. Additionally, implement keyboard handlers
-        on the canvas container: arrow keys move the selection point by 1 unit, Shift+arrow
-        by 10 units. Update the ARIA value labels on the range inputs whenever the state
-        changes so screen readers announce the current saturation and brightness values.
-      </p>
-
-      <h3>Q: How would you design the palette storage for a multi-user design tool?</h3>
-      <p>
-        localStorage is appropriate for single-user palettes (browser-local color history).
-        For a multi-user design tool where palettes should be shared across team members
-        and persist across devices, the palette is stored server-side — a palette entity
-        associated with the user or team, stored in the database, and fetched on load.
-        The picker client fetches the palette on mount (or reads it from a global store
-        populated by the app's data layer). Updates are persisted via API calls with
-        optimistic UI: add the color to local state immediately, then fire the API
-        call in the background. On failure, revert the local state and show an error.
-        For team-shared palettes, real-time sync via WebSocket or polling propagates
-        palette changes made by other team members.
-      </p>
+      </section>
+      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>Implement the component as a small runtime with five boundaries. The input adapter normalizes keyboard, pointer, touch, browser, and async events. The state controller applies guards and separates preview state from committed state. The projection layer derives semantic DOM and ARIA relationships. The integration adapter owns server requests, URL synchronization, or browser APIs. The observability adapter emits bounded evidence for failures and slow paths.</p>
+        <p>For this topic, the critical state rule is: Use one canonical color representation internally and derive HSV, HSL, RGB, hex, alpha, and contrast projections to prevent rounding drift across editors. During interaction, record enough context to cancel safely. On commit, validate the latest intent, update the durable projection, and release temporary listeners, timers, observers, pointer capture, and abort controllers. On unmount, cleanup must be idempotent.</p>
+        <ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/color-picker-edge-cases.svg" alt="Design a Color Picker edge-case defense map" caption="Edge-case map: validate intent, contain scale pressure, recover from failure, reconcile committed state, and emit evidence." />
+      </section>
+      <section>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>native color input is compact and robust; a custom picker is justified for alpha, palettes, design tokens, contrast guidance, and consistent cross-browser behavior. The custom design should still lean on native semantics and browser primitives where they remain correct. Replacing them creates testing obligations for keyboard behavior, focus ownership, reduced motion, touch interaction, zoom, SSR hydration, and assistive technology.</p>
+        <p>Transient preview is local and high frequency; committed color changes are versioned application updates so undo history records meaningful selections rather than every pointer sample. At scale, the failure pressure is high-frequency pointer updates, repeated color conversions, wide-gamut inputs, invalid pasted values, and palette synchronization across documents. Defend the latency budget by batching measurement, aborting stale async work, bounding caches and prefetch, and emitting analytics only for committed outcomes.</p>
+        <p>A principal answer should distinguish local responsiveness from durable correctness. Optimistic UI is appropriate when the rollback is deterministic and visible. It is inappropriate when the client cannot validate authorization, inventory, resource conflicts, or destructive side effects.</p>
+      </section>
+      <section>
+        <h2>Best practices</h2>
+        <p>Use explicit state unions, typed events, idempotent cleanup, stable ids, native semantics, SSR-safe feature detection, abortable requests, and deterministic tests. Exercise keyboard-only use, touch cancellation, screen-reader output, high zoom, reduced motion, slow network, stale responses, unmount during work, and browser back-forward behavior where relevant.</p>
+        <p>Observe blocked transitions, rollback frequency, stale-response drops, slow interaction latency, cache pressure, retry count, and accessibility regression results. Keep telemetry small and avoid sensitive payloads. Publish the public behavior contract before changing shared component semantics.</p>
+      </section>
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>Common failures include mixing draft and committed state, treating rendering state as the source of truth for browser-owned behavior, leaving listeners or timers active after unmount, accepting stale async completion, trusting client-side authorization, and producing inaccessible custom controls.</p>
+        <p>For this component specifically, the failure policy is to retain the last valid color while showing invalid text input, feature-detect EyeDropper, clamp channels, and announce contrast failures without blocking inspection. Security and privacy require the implementation to validate pasted values, bound palette storage, request eyedropper only from a user gesture, and never treat color metadata as trusted HTML or CSS.</p>
+      </section>
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>Representative deployments include a design-system token editor, a document annotation tool, and an accessibility-aware theme builder. In each case, the same component shell may be reused, but the policy layer changes: latency budget, permissions, persistence, fallback, and telemetry should be injected explicitly instead of hidden in presentation code.</p>
+      </section>
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you model component state?</h3><p>I would separate committed state, transient interaction state, derived presentation, and async request generations. For this component, Use one canonical color representation internally and derive HSV, HSL, RGB, hex, alpha, and contrast projections to prevent rounding drift across editors. That model makes cancellation and rollback explicit.</p>
+        <h3>What breaks at scale?</h3><p>The dominant pressures are high-frequency pointer updates, repeated color conversions, wide-gamut inputs, invalid pasted values, and palette synchronization across documents. I would bound work per interaction, virtualize or cache only where measured, and cancel work that is no longer relevant.</p>
+        <h3>What consistency model applies?</h3><p>Transient preview is local and high frequency; committed color changes are versioned application updates so undo history records meaningful selections rather than every pointer sample. The interview answer must state which layer is authoritative and how stale completion is rejected.</p>
+        <h3>How do you handle failure and rollback?</h3><p>I would retain the last valid color while showing invalid text input, feature-detect EyeDropper, clamp channels, and announce contrast failures without blocking inspection. I would also emit a reason code so product metrics distinguish expected cancellation from defects and provider failures.</p>
+        <h3>How do you defend the architecture over alternatives?</h3><p>native color input is compact and robust; a custom picker is justified for alpha, palettes, design tokens, contrast guidance, and consistent cross-browser behavior. I would choose the smallest design that satisfies the required behavior and explicitly accept the testing and operability cost of custom interaction.</p>
+      </section>
+      <section>
+        <h2>References</h2>
+        <ul>
+          <li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events" target="_blank" rel="noreferrer">MDN Pointer events</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li>
+          <li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React: Sharing State Between Components</a></li>
+        </ul>
+      </section>
     </ArticleLayout>
   );
 }

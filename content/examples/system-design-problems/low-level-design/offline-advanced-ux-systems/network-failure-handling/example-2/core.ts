@@ -1,89 +1,65 @@
-export type networkFailureHandlingSignal = {
-  offlineAgeMs: number;
-  conflictCount: number;
-  logSize: number;
-  lastAckVersion: number;
-};
+export type NetworkFailureHandlingHealth = "healthy" | "degraded" | "offline" | "blocked";
 
-export type networkFailureHandlingEvent = {
-  id: string;
-  topic: "network-failure-handling";
-  actorId: string;
-  sequence: number;
-  receivedAtMs: number;
-  expectedVersion: number;
-  currentVersion: number;
-  payloadSize: number;
-  signal: networkFailureHandlingSignal;
-};
-
-export type networkFailureHandlingDecision = {
-  accepted: boolean;
-  action: "replay-local-log" | "surface-conflict" | "compact-acknowledged-ops" | "commit";
-  nextVersion: number;
-  reasons: string[];
-  audit: string[];
-};
-
-const topicInvariant = "Local state must survive reloads and converge after reconnect without losing user intent.";
-
-export function evaluateNetworkFailureHandlingEvent(event: networkFailureHandlingEvent): networkFailureHandlingDecision {
-  const reasons: string[] = [];
-
-  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
-  if (event.sequence <= 0) reasons.push("invalid-sequence");
-  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
-  if (event.signal.offlineAgeMs > 2_000) reasons.push("offlineAgeMs-outside-slo");
-  if (event.signal.logSize > 0.2) reasons.push("logSize-requires-guardrail");
-
-  let action: networkFailureHandlingDecision["action"] = "commit";
-  if (reasons.includes("version-mismatch")) action = "replay-local-log";
-  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "surface-conflict";
-  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "compact-acknowledged-ops";
-
-  return {
-    accepted: reasons.length === 0,
-    action,
-    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
-    reasons,
-    audit: [
-      "topic:Network Failure Handling",
-      "subcategory:offline-advanced-ux-systems",
-      "entity:local mutation",
-      "state:client state log",
-      "operation:sync reconciliation",
-      "invariant:" + topicInvariant,
-      "actor:" + event.actorId,
-      "event:" + event.id,
-    ],
-  };
+export interface NetworkFailureHandlingSignal {
+  onlineHint: boolean;
+  apiProbeOk: boolean;
+  storageWritable: boolean;
+  permissionOk: boolean;
+  authFresh: boolean;
+  failureCount: number;
+  quotaUsedRatio: number;
 }
 
-export function runNetworkFailureHandlingContractScenario() {
-  const base = Date.parse("2026-05-29T09:00:00.000Z");
-  const accepted = evaluateNetworkFailureHandlingEvent({
-    id: "network-failure-handling-evt-1",
-    topic: "network-failure-handling",
-    actorId: "user-42",
-    sequence: 7,
-    receivedAtMs: base,
-    expectedVersion: 12,
-    currentVersion: 12,
-    payloadSize: 18_500,
-    signal: { offlineAgeMs: 180, conflictCount: 0, logSize: 0.01, lastAckVersion: 1 },
-  });
+export interface NetworkFailureHandlingDecision {
+  health: NetworkFailureHandlingHealth;
+  userVisibleState: "current" | "queued-with-banner" | "read-only" | "requires-action";
+  allowedActions: Array<"read-cache" | "write-local" | "flush" | "prompt" | "reauthenticate">;
+  reasons: string[];
+}
 
-  const guarded = evaluateNetworkFailureHandlingEvent({
-    id: "network-failure-handling-evt-late",
-    topic: "network-failure-handling",
-    actorId: "user-42",
-    sequence: 8,
-    receivedAtMs: base + 4_000,
-    expectedVersion: 12,
-    currentVersion: 14,
-    payloadSize: 310_000,
-    signal: { offlineAgeMs: 2_700, conflictCount: 3, logSize: 0.34, lastAckVersion: 2 },
-  });
+export function classifyNetworkFailureHandlingHealth(signal: NetworkFailureHandlingSignal): NetworkFailureHandlingDecision {
+  const reasons: string[] = [];
+  if (!signal.onlineHint) reasons.push("browser-offline");
+  if (!signal.apiProbeOk) reasons.push("api-unreachable");
+  if (!signal.storageWritable) reasons.push("storage-unavailable");
+  if (!signal.permissionOk) reasons.push("permission-missing");
+  if (!signal.authFresh) reasons.push("auth-stale");
+  if (signal.failureCount >= 3) reasons.push("circuit-open");
+  if (signal.quotaUsedRatio > 0.85) reasons.push("quota-pressure");
 
-  return { accepted, guarded };
+  if (!signal.authFresh) {
+    return { health: "blocked", userVisibleState: "requires-action", allowedActions: ["read-cache", "reauthenticate"], reasons };
+  }
+  if (!signal.storageWritable || signal.quotaUsedRatio > 0.95) {
+    return { health: "blocked", userVisibleState: "read-only", allowedActions: ["read-cache"], reasons };
+  }
+  if (!signal.onlineHint || !signal.apiProbeOk || signal.failureCount >= 3) {
+    return { health: "offline", userVisibleState: "queued-with-banner", allowedActions: ["read-cache", "write-local"], reasons };
+  }
+  if (!signal.permissionOk || signal.quotaUsedRatio > 0.85) {
+    return { health: "degraded", userVisibleState: "queued-with-banner", allowedActions: ["read-cache", "write-local", "flush", "prompt"], reasons };
+  }
+  return { health: "healthy", userVisibleState: "current", allowedActions: ["read-cache", "write-local", "flush"], reasons };
+}
+
+export function runNetworkFailureHandlingHealthScenario() {
+  const healthy = classifyNetworkFailureHandlingHealth({
+    onlineHint: true,
+    apiProbeOk: true,
+    storageWritable: true,
+    permissionOk: true,
+    authFresh: true,
+    failureCount: 0,
+    quotaUsedRatio: 0.2,
+  });
+  const blocked = classifyNetworkFailureHandlingHealth({
+    onlineHint: true,
+    apiProbeOk: false,
+    storageWritable: true,
+    permissionOk: false,
+    authFresh: false,
+    failureCount: 4,
+    quotaUsedRatio: 0.91,
+  });
+  return { invariant: "The UI should degrade based on observed reachability, not a single unreliable online boolean.", healthy, blocked };
 }

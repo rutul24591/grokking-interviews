@@ -1,6 +1,3 @@
-# Search Autocomplete — Example 2
+# Design Search Autocomplete example 2
 
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+Concrete search implementation exercise.

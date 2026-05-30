@@ -33,11 +33,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function VirtualizedGrid2DArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function VirtualizedGrid2DArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Virtualized 2D Grid</h1><h2>Definition &amp; Context</h2><p>Design a Virtualized 2D Grid is an implementation-heavy low-level design problem covering row and column windowing, size measurement, frozen regions, scroll synchronization, overscan, cell recycling, focus, and restoration. A principal-level answer must define state ownership, consistency, lifecycle cleanup, scale limits, rollback, privacy, cost, and observability.</p><p>Keep logical cell identity separate from recycled DOM nodes. Derive visible row and column ranges from scroll offsets, measured sizes, and overscan budgets. The core structures are row sizes, column sizes, prefix offsets, visible row range, visible column range, overscan policy, frozen regions, cell cache, focus coordinate, and anchor.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/virtualized-grid-2d-runtime.svg" alt="Design a Virtualized 2D Grid runtime" caption="Topic-specific data flow from input or payload through guarded projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -118,7 +117,7 @@ export default function VirtualizedGrid2DArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -161,7 +160,7 @@ export default function VirtualizedGrid2DArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -196,12 +195,8 @@ export default function VirtualizedGrid2DArticle() {
       </section>
 
       <section>
-        <h2>🧠 Solution Approach</h2>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/virtualized-grid-2d-architecture.svg"
-          alt="Virtualized 2D grid architecture showing cell definition model, grid state, visible row and column windowing with overscan, variable row and column sizes, scroll container, frozen panes, selection model, and cell editing"
-          caption="Architecture Overview"
-        />
+        <h3>🧠 Solution Approach</h3>
+        
         <HighlightBlock as="p" tier="important">
           The grid is built around a <strong>two-dimensional
           virtualizer</strong> that independently maintains
@@ -283,14 +278,14 @@ export default function VirtualizedGrid2DArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial">StickyHeader and StickyColumn render the sticky axes. CornerCell handles the</HighlightBlock>
 <HighlightBlock as="p" tier="important">top-left intersection of sticky axes. CellRenderer is consumer-supplied and called for</HighlightBlock>
 <HighlightBlock as="p" tier="important">each visible cell. FocusTracker owns the focused cell and ensures it stays mounted.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">
           The key invariant is update cadence separation: scroll/viewport state updates every frame,
           but cell data and focus state must not churn at that rate.
@@ -304,7 +299,7 @@ export default function VirtualizedGrid2DArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="crucial">
           The contract must allow pure rendering: <code>renderCell</code> should be a pure function of (row, column)
           + stable data, so virtualization can freely mount/unmount without side effects.
@@ -319,7 +314,7 @@ export default function VirtualizedGrid2DArticle() {
       </section>
 
       <section>
-        <h2>⚡ Rendering &amp; Performance</h2>
+        <h3>⚡ Rendering &amp; Performance</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important">The visible cell set is the intersection of the
           visible row window and visible column window —
           typically a few hundred cells. Each cell is
@@ -333,7 +328,7 @@ export default function VirtualizedGrid2DArticle() {
       </section>
 
       <section>
-        <h2>🎨 UI/UX</h2>
+        <h3>🎨 UI/UX</h3>
         <HighlightBlock as="p" tier="crucial">Density modes adjust cell padding and font size.
           Hover affordances are subtle (a faint background
           tint) so they don&rsquo;t obscure data.</HighlightBlock>
@@ -344,7 +339,7 @@ export default function VirtualizedGrid2DArticle() {
       </section>
 
 	      <section>
-	        <h2>♿ Accessibility</h2>
+	        <h3>♿ Accessibility</h3>
 	        <HighlightBlock as="p" tier="important">
 	          <Highlight tier="important">The grid uses</Highlight>{" "}
 	          <code>role=&quot;grid&quot;</code>; headers use{" "}
@@ -361,7 +356,7 @@ export default function VirtualizedGrid2DArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="crucial">
           Default to safe rendering: cell content renders as text; HTML is opt-in per renderer with sanitization.
         </HighlightBlock>
@@ -374,7 +369,7 @@ export default function VirtualizedGrid2DArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="crucial">Unit tests cover the 1D virtualizers (well-tested
           building block). Integration tests exercise
           bidirectional scroll, sticky headers, frozen
@@ -386,7 +381,7 @@ export default function VirtualizedGrid2DArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="important">User scrolls diagonally fast: both virtualizers update in the same frame, the visible window</HighlightBlock>
 <HighlightBlock as="p" tier="important">recomputes, cells mount in the new rectangle. A frozen pane wider than the viewport: we constrain the pane to a</HighlightBlock>
 <HighlightBlock as="p" tier="important">maximum proportion of the viewport (e.g. 50%) so the user isn&rsquo;t locked out of the rest of the grid.</HighlightBlock>
@@ -401,7 +396,7 @@ export default function VirtualizedGrid2DArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="crucial">The grid is generic: cell renderer is fully
           consumer-controlled, row/column counts are
           numbers or functions, sticky configuration is
@@ -412,7 +407,7 @@ export default function VirtualizedGrid2DArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important"><Highlight tier="crucial">
           Direction-aware via CSS logical properties; RTL
           flips horizontal axis. Number formatting in cells
@@ -421,7 +416,7 @@ export default function VirtualizedGrid2DArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>CSS Grid vs absolute positioning</h3>
         <HighlightBlock as="p" tier="important">
@@ -453,7 +448,7 @@ export default function VirtualizedGrid2DArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">Web Worker-based render orchestration for very
           large grids. WebGPU-accelerated</HighlightBlock>
 <HighlightBlock as="p" tier="important">rendering for
@@ -461,98 +456,12 @@ export default function VirtualizedGrid2DArticle() {
           via</HighlightBlock>
 <HighlightBlock as="p" tier="important">custom rendering). Predictive prefetching of
           cell data based on scroll velocity.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. How do row and column virtualizers
-          compose?</strong> They&rsquo;re independent
-          instances of 1D virtualization. The visible cell
-          set is the intersection of their visible windows.
-          Updates run in
-          <code> requestAnimationFrame</code> for both.
-        </HighlightBlock>
-
-        <p>
-          <strong>2. How do sticky headers work with horizontal
-          scroll?</strong> The header row uses
-          <code> position: sticky; top: 0</code> within the
-          single scrollable container. Horizontal scroll
-          moves the header naturally in lockstep with the
-          body; vertical scroll keeps it pinned.
-        </p>
-
-        <p>
-          <strong>3. Why CSS Grid for layout?</strong> CSS
-          Grid handles row × column placement
-          declaratively, supports
-          <code> position: sticky</code> correctly, and is
-          browser-optimized. Manual absolute positioning
-          breaks sticky and requires more layout math.
-        </p>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>4. How is keyboard navigation handled?</strong>{" "}
-          ARIA grid pattern with single tabstop. Arrow keys
-          move focus, updating which cell carries
-          <code> tabIndex=0</code>. When focus moves outside
-          the visible window, scroll to bring it into view.
-          Focused cells don&rsquo;t unmount.
-        </HighlightBlock>
-
-        <p>
-          <strong>5. How do frozen panes work?</strong> Frozen
-          rows or columns render in a separate layer pinned
-          to the edge via sticky; the body layer scrolls
-          underneath. The single scrollable container
-          handles the actual scroll mechanics; the frozen
-          layer just stays sticky.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>6. How do you handle variable-size cells in
-          both dimensions?</strong> Each axis maintains its
-          own measured-size cache and cumulative-size index.
-          ResizeObserver updates measurements as cells
-          mount. The cumulative indices let us binary-
-          search for the cell at a given scroll offset.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>7. How does this scale to a million
-          rows?</strong> Virtualization keeps DOM bounded.
-          The total scrollable size is set via spacer
-          elements; only visible cells mount. With
-          measured-size caching, scroll feels precise
-          regardless of total count.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>8. How does this differ from the Data
-          Table?</strong> Data Table virtualizes only rows
-          and assumes column counts under ~50; it has rich
-          per-column features (sort UI, filter editors,
-          resize). Virtualized Grid 2D virtualizes both
-          axes and is a primitive — minimal features,
-          maximum flexibility, used as the substrate for
-          higher-level grids like the Spreadsheet.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="important">A 2D virtualized grid composes two independent 1D virtualizers over a CSS</HighlightBlock>
-<HighlightBlock as="p" tier="important">Grid layout with stacked sticky contexts for headers and frozen panes. The</HighlightBlock>
-<HighlightBlock as="p" tier="important">visible cell set is the intersection of the visible row and column windows.</HighlightBlock>
-<HighlightBlock as="p" tier="crucial">Single tabstop
-          and arrow-key navigation handle accessibility.
-          The grid is a primitive — minimal features,
-          maximum flexibility — that higher-level
-          components like the Spreadsheet Grid build on top
-          of.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate canonical data, user intent, transient projection, remote effects, and bounded telemetry. Every cursor, subscription, cache entry, request, timer, observer, and worker requires an explicit owner and cleanup path. Stable ids are mandatory because indexes and DOM nodes are disposable views.</p><p>Keep logical cell identity separate from recycled DOM nodes. Derive visible row and column ranges from scroll offsets, measured sizes, and overscan budgets. Commit durable changes only after applying the current policy and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/virtualized-grid-2d-recovery.svg" alt="Design a Virtualized 2D Grid recovery" caption="Recovery flow: validate versions, contain scale pressure, preserve stable truth, and explain the result." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Rendering all cells is simplest; 2D virtualization is justified when both dimensions exceed DOM and layout budgets.</p><p>Grid data remains keyed by logical coordinates. DOM cells are disposable projections; restored scroll and focus must resolve against current measurements. Scale pressure comes from millions of cells, variable sizes, fast diagonal scroll, frozen panes, resize churn, focus movement, and memory pressure. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic projection only where rollback is deterministic and visible. Keep authorization and conflict-sensitive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit versions, cursor validation, generation guards, bounded caches, semantic HTML, and idempotent cleanup. Test keyboard use, accessibility output, stale responses, reconnects, retries, scroll restoration, and large datasets.</p><p>Measure interaction latency, render cost, cache pressure, stale drops, conflicts, retries, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include confusing visible data with complete data, trusting arrival order, leaking subscriptions, accepting stale completion, using indexes as identity, and hiding rollback.</p><p>For this topic, batch measurement, cap overscan, recycle cells safely, preserve logical focus, synchronize frozen panes, and fall back to estimates until dimensions settle. Validate untrusted inputs, authorize durable actions server-side, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to operational interfaces where users manipulate large, changing datasets under partial failure. Reuse the controller shape while injecting query, authorization, persistence, and fallback policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep logical cell identity separate from recycled DOM nodes. Derive visible row and column ranges from scroll offsets, measured sizes, and overscan budgets.</p><h3>What breaks at scale?</h3><p>millions of cells, variable sizes, fast diagonal scroll, frozen panes, resize churn, focus movement, and memory pressure. I would bound expensive work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>Grid data remains keyed by logical coordinates. DOM cells are disposable projections; restored scroll and focus must resolve against current measurements.</p><h3>How do you recover?</h3><p>I would batch measurement, cap overscan, recycle cells safely, preserve logical focus, synchronize frozen panes, and fall back to estimates until dimensions settle.</p><h3>Why this architecture?</h3><p>Rendering all cells is simplest; 2D virtualization is justified when both dimensions exceed DOM and layout budgets.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

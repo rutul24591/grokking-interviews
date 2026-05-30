@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function CursorBasedPaginationUIArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function CursorBasedPaginationUIArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Cursor-based Pagination UI</h1><h2>Definition &amp; Context</h2><p>Design a Cursor-based Pagination UI is an implementation-heavy low-level design problem covering cursor ledger, forward and backward navigation, request generations, caching, URL restoration, prefetch budgeting, and expired-cursor recovery. A principal-level answer must define state ownership, consistency, lifecycle cleanup, scale limits, rollback, privacy, cost, and observability.</p><p>Treat cursors as opaque traversal tokens. Keep the visible page, cursor ledger, URL state, cache entries, and active request generation separate. The core structures are current page snapshot, cursor ledger, cache map, request generation, abort controller, URL projection, prefetch budget, total estimate, and recovery boundary.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/cursor-based-pagination-ui-runtime.svg" alt="Design a Cursor-based Pagination UI runtime" caption="Topic-specific data flow from input or payload through guarded projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -85,7 +84,7 @@ export default function CursorBasedPaginationUIArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -114,7 +113,7 @@ export default function CursorBasedPaginationUIArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -151,14 +150,10 @@ export default function CursorBasedPaginationUIArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/pagination-cursors-state-merging-architecture.svg"
-        alt="Cursor-based Pagination Architecture"
-        caption="Fetch (with cursor) → Items + Next/Prev cursors → Item Cache (ordered, deduped by id) → UI (Load More / Infinite Scroll). Real-time inserts merge at the top with a 'new items' banner. Deep-link cursors restored from URL on mount."
-      />
+      
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <HighlightBlock as="p" tier="important">
           The system has four parts: a <strong>cursor-aware fetcher</strong>, an{" "}
           <strong>ordered item cache</strong> (deduped by id), a{" "}
@@ -225,7 +220,7 @@ export default function CursorBasedPaginationUIArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial">
           <strong>PaginationProvider</strong> instantiates the fetcher, cache,
           and controller.
@@ -246,7 +241,7 @@ export default function CursorBasedPaginationUIArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">
           The cache and current-cursor state live in an external store. The URL
           is the primary observable
@@ -262,7 +257,7 @@ export default function CursorBasedPaginationUIArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="crucial">
           The fetch contract accepts a cursor token and returns a page of items
           plus paging cursors (next, and optionally previous). Each item has a
@@ -279,7 +274,7 @@ export default function CursorBasedPaginationUIArticle() {
       </section>
 
       <section>
-        <h2>⚡ Rendering &amp; Performance</h2>
+        <h3>⚡ Rendering &amp; Performance</h3>
         <HighlightBlock as="p" tier="important">
           <Highlight tier="important">
             The cache is the single source of truth for rendered items; fetches
@@ -295,7 +290,7 @@ export default function CursorBasedPaginationUIArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">
           Load More feels explicit and works for users who prefer paging through
           results. Next/Prev feels like classic pagination but without page
@@ -312,7 +307,7 @@ export default function CursorBasedPaginationUIArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">
           Load More is a real button reachable by Tab. Next/Prev are buttons
           with accessible labels (&ldquo;Next page of results&rdquo;).
@@ -327,7 +322,7 @@ export default function CursorBasedPaginationUIArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="crucial">
           Cursors are opaque server-issued tokens; we don&rsquo;t inspect or
           modify them. The server enforces authorization on every request; the
@@ -342,7 +337,7 @@ export default function CursorBasedPaginationUIArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="crucial">
           Unit tests for the cache (append, prepend, dedup, LRU eviction), the
           navigation controller (forward/back transitions), and fetch token
@@ -358,7 +353,7 @@ export default function CursorBasedPaginationUIArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">
           Gap detected between known cursors: surface the gap rather than
           silently merging. User shares a
@@ -374,7 +369,7 @@ export default function CursorBasedPaginationUIArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="crucial">
           The pagination primitive is generic over item type, fetch strategy,
           and caching layer: it should not assume REST vs GraphQL or specific
@@ -391,7 +386,7 @@ export default function CursorBasedPaginationUIArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="crucial">
           Button labels, banners, and state messages come from i18n; pagination
           UI must be fully locale-driven (including pluralization).
@@ -408,7 +403,7 @@ export default function CursorBasedPaginationUIArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Cursor vs offset pagination</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -443,7 +438,7 @@ export default function CursorBasedPaginationUIArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">
           Predictive prefetch based on scroll velocity. Service-worker offline
           cache so users see cached items when offline.
@@ -454,83 +449,12 @@ export default function CursorBasedPaginationUIArticle() {
             you left off). Smarter gap handling with diff visualization.
           </Highlight>
         </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. Why cursor over offset pagination?</strong> Cursor scales
-          to massive datasets without database scan cost. It&rsquo;s stable
-          under real-time insertion (cursors point to records, not positions).
-          Offset breaks at high page numbers and shifts under inserts.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How do deep links work with opaque cursors?</strong> The
-          current cursor is encoded in a URL query parameter. On mount, the
-          system parses the URL and starts at that cursor. Sharing the URL takes
-          recipients to the same view. Stale cursors fall back to the first page
-          with a banner.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>3. How do you handle real-time inserts?</strong> A WebSocket
-          delivers new items; they merge into the cache at the top. The UI
-          surfaces a banner rather than auto- scrolling, unless the user is at
-          the top where they want the new items immediately.
-        </HighlightBlock>
-
-        <p>
-          <strong>4. How do you race-protect concurrent fetches?</strong> Each
-          fetch carries a monotonic token. Only the latest token&rsquo;s
-          response renders; earlier responses are discarded.
-        </p>
-
-        <p>
-          <strong>5. How do gaps in cursor sequences get handled?</strong> When
-          the server reports more items between two known cursors than
-          we&rsquo;ve seen, we surface a &ldquo;Load N items&rdquo; affordance
-          rather than silently merging.
-        </p>
-
-        <p>
-          <strong>6. What happens when a cursor is invalidated?</strong> The
-          server returns an error (e.g. 410 Gone). The system clears the current
-          view, refetches from the start, and shows a banner explaining the
-          redirect.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>7. How is this different from infinite scroll?</strong>{" "}
-          Infinite scroll is one mode of this system. The other modes — Load
-          More, Next/Prev — share the same cursor mechanics but present them
-          differently. Infinite scroll uses the Virtualized List subsystem
-          underneath.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>8. How do you scale to millions of rows?</strong> Cursor
-          pagination is the answer. The client never holds millions; it holds
-          the pages it has fetched. LRU eviction bounds memory.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">
-          Real- time inserts surface as banners; deep links encode the cursor;
-          cursor invalidation
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          falls back gracefully. The pattern scales to massive datasets where
-          offset breaks down, and
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          it&rsquo;s the right choice for feeds, search results, and audit logs
-          at any non-trivial scale.
-        </HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate canonical data, user intent, transient projection, remote effects, and bounded telemetry. Every cursor, subscription, cache entry, request, timer, observer, and worker requires an explicit owner and cleanup path. Stable ids are mandatory because indexes and DOM nodes are disposable views.</p><p>Treat cursors as opaque traversal tokens. Keep the visible page, cursor ledger, URL state, cache entries, and active request generation separate. Commit durable changes only after applying the current policy and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/cursor-based-pagination-ui-recovery.svg" alt="Design a Cursor-based Pagination UI recovery" caption="Recovery flow: validate versions, contain scale pressure, preserve stable truth, and explain the result." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Offset pagination supports direct jumps; cursor pagination is justified for changing high-volume datasets where stable traversal matters more than arbitrary page numbers.</p><p>The server cursor defines traversal continuity for a snapshot boundary. Cached pages are advisory; refresh explicitly starts a new traversal when cursors expire. Scale pressure comes from rapid navigation, unknown totals, cursor expiry, new inserts, browser back-forward, duplicate responses, and prefetch amplification. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic projection only where rollback is deterministic and visible. Keep authorization and conflict-sensitive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit versions, cursor validation, generation guards, bounded caches, semantic HTML, and idempotent cleanup. Test keyboard use, accessibility output, stale responses, reconnects, retries, scroll restoration, and large datasets.</p><p>Measure interaction latency, render cost, cache pressure, stale drops, conflicts, retries, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include confusing visible data with complete data, trusting arrival order, leaking subscriptions, accepting stale completion, using indexes as identity, and hiding rollback.</p><p>For this topic, abort superseded fetches, discard stale responses, cap prefetch, retain the previous page while loading, recover expired cursors with a refresh boundary, and validate URL state. Validate untrusted inputs, authorize durable actions server-side, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to operational interfaces where users manipulate large, changing datasets under partial failure. Reuse the controller shape while injecting query, authorization, persistence, and fallback policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Treat cursors as opaque traversal tokens. Keep the visible page, cursor ledger, URL state, cache entries, and active request generation separate.</p><h3>What breaks at scale?</h3><p>rapid navigation, unknown totals, cursor expiry, new inserts, browser back-forward, duplicate responses, and prefetch amplification. I would bound expensive work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>The server cursor defines traversal continuity for a snapshot boundary. Cached pages are advisory; refresh explicitly starts a new traversal when cursors expire.</p><h3>How do you recover?</h3><p>I would abort superseded fetches, discard stale responses, cap prefetch, retain the previous page while loading, recover expired cursors with a refresh boundary, and validate URL state.</p><h3>Why this architecture?</h3><p>Offset pagination supports direct jumps; cursor pagination is justified for changing high-volume datasets where stable traversal matters more than arbitrary page numbers.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

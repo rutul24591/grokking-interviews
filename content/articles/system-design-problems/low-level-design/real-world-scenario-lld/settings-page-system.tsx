@@ -1,127 +1,48 @@
 "use client";
-
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
-import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
-
-export const metadata: ArticleMetadata = {
-  id: "article-lld-settings-page-system",
-  title: "Design Settings Page System",
-  description:
-    "Production-grade settings with preference taxonomy, save strategies, re-auth gates, danger zone, and cross-device sync.",
-  category: "low-level-design",
-  subcategory: "real-world-scenario-lld",
-  slug: "settings-page-system",
-  wordCount: 5200,
-  readingTime: 31,
-  lastUpdated: "2026-05-06",
-  tags: ["lld", "settings", "preferences", "storage", "ux"],
-  relatedTopics: ["multi-tenant-ui", "audit-log-viewer-ui"],
-};
-
-export default function SettingsPageSystemArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">The settings page is the most underrated surface in a complex web application. It spans user preferences (theme, language, notifications), account management (email, password, two-factor authentication), workspace settings (organization name, billing, team members), and danger zone operations (deactivate account, delete data). Each category has different persistence, authorization, and UX requirements—a dark mode toggle can save instantly and optimistically; a password change requires re-authentication and server-side validation; account deletion requires multi-step confirmation and a cooling-off period.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The engineering challenge is providing a coherent settings system without a monolithic God component. The settings surface must be extensible (new settings added as the product evolves without restructuring the entire page), handle heterogeneous save behaviors (instant for preferences, explicit submit for sensitive fields), enforce the right authorization rules per section (regular users vs admins), and surface errors specific to each setting without global error states that are disconnected from the relevant field.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial"><strong>Explicit assumptions:</strong> Settings are organized into sections: user preferences, account, workspace (multi-tenant), and danger zone. Preferences sync server-side for cross-device consistency. Some settings require password re-authentication before change (email, password, payment method). Danger zone operations (delete account) are deferred (30-day soft delete) and require email confirmation. The settings page is accessible to both regular users and administrators, with section visibility gated by role.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Preference settings:</strong> Theme (light/dark/system), language, timezone, date format, notification preferences. Save immediately on change (no submit button).</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Account settings:</strong> Email, display name, avatar, password, two-factor authentication. Require explicit submit; sensitive fields require current password re-entry before change.</HighlightBlock>
-          <li><strong>Workspace settings:</strong> Organization name, logo, domain, billing, member management. Admin-only. Explicit submit with confirmation for destructive changes.</li>
-          <HighlightBlock as="li" tier="important"><strong>Danger zone:</strong> Deactivate account (reversible), delete account (irreversible after 30-day cooling period). Multi-step confirmation with typed verification ("type your email to confirm").</HighlightBlock>
-          <li><strong>Cross-device sync:</strong> Preference changes persist to server and apply on next login from another device.</li>
-          <li><strong>Settings search:</strong> A search field that filters visible settings sections and highlights matching settings labels for discoverability.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li><strong>Instant feedback for preferences:</strong> Applying a preference change (theme switch) must take effect immediately, before server confirmation.</li>
-          <HighlightBlock as="li" tier="important"><strong>Security:</strong> Sensitive settings (email, password) changes require re-authentication. The re-auth session should time out after 5 minutes.</HighlightBlock>
-          <HighlightBlock as="li" tier="crucial"><strong>Accessibility:</strong> Settings form fields must have associated labels, error messages associated with fields via aria-describedby, and logical tab order.</HighlightBlock>
-          <li><strong>Error isolation:</strong> An error saving one setting must not prevent other settings from saving. Errors must be displayed adjacent to the relevant field.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="crucial">The settings page is a collection of independent sections, each with its own form state, validation, and save behavior. Sections do not share form state or error state. This isolation means a server error updating the workspace name does not affect the user's ability to change their notification preferences in the same UI session. Each section component manages its own dirty state (has the user modified the form since last save?) and submission state (is a save request in flight?).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Save behavior is categorized: "instant" sections (preferences) update server-side via a debounced optimistic update on every change event; "explicit" sections (account, workspace) show a Save button that becomes active only when the form is dirty and passes client-side validation; "gated" sections (email, password) require re-authentication before the Save button is active.</HighlightBlock>
-<HighlightBlock as="p" tier="important">Danger zone actions use a dedicated modal with multi-step confirmation, disconnected from the standard form patterns.</HighlightBlock>
-      </section>
-
-      <section>
-                <h2>Diagram Walkthrough</h2>
-
-<ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/real-world-scenario-lld/settings-page-system.svg"
-          alt="Settings page system showing preference taxonomy, instant-save vs explicit-save strategies, re-auth gate for sensitive settings, danger zone multi-step confirm, and cross-device preference sync"
-          caption="Settings page system showing preference taxonomy, instant-save vs explicit-save strategies, re-auth gate for sensitive settings, danger zone multi-step confirm, and cross-device preference sync"
-        />
-
-        <HighlightBlock as="p" tier="crucial">
-          Interview signal: the diagram captures the end-to-end flow for <strong>Design Settings Page System</strong>. You should be able to explain the happy path and the failure paths (retries, cancellation, backpressure), not just the API surface.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Look for the &ldquo;control points&rdquo; where correctness is enforced: idempotency keys, monotonic request/version tokens, single-flight coordination, and durable persistence boundaries.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          In interviews, call out observability and operability: what you log/measure (p95 latency, error rates, retries/queue depth) and how you keep degraded modes user-safe (read-only, queued, or cached fallbacks).
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Settings Taxonomy and Navigation</h3>
-        <p>Settings are organized into a two-level hierarchy: sections (the primary navigation items in the left sidebar) and groups within sections (collapsible groups within a section for related settings). Common section taxonomy: Profile (avatar, display name, bio), Account (email, password, 2FA, connected apps, sessions), Notifications (email, push, in-app preferences per notification type), Appearance (theme, language, density), Privacy (activity visibility, data download, right to erasure), Workspace (organization-level settings, admin-only), Billing (plan, payment method, invoice history, admin-only), and Danger Zone (deactivate, delete).</p>
-        <p>The left sidebar navigation scrolls the user to the relevant section (anchor link to a section id) rather than loading a separate page per section. This keeps the browser's back button behavior intuitive and allows the URL to reflect the current section (/settings#account, /settings#notifications) for shareability. Active section highlighting in the sidebar uses an IntersectionObserver to detect which section is currently in the viewport as the user scrolls.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Instant-Save Preferences</h3>
-        <p>Preferences (theme, language, notification toggles) should take effect immediately and save without an explicit button press. The user expects to toggle dark mode and see it apply instantly—requiring a "Save" click after a toggle is an unnecessary friction that confuses users accustomed to mobile-style settings UX.</p>
-        <HighlightBlock as="p" tier="important">The save flow: user changes a toggle or select → apply the change to local state immediately (instant UI response) → debounce 500ms → send PATCH /preferences/{"{"}key{"}"} to the server → on success, do nothing; on failure, revert the local state and show an inline error. The 500ms debounce prevents a network request on every single toggle flick for users who are exploring settings. The revert on failure is important: if the server rejects a preference change (unusual, but possible for plan-gated features), the UI must not stay in a state that contradicts the actual setting.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Cross-device sync: preference changes are stored server-side per user. On login from another device, the application fetches the server preferences and applies them to the local theme/language state. If the user has local preferences (stored in localStorage before they were authenticated), the server preferences take priority on login, with a fallback to local if the server fetch fails.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Explicit-Save Forms for Account Settings</h3>
-        <p>Account settings (display name, avatar, bio) use an explicit Save button pattern. The form tracks dirty state: the Save button is disabled and grayed out when the form values match the server state, and active when the user has made a change. Client-side validation runs on blur (when the user leaves a field) and on submit attempt. Server-side validation results are displayed as field-level errors adjacent to the relevant input.</p>
-        <HighlightBlock as="p" tier="important">The avatar upload is a specialized case. The user selects or drags an image file; the client crops/resizes it client-side (using a canvas-based image processing step, offloaded to a Web Worker to avoid blocking the UI) and uploads it to the server. While the upload is in progress, a preview of the new avatar is shown alongside the current avatar. On success, the new avatar is applied globally (the header avatar, all references in the app) via the global user state store. On failure, the preview is removed and an error is shown.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Re-Authentication Gate for Sensitive Changes</h3>
-        <p>Changing email or password requires the user to confirm their current password, even if they are already authenticated. This is "step-up authentication" for high-impact account operations: a stolen session cookie allows viewing account settings but should not allow changing the account's primary contact email or password without knowing the current password. The re-auth requirement is a fundamental defense against session hijacking escalation.</p>
-        <HighlightBlock as="p" tier="important">The re-auth gate UI: when the user clicks into the email or password field, a modal appears: "To change sensitive settings, please confirm your password." After confirming, the user has a 5-minute re-auth window during which the sensitive fields are editable. After 5 minutes, the gate closes and re-confirmation is required. The 5-minute window is held in memory (not localStorage) so it doesn't persist across browser restarts.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">The re-auth token (returned by the confirm-password endpoint) is short-lived (5-minute TTL) and single-purpose (only accepted by the sensitive-settings endpoints). It should not be stored in a way that survives XSS (httpOnly cookie via a different path, or in-memory JavaScript variable). Storing in-memory means it cannot be exfiltrated by malicious scripts that can only read storage APIs.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Danger Zone Operations</h3>
-        <p>Account deactivation and deletion are the highest-stakes operations in the settings page. They require: (1) a clearly separated UI zone ("Danger Zone" header in red, visually distinct from other settings sections); (2) explicit confirmation beyond a button click; (3) a cooling-off period for irreversible operations; and (4) an email notification confirming the action was taken (allowing the user to contact support if the action was unauthorized).</p>
-        <p>Account deletion flow: user clicks "Delete Account" → modal explains consequences (data permanently deleted after 30 days, subscriptions cancelled immediately, cannot be undone) → user types their email address in a confirmation field ("Type your email address to confirm") → on match, the Delete button becomes active → user clicks Delete → server schedules account deletion for 30 days from now and immediately deactivates the account → confirmation email sent → user is logged out and redirected to a "Your account deletion is scheduled" page with a "Cancel deletion" option available for the next 30 days.</p>
-        <p>The typed-email confirmation (rather than a "yes I'm sure" checkbox) significantly reduces accidental deletions. The effort of typing the email acts as a commitment device—the user must consciously engage with the confirmation rather than mindlessly clicking through a dialog. This pattern is used by GitHub, Heroku, and other platforms for high-stakes destructive operations.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Settings Search</h3>
-        <p>Settings discoverability is a common problem: users know they want to change a setting but cannot find which section it is in. A search field at the top of the settings page filters the visible sections and highlights matching labels. The search is client-side (all settings are already loaded on the page) using fuzzy matching against a pre-built index of section names, group names, and individual setting labels.</p>
-        <p>Matching behavior: entering "notification" shows the Notifications section highlighted and scrolls to it. Entering "dark" shows the Appearance section with the theme setting highlighted. Entering a setting name that appears in multiple sections shows all matching sections. No results for a query shows a "No settings found" message with a fallback suggestion ("Contact support for help"). The search index is built once on page load and is updated if sections are dynamically added (unusual but possible in plugin architectures).</p>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="crucial">Instant-save versus explicit-save for all settings: using instant-save for all settings (no submit buttons anywhere) is consistent and reduces friction, but creates challenges for settings that require validation (you can't partially validate a password as the user types it) and for settings that should only take effect when complete (changing a domain name requires the whole new domain, not character-by-character application). The hybrid approach (instant-save for toggles and selects, explicit-save for text fields) matches user expectations from native OS settings panels.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Page-per-section versus single-page with anchors: a separate page per settings section (/settings/account, /settings/notifications) is easier to implement (each page loads only its own settings) and provides cleaner URLs. A single scrollable page with anchor links is more cohesive and allows the user to see all settings without navigation. For large settings surfaces (30+ sections), the page-per-section approach is more maintainable. For smaller products, single-page is preferable for cohesion. The hybrid (sections as URL-fragment anchor links, smooth-scroll navigation) provides the URL benefits of page-per-section without page reloads.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Server-side versus client-side preference storage: localStorage for preferences (theme, language) is fast but not cross-device. Server-side storage is cross-device but requires a network call on application startup to fetch preferences (delaying the first render of theme-dependent content). The standard solution is to use localStorage as the immediate cache, read from it synchronously for the initial render, and sync from the server in the background—updating localStorage and applying any differences between the local and server preferences after the application loads.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Danger zone operations use typed-email confirmation and a 30-day deferred delete cooling period. Settings search uses client-side fuzzy matching against</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">a pre-built label index. Preferences sync server-side for cross-device consistency, using localStorage as a synchronous cache hydrated before the first render. Each section is an independent component with its own error state—a server error in one section never prevents other sections from functioning.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+export const metadata: ArticleMetadata = { id:"article-lld-settings-page-system", title:"Design a Settings Page System", description:"Implementation-heavy low-level design guide for design a settings page system.", category:"low-level-design", subcategory:"real-world-scenario-lld", slug:"settings-page-system", wordCount:4700, readingTime:28, lastUpdated:"2026-05-30", tags:["lld","real-world","principal-engineer"], relatedTopics:["state-management","reliability","observability"] };
+export default function SettingsPageSystemArticle(){ return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Settings Page System</h1><h2>Definition &amp; Context</h2>
+<p>Design a Settings Page System is a low-level design problem about building a production-grade sectioned settings draft coordinator. The answer must move beyond screen composition and define public methods, internal state, persistence boundaries, concurrency rules, recovery, and telemetry. The facade is load, edit, validate, saveSection, reset, detectExternalChange. Runtime states are loading, clean, dirty, validating, saving, conflicted, saved.</p>
+<p>The governing invariant is: Settings changes must validate and save predictably without overwriting external edits. The edge case to defend is when an admin loses permission while editing a dirty settings section. This forces the implementation to distinguish user intent from server authority and to expose honest pending, blocked, stale, conflicted, and recovered states.</p>
+<ArticleImage src="/diagrams/system-design-problems/low-level-design/real-world-scenario-lld/settings-page-system-runtime.svg" alt="Design a Settings Page System runtime" caption="Runtime model: product intent enters a guarded coordinator, durable state is versioned, and user-visible snapshots remain honest under failure." /></section>
+<section><h2>Core Concepts</h2>
+<p>Start with a narrow aggregate boundary. The coordinator owns legal transitions and the structures required to defend them: settings schema, section draft, server revision, validation map, permission map, save outcome. UI components request operations and render snapshots; they should not scatter validation, deduplication, permissions, timers, and retries across event handlers.</p>
+<p>Separate optimistic projection from authoritative confirmation. Fast UI may show local intent immediately, but the snapshot must retain pending identity, base revision, and rollback information until the authoritative boundary accepts the operation. That makes ambiguous timeouts, retries, cross-tab races, and external updates explainable.</p>
+<h3>Implementation contract</h3><p>Each public method returns a typed outcome: accepted, pending, rejected, conflicted, degraded, or completed. Each mutation carries operation id, scope, revision, and idempotency key where repeated delivery is possible. Every state transition records a reason and leaves enough evidence for debugging without logging private payloads.</p>
+<p>Classify operations by risk. Cosmetic preferences can converge eventually. Destructive, authorization-sensitive, inventory-sensitive, or payment-adjacent operations need stronger confirmation or fail-closed behavior. This operation-level consistency decision is more credible than claiming one policy for the whole feature.</p></section>
+<section><h2>Architecture &amp; Flow</h2>
+<p>The architecture has six layers: component facade, validator, state machine, effect runner, durable adapter, and observer layer. The facade normalizes intent. The validator checks schema, permission, scope, and revision. The state machine commits the next snapshot. The effect runner performs network, storage, SDK, or worker work after commit. The durable adapter preserves evidence. The observer layer publishes selector-scoped snapshots and metrics.</p>
+<p>A normal mutation validates input, captures rollback state, assigns identity, applies the local projection, invokes the effect, and settles only if operation identity and revision still match. Late responses are ignored or reconciled; they must not overwrite newer intent. Cleanup on navigation, tenant switch, unmount, or cancellation is idempotent.</p>
+<h3>Data model and failure matrix</h3><p>The model should include entity or aggregate id, actor scope, tenant scope when relevant, operation id, base revision, current revision, pending state, last error, timestamps, and trace fields. Store only the payload needed for recovery. Sensitive fields belong behind tokenization, redaction, or server-owned boundaries.</p>
+<p>Define a failure matrix before coding. Validation failure blocks locally. Permission change fails closed. Timeout preserves pending identity for reconciliation. Version mismatch enters merge, refresh, or review. Partial batch failure records per-item outcomes. External dependency outage trips degradation or a circuit breaker. Duplicate delivery returns the prior idempotent result.</p>
+<h3>Lifecycle and concurrency</h3><p>Concurrency is normal input, not an exceptional corner case. Users click twice, navigate during a request, open several tabs, switch accounts, and return after background throttling. Server pushes, SDK callbacks, timers, and network settlements may arrive after the UI intent has changed. Accept a settlement only when operation id, actor scope, tenant scope, and revision still match the active snapshot.</p>
+<p>Lifecycle events need explicit handlers: bootstrap, hydrate, mount, unmount, focus, blur, reconnect, tenant switch, logout, and rollout disablement. A coordinator that only handles button clicks will leak work or display stale data. Cleanup must cancel active effects, detach listeners, invalidate scoped caches, and preserve only the minimum recovery evidence needed for the next safe transition.</p>
+<ArticleImage src="/diagrams/system-design-problems/low-level-design/real-world-scenario-lld/settings-page-system-failure.svg" alt="Design a Settings Page System failure handling" caption="Failure model: stale revisions, ambiguous results, authorization changes, and partial failures route through explicit recovery decisions." /></section>
+<section><h2>Trade offs &amp; Comparison</h2>
+<p>Local component state is cheaper for a small page, but it breaks when multiple components, tabs, routes, or teams depend on the same invariant. A domain coordinator adds code and tests, but centralizes revision checks, cancellation, rollback, persistence, and observability.</p>
+<p>Optimistic UX improves perceived latency but creates rollback and reconciliation work. Pessimistic confirmation is easier to reason about but can feel slow. Choose per operation: use optimistic projection for reversible low-risk actions and authoritative confirmation for destructive or externally constrained actions.</p>
+<p>Normalization improves deduplication and partial updates, while snapshots simplify reads and rollback. Durable history improves recovery and auditability, but costs storage and compaction work. The interview answer should tie these choices to latency, correctness, privacy, support burden, and rollout risk.</p>
+<p>There is also a build-versus-platform trade-off. A feature-local implementation moves quickly when the workflow is genuinely isolated. A shared runtime becomes worthwhile when several flows need revision guards, typed errors, permission checks, audit evidence, or rollout controls. The principal-level answer should avoid both extremes: do not create a framework for one button, and do not let high-risk invariants fragment across teams.</p>
+<p>Fail-open and fail-closed choices must be explicit. A stale feed badge can degrade gracefully. A tenant switch, payment attempt, authorization rule, kill switch, or audit export should fail closed when scope or authority is uncertain. This is where implementation details connect directly to abuse prevention and privacy.</p></section>
+<section><h2>Best practices</h2>
+<p>Make illegal states unrepresentable with explicit status unions and guarded transitions. Add operation identity and revision checks at settlement boundaries. Keep effect adapters injectable so timeouts, retries, SDK failures, server errors, and browser lifecycle changes can be tested deterministically.</p>
+<p>Build observability into the coordinator: rejected transitions, stale settlements, retry count, pending age, conflict rate, partial failure count, queue depth, rollback count, and slow subscribers. Add feature flags and kill switches for risky flows. Scope caches and persisted state by user and tenant, and clear them on identity changes.</p>
+<p>Test rapid interaction, duplicate delivery, navigation mid-flight, permission changes, stale revisions, empty states, large datasets, retry exhaustion, and recovery after reload. These cases reveal whether the abstraction protects the product or merely organizes happy-path code.</p>
+<p>Prefer selector-based subscriptions and immutable snapshots so unrelated UI does not re-render. Bound retained history, cached entities, retry ledgers, and debug events. Provide support-friendly evidence such as correlation id, operation phase, revision gap, and sanitized failure reason. These practices reduce mean time to recovery without leaking customer data.</p></section>
+<section><h2>Common Pitfalls</h2><p>Do not model the workflow as unrelated booleans. That permits impossible combinations and ordering bugs. Do not silently swallow stale responses or partial failures. Do not let observers mutate coordinator internals. Do not log sensitive payloads in telemetry.</p>
+<p>Avoid unbounded queues, histories, selections, markers, feed entities, or retries. Add compaction, pagination, virtualization, batching, and backpressure where volume can grow. Treat accessibility, privacy, and degraded UX as runtime behavior, not documentation notes.</p>
+<p>Another pitfall is treating server success as the only settlement state. Timeouts create ambiguous outcomes: the server may have committed while the client saw failure. Reconciliation and idempotency are required whenever repeating the operation could create duplicate side effects or overwrite newer state.</p></section>
+<section><h2>Real-world use cases</h2><p>This pattern appears in high-traffic consumer products and enterprise tools where a seemingly small UI feature crosses network, permission, identity, or external-service boundaries. Platform ownership is useful when several teams need the same transition safety, recovery, and metrics.</p>
+<p>For a principal interview, connect the local implementation to the wider system: server idempotency, authorization, versioning, audit logs, rollout controls, SLOs, and support tooling. The UI runtime is not isolated; it is the final consistency and trust boundary visible to the user.</p>
+<p>Operational ownership should be explicit: define alerts, dashboards, runbooks, rollback controls, and the team responsible for resolving stuck or ambiguous states.</p></section>
+<section><h2>Common interview question with detailed answer</h2>
+<h3>How would you design this end to end?</h3><p>I would define the facade, state machine, data model, effect adapters, and observer snapshots. Every mutation carries identity and revision, every effect settles through guards, and every failure maps to a typed user-visible recovery path.</p>
+<h3>Why this architecture over local state?</h3><p>Local state duplicates invariants and fails under races. The coordinator makes Settings changes must validate and save predictably without overwriting external edits. enforceable and testable across components.</p>
+<h3>What breaks at scale?</h3><p>Pending work, memory retention, stale responses, partial failures, permission drift, and observability gaps become bottlenecks. Use bounds, compaction, pagination, backpressure, metrics, and rollout controls.</p>
+<h3>What consistency model applies?</h3><p>Use operation-level consistency: optimistic eventual convergence for reversible work, stronger confirmation for destructive or authority-sensitive work, and explicit conflict states when intent is ambiguous.</p>
+<h3>How do you defend failure, rollback, abuse, privacy, and cost?</h3><p>Use typed errors, inverse patches or refresh, idempotency, authorization checks, rate limits, data minimization, redacted telemetry, bounded retention, and kill switches. Then walk through an admin loses permission while editing a dirty settings section.</p></section>
+<section><h2>References</h2><ul><li><a href="https://react.dev/learn/managing-state" target="_blank" rel="noreferrer">React: Managing State</a></li><li><a href="https://redux.js.org/style-guide/" target="_blank" rel="noreferrer">Redux Style Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://web.dev/articles/vitals" target="_blank" rel="noreferrer">web.dev Web Vitals</a></li></ul></section>
+</ArticleLayout>;}

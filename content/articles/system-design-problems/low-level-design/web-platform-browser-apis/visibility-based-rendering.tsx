@@ -2,159 +2,207 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
-import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-lld-visibility-based-rendering",
-  title: "Visibility-Based Rendering System",
-  description: "Conditional rendering and resource optimization based on page visibility and viewport intersection",
+  title: "Design Visibility-Based Rendering",
+  description: "Implementation-heavy low-level design for design visibility-based rendering, covering browser capability checks, state machines, fallbacks, security, performance, and observability.",
   category: "low-level-design",
   subcategory: "web-platform-browser-apis",
   slug: "visibility-based-rendering",
-  wordCount: 5900,
-  readingTime: 35,
-  lastUpdated: "2026-05-06",
-  tags: ["lld", "performance", "rendering", "visibility", "intersection-observer"],
-  relatedTopics: ["idle-task-scheduling", "progressive-enhancement"],
+  wordCount: 4700,
+  readingTime: 28,
+  lastUpdated: "2026-05-29",
+  tags: ["lld", "browser-apis", "web-platform", "frontend-architecture", "principal-engineer"],
+  relatedTopics: ["offline-first-architecture", "performance", "permissions-ux"],
 };
 
 export default function VisibilityBasedRenderingArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">A dashboard loads 50 charts. All charts render immediately, each making API calls to fetch data, performing expensive calculations, and updating DOM. The browser is overwhelmed: memory spikes, CPU maxed, rendering thread blocked. User scrolls to see a chart; it's already rendered but wasted resources on charts they'll never see.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">A dashboard with 100+ list items: the component tree is huge, React reconciliation is slow, re-renders lag even though only 10 items are visible. Off-screen items consume memory, computation, and network bandwidth.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Better approach: visibility-based rendering. Only render and compute for elements currently visible in the viewport (via IntersectionObserver). Off-screen elements are deferred until they're about to enter the viewport. Page hidden (user switched tabs)? Pause animations, defer API calls, reduce update frequency. Page visible again? Resume and catch up.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Key insight: the user only perceives what they see. Rendering off-screen content is wasted work. Rendering invisible content is pure waste. Conditional rendering based on visibility dramatically improves performance, battery life (mobile), and user experience.</HighlightBlock>
-        <HighlightBlock as="p" tier="important"><strong>Explicit assumptions:</strong> IntersectionObserver API available for viewport detection. Page Visibility API available for tab visibility detection. React or similar framework for conditional rendering. Components are idempotent and can be mounted/unmounted without state loss (or state is restored).</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Viewport detection:</strong> Detect which elements are currently visible in the viewport using IntersectionObserver. Only render visible elements.</HighlightBlock>
-          <li><strong>Lazy mounting:</strong> When an element approaches the viewport (before it enters), preemptively mount and render to avoid jank as the user scrolls.</li>
-          <HighlightBlock as="li" tier="important"><strong>Unmounting:</strong> When an element leaves the viewport (scrolls out), unmount it to free memory and stop computations.</HighlightBlock>
-          <li><strong>Page visibility detection:</strong> Use Page Visibility API to detect when the page is hidden (user switched tabs). Pause animations, defer API calls, reduce polling frequency.</li>
-          <li><strong>Resumption:</strong> When the page becomes visible again, resume animations, fetch any stale data, and resume normal update frequency.</li>
-          <li><strong>Placeholder rendering:</strong> While waiting for a component to mount, show a placeholder (spinner, skeleton) to maintain layout stability.</li>
-          <li><strong>State preservation:</strong> Optionally preserve component state when unmounted so re-mounting doesn't lose user input or scroll position.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Latency:</strong> IntersectionObserver detection under 16ms (60fps). Mounting latency under 100ms to avoid visible lag.</HighlightBlock>
-          <HighlightBlock as="li" tier="crucial"><strong>Memory:</strong> Off-screen components unmounted; memory freed. Large lists (10k+ items) with virtualization under 50MB in-memory DOM.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>CPU:</strong> Idle CPU when page is hidden. Active update frequency reduced by 10-50x when hidden.</HighlightBlock>
-          <li><strong>Battery:</strong> Reduced power draw on mobile when page is hidden (animations paused, polling disabled).</li>
-          <li><strong>Browser compatibility:</strong> Chrome 51+, Firefox 55+, Safari 12.1+ (IntersectionObserver). Page Visibility API on all modern browsers.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="important">The system wraps components with a visibility coordinator. The coordinator uses IntersectionObserver to track which elements are in the viewport and which are approaching. Only visible and near-visible elements are mounted and rendered. Off-screen elements remain unmounted (or rendered as placeholders).</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">A page visibility monitor listens to the Page Visibility API. When the page is hidden, polling intervals are increased 10x, animations are paused, and API request frequency is reduced. When the page becomes visible, these are restored. This preserves battery on mobile and reduces server load when pages are backgrounded.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Mounting is preemptive: as the user scrolls toward an item, it's mounted slightly before entering the viewport (300-500px ahead). This avoids jank where the user sees a blank space while waiting for render. The threshold is tuned based on device performance and scroll speed.</HighlightBlock>
-      </section>
-
-      <section>
-                <h2>Diagram Walkthrough</h2>
-
-<ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/web-platform-browser-apis/visibility-based-rendering.svg"
-          alt="Visibility-based rendering system showing viewport detection, component mount/unmount lifecycle, hysteresis, and Page Visibility API integration"
-          caption="Visibility-based rendering system showing viewport detection, component mount/unmount lifecycle, hysteresis, and Page Visibility API integration"
+        <h1>Design Visibility-Based Rendering</h1>
+        <h2>Definition &amp; Context</h2>
+        <p>
+          Design Visibility-Based Rendering is a low-level design problem about wrapping a powerful but inconsistent browser capability in a production-safe document and viewport visibility coordinator. Browser APIs are not normal libraries: availability differs by browser, permissions can change at runtime, callbacks may fire on the main thread, and user activation, privacy, storage, and lifecycle rules can invalidate a happy-path implementation.
+        </p>
+        <p>
+          The implementation contract starts with observeVisibility(scope), pauseWork(reason), resumeWork(reason), downgradeRenderMode(mode). The runtime should model these states explicitly: visible, hidden, backgrounded, prerendered, throttled, resumed. The invariant is: Hidden or offscreen UI should stop expensive work without losing state or surprising the user on resume. The hard case is when a real-time dashboard tab is hidden for twenty minutes and then resumes with stale data and queued timers. A principal-ready answer should explain the API facade, capability detection, fallback behavior, lifecycle cleanup, privacy and security constraints, and the telemetry that proves the abstraction works in the field.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/web-platform-browser-apis/visibility-based-rendering-runtime.svg"
+          alt="Design Visibility-Based Rendering runtime model"
+          caption="Runtime model: browser capability checks, permission and lifecycle gates, guarded execution, fallback path, and observability are owned by the abstraction."
         />
-
-        <HighlightBlock as="p" tier="crucial">
-          Interview signal: the diagram captures the end-to-end flow for <strong>Visibility-Based Rendering System</strong>. You should be able to explain the happy path and the failure paths (retries, cancellation, backpressure), not just the API surface.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Look for the &ldquo;control points&rdquo; where correctness is enforced: idempotency keys, monotonic request/version tokens, single-flight coordination, and durable persistence boundaries.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          In interviews, call out observability and operability: what you log/measure (p95 latency, error rates, retries/queue depth) and how you keep degraded modes user-safe (read-only, queued, or cached fallbacks).
-        </HighlightBlock>
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">IntersectionObserver-Based Viewport Detection</h3>
-        <p>IntersectionObserver efficiently detects when elements enter/leave the viewport. A single observer instance watches all list items. For each item, the observer tracks visibility state (not visible, partially visible, fully visible). Triggering is configurable via rootMargin: a negative margin shrinks the detection area (only very visible), a positive margin expands it (detects approaching elements).</p>
-        <p>Typical configuration: rootMargin "300px 0px" means detect items 300px before entering the viewport from top/bottom. As the user scrolls, this gives 300px of lead time to mount components before they're visible, ensuring smooth render by the time they enter the viewport.</p>
-        <p><strong>Observer Batching and Performance Optimization:</strong> Creating separate IntersectionObserver instances for each component is wasteful (overhead per instance). Instead, use a single shared observer and aggregate all callback notifications in a microtask batch. When multiple items enter/leave simultaneously during fast scrolling, collect all callbacks and dispatch a single state update (via `queueMicrotask` or `flushSync` in React 18). This prevents render thrashing and reduces GC pressure. Additionally, use the `threshold` array (e.g., `[0, 0.5, 1]`) to detect partial visibility transitions, enabling more nuanced rendering decisions: fully off-screen (threshold 0) vs. partially visible (threshold 0.5) vs. fully visible (threshold 1). This allows intermediate states where a component starts rendering (at 0.5) before becoming fully visible, further smoothing the user experience.</p>
-        <p><strong>Root Element and Container Scrolling Scenarios:</strong> The observer's `root` property defaults to the viewport, but custom roots enable container-level scrolling (e.g., a scrollable div within the page, not the window). For nested scrollable containers, configure the observer with the appropriate root. Cross-origin iframes complicate this: observers cannot traverse the iframe boundary, so each iframe requires its own visibility system. For shadow DOM, observers work normally but the reference frame is the shadow root's containing block. Additionally, when observing elements in transform: scale() or other 3D transforms, the intersection calculations respect the transformed geometry, not the original layout box. Account for this when tuning thresholds for scaled content.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Component Mount/Unmount Lifecycle</h3>
-        <p>Each item has a visibility state: hidden (not yet visible), mounting (approaching), visible (in viewport), unmounting (leaving viewport). When transitioning from hidden to mounting, the component is mounted in React. When transitioning to unmounting, the component is marked for unmount. After the item fully leaves the viewport, it's unmounted and removed from the DOM.</p>
-        <p>Granular rendering: only the currently visible set of components have React state updates. Off-screen updates (e.g., data changes to unmounted items) are queued and applied only when the item remounts, avoiding wasted renders for invisible content.</p>
-        <p><strong>React Hook Patterns and Lifecycle Synchronization:</strong> Use a custom hook `useVisibility()` to expose visibility state to child components. The hook reads from a context or refs provided by the visibility coordinator. In the mounting phase, components initialize expensive subscriptions (data polling, animation frames) via `useEffect` with the visibility state as a dependency. When the component transitions from mounting to unmounting, the `useEffect` cleanup function unsubscribes from these listeners. This pattern prevents memory leaks: subscribers are always cleaned up when visibility changes. Additionally, use `useMemo` with the visibility state as a dependency to ensure expensive computations (sorting, filtering, aggregations) only run when the component is visible or approaching visibility, not continuously.</p>
-        <p><strong>Render Batching and Thrashing Prevention:</strong> Rapid mount/unmount cycles (visibility state flickering at the threshold boundary during smooth scrolling) cause excessive re-renders. Implement debouncing or hysteresis: once an item transitions to mounting, keep it mounted until it fully exits the rootMargin (not just the threshold). This prevents thrashing. Additionally, batch visibility state updates for multiple items in a single React transaction. If 10 items transition simultaneously, update the visibility state for all 10 in one `setState`, triggering a single render pass, not 10. Use a requestAnimationFrame boundary or queueMicrotask to collect all intersection changes and dispatch a single update. This optimization is critical for smooth scrolling performance.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Page Visibility State Management</h3>
-        <p>The document.visibilityState property indicates if the page is visible, hidden, or prerendering. The visibilitychange event fires when this changes. A context or store tracks the visibility state and makes it available to all components.</p>
-        <p>When hidden=true, components are notified to pause expensive work: stop polling, pause animations, defer non-critical API calls. When hidden=false, components are notified to resume. This is especially effective for dashboards with real-time data where stopping polling while hidden saves significant bandwidth and server load.</p>
-        <p><strong>Cross-Tab State Coordination and Stale Data Handling:</strong> When a page is backgrounded for hours and then made visible, any cached data (from 8 hours ago) is stale. Upon visibility change to true, components should refetch data or increment a global version key. For real-time dashboards (stock tickers, live feeds), a brief flicker is acceptable as data updates. For transactional apps (banking), stale data can be critical. Implement a `dataFreshnessThreshold` (e.g., 5 minutes): if data is older than 5 minutes when the page becomes visible, refetch. If newer, reuse. Additionally, coordinate across browser tabs: if one tab logs out (signaling visibility change and logout), other tabs should detect the logout event via storage events and clear their state synchronously, preventing the user from seeing stale data while the tab is backgrounded.</p>
-        <p><strong>Prerendering and Bfcache Considerations:</strong> Some browsers prerender pages in the background before the user navigates to them. The visibilityState is "prerendering" in this phase. Don't start API calls or background work during prerendering; they're wasted and can interfere with actual page load metrics. Additionally, when a page enters the browser back/forward cache (bfcache), it's in a frozen state. On re-entry from bfcache, the visibilitychange event fires, signaling the opportunity to restore listeners and refetch stale data. Implement a `pagehide` listener to clean up subscriptions before bfcache freeze, and a `pageshow` listener to restore state. This ensures smooth navigation in mobile browsers where bfcache is aggressively used.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Adaptive Thresholds</h3>
-        <p>The rootMargin threshold (how far ahead to mount) is tuned based on device performance and user scroll speed. On high-end devices, mounting 500px ahead is safe. On low-end devices or slow networks, mounting 200px ahead to ensure render completes before visibility.</p>
-        <p>Scroll speed detection: measure user scroll velocity. If scrolling fast, increase rootMargin to 600px. If scrolling slowly, reduce to 200px. This adapts mounting lead time to actual user behavior, balancing smoothness against resource usage.</p>
-        <HighlightBlock as="p" tier="important"><strong>Device Performance Detection and Adaptive Margins:</strong> Use the Network Information API (navigator.connection.effectiveType) to detect device connectivity (4g, 3g, 2g). For slow networks, increase rootMargin to 600px (give more lead time for slow renders). For fast networks, reduce to 300px. Similarly, use `navigator.deviceMemory` and `navigator.hardwareConcurrency` to detect available resources. On low-memory devices (≤2GB RAM), reduce rootMargin and keep fewer components mounted to avoid memory pressure. On high-concurrency devices (≥8 cores), allow more concurrent mounts. Additionally, profile the app: measure average component render time and use this to calculate optimal rootMargin. If a component takes 400ms to render and the user scrolls at 500px/s, set rootMargin to at least 400ms * 500px/s = 200px. For higher safety margin (reducing jank risk), multiply by 1.5-2x: 300-400px.</HighlightBlock>
-        <HighlightBlock as="p" tier="important"><strong>Velocity-Based Threshold Adjustment and Hysteresis:</strong> Calculate scroll velocity by tracking scroll position over time (e.g., every 100ms). If the user is scrolling at more than 1000px/s (very fast, typical on mobile with fling), increase rootMargin aggressively to 800px to ensure mounted components render before they enter the viewport. If scrolling is slow or stopped, reduce rootMargin to 200px to save memory. Implement hysteresis: once you increase the margin due to fast scrolling, don't decrease it immediately when scrolling slows—wait 2 seconds. This prevents flapping between small and large margins, which causes mount/unmount thrashing. Additionally, detect directional changes (user scrolls up, then down): on reversal, temporarily increase margin in the opposite direction to cover the new scroll direction.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Placeholder Strategy</h3>
-        <p>While waiting for a component to mount and render, show a placeholder. For list items: a skeleton screen (fake content outline). For cards: a shimmer animation. For large content: a spinner. Placeholder prevents layout shift and gives the user visual feedback that content is loading.</p>
-        <p>Placeholder height matches expected content height (for skeleton screens) to maintain layout stability. No placeholder: user sees blank space, then content suddenly renders, causing a jarring shift. With placeholder: smooth, expected progression.</p>
-        <HighlightBlock as="p" tier="important"><strong>Placeholder Rendering and Layout Stability Optimization:</strong> Static placeholders (a div with fixed height) are wasteful if the component mounts instantly (no visible loading). Implement a small delay (100-200ms) before showing the placeholder. If the component mounts within 100ms, skip the placeholder entirely (no flash). If mount takes longer, show the placeholder. This "flash prevention" improves UX: users don't see placeholder flashing for fast-loading content. Additionally, for components with variable content (sometimes text, sometimes an image), generate multiple placeholder variants based on the data type, and select the appropriate variant for each item. For images, use blurhash or LQIP (low-quality image placeholder) as the placeholder, providing visual continuity as the full image loads.</HighlightBlock>
-        <p><strong>Skeleton Screen Dimensions and Content Mapping:</strong> Skeleton screens should match the final content layout exactly to avoid Cumulative Layout Shift (CLS). Use the metadata or schema of the data being loaded to determine expected dimensions. For example, if loading a user profile that will display 100x100 avatar, show a 100x100 skeleton. Generate skeleton variants server-side (send with the page HTML) or store dimensions in a config (e.g., cardDimensions with avatar: &#39;100x100&#39;, title: &#39;200x20&#39;, description: &#39;200x60&#39;). This allows the client to render accurate placeholders without waiting for component data.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">State Preservation and Restoration</h3>
-        <p>Unmounting a component discards its state. If the user fills a form field in an off-screen item, scrolls away, and scrolls back, the form is empty (state lost). To prevent this, optionally preserve state in SessionStorage or a parent reducer when unmounting. On remount, restore from storage.</p>
-        <p>This is optional and adds complexity. For most list items (where re-rendering is cheap), state loss is acceptable. For heavy components with user input, state preservation improves UX. Trade-off: memory and complexity versus UX.</p>
-        <p><strong>State Serialization and Storage Strategies:</strong> When a component unmounts, serialize its state (convert React state to JSON). For simple form inputs, serialization is cheap. For complex objects (nested state, circular references), use a serialization library (e.g., structuredClone, JSON with custom replacers). Store serialized state in a `useState` or Zustand store (in-memory) keyed by item ID. On remount, deserialize and restore via `useEffect`. Alternatively, use sessionStorage for persistence across page reloads: `sessionStorage.setItem('item_123_state', JSON.stringify(state))`. SessionStorage is cleared on browser close, preventing stale state from corrupting data. For sensitive fields (passwords, API tokens), encrypt before storage or skip preservation entirely.</p>
-        <p><strong>State Invalidation and Coherence with Server State:</strong> Preserved state can become stale. If the user fills a form offline, the server updates the underlying data, and then the user scrolls back to the item and sees the stale local form state. Implement a `stateVersion` or `timestamp` on stored state. On remount, compare the local state version with the server state version. If server is newer, discard local state and fetch fresh data. If local is newer (user made more changes), use local. For conflict resolution, prefer server-as-source-of-truth, but offer a merge UI if the app requires editing unsaved changes. Additionally, implement a `clearStateOn` rule: if the user navigates away from the list entirely (e.g., to a detail page), clear all preserved state. This prevents users from returning days later with stale form data.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Integration with Virtual Scrolling</h3>
-        <p>Virtual scrolling (rendering only visible items) is similar but more aggressive: a virtual scroller renders a fixed window of items (e.g., 5) while the user scrolls through thousands. Combined with visibility detection: the scroller manages mounting/unmounting, and each item also uses visibility detection for internal content (nested items, images, etc.).</p>
-        <p>Most large lists use virtual scrolling; visibility-based rendering is a complementary optimization for nested content within each item.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Performance Monitoring and Metrics</h3>
-        <p>Track metrics: number of mounted components, memory usage, FCP (first contentful paint), and FID (first input delay). With visibility-based rendering, these typically improve 20-50% on large lists. Monitor visibility state transitions: how often do items mount/unmount? High frequency indicates threshold tuning is needed.</p>
-        <HighlightBlock as="p" tier="crucial"><strong>Instrumentation and Real-User Monitoring:</strong> Instrument the visibility system to emit metrics: (1) Mounted component count (histogram, updated every 500ms). (2) Mount/unmount rate (events/second, should be &lt;5 for stable scrolling). (3) Time-to-render-after-mount (latency from mount callback to first paint, should be &lt;100ms). (4) Memory usage (measure via performance.memory API on supported browsers). Aggregate these in an analytics pipeline and alert if mount rate exceeds 10/sec (indicating thrashing) or time-to-render exceeds 200ms (indicating slow renders). Additionally, track web vitals: LCP (Largest Contentful Paint) should improve with visibility rendering (only load critical content first), CLS (Cumulative Layout Shift) should remain stable if placeholders match final dimensions.</HighlightBlock>
-        <HighlightBlock as="p" tier="important"><strong>Testing and Simulation Strategies:</strong> Test visibility rendering under realistic conditions: (1) Simulate slow networks (3G: 1.6Mbps, measure time-to-render impact). (2) Simulate low-end devices (1GB RAM, single core, measure memory pressure). (3) Rapid scroll gestures (fling on mobile, 2000px/s velocity, verify no jank). (4) Rapid mount/unmount cycles at the threshold boundary (script a scroll that hovers at the boundary, verify hysteresis prevents thrashing). Unit tests: verify observer callback fires at the right visibility transitions, verify state updates batch correctly, verify memory is released on unmount. Integration tests: verify a list with 10k items keeps in-memory DOM under 50MB and paints within 100ms of first scroll. End-to-end: verify paint metrics improve by 30%+ compared to rendering all items.</HighlightBlock>
+        <h2>Core Concepts</h2>
+        <p>
+          The first concept is feature detection with a policy decision. The runtime should not only check whether an API exists. It should decide whether the API is allowed for this user journey, browser, security context, permission state, and product risk. For example, an API may exist but require HTTPS, transient user activation, foreground tab state, same-origin constraints, or a browser-specific fallback.
+        </p>
+        <p>
+          The second concept is a small state machine around the browser boundary. Directly calling browser APIs from components spreads permission prompts, unsupported states, cleanup, and errors across the app. A runtime with explicit states can reject unsafe calls, produce consistent UI states, and shield product code from browser-specific exception shapes.
+        </p>
+        <p>
+          The third concept is lifecycle ownership. Browser API handles often outlive a render: observers must disconnect, workers must terminate, file references must be released, permission watches must stop, callbacks must be batched, and hidden tabs may throttle timers. The durable structures are document visibility state, viewport observer, animation registry, polling registry, media policy, resume queue. These structures give the implementation enough evidence to clean up safely and debug incidents.
+        </p>
+        <h3>Implementation contract</h3>
+        <p>
+          Public methods should return typed outcomes such as accepted, unsupported, permission-denied, queued, cancelled, throttled, or fallback-used. Components should not infer these outcomes from thrown DOM exceptions. The runtime should also expose a snapshot with capability state, active work, last error, and recovery action so the UI can render coherent affordances.
+        </p>
+        <p>
+          Every browser-facing operation should define input validation, output normalization, cancellation semantics, and cleanup requirements. Sensitive operations need data minimization and audit events. Expensive operations need budgets and backpressure. User-gesture operations need a short-lived activation window and a fallback path when the activation is lost.
+        </p>
+        <h3>Operation classes</h3>
+        <p>
+          Browser work should be classified before implementation. User-activation operations, long-running computation, observer callbacks, permission prompts, file intake, and background work have different safety rules. A copy action may need a foreground click, a worker job may need transferable ownership, an observer may need frame batching, and a location request may need a purpose-specific explanation. Grouping operations this way prevents a single generic wrapper from hiding important browser constraints.
+        </p>
+        <p>
+          Each operation class should define retry behavior, cancellation, privacy limits, and UI fallback. Some operations are safe to retry, some are not; some can run in the background, while others must pause when the document is hidden. Principal-level design means naming those classes and refusing unsafe execution when the browser context no longer matches the operation contract.
+        </p>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="important">Complexity versus benefit: visibility-based rendering adds code and complexity. For small lists (50 items), benefit is minimal. For large lists (500+ items), benefit is substantial. Threshold: implement for lists expected to exceed 100 items on typical devices.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Threshold tuning: too small (100px), frequent mount/unmount thrashing. Too large (1000px), mounting happens so early that render completes but component sits idle, wasting memory. Sweet spot is typically 300-500px based on device and scroll speed.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">State preservation: preserving unmounted state adds memory (each unmounted item keeps state in memory). On lists of 10k items with heavy state, this is unacceptable. Accept state loss (component remounts fresh) or use virtual scrolling instead.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Page visibility optimization: pausing animations and polling when hidden saves 30-50% CPU on backgrounded tabs. However, some real-time dashboards want updates even when hidden (e.g., stock tickers). Allow per-component opt-out.</HighlightBlock>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          The architecture has five layers. The component facade accepts product intent. The capability layer checks API support, secure context, permissions, user activation, and document lifecycle. The execution engine calls the browser API through adapters. The fallback layer provides an alternate path when the capability is missing or unsafe. The observer layer records metrics and exposes state changes to UI subscribers.
+        </p>
+        <p>
+          A normal flow starts with a product component calling the facade. The facade validates the request and attaches an operation id. The capability layer returns allowed, denied, unsupported, or deferred. If allowed, the execution engine invokes the browser adapter with cancellation and timeout guards. If denied or unsupported, the fallback layer returns a user-safe alternative rather than throwing a raw browser error into the UI.
+        </p>
+        <p>
+          Cleanup is part of the flow, not a separate afterthought. On unmount, navigation, tab hide, permission change, abort, or worker termination, the runtime should cancel active operations, release resources, and emit a final snapshot. The cleanup path must be idempotent because React remounts, route transitions, service worker updates, and browser lifecycle events can call it more than once.
+        </p>
+        <h3>Data model and invariants</h3>
+        <p>
+          A practical data model includes operation id, capability snapshot, permission state, caller scope, lifecycle state, active handles, timeout deadline, fallback reason, and telemetry fields. Invariants should be enforced before the browser call: no privileged action without the required user activation, no observer callback that mutates layout recursively without batching, no worker result accepted after cancellation, and no sensitive payload logged.
+        </p>
+        <p>
+          The runtime should separate browser adapters from policy. Adapters know how to call Clipboard, Geolocation, Worker, Observer, Visibility, Drag and Drop, or Background Sync APIs. Policy decides whether a call is safe, what fallback to use, what to show the user, and what to record. That split makes tests deterministic and lets product policy evolve without rewriting browser integration code.
+        </p>
+        <h3>Failure matrix</h3>
+        <p>
+          The design should include a failure matrix from browser cause to product response. Unsupported API routes to fallback. Permission denied routes to explanation and manual alternatives. Expired user activation routes to a fresh user action. Hidden document routes to pause or defer. Large payload routes to worker or chunking. Observer loop risk routes to batching and layout guards. This matrix makes the implementation inspectable and keeps feature teams from inventing inconsistent behavior.
+        </p>
+        <p>
+          Browser lifecycle transitions should be modeled as first-class events. Visibility change, page freeze, navigation, bfcache restore, service worker update, worker termination, and permission revocation can all invalidate active handles. The runtime should move to a typed state, cancel or resume work safely, and emit a snapshot that lets the UI explain what happened.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/web-platform-browser-apis/visibility-based-rendering-failure.svg"
+          alt="Design Visibility-Based Rendering failure and fallback model"
+          caption="Failure model: unsupported APIs, permission denial, lifecycle changes, and expensive callbacks are routed through explicit fallbacks and telemetry."
+        />
       </section>
 
       <section>
-        <h2>Implementation Patterns</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Pattern 1: IntersectionObserver-Wrapped List</h3>
-        <HighlightBlock as="p" tier="important">List component uses IntersectionObserver to track item visibility. Items mount on intersection entry, unmount on intersection exit with rootMargin for lead time.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Pattern 2: Page Visibility Context</h3>
-        <HighlightBlock as="p" tier="important">Root component tracks Page Visibility API state in context. Child components consume context and adjust polling frequency, animation speed, or API call rates based on visibility.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Pattern 3: Virtual Scroller with Visibility Detection</h3>
-        <HighlightBlock as="p" tier="crucial">Virtual scroller renders only N visible items. Each item also applies visibility-based rendering for nested content, creating a layered optimization.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>
+          Calling browser APIs directly is fast to ship and works for prototypes. It becomes fragile when multiple screens need consistent permission prompts, fallbacks, cleanup, security handling, and observability. A centralized runtime adds indirection, but it turns browser unpredictability into a stable application contract.
+        </p>
+        <p>
+          The main trade-off is control versus native behavior. Native APIs provide capabilities that JavaScript cannot reproduce efficiently, but they come with browser rules that can change or vary. A custom fallback is more predictable, but may be less capable or less performant. A principal-ready design uses native capability when it is safe and valuable, and falls back only for the degraded core journey.
+        </p>
+        <p>
+          Performance trade-offs depend on the API. Observers and visibility can reduce work, but callback storms can create layout thrash. Workers can improve responsiveness, but serialization and transfer overhead can dominate small jobs. Clipboard and permission APIs improve UX when used with user intent, but aggressive prompting harms trust. Background sync improves reliability, but requires idempotency and durable state.
+        </p>
+        <p>
+          Security and privacy are first-class trade-offs. Clipboard, location, file drops, push-like background actions, and worker payloads can expose sensitive data or create abuse paths. The design should minimize payloads, sanitize inputs, respect permissions, avoid logging secrets, and fail closed when the browser cannot prove the user or document state required by the operation.
+        </p>
+        <p>
+          There is also a portability trade-off. A browser-native path may be excellent in Chromium and limited or absent elsewhere. The design should isolate adapters, ship capability metrics, and support feature-flagged rollout. That lets the team use advanced APIs where they are reliable without breaking the baseline journey for users on constrained browsers or enterprise-managed devices.
+        </p>
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Trade-offs include complexity (worth it for 100+ item lists), threshold tuning (300-500px optimal), and state preservation (optional, adds memory). Real-world systems</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">(Twitter, LinkedIn, Google Docs) use these patterns on large feeds and documents. For best results, measure paint metrics and memory usage before and after implementation, tune thresholds based on device performance, and reserve for lists exceeding typical viewport content (100+ items). Combine with virtual scrolling for massive lists (10k+ items).</HighlightBlock>
+        <h2>Best practices</h2>
+        <p>
+          Always wrap browser APIs with capability detection, typed errors, and cleanup. Treat browser support as a runtime condition, not a build-time assumption. Check secure context, permissions, document visibility, user activation, and lifecycle state close to the call site because those values can change between render and execution.
+        </p>
+        <p>
+          Batch and budget callbacks. Observer APIs, visibility changes, drag events, worker progress, and sync status messages can fire frequently. Use requestAnimationFrame, microtask batching, or priority queues to avoid re-render storms. Track the cost of callbacks and expose slow-path metrics so the abstraction does not become a hidden performance problem.
+        </p>
+        <p>
+          Provide accessible, honest fallbacks. A disabled button, manual copy field, file input fallback, approximate location mode, read-only state, or visible retry queue should correspond to a real runtime state. The user should understand whether the issue is unsupported browser, denied permission, background throttling, failed validation, or temporary unavailability.
+        </p>
+        <p>
+          Test with browser API adapters rather than real global APIs in most unit tests. Use integration tests for permission denial, unsupported APIs, hidden tab behavior, worker cancellation, observer disconnect, large file drops, and activation expiry. Deterministic adapters make edge cases repeatable instead of timing-dependent.
+        </p>
+        <p>
+          Add operational guardrails. Cap active observers, worker jobs, queued background tasks, pasted payload size, drag-drop file count, and location watcher lifetime. Release resources on route change and expose counts in debug snapshots. These limits are part of the low-level design because browser APIs can exhaust memory, drain battery, or degrade input latency when left unbounded.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>
+          The most common pitfall is assuming support means safe use. A method can exist but still fail because the page is not secure, the tab is hidden, the user activation expired, the permission was denied, the payload is too large, or the browser throttled the callback. The runtime must treat these as normal states.
+        </p>
+        <p>
+          Another pitfall is leaking resources. Observers left connected, workers left running, file object URLs not revoked, geolocation watchers not cleared, and queues not compacted all create slow production failures. Cleanup should be idempotent and connected to component scope, route scope, and document lifecycle.
+        </p>
+        <p>
+          Teams also under-observe browser API failures. Browser-specific issues are hard to reproduce without telemetry. Capture capability state, permission outcome, fallback reason, operation duration, cancellation, and sanitized error class. Avoid capturing payloads, clipboard text, location coordinates, or file names unless the privacy policy explicitly permits it and the data is necessary.
+        </p>
+        <p>
+          A subtle pitfall is mixing rendering state with browser handle state. A component can re-render many times while the underlying observer, worker, permission watch, or drag session should remain stable. Conversely, a route transition can invalidate a handle even if React state still exists. The runtime should own handles explicitly and expose derived UI state rather than letting components hold raw browser objects.
+        </p>
+        <p>
+          Finally, avoid assuming the fallback is only for old browsers. Fallbacks also handle enterprise policies, denied permissions, embedded webviews, privacy modes, hidden tabs, quota pressure, and temporary platform regressions. If the fallback path is not tested and observable, it will fail exactly for the users who need it most.
+        </p>
+        <p>
+          A production-ready implementation should make these fallback transitions as visible in design review as the happy path.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          Browser API runtimes appear in productivity suites, internal admin tools, design editors, field-service apps, analytics dashboards, media uploaders, real-time collaboration products, and offline-capable PWAs. These products need capabilities that are close to the device and browser lifecycle, but they also need predictable behavior across teams and browsers.
+        </p>
+        <p>
+          At staff and principal level, the browser API layer is often platform-owned. Feature teams declare intent and policy, while the platform runtime owns capability checks, adapters, cleanup, fallbacks, accessibility, privacy review, and metrics. This prevents every feature from rediscovering browser edge cases in production.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you design this system end to end?</h3>
+        <p>
+          I would design a facade around the browser API, a capability and permission gate, a state machine, browser adapters, fallback renderers, and telemetry. The facade accepts product intent and returns typed outcomes. The gate checks secure context, support, permission, activation, and lifecycle. The adapter executes the browser call with cancellation and timeout guards. The fallback path keeps the core task usable when the native path is unavailable.
+        </p>
+        <h3>Why this architecture over direct browser calls?</h3>
+        <p>
+          Direct calls duplicate edge handling across components and make behavior inconsistent. A runtime centralizes invariants: Hidden or offscreen UI should stop expensive work without losing state or surprising the user on resume. It also makes permissions, fallbacks, cleanup, and metrics testable. The cost is an abstraction layer, but the benefit is predictable behavior across browsers and product surfaces.
+        </p>
+        <h3>What breaks at scale?</h3>
+        <p>
+          At scale, browser differences, permission churn, callback storms, memory leaks, hidden-tab throttling, serialization cost, and unsupported fallback paths become the main failures. The design needs adapter tests, capability metrics, bounded queues, idempotent cleanup, callback batching, privacy-safe logging, and rollout flags to disable unsafe paths.
+        </p>
+        <h3>What consistency model applies?</h3>
+        <p>
+          The consistency model is usually local and lifecycle-bound. The browser can confirm that an operation was requested or accepted by the API, but the application may still need server authority, user permission, or visible fallback state. The runtime should expose whether state is confirmed, pending, approximate, stale, cancelled, or fallback-derived instead of presenting every result as equally authoritative.
+        </p>
+        <h3>How do you handle failure, rollback, abuse, privacy, cost, and observability?</h3>
+        <p>
+          Failure becomes typed runtime state. Rollback means cancelling handles, ignoring late results, revoking previews, or returning to fallback UI. Abuse is controlled through user activation, permission checks, payload limits, rate limits, and feature flags. Privacy is protected through data minimization and sanitized telemetry. Cost is managed through batching, cancellation, worker thresholds, and cleanup. Observability records capability, permission outcome, fallback reason, duration, and resource counts.
+        </p>
+        <h3>How would you defend the trade-offs under interviewer pressure?</h3>
+        <p>
+          I would explain that browser APIs are powerful but non-deterministic across environments, so the abstraction optimizes for correctness and user trust. If challenged on complexity, I would scope the runtime to shared invariants and keep product policy injectable. If challenged on performance, I would show batching, budgets, and cancellation. Then I would walk through a real-time dashboard tab is hidden for twenty minutes and then resumes with stale data and queued timers and explain the exact state transitions.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API" target="_blank" rel="noreferrer">MDN reference for the primary browser API</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API" target="_blank" rel="noreferrer">MDN Permissions API</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API" target="_blank" rel="noreferrer">MDN Page Visibility API</a></li>
+          <li><a href="https://web.dev/articles/rendering-performance" target="_blank" rel="noreferrer">web.dev Rendering Performance</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li>
+        </ul>
       </section>
     </ArticleLayout>
   );

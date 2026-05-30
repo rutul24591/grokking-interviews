@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function CodeEditorComponentArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function CodeEditorComponentArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Code Editor Component</h1><h2>Definition &amp; Context</h2><p>Design a Code Editor Component is an implementation-heavy low-level design problem covering incremental text storage, editing transactions, syntax workers, viewport rendering, diagnostics, selection mapping, undo grouping, and large-file fallback. A principal-level answer must explain state ownership, browser or worker boundaries, scale limits, consistency, rollback, privacy, cost, and observability.</p><p>The text model is authoritative. Rendered lines, syntax spans, diagnostics, and minimap data are disposable projections tagged with the document version. The core structures are rope or piece table, edit transaction, selection ranges, undo journal, viewport window, syntax generation, worker channel, diagnostic index, and composition session.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/file-media-content-systems/code-editor-component-runtime.svg" alt="Design a Code Editor Component runtime" caption="Topic-specific runtime from source intake through guarded projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -93,7 +92,7 @@ export default function CodeEditorComponentArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -128,7 +127,7 @@ export default function CodeEditorComponentArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -171,14 +170,10 @@ export default function CodeEditorComponentArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/code-editor-component-architecture.svg"
-        alt="Code Editor Component Architecture"
-        caption="Monaco / CodeMirror as the editor engine ← Language registry + Theme + Plugins (LSP, Vim, collab) → React wrapper exposing onChange, value, language. The wrapper handles lifecycle and doesn&rsquo;t leak Monaco internals to consumers."
-      />
+      
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <HighlightBlock as="p" tier="important">
           The component wraps Monaco (or CodeMirror)
           with a React-friendly API. The wrapper
@@ -286,7 +281,7 @@ export default function CodeEditorComponentArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial"><strong> ThemeBridge</strong> maps host theme
           to Monaco theme.
           <strong> LanguageRegistry</strong> exposes
@@ -297,7 +292,7 @@ export default function CodeEditorComponentArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">Monaco&rsquo;s model owns the text state. The
           React wrapper holds a stable ref to the</HighlightBlock>
 <HighlightBlock as="p" tier="important">editor instance; React doesn&rsquo;t re-render
@@ -308,7 +303,7 @@ export default function CodeEditorComponentArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important">
           <Highlight tier="crucial">Inputs:</Highlight>{" "}
           <code>value</code>, <code>onChange</code>, <code>language</code>,{" "}
@@ -320,7 +315,7 @@ export default function CodeEditorComponentArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="crucial">Monaco is highly optimized. Lazy loading
           keeps initial bundle small. We don&rsquo;t
           re-render React on text changes.</HighlightBlock>
@@ -331,7 +326,7 @@ export default function CodeEditorComponentArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">Editor renders with familiar VS-Code
           feel. Toolbar in the host app for</HighlightBlock>
 <HighlightBlock as="p" tier="important">actions (run, format, save). Status bar
@@ -342,7 +337,7 @@ export default function CodeEditorComponentArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">Monaco&rsquo;s accessibility mode is
           enabled by default for screen readers.</HighlightBlock>
 <HighlightBlock as="p" tier="important">Keyboard parity for all features.
@@ -353,7 +348,7 @@ export default function CodeEditorComponentArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Code is data; we don&rsquo;t execute it.
           LSP servers run sandboxed (in <Highlight tier="important">workers or
@@ -364,7 +359,7 @@ export default function CodeEditorComponentArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="crucial">Unit tests for the wrapper (mount/unmount
           correctness, value sync). Integration</HighlightBlock>
 <HighlightBlock as="p" tier="important">tests
@@ -376,7 +371,7 @@ export default function CodeEditorComponentArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">LSP server
           disconnect: features degrade gracefully
           (no autocomplete, no diagnostics) but
@@ -388,7 +383,7 @@ export default function CodeEditorComponentArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Wrapper around Monaco is reusable
           across products. CodeMirror equivalent
@@ -400,7 +395,7 @@ export default function CodeEditorComponentArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Monaco UI strings localized in many
           languages. <Highlight tier="important">Code content is the user&rsquo;s
@@ -410,7 +405,7 @@ export default function CodeEditorComponentArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Monaco vs CodeMirror vs custom</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -453,7 +448,7 @@ export default function CodeEditorComponentArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           AI-assisted completion (Copilot-style).
           Real-time collaborative editing <Highlight tier="important">via
@@ -461,90 +456,12 @@ export default function CodeEditorComponentArticle() {
           languages).</Highlight> Better mobile editing
           experience (Monaco is desktop-first).
         </Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. Monaco vs CodeMirror?</strong>{" "}
-          Monaco for full IDE features and
-          VS-Code parity at the cost of bundle
-          size. CodeMirror for lighter embedded
-          snippets. Both handle text editing
-          fundamentals well; choose based on
-          feature needs and bundle budget.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How is Monaco loaded?</strong>{" "}
-          Lazy-loaded via dynamic import. Editor
-          shows a loading state until Monaco
-          initializes. Language workers also
-          lazy-load.
-        </HighlightBlock>
-
-        <p>
-          <strong>3. Why uncontrolled value?</strong>{" "}
-          Monaco&rsquo;s internal model is the
-          source of truth. Fully controlled would
-          cause re-render storms. We let Monaco
-          own value and emit onChange.
-        </p>
-
-        <p>
-          <strong>4. How does theme integration
-          work?</strong> Monaco supports custom
-          themes. The wrapper maps host design
-          tokens to Monaco theme properties.
-          Theme switches propagate.
-        </p>
-
-        <p>
-          <strong>5. How does LSP integration
-          work?</strong> A plugin connects to a
-          language server (WebSocket or in-process).
-          Monaco routes completion, diagnostics,
-          hover, etc. through the plugin.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>6. How does this scale to large
-          files?</strong> Monaco handles 100k+
-          line files efficiently. Worker threads
-          for tokenization. Virtual scrolling for
-          rendering. Built-in optimizations.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>7. How is accessibility
-          handled?</strong> Monaco&rsquo;s
-          accessibility mode for screen readers,
-          keyboard parity for all features. The
-          wrapper preserves this.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>8. When would you NOT use
-          Monaco?</strong> When bundle size matters
-          and only basic features are needed.
-          When the product is mobile-first
-          (Monaco is desktop-tuned). When custom
-          rendering is required (rare).
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">Lazy
-          loading keeps initial bundle small;
-          uncontrolled value avoids re-render
-          storms; theme bridge integrates with</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">host design system; LSP plugin enables
-          full IDE features. The result is
-          VS-Code-class editing inside any web
-          product.</Highlight></HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate durable source data, transient interaction state, derived render state, remote or worker effects, and bounded telemetry. Every object URL, request, worker, listener, timer, cache entry, and decoder task needs an explicit owner and cleanup path.</p><p>The text model is authoritative. Rendered lines, syntax spans, diagnostics, and minimap data are disposable projections tagged with the document version. Commit durable changes only after policy validation and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/file-media-content-systems/code-editor-component-recovery.svg" alt="Design a Code Editor Component recovery" caption="Recovery flow: classify failure, preserve stable state, and degrade predictably." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>A textarea is reliable for small text; a custom runtime is justified for incremental rendering, diagnostics, multi-cursor editing, and extension policy.</p><p>Local transactions are ordered. Worker output and diagnostics are eventually consistent projections discarded when their document version is stale. Scale pressure comes from large files, rapid edits, IME composition, worker lag, multi-cursor mapping, line wrapping, and extension failure. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic projection only when rollback is deterministic and visible. Keep authorization, validation, and destructive actions server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed states, generation guards, bounded queues, abortable effects, semantic HTML, and idempotent cleanup. Test accessibility, stale work, retries, unmount, constrained devices, large files, and corrupted input.</p><p>Measure latency, memory, queue pressure, stale drops, retries, fallbacks, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include treating rendered output as durable truth, leaking resources, accepting stale worker completion, unbounded prefetch, and hiding degraded behavior.</p><p>For this topic, isolate worker errors, disable expensive features in large-file mode, preserve plain-text editing, remap selections, and bound undo memory. Validate untrusted content, authorize durable mutations, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to content-heavy product surfaces where browser APIs, workers, networks, and remote policy fail independently. Reuse the controller boundary while injecting product-specific fallback and retention policy.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>The text model is authoritative. Rendered lines, syntax spans, diagnostics, and minimap data are disposable projections tagged with the document version.</p><h3>What breaks at scale?</h3><p>large files, rapid edits, IME composition, worker lag, multi-cursor mapping, line wrapping, and extension failure. I would bound work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>Local transactions are ordered. Worker output and diagnostics are eventually consistent projections discarded when their document version is stale.</p><h3>How do you recover?</h3><p>I would isolate worker errors, disable expensive features in large-file mode, preserve plain-text editing, remap selections, and bound undo memory.</p><h3>Why this architecture?</h3><p>A textarea is reliable for small text; a custom runtime is justified for incremental rendering, diagnostics, multi-cursor editing, and extension policy.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API" target="_blank" rel="noreferrer">MDN Web Workers API</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

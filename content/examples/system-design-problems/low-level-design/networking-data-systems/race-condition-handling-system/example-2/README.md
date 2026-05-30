@@ -1,6 +1,3 @@
-# Race Condition Handling System — Example 2
+# Design a Race Condition Handling System - Example 2
 
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+This legacy slug example mirrors the canonical article example so older manifest keys do not show placeholder code.

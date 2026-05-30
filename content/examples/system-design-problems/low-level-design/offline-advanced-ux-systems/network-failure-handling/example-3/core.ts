@@ -1,90 +1,64 @@
-export type networkFailureHandlingRuntimeState = {
-  topic: "network-failure-handling";
-  mounted: boolean;
-  lastSuccessfulVersion: number;
-  pendingVersion: number;
-  lastInteractionAtMs: number;
-  lastRecoveryAtMs?: number;
-  signal: {
-    offlineAgeMs: number;
-    conflictCount: number;
-    logSize: number;
-    lastAckVersion: number;
-  };
-};
-
-export type networkFailureHandlingRecoveryPlan = {
-  mode: "continue" | "degrade" | "block-and-recover";
-  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
-  actions: Array<"replay-local-log" | "surface-conflict" | "compact-acknowledged-ops" | "emit-telemetry" | "keep-current-state">;
-  evidence: string[];
-};
-
-function minutes(ms: number) {
-  return Math.round(ms / 60_000);
+export interface NetworkFailureHandlingVersionedValue {
+  resourceId: string;
+  version: number;
+  fields: Record<string, string>;
 }
 
-export function planNetworkFailureHandlingRecovery(
-  state: networkFailureHandlingRuntimeState,
-  nowMs: number,
-): networkFailureHandlingRecoveryPlan {
-  const evidence: string[] = [];
-  const actions: networkFailureHandlingRecoveryPlan["actions"] = ["emit-telemetry"];
-  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
-  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
-
-  if (!state.mounted) evidence.push("component-unmounted-before-completion");
-  if (versionGap > 1) evidence.push("multiple-versions-pending");
-  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
-  if (state.signal.offlineAgeMs > 2_000) evidence.push("offlineAgeMs-breached");
-  if (state.signal.conflictCount > 0) evidence.push("conflictCount-requires-operator-attention");
-  if (state.signal.logSize > 0.2) evidence.push("logSize-unsafe-for-silent-commit");
-
-  if (!state.mounted) {
-    actions.push("replay-local-log");
-    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
-  }
-
-  if (versionGap > 1 || state.signal.logSize > 0.2) {
-    actions.push("surface-conflict", "compact-acknowledged-ops");
-    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
-  }
-
-  actions.push("keep-current-state");
-  return { mode: "continue", userVisibleState: "current", actions, evidence };
+export interface NetworkFailureHandlingConflict {
+  field: string;
+  base?: string;
+  local?: string;
+  remote?: string;
+  resolution: "auto-local" | "auto-remote" | "manual";
+  reason: string;
 }
 
-export function runNetworkFailureHandlingEdgeCaseScenario() {
-  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
-  const normal = planNetworkFailureHandlingRecovery(
-    {
-      topic: "network-failure-handling",
-      mounted: true,
-      lastSuccessfulVersion: 21,
-      pendingVersion: 22,
-      lastInteractionAtMs: nowMs - 90_000,
-      signal: { offlineAgeMs: 160, conflictCount: 0, logSize: 0.01, lastAckVersion: 0 },
-    },
-    nowMs,
-  );
+export interface NetworkFailureHandlingResolutionPlan {
+  merged: Record<string, string>;
+  conflicts: NetworkFailureHandlingConflict[];
+  audit: string[];
+  canCommitSilently: boolean;
+}
 
-  const failure = planNetworkFailureHandlingRecovery(
-    {
-      topic: "network-failure-handling",
-      mounted: true,
-      lastSuccessfulVersion: 21,
-      pendingVersion: 25,
-      lastInteractionAtMs: nowMs - 18 * 60_000,
-      signal: { offlineAgeMs: 2_900, conflictCount: 2, logSize: 0.42, lastAckVersion: 4 },
-    },
-    nowMs,
-  );
+export function buildNetworkFailureHandlingResolutionPlan(
+  base: NetworkFailureHandlingVersionedValue,
+  local: NetworkFailureHandlingVersionedValue,
+  remote: NetworkFailureHandlingVersionedValue,
+): NetworkFailureHandlingResolutionPlan {
+  const fields = new Set([...Object.keys(base.fields), ...Object.keys(local.fields), ...Object.keys(remote.fields)]);
+  const merged: Record<string, string> = {};
+  const conflicts: NetworkFailureHandlingConflict[] = [];
+
+  for (const field of fields) {
+    const baseValue = base.fields[field];
+    const localValue = local.fields[field];
+    const remoteValue = remote.fields[field];
+    const localChanged = localValue !== baseValue;
+    const remoteChanged = remoteValue !== baseValue;
+
+    if (localChanged && remoteChanged && localValue !== remoteValue) {
+      conflicts.push({ field, base: baseValue, local: localValue, remote: remoteValue, resolution: "manual", reason: "both-sides-changed" });
+      merged[field] = localValue ?? remoteValue ?? "";
+    } else if (localChanged) {
+      merged[field] = localValue ?? "";
+      conflicts.push({ field, base: baseValue, local: localValue, remote: remoteValue, resolution: "auto-local", reason: "only-local-changed" });
+    } else {
+      merged[field] = remoteValue ?? localValue ?? "";
+      if (remoteChanged) conflicts.push({ field, base: baseValue, local: localValue, remote: remoteValue, resolution: "auto-remote", reason: "only-remote-changed" });
+    }
+  }
 
   return {
-    topic: "Network Failure Handling",
-    subcategory: "offline-advanced-ux-systems",
-    invariant: "Local state must survive reloads and converge after reconnect without losing user intent.",
-    normal,
-    failure,
+    merged,
+    conflicts,
+    canCommitSilently: conflicts.every((conflict) => conflict.resolution !== "manual"),
+    audit: ["topic:network-failure-handling", "policy:multi-signal health classification with bounded retries and user-visible degraded mode", `base:${base.version}`, `local:${local.version}`, `remote:${remote.version}`],
   };
+}
+
+export function runNetworkFailureHandlingConflictScenario() {
+  const base = { resourceId: "doc-7", version: 1, fields: { title: "Draft", owner: "A", status: "open" } };
+  const local = { resourceId: "doc-7", version: 2, fields: { title: "Client Draft", owner: "A", status: "open" } };
+  const remote = { resourceId: "doc-7", version: 3, fields: { title: "Server Draft", owner: "B", status: "open" } };
+  return buildNetworkFailureHandlingResolutionPlan(base, local, remote);
 }

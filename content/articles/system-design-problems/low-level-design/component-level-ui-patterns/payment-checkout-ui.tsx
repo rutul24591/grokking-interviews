@@ -34,12 +34,11 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function PaymentCheckoutUIArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      {/* Section 1: Problem Clarification */}
+export default function PaymentCheckoutUIArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Payment Checkout UI</h1><h2>Definition &amp; Context</h2><p>Design a Payment Checkout UI is an implementation-heavy low-level design problem covering cart snapshot, address and shipping validation, payment intent lifecycle, idempotent submission, redirect recovery, inventory drift, and accessibility. A principal-level answer must make state ownership, data structures, lifecycle, failure containment, consistency, privacy, cost, and observability explicit.</p><p>Model checkout as a state machine. The browser may collect intent, but price, inventory, tax, authorization, and final order creation remain server-authoritative. The implementation structures are cart version, checkout step, address draft, shipping quote, payment intent id, idempotency key, submit lock, redirect token, error taxonomy, and order receipt.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/payment-checkout-ui-runtime.svg" alt="Design a Payment Checkout UI runtime" caption="Topic-specific runtime stages from user intent through durable projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below contains the topic-specific implementation mechanics.</p>{/* Section 1: Problem Clarification */}
       <section>
-        <h2>Problem Clarification</h2>
+        <h3>Problem Clarification</h3>
         <HighlightBlock as="p" tier="crucial">
           We need to design a production-grade payment/checkout UI for an e-commerce
           application. The checkout flow must collect payment details (card number,
@@ -84,7 +83,7 @@ export default function PaymentCheckoutUIArticle() {
 
       {/* Section 2: Requirements */}
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
@@ -199,7 +198,7 @@ export default function PaymentCheckoutUIArticle() {
 
       {/* Section 3: High-Level Approach */}
       <section>
-        <h2>High-Level Approach</h2>
+        <h3>High-Level Approach</h3>
         <HighlightBlock as="p" tier="important">
           The core idea is to separate <strong>card input formatting</strong>,{" "}
           <strong>validation logic</strong>, <strong>payment state</strong>, and{" "}
@@ -244,7 +243,7 @@ export default function PaymentCheckoutUIArticle() {
 
       {/* Section 4: System Design (LLD) */}
       <section>
-        <h2>System Design</h2>
+        <h3>System Design</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Module Architecture</h3>
         <p>The system consists of six modules:</p>
@@ -390,7 +389,7 @@ export default function PaymentCheckoutUIArticle() {
 
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
-        <h2>Data Flow / Execution Flow</h2>
+        <h3>Data Flow / Execution Flow</h3>
         <HighlightBlock as="p" tier="important">
           The execution flow follows a unidirectional pattern: user input triggers
           formatting, formatting updates the store, the store triggers validation,
@@ -435,7 +434,7 @@ export default function PaymentCheckoutUIArticle() {
 
       {/* Section 6: Implementation */}
       <section>
-        <h2>Implementation</h2>
+        <h3>Implementation</h3>
         <HighlightBlock as="p" tier="crucial">
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
@@ -578,7 +577,7 @@ export default function PaymentCheckoutUIArticle() {
 
       {/* Section 7: Performance & Scalability */}
       <section>
-        <h2>Performance &amp; Scalability</h2>
+        <h3>Performance &amp; Scalability</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Time and Space Complexity</h3>
         <div className="my-4 overflow-x-auto">
@@ -671,7 +670,7 @@ export default function PaymentCheckoutUIArticle() {
 
       {/* Section 8: Security Considerations */}
       <section>
-        <h2>Security Considerations</h2>
+        <h3>Security Considerations</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">PCI-DSS Compliance</h3>
         <HighlightBlock as="p" tier="important">
@@ -839,7 +838,7 @@ export default function PaymentCheckoutUIArticle() {
 
       {/* Section 9: Testing Strategy */}
       <section>
-        <h2>Testing Strategy</h2>
+        <h3>Testing Strategy</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
@@ -928,7 +927,7 @@ export default function PaymentCheckoutUIArticle() {
 
       {/* Section 10: Interview-Focused Insights */}
       <section>
-        <h2>Interview-Focused Insights</h2>
+        <h3>Interview-Focused Insights</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Common Mistakes Candidates Make</h3>
         <ul className="space-y-3">
@@ -1101,74 +1100,12 @@ export default function PaymentCheckoutUIArticle() {
             </p>
           </div>
         </div>
-      </section>
-
-      {/* Section 11: References */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://stripe.com/docs/payments"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Stripe Payments Documentation — Payment Integration Guide
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://stripe.com/docs/elements"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Stripe Elements — iframe-Hosted Payment Fields
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.pcisecuritystandards.org/pci_security/standards/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              PCI Security Standards Council — PCI-DSS Requirements
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://en.wikipedia.org/wiki/Luhn_algorithm"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Luhn Algorithm — Wikipedia
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.ecb.europa.eu/paym/integration/retail/sepa/html/index.en.html"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              European Central Bank — PSD2 / Strong Customer Authentication (SCA)
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.w3.org/TR/payment-request/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              W3C Payment Request API — Web Payments Standard
-            </a>
-          </li>
-        </ul>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate input normalization, typed state transitions, derived projection, integration effects, and bounded telemetry. Preview state must not silently become durable state. Every timer, listener, observer, worker, request, pointer capture, and cache entry needs an explicit lifetime.</p><p>Model checkout as a state machine. The browser may collect intent, but price, inventory, tax, authorization, and final order creation remain server-authoritative. Commit only after applying the latest policy and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/payment-checkout-ui-recovery.svg" alt="Design a Payment Checkout UI recovery map" caption="Recovery decisions: contain pressure, retain committed truth, reconcile safely, and emit evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>A single-page form is simpler for small carts; an explicit state machine is justified when provider redirects, inventory, tax, and retry safety interact.</p><p>The server validates a versioned cart and creates orders idempotently. Client progress is a projection; a provider success redirect still requires server verification. The scale pressure is double submits, stale prices, expiring inventory, payment-provider redirects, retries, fraud checks, and sensitive-data handling. Bound work, cancel stale effects, cap memory, and degrade predictably.</p><p>Use optimistic UI only where rollback is deterministic and understandable. Keep authorization and destructive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit state unions, idempotency keys, generation guards, SSR-safe feature checks, and deterministic cleanup. Test keyboard use, accessibility output, stale responses, retries, unmount, constrained devices, and large datasets.</p><p>Measure interaction latency, blocked transitions, stale drops, rollbacks, cache pressure, retries, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing preview and commit, trusting arrival order, leaking resources, accepting stale async work, and implementing custom interaction without semantic fallbacks.</p><p>For this topic, lock duplicate submit, resume redirect state, refresh stale quotes, distinguish retryable from terminal failure, and preserve recoverable form state. Security and privacy require the design to validate untrusted input, authorize durable mutations server-side, minimize sensitive telemetry, and bound resource consumption.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies where users repeatedly manipulate state while network, browser, and authorization boundaries can fail independently. Reuse the controller shell, but inject product-specific policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Model checkout as a state machine. The browser may collect intent, but price, inventory, tax, authorization, and final order creation remain server-authoritative.</p><h3>What breaks at scale?</h3><p>double submits, stale prices, expiring inventory, payment-provider redirects, retries, fraud checks, and sensitive-data handling. I would bound expensive work and cancel obsolete effects.</p><h3>What consistency model applies?</h3><p>The server validates a versioned cart and creates orders idempotently. Client progress is a projection; a provider success redirect still requires server verification.</p><h3>How do you recover?</h3><p>I would lock duplicate submit, resume redirect state, refresh stale quotes, distinguish retryable from terminal failure, and preserve recoverable form state.</p><h3>Why this architecture?</h3><p>A single-page form is simpler for small carts; an explicit state machine is justified when provider redirects, inventory, tax, and retry safety interact. The implementation cost is justified only when the required behavior needs it.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li></ul></section>
+</ArticleLayout>}

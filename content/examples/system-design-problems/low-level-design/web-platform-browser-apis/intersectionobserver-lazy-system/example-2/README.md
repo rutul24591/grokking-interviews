@@ -1,6 +1,3 @@
-# IntersectionObserver-based Lazy System — Example 2
+# Design Observer API Systems example 2
 
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+Concrete browser API runtime example for Design Observer API Systems. It covers capability gates, lifecycle-safe execution, fallback decisions, and privacy-safe telemetry.

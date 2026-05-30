@@ -2,130 +2,198 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
-import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-lld-conflict-visualization-ui",
-  title: "Conflict Visualization UI System",
-  description: "Visualizing and resolving data conflicts in offline-first and multi-device scenarios",
+  title: "Design a Conflict Visualization UI",
+  description: "Implementation-heavy low-level design guide for design a conflict visualization ui, with offline state models, queues, conflict handling, fallback behavior, and production trade-offs.",
   category: "low-level-design",
   subcategory: "offline-advanced-ux",
   slug: "conflict-visualization-ui",
-  wordCount: 6200,
-  readingTime: 37,
-  lastUpdated: "2026-05-06",
-  tags: ["lld", "conflict-resolution", "offline", "sync", "ux"],
-  relatedTopics: ["local-first-architecture", "background-sync-queue"],
+  wordCount: 4700,
+  readingTime: 28,
+  lastUpdated: "2026-05-29",
+  tags: ["lld", "offline", "advanced-ux", "resilience", "principal-engineer"],
+  relatedTopics: ["network-failure-handling", "state-management", "progressive-enhancement"],
 };
 
-export default function ConflictVisualizationUIArticle() {
+export default function ConflictVisualizationUiArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">In offline-first or local-first systems, multiple devices edit the same document independently. Device A edits a note's title to "Meeting Notes". Device B edits the same title to "Q4 Review". When both devices sync, the server detects a conflict: which version is correct? Without visualization, the user is unaware of the conflict; they see one version (maybe the server overwrites with device B), losing device A's changes.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">A conflict visualization UI shows the user both versions and lets them decide. "You edited this to X, another device edited it to Y. Which do you want to keep?" The user can see the differences, understand the context, and make an informed choice.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Key challenges: detecting conflicts (comparing versions), visualizing differences clearly (highlighting what changed), resolving without data loss (preserving both versions until user chooses), and handling cascading conflicts (if the note has 5 edited fields, show all 5 conflicts).</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial"><strong>Explicit assumptions:</strong> Version tracking exists (each document has versions). Conflict detection is accurate (can identify when divergence occurred). UI can show side-by-side diffs. User can make decisions quickly. Conflicts are relatively rare (not overwhelming the user with options on every sync).</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Conflict detection:</strong> Identify when local version conflicts with server/other device version.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Conflict display:</strong> Show both conflicting versions side-by-side with visual diff highlighting.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>User choice:</strong> Allow user to select which version to keep (local, remote, merged, or manual edit).</HighlightBlock>
-          <li><strong>Cascading conflicts:</strong> Handle documents with multiple conflicting fields; visualize all conflicts.</li>
-          <HighlightBlock as="li" tier="crucial"><strong>Context preservation:</strong> Show enough context (surrounding text, timestamps, author) for informed decision.</HighlightBlock>
-          <li><strong>Resolution persistence:</strong> After user resolves conflict, persist their choice and prevent re-asking.</li>
-          <li><strong>Undo/revert:</strong> Allow user to reconsider and re-resolve if they change their mind.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Latency:</strong> Detect conflicts within 1-2 seconds of sync. Display conflict UI within 500ms.</HighlightBlock>
-          <li><strong>Clarity:</strong> User understands the conflict and options without help. Clear visual diff is essential.</li>
-          <li><strong>Scalability:</strong> Handle documents with 100+ fields; show conflicts efficiently (paginate if needed).</li>
-          <li><strong>Data safety:</strong> No data loss. All versions retained until resolution.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="crucial">When sync detects a version divergence, the system displays a modal or panel showing the conflicting versions. For simple conflicts (single field), a side-by-side diff suffices. For complex conflicts (multiple fields), a list of conflicts with the ability to view/resolve each individually.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">User actions: select which version to keep, or manually edit to create a merged version. Once resolved, the chosen version becomes the new local copy, and the next sync uploads the resolved version to the server.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Conflict prevention: use CRDTs or operation-based merging to automatically resolve some conflicts without user intervention. Display UI only for truly unresolvable conflicts.</HighlightBlock>
-      </section>
-
-      <section>
+        <h1>Design a Conflict Visualization UI</h1>
+        <h2>Definition &amp; Context</h2>
+        <p>
+          Design a Conflict Visualization UI is a low-level design problem about building a merge review and resolution interface that keeps a user journey coherent when the network, browser capability, storage, or server version cannot be trusted. A principal-ready answer should not stop at saying &quot;cache it&quot; or &quot;retry later&quot;. It should define the public API, local durability model, conflict semantics, privacy boundaries, and the exact user-visible states when the system cannot safely continue.
+        </p>
+        <p>
+          The implementation contract starts with buildDiff(base, local, remote), previewResolution(choice), commitResolution(result). The runtime should make these states explicit: loading, comparing, reviewing, previewing, committing, resolved, abandoned. The central invariant is: The UI must make conflict risk legible before the user commits a destructive resolution. The hard case to defend in an interview is when a user resolves one field manually while another field can be auto-merged and a third has validation errors. That case forces the design to explain durability, ordering, rollback, and how much ambiguity the UI is allowed to hide.
+        </p>
         <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/offline-advanced-ux/conflict-visualization-ui.svg"
-          alt="Conflict visualization patterns including field-level conflict, diff view, delete vs edit conflict, side-by-side comparison, and inline conflict markers"
-          caption="Conflict visualization patterns including field-level conflict, diff view, delete vs edit conflict, side-by-side comparison, and inline conflict markers"
+          src="/diagrams/system-design-problems/low-level-design/offline-advanced-ux/conflict-visualization-ui-runtime.svg"
+          alt="Design a Conflict Visualization UI runtime architecture"
+          caption="Runtime architecture: user intent is captured locally first, classified by capability and connectivity, then replayed or resolved through guarded sync."
         />
-
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Conflict Detection</h3>
-        <p>When syncing, the system compares version numbers. If local version and remote version have the same parent but different edits, it's a conflict. Example: both versions descended from v5, local is v6 (with edits A), remote is v5.1 (with edits B). Divergence detected.</p>
-        <p>Three-way diff: compare local, remote, and common ancestor (v5). Identify which parts changed locally, which changed remotely. If changes are to different parts (local edited field X, remote edited field Y), auto-merge. If both edited the same field, it's a conflict requiring user input.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Conflict Display UI</h3>
-        <p>For single-field conflicts: side-by-side view with local on left, remote on right. Highlight the differences in color (red for deletions, green for additions). Show timestamps and author info for context.</p>
-        <p>For multi-field conflicts: tabbed or list view showing all conflicts. User can view each conflict in detail and resolve independently.</p>
-        <p>Example UI: "Conflict detected: 2 fields changed differently. [Field 1] [Field 2]. Resolve each to proceed."</p>
-        <HighlightBlock as="p" tier="important"><strong>Diff Visualization Strategies and Context Display:</strong> Use inline highlighting for short text (highlight additions in green, deletions in red within the text). For longer documents, use unified diff format (showing lines before/after). For JSON/structured data, show tree diff highlighting changed keys/values. Additionally, show context around changes: display 3 lines before and after each change so user understands the broader context. For images/binary files, show thumbnail previews of both versions side-by-side or provide a way to download/view full versions. Additionally, show metadata: timestamp ("edited 10 minutes ago"), author/device ("device: iPhone"), and any notes the user/system added ("Edited during offline sync").</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Resolution Options</h3>
-        <p>Keep local: user trusts their edits, discards remote version. Keep remote: user accepts remote, discards local. Merge manually: user sees both and manually edits to combine them (e.g., "Alice edited to X, Bob edited to Y, I'll merge to Z"). Use CRDT: if available, automatic merge applies both edits in order (works for collaborative edits like list items, text insertions).</p>
-        <HighlightBlock as="p" tier="crucial"><strong>Smart Resolution Suggestions and Decision Support:</strong> Rather than forcing the user to choose, provide suggestions. Example: "Both edits are to different parts of the document. Auto-merged." For same-field edits, suggest based on heuristics: (1) Latest edit wins (timestamp-based). (2) Longer/more comprehensive version (for text, length heuristic). (3) Default to user's own edit (self-prioritization). Present suggestion but always allow user override. Additionally, show impact of each choice: "Choosing local: remote's paragraph about Q4 strategy will be lost." This helps user understand consequences before deciding. For bulk conflicts, offer "Resolve all with same rule" option: "Apply 'keep local' to all remaining conflicts?" reducing click fatigue.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Visual Diff Representation</h3>
-        <p>For text: use unified diff format (--- remote, +++ local) or inline highlighting. For structured data (JSON): show tree diff with changed fields highlighted. For lists: show added/removed items in context.</p>
-        <p>Readability: use consistent colors (red=deleted, green=added, yellow=modified). Font diff libraries (diff-match-patch, fast-diff) handle the heavy lifting.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Cascading Conflicts</h3>
-        <p>Document with 10 fields, 3 of which have conflicts. Display all 3 conflicts in a list. User resolves each independently. Once all resolved, sync proceeds with the merged document.</p>
-        <HighlightBlock as="p" tier="important">Progressive disclosure: show conflicts one at a time (wizard style) or all at once (list). Wizard is simpler but slower; list is faster but overwhelming. Choose based on expected conflict frequency.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Persistence and Undo</h3>
-        <HighlightBlock as="p" tier="important">After user resolves a conflict and syncs, store the resolution decision (which version was chosen, when, by whom). If the user later realizes they chose wrong, provide an "undo" button that re-opens the conflict for re-resolution.</HighlightBlock>
-        <p>Prevent conflict re-asking: once a conflict is resolved for a specific version pair, don't ask again. If new edits happen, only ask about new conflicts.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">CRDT-Based Automatic Merge</h3>
-        <p>For some operations (text insertion, list append), CRDTs can automatically merge without user intervention. Example: Alice appends "intro" to a document, Bob appends "conclusion". CRDT merges both appends in order. No conflict dialog needed.</p>
-        <p>Reserve conflict UI for truly conflicting edits (both edited same field differently, delete vs edit, etc.) where automatic merge isn't safe.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Performance Optimization</h3>
-        <HighlightBlock as="p" tier="important">Diff computation is O(n) where n is document size. For large documents (100KB+), compute diff in a web worker to avoid blocking the UI. Cache diffs to avoid recomputing if user dismisses and reopens.</HighlightBlock>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="crucial">Auto-merge vs user decision: CRDTs auto-merge more cases but are complex. Simple last-write-wins is fast but loses data. Hybrid: auto-merge safe cases (different fields), ask user for truly conflicting edits (same field).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">UI complexity: simple side-by-side diff is clear but works only for small data. Complex UI (tabs, lists) needed for documents with many conflicts. Choose based on expected conflict patterns.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Conflict frequency: if conflicts are rare (most devices edit different parts), auto-merge handles 99% of cases; conflict UI needed only 1%. If conflicts are frequent, user gets fatigued from constant decisions; better to improve merge logic.</HighlightBlock>
+        <h2>Core Concepts</h2>
+        <p>
+          The first concept is local intent capture. Offline systems should record what the user meant to do, not only the final rendered value. A durable intent contains an operation id, actor id, target resource, base version, payload, timestamp, dependency list, and idempotency key. Capturing intent gives the implementation enough information to replay, rebase, reject, or ask for human resolution after reconnect.
+        </p>
+        <p>
+          The second concept is capability-aware degradation. Browser online status, service worker availability, storage access, push permission, background sync support, and server reachability are separate signals. A robust runtime combines them into a health state instead of making one boolean decide the user experience. This is especially important on mobile browsers, private browsing modes, captive portals, enterprise proxies, and low-memory devices.
+        </p>
+        <p>
+          The third concept is convergence with evidence. The system should know which local operations are pending, which server acknowledgements have been received, which conflicts were auto-merged, and which conflicts were shown to the user. The durable structures are diff tree, semantic field labels, resolution draft, keyboard focus model, audit record, validation errors. These structures are the difference between a demo and a production design that can survive reloads, retries, and support investigations.
+        </p>
+        <h3>Implementation contract</h3>
+        <p>
+          The runtime should define which calls are synchronous, which are asynchronous, which require storage, and which can be safely retried. Public methods should return typed outcomes such as accepted, queued, blocked, conflicted, degraded, or rejected. They should not expose raw browser exceptions to product components because those components cannot make consistent decisions across browsers and network states.
+        </p>
+        <p>
+          Local state must be scoped by user, tenant, device, app version, and feature flag where applicable. Without that scope, an offline cache can leak data after account switch, replay old writes under a new identity, or resurrect a feature that has been remotely disabled. A principal-level answer should call this out because offline UX and privacy are tightly coupled.
+        </p>
+        <h3>Operation classes</h3>
+        <p>
+          Not every operation deserves the same offline behavior. Draft edits, UI preferences, and local annotations can usually be accepted locally and reconciled later. Inventory reservations, payments, permission changes, and destructive admin actions should either require server confirmation or use a narrow pending state that cannot be mistaken for completion. Classifying operations early keeps the design from promising offline availability where the business invariant requires server authority.
+        </p>
+        <p>
+          Each operation class should define durability, replay, merge, rollback, and privacy rules. A draft update may store the full payload locally, while a sensitive workflow may store only a redacted intent and require reauthentication before replay. A push notification preference may require consent state and device token freshness. A progressive enhancement may require a baseline fallback rather than persistence. These distinctions make the design defendable under interviewer pressure.
+        </p>
       </section>
 
       <section>
-        <h2>Implementation Patterns</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Pattern 1: Side-by-Side Diff for Single Conflicts</h3>
-        <HighlightBlock as="p" tier="crucial">Simple modal showing local vs remote with highlighted differences. User picks one or manually edits.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Pattern 2: Multi-Field Conflict List</h3>
-        <HighlightBlock as="p" tier="important">Tabbed interface or list showing all conflicted fields. User resolves each field independently, then syncs.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Pattern 3: CRDT-Based Auto-Merge with Fallback</h3>
-        <HighlightBlock as="p" tier="important">Automatically merge CRDT-compatible edits. Show conflict UI only for unresolvable conflicts.</HighlightBlock>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          The architecture has six layers. The interaction layer captures the user action and assigns an operation identity. The local durability layer writes intent to IndexedDB, Cache Storage, or a scoped in-memory fallback before showing success-like UI. The health coordinator classifies network and capability state. The sync engine drains eligible operations using idempotency keys and retry budgets. The conflict engine compares base, local, and remote versions. The presentation layer shows current, stale, queued, conflicted, or blocked state with accessible controls.
+        </p>
+        <p>
+          The normal flow starts with the user action entering the facade. The facade validates scope, writes an intent record, updates the local projection, and emits a snapshot. If the system is healthy, the sync engine sends the operation immediately. If the system is offline or degraded, the operation remains queued and visible. When connectivity returns, the engine drains operations in dependency order, applies server acknowledgements, compacts acknowledged records, and moves conflicts to a review state instead of silently overwriting data.
+        </p>
+        <p>
+          The design should treat reconnect as a reconciliation phase, not just a retry trigger. Reconnect can reveal schema changes, expired auth, revoked permissions, server-side validation changes, or remote edits. The runtime must revalidate credentials, refresh configuration, migrate local data, and compare versions before replaying writes. That extra work is what prevents offline UX from becoming a data integrity risk.
+        </p>
+        <h3>Data model and invariants</h3>
+        <p>
+          A practical data model contains a local entity table, an operation log, a server acknowledgement ledger, a sync cursor, and a projection table optimized for rendering. The entity table answers current reads. The operation log preserves intent. The acknowledgement ledger prevents duplicate replay after reload. The sync cursor supports incremental server pulls. The projection table lets the UI show local and remote facts together without recomputing the whole world on every render.
+        </p>
+        <p>
+          Invariants should be asserted at every boundary. An operation cannot be compacted until its acknowledgement is durable. A conflict cannot be marked resolved until the chosen resolution passes validation against the latest server version. A notification cannot be routed until permission and preference state agree. An enhanced experience cannot replace the baseline path unless the core task still completes when the enhancement fails.
+        </p>
+        <h3>Failure matrix</h3>
+        <p>
+          The implementation should maintain a failure matrix that maps cause to action. Storage quota failure moves the feature to read-only or in-memory pending state. Expired auth blocks replay and asks for reauthentication. Version mismatch enters conflict review or rebase. API timeout keeps the operation queued with backoff. Unsupported capability falls back to the baseline experience. Permission denial changes the prompt strategy and prevents repeated prompting. Each branch should be observable and user-visible enough to avoid silent data loss.
+        </p>
+        <p>
+          Reconciliation should be transactional from the client&apos;s point of view. Pull the latest remote metadata, validate local schema, check auth and tenant scope, choose eligible operations, send them with idempotency keys, persist acknowledgements, update local projections, and only then compact. If the browser closes in the middle, the next boot should resume from durable evidence rather than guessing which work completed.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/offline-advanced-ux/conflict-visualization-ui-reconciliation.svg"
+          alt="Design a Conflict Visualization UI reconciliation and failure model"
+          caption="Reconciliation model: local intent, remote version, permissions, and capability signals converge through explicit guardrails rather than hidden retries."
+        />
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Trade-offs include auto-merge complexity (handles more cases) versus simplicity (user decides everything), and UI complexity (handles many conflicts) versus clarity (simple diffs).</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">Real-world systems (Notion, Obsidian, Google Docs) use conflict visualization for multi-device sync. For best results, implement three-way diff to auto-resolve non-conflicting changes, use CRDT for text/list operations, reserve conflict UI for truly unresolvable conflicts, and provide clear diffs with context (timestamps, author). This minimizes user fatigue while ensuring no data loss.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>
+          A network-first design is simpler and easier to reason about because the server remains the immediate source of truth. It breaks down when users expect creation, editing, reading, or notification management to keep working during poor connectivity. An offline-first design improves perceived reliability, but it moves consistency, privacy, storage limits, and conflict resolution into the client. The right choice depends on whether the task is critical enough to justify that client complexity.
+        </p>
+        <p>
+          The key consistency trade-off is human-confirmed resolution for ambiguous semantic conflicts with reversible preview before commit. Strong consistency would block more actions until the server confirms them, reducing merge complexity but hurting availability. Eventual consistency keeps the user moving, but it requires durable intent, visible pending state, replay safety, and conflict handling. For principal interviews, the strongest answer is to pick consistency per operation: low-risk drafts can be queued, destructive operations may require confirmation, and security-sensitive changes should fail closed.
+        </p>
+        <p>
+          There is also a cost trade-off. More local durability increases storage use, migration burden, and privacy review surface. More aggressive retries improve time-to-sync but risk retry storms and battery drain. More detailed conflict visualization improves trust but slows the user down. These are not abstract trade-offs; they should map to metrics such as queue age, conflict rate, replay success rate, storage quota errors, retry count, stale view duration, and user abandonment during conflict resolution.
+        </p>
+        <p>
+          A principal-level answer should also compare optimistic completion with explicit pending completion. Optimistic completion feels fast, but it can mislead the user when the server later rejects the operation. Explicit pending completion is more honest, but it can make the product feel slower. The compromise is to make low-risk operations appear locally complete while preserving a visible sync status and to keep high-risk operations in a pending or blocked state until the authoritative system confirms them.
+        </p>
+      </section>
+
+      <section>
+        <h2>Best practices</h2>
+        <p>
+          Persist intent before optimistic UI when the operation matters. If the UI updates first and the tab closes before durability, the user will believe work was saved when it was not. For lower-risk interactions, an in-memory pending state may be acceptable, but the UI should not imply durable completion until the write has crossed the chosen durability boundary.
+        </p>
+        <p>
+          Use idempotency keys and monotonic local sequence numbers for replay. Assume the client may send the same operation more than once after reload, timeout, service worker restart, or ambiguous server response. Server APIs should accept the idempotency key and return the prior result when replay is duplicated. Client code should still keep an acknowledgement ledger so it can compact safely.
+        </p>
+        <p>
+          Design user-visible states deliberately. A subtle banner, disabled action, merge review sheet, retry affordance, or stale data indicator should correspond to a real runtime state. Avoid generic &quot;something went wrong&quot; messaging for offline flows because the corrective action differs: wait, retry, reconnect, reauthenticate, resolve conflict, or discard local changes.
+        </p>
+        <p>
+          Build observability into the client. Track queue depth, oldest pending operation age, storage quota failures, conflict types, retry budget exhaustion, permission prompt outcomes, and degraded-mode duration. These metrics tell whether the offline design is protecting the journey or creating hidden support debt.
+        </p>
+        <p>
+          Test with deterministic adapters. Replace timers, network probes, storage, service worker messages, permission prompts, and clocks with test doubles so edge cases can be reproduced. Important tests include reload after enqueue, duplicate acknowledgement, storage write failure, conflict after reconnect, account switch with pending operations, schema migration during offline edit, and retry exhaustion while the UI remains mounted.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>
+          The most common pitfall is using a single online boolean as the system truth. Browser connectivity APIs are hints, not guarantees. A device can be online but unable to reach your API, authenticated but forbidden to replay an old mutation, or capable of service workers but blocked from persistent storage. The runtime needs active probes and failure classification.
+        </p>
+        <p>
+          Another pitfall is silently resolving conflicts with last-write-wins. That policy is acceptable for low-value telemetry or ephemeral preferences, but it is dangerous for collaborative documents, settings, payments, and enterprise workflows. If user intent is ambiguous, surface the conflict with enough context to choose, preview, and audit the resolution.
+        </p>
+        <p>
+          Teams also underinvest in migration and cleanup. Offline stores live longer than a page session. Schema changes, feature removal, auth changes, and tenant switching all need migration or quarantine paths. Without cleanup, local data becomes a privacy risk and sync performance degrades as obsolete operations accumulate.
+        </p>
+        <p>
+          Another common mistake is hiding stale state behind normal UI. If the user cannot tell whether they are seeing fresh server data, local pending data, or a conflicted projection, they cannot make a safe decision. The UI does not need to be noisy, but it must show the right affordance at the right time: sync pending, retry, conflict review, read-only, permission required, or stale data.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          Offline and advanced UX patterns appear in field-service apps, document editors, dashboards, e-commerce carts, travel products, creator tools, messaging interfaces, and enterprise admin consoles. The common thread is that a user journey crosses unreliable boundaries: network, storage, permissions, browser capability, or multi-device state.
+        </p>
+        <p>
+          In a staff or principal role, this design is often a platform concern. Product teams provide domain operations and conflict policy, while the platform runtime owns durable queues, capability detection, replay, conflict surfaces, privacy scoping, and instrumentation. That split prevents each feature from inventing its own fragile offline behavior.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you design this system end to end?</h3>
+        <p>
+          I would start with the user journey and classify which operations must work offline, which can be read-only, and which must fail closed. Then I would define the facade API, durable intent model, health coordinator, sync engine, conflict engine, and presentation states. The implementation would persist operation records with idempotency keys, update a local projection, drain the queue when healthy, reconcile against remote versions, and surface conflicts when the merge policy cannot preserve intent safely.
+        </p>
+        <h3>Why this architecture over a simple retry wrapper?</h3>
+        <p>
+          A retry wrapper handles transient failures for one request. It does not preserve user intent across reloads, classify capability failures, prevent duplicate replay, compare base and remote versions, or show conflict states. This architecture is heavier, but it solves the full lifecycle: capture, durability, replay, reconciliation, compaction, and user-visible recovery.
+        </p>
+        <h3>What breaks at scale?</h3>
+        <p>
+          Queue depth, storage quota, schema migration, conflict volume, battery usage, retry storms, and support visibility become the pressure points. The design needs compaction, retry budgets, backoff with jitter, storage quotas, migration versioning, per-operation metrics, and admin tools or logs that explain why a local operation was blocked or conflicted.
+        </p>
+        <h3>What consistency model applies?</h3>
+        <p>
+          Most offline UX uses eventual consistency for user intent and stronger consistency for safety-sensitive operations. The client can be locally authoritative for drafts, pending edits, and cached reads, but the server remains authoritative for permissions, payment state, inventory, and shared records. The runtime should encode that difference per operation instead of pretending one consistency model fits every action.
+        </p>
+        <h3>How do you handle failure, rollback, abuse, privacy, cost, and observability?</h3>
+        <p>
+          Failure is handled with typed states and replay policies. Rollback uses inverse patches or conflict review when an optimistic projection cannot be committed. Abuse is controlled with idempotency, rate limits, permission checks before replay, and feature flags that can disable unsafe queues. Privacy is handled through user and tenant scoping, encryption where appropriate, cache cleanup, and avoiding sensitive payloads in telemetry. Cost is controlled through compaction, bounded retries, and selective caching. Observability tracks queue age, replay outcomes, conflicts, storage errors, and degraded-mode duration.
+        </p>
+        <h3>How would you defend the trade-offs under pressure?</h3>
+        <p>
+          I would state that the design optimizes for task continuity without hiding correctness risk. If the interviewer pushes on complexity, I would narrow offline support to critical operations and keep risky operations server-confirmed. If they push on consistency, I would separate local availability from server authority. If they push on privacy, I would explain scoped storage, cleanup, and fail-closed replay checks. Then I would walk through the hard edge case: a user resolves one field manually while another field can be auto-merged and a third has validation errors.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API" target="_blank" rel="noreferrer">MDN Service Worker API</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API" target="_blank" rel="noreferrer">MDN IndexedDB API</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Background_Synchronization_API" target="_blank" rel="noreferrer">MDN Background Synchronization API</a></li>
+          <li><a href="https://web.dev/learn/pwa/" target="_blank" rel="noreferrer">web.dev Progressive Web Apps guidance</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API" target="_blank" rel="noreferrer">MDN Notifications API</a></li>
+        </ul>
       </section>
     </ArticleLayout>
   );

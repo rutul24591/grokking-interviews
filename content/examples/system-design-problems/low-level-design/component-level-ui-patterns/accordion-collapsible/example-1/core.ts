@@ -1,0 +1,26 @@
+export type AccordionCollapsibleState="closed"|"open"|"disabled"|"busy";
+export interface AccordionCollapsibleSnapshot{state:AccordionCollapsibleState;
+activeIndex:number;
+focused:boolean;
+items:string[];
+evidence:string[];
+}export class AccordionCollapsibleController{private s:AccordionCollapsibleSnapshot={state:"closed",activeIndex:-1,focused:false,items:[],evidence:[]};
+open(items:string[]){this.s={state:"open",activeIndex:items.length?0:-1,focused:true,items:[...items],evidence:["opened"]};
+return this.get();
+}close(reason:string){this.s={...this.s,state:"closed",focused:false,activeIndex:-1,evidence:[...this.s.evidence,reason]};
+return this.get();
+}move(delta:number,disabled=new Set<number>()){if(this.s.state!=="open"||!this.s.items.length)return this.get();
+let next=this.s.activeIndex;
+for(let i=0;
+i<this.s.items.length;
+i++){next=(next+delta+this.s.items.length)%this.s.items.length;
+if(!disabled.has(next))break;
+}this.s={...this.s,activeIndex:next};
+return this.get();
+}get(){return{...this.s,items:[...this.s.items],evidence:[...this.s.evidence]};
+}}export function runAccordionCollapsibleKeyboardScenario(){const c=new AccordionCollapsibleController();
+c.open(["one","two","three"]);
+const moved=c.move(1,new Set([1]));
+const closed=c.close("escape");
+return{invariant:"Expansion state must remain keyboard accessible and deterministic in exclusive or independent mode.",moved,closed};
+}

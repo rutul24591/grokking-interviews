@@ -2,424 +2,130 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
-import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-lld-request-deduplication-system",
   title: "Design a Request Deduplication System",
-  description:
-    "Production-grade deduplication that coalesces identical in-flight requests, returns cached results to subscribers, and handles failures atomically.",
+  description: "LLD for sharing identical in-flight requests across components while preserving cancellation, subscribers, and cache consistency.",
   category: "low-level-design",
   subcategory: "networking-data-systems",
   slug: "request-deduplication-system",
-  wordCount: 6800,
-  readingTime: 40,
-  lastUpdated: "2026-05-06",
-  tags: [
-    "lld",
-    "deduplication",
-    "request-coalescing",
-    "caching",
-    "subscribers",
-    "atomicity",
-  ],
-  relatedTopics: [
-    "data-fetching-hook",
-    "frontend-caching-layer",
-    "request-batching-system",
-  ],
+  wordCount: 4200,
+  readingTime: 24,
+  lastUpdated: "2026-05-29",
+  tags: ["lld", "frontend-networking", "implementation-design", "react", "resilience"],
+  relatedTopics: ["data-fetching-hook", "frontend-caching-layer", "request-deduplication-system", "retry-mechanism", "token-refresh-system"],
 };
 
 export default function RequestDeduplicationSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">
-          Page renders 5 components. All request GET /user/123 (user profile). Naive: 5 HTTP requests sent. Server receives 5x load. Bandwidth wasted. Better: deduplicate. When first component requests /user/123, HTTP request sent. Second component requests /user/123 before response arrives—coalesce into first request. When response completes, all 5 components receive data. Result: 1 request instead of 5. Huge efficiency gain, especially at scale (1000s of components).
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Key mechanism: maintain in-flight request map (URL → Promise). When request initiated, check map. If already in-flight, return existing promise (subscribe to it). All subscribers receive same result when promise resolves. If request fails, all fail atomically. Request cancellation: if last subscriber unsubscribes (component unmounts), abort request (save bandwidth).
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Challenge: distinguishing in-flight deduplication (while request pending) vs caching (after request completes). Deduplication is narrower scope (only identical concurrent requests). Caching is broader (any subsequent access reuses response). Both important: deduplication reduces concurrent load, caching reduces total requests over time.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          <strong>Explicit assumptions:</strong> Multiple components fetch same resource. Requests identified by cache key (URL, params). Identical keys deduplicated while in-flight. Promise-based architecture. Request/response deduplication critical for performance at scale.
-        </HighlightBlock>
+      <section className="space-y-5">
+        <h2>Definition &amp; Context</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Design a Request Deduplication System is a low-level implementation problem, not a broad architecture prompt. The interviewer expects you to describe the runtime module, public API, internal state, data structures, lifecycle transitions, failure semantics, and test cases that make the feature safe inside a large React or TypeScript application.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The core primitive is the in-flight request registry. A principal-level answer should start from the user-visible behavior, then quickly move into the implementation contract: dedupe.fetch(key, factory, &#123; subscriberId, abortSignal &#125;). That contract must be stable enough for many components to depend on it, but small enough that teams cannot bypass the lifecycle rules accidentally.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The design boundary is the browser client. The server may provide HTTP, GraphQL, WebSocket, upload, or auth endpoints, but the article focuses on client orchestration: when to call, when to cancel, what to cache, how to avoid duplicate work, how to surface errors, and how to keep UI state consistent under slow networks and rapid user interaction.</p>
       </section>
 
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li>
-            <strong>Request Coalescing:</strong> Multiple identical requests
-            consolidated into one.
-          </li>
-          <li>
-            <strong>Subscriber Notification:</strong> All subscribers receive result
-            when completed.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Failure Handling:</strong> All subscribers notified of failure
-            atomically.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            <strong>Timeout:</strong> If request exceeds timeout, fail all subscribers.
-          </HighlightBlock>
-          <li>
-            <strong>Cache Key Generation:</strong> Derive stable cache key from
-            request params.
-          </li>
-          <li>
-            <strong>Cleanup:</strong> Remove deduplication entry when request
-            completes.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">
-            <strong>Latency:</strong> Deduplication transparent to callers. No
-            additional latency.
-          </HighlightBlock>
-          <li>
-            <strong>Memory:</strong> Deduplication entries cleaned up promptly.
-          </li>
-          <li>
-            <strong>Throughput:</strong> Reduces server load by eliminating redundant
-            requests.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Edge Cases</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="crucial">Request completes while new subscriber arrives → return cached result immediately.</HighlightBlock>
-          <HighlightBlock as="li" tier="important">Request fails → all subscribers fail, even those added after failure.</HighlightBlock>
-          <li>Cache key collision (rare but possible) → return wrong data to some users.</li>
-          <li>Subscriber removed before result arrives → cleanup and remove from notification list.</li>
-        </ul>
+      <section className="space-y-5">
+        <h2>Core Concepts</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The first concept is a typed request or operation identity. Every operation needs a stable key so the runtime can deduplicate, cache, cancel, retry, batch, or invalidate it. For design a request deduplication system, the key should include the resource identity, security context, relevant parameters, and behavior-changing options. It should not include unstable values such as inline function identity or render-local object references.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The second concept is lifecycle state. This article uses these states as the baseline: empty, inFlight, shared, settled, cancelled, evicted. These states are deliberately more precise than a boolean loading flag. They let the UI distinguish initial load from background refresh, recoverable failure from terminal failure, stale data from absent data, and ignored stale work from committed work.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The third concept is a boundary between control-plane decisions and rendering. The control plane owns cancellation, timers, retry budgets, request sharing, storage, and telemetry. Rendering code should consume a compact view model and command callbacks. That separation is what keeps component trees from re-implementing inconsistent networking behavior.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The fourth concept is observability as part of the API. The runtime should emit operation key, attempt count, latency, status, retry reason, cancellation reason, cache source, stale age, and user-visible fallback. Without these signals, production failures look like random UI glitches instead of diagnosable lifecycle bugs.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The fifth concept is data-structure choice. Most networking LLD answers become credible when you name the actual structures: a Map for in-flight operations, a Map from resource key to subscriber set, a priority queue or timer wheel for delayed retries, an LRU list for memory cache, a tag-to-key index for invalidation, and an append-only operation journal for optimistic or resumable workflows. These structures are small enough to implement in an interview but powerful enough to explain scale behavior.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The sixth concept is authority. The client can decide rendering, caching, dedupe, retries, and local rollback, but it cannot decide authorization, final mutation success, or cross-device consistency alone. Every implementation should mark which state is speculative, which state is server-acknowledged, and which state is only a local projection used to keep the interface responsive.</p>
       </section>
 
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="crucial">Maintain a Map&lt;cacheKey, InFlightRequest&gt; of currently in-flight
-          requests. When a request arrives, hash the params to generate cache key.
-          Check if request already in-flight.</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">If yes, add caller to subscriber list.
-          If no, initiate request and add subscriber. When request completes,
-          notify all subscribers with result or error. Remove from in-flight map.</Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Cache Key Generation</h3>
-        <p>
-          Derive a stable key from request params so identical requests hash to same
-          key.
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Method 1:</strong> Serialize params to JSON and hash. Fast but
-            vulnerable to key collisions.
-          </li>
-          <li>
-            <strong>Method 2:</strong> Use URL as key (for HTTP requests). Simple but
-            assumes params encoded in URL.
-          </li>
-          <li>
-            <strong>Method 3:</strong> Manually construct key from known param fields
-            (safest, explicit).
-          </li>
-          <li>
-            <strong>Stability:</strong> Key must be stable (same params → same key
-            always).
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">In-Flight Request Tracking</h3>
-        <p>
-          Track requests currently being processed.
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Request State:</strong> {`{promise, subscribers[], status, result, error}`}.
-          </li>
-          <li>
-            <strong>Subscribers:</strong> Array of callback functions to notify on
-            completion.
-          </li>
-          <li>
-            <strong>Status:</strong> pending, success, error.
-          </li>
-          <li>
-            <strong>Storage:</strong> Map&lt;cacheKey, InFlightRequest&gt;.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Request Lifecycle</h3>
-        <p>
-          The flow from request arrival to completion.
-        </p>
-        <ol className="space-y-2 list-decimal list-inside">
-          <li>Generate cache key from params.</li>
-          <li>Check if in-flight map contains key.</li>
-          <li>
-            If yes: add callback to subscribers, return immediately (or await Promise).
-          </li>
-          <li>If no: initiate HTTP request, add to in-flight map.</li>
-          <li>On success: update status, store result, notify all subscribers.</li>
-          <li>On error: update status, store error, notify all subscribers.</li>
-          <li>Remove from in-flight map.</li>
-        </ol>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Subscriber Notification</h3>
-        <p>
-          Notify all subscribers of request completion.
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Success:</strong> Call each subscriber with (data, null).
-          </li>
-          <li>
-            <strong>Error:</strong> Call each subscriber with (null, error).
-          </li>
-          <li>
-            <strong>Order:</strong> Call subscribers in registration order (FIFO).
-          </li>
-          <li>
-            <strong>Error Handling:</strong> If subscriber callback throws, catch and
-            log. Don't break other subscribers.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Timeout Handling</h3>
-        <HighlightBlock as="p" tier="important">
-          Requests may hang indefinitely. Implement timeout to fail gracefully.
-        </HighlightBlock>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">
-            <strong>Timeout Duration:</strong> Configurable per request type (default
-            30s).
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="crucial">
-            <strong>Implementation:</strong> Start timer on request initiation. If
-            timeout fires before completion, abort request and fail.
-          </HighlightBlock>
-          <li>
-            <strong>Abort:</strong> Use AbortController to cancel in-flight HTTP.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Subscriber Cleanup</h3>
-        <p>
-          Handle subscribers being removed (e.g., component unmounts) mid-request.
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Unsubscribe:</strong> Provide function to remove subscriber from
-            list.
-          </li>
-          <li>
-            <strong>Cleanup:</strong> On unmount, unsubscribe to prevent calling
-            unmounted component.
-          </li>
-          <li>
-            <strong>Last Subscriber:</strong> If all subscribers removed, optionally
-            abort request.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Race Condition Prevention</h3>
-        <p>
-          Prevent races when adding subscribers vs completing request.
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Scenario:</strong> Subscriber arrives exactly when request
-            completes.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Solution:</strong> Check request status before adding to
-            subscribers. If already complete, call subscriber immediately with cached
-            result.
-          </HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Cache Key Collision</h3>
-        <p>
-          Hash collisions (different params → same key) cause wrong data served to users.
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Prevention:</strong> Use strong hash function. Or use non-hash approach
-            (serialize params directly).
-          </li>
-          <li>
-            <strong>Detection:</strong> Validate result params match request params.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Recovery:</strong> If collision detected, treat as cache miss.
-          </HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Monitoring</h3>
-        <p>
-          Track deduplication effectiveness.
-        </p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Deduplication Rate:</strong> % of requests that were deduplicated.
-          </li>
-          <li>
-            <strong>Subscriber Count:</strong> Average subscribers per deduplicated
-            request.
-          </li>
-          <li>
-            <strong>Bandwidth Saved:</strong> Bytes saved by avoiding duplicate requests.
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Implementation Considerations</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Promise-Based API</h3>
-        <HighlightBlock as="p" tier="important">
-          Return Promise instead of callback. Caller awaits single Promise shared
-          across subscribers.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">With Caching Layer</h3>
-        <HighlightBlock as="p" tier="important">
-          Deduplication and caching are separate concerns. Deduplication handles
-          in-flight requests. Caching stores completed results. Both together avoid
-          redundant requests.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Memory Leak Prevention</h3>
-        <HighlightBlock as="p" tier="important">
-          Ensure subscribers removed from list and timers cleared on cleanup.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Mock HTTP requests. Simulate concurrent subscribers. Test timeout, failure,
-          and race conditions.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Advanced Production Patterns</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Global Deduplication vs Per-Component</h3>
-        <HighlightBlock as="p" tier="important">
-          Per-component deduplication local but misses cross-component duplication.
-          Global deduplication (across all components) more effective but requires
-          shared state. Implement globally via central request cache. At 1M users,
-          global deduplication prevents millions of redundant requests daily.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Distributed Deduplication</h3>
-        <HighlightBlock as="p" tier="important">
-          With multiple backend servers or service workers, deduplication cache
-          must be shared. Use Redis or distributed cache. Coordinate across
-          instances. Cache invalidation complex in distributed settings.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Cache Key Collisions</h3>
-        <HighlightBlock as="p" tier="important">
-          Hash collisions rare but possible. Different params → same key → wrong
-          data served. Mitigate: use strong hash (SHA256), validate result params
-          match request params, treat collision as cache miss, implement collision
-          detection.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Monitoring Deduplication Effectiveness</h3>
-        <p>
-          Track: deduplication rate (% of requests deduplicated), avg subscriber
-          count per request, bandwidth saved. At 90% dedup rate, very effective.
-          If low, indicates low request reuse—maybe coalescing not needed.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Timeout & Failure Handling</h3>
-        <HighlightBlock as="p" tier="crucial">
-          If deduplication request times out, all subscribers fail atomically. Some
-          prefer per-subscriber timeout (first subscriber waits 5s, second waits 2s
-          if added later). Complex but more resilient.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing Race Conditions</h3>
-        <p>
-          Test subscriber arriving exactly when request completes. Test unsubscribe
-          mid-completion. Use property-based testing to generate concurrent
-          scenarios. Verify no race conditions in state transitions.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-World Lessons</h3>
-        <HighlightBlock as="p" tier="important">
-          Common: deduplication cache grows unbounded. Implement TTL and LRU
-          eviction. Another: cache key instability (params serialized differently
-          in different places → different keys). Normalize params carefully.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Integration with Caching Layer</h3>
-        <p>
-          Deduplication handles in-flight requests. Caching handles completed
-          results. Together: same request already in cache → return immediately
-          (no dedup needed). Avoid double caching complexity.
-        </p>
-      </section>
-
-      <section>
-        <h2>Deduplication Mechanism</h2>
-
+      <section className="space-y-5">
+        <h2>Architecture &amp; Flow</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A production implementation has five cooperating pieces: a public adapter, a lifecycle reducer, a registry or cache, a transport adapter, and an observer. The public adapter exposes dedupe.fetch(key, factory, &#123; subscriberId, abortSignal &#125;). The reducer owns transitions. The registry stores stable request key plus subscriber reference counts. The transport adapter talks to fetch, GraphQL, WebSocket, upload, or auth APIs. The observer emits metrics and debug events.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The normal flow starts when a component or command creates an operation. The runtime normalizes the key, checks local state, decides whether to serve cached data, dedupe with an existing operation, enqueue work, or issue a new transport call. When the transport resolves, the runtime validates that the response is still relevant, updates state, notifies subscribers, records metrics, and releases resources.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The hardest flow is the edge case: one subscriber unmounts while other subscribers still need the shared request. The design must make that behavior deterministic. A late response, duplicate event, expired token, stale cache entry, failed retry, partial batch result, or dropped socket frame should have an explicit transition rather than relying on whichever promise settles last.</p>
         <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/networking-data-systems/request-deduplication.svg"
-          alt="Request deduplication: in-flight request sharing mechanism diagram"
+          src="/diagrams/system-design-problems/low-level-design/networking-data-systems/request-deduplication-system-runtime-flow.svg"
+          alt="Design a Request Deduplication System runtime flow"
+          caption="Runtime flow: public API, lifecycle reducer, registry, transport adapter, cache, observer, and UI view model cooperate to keep networking state deterministic."
         />
-
-        <HighlightBlock as="p" tier="crucial">
-          Interview signal: deduplication is an in-flight map keyed by a normalized request identity. It turns N concurrent identical fetches into 1 network call with N subscribers.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Correctness hinges on key stability (canonical param serialization) and lifecycle management (cleanup on resolve/reject, TTL/LRU to prevent leaks).
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Treat abort semantics carefully: if one subscriber cancels, don&rsquo;t abort the shared request unless all subscribers have canceled (ref counting).
-        </HighlightBlock>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The state reducer should be written as a small state machine, even if implemented with a switch statement or Zustand store. Events include start, cacheHit, cacheStale, transportStarted, transportSucceeded, transportFailed, retryScheduled, cancelled, superseded, invalidated, subscriberAdded, subscriberRemoved, and garbageCollected. Each event must define whether it changes visible data, metadata only, or no state at all.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A practical implementation also needs cleanup rules. When a subscriber unmounts, decrement the reference count. When the last subscriber leaves, either abort the transport or let it finish into cache depending on policy. Timers must be cleared on cancellation. Cache entries should have both freshness TTL and garbage-collection TTL. Journals should compact acknowledged operations. These details are what separate a usable LLD answer from a helper-function answer.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The testing flow mirrors the state machine. Unit tests drive reducer events directly. Integration tests mount two subscribers for the same key and verify sharing. Race tests resolve promises out of order. Timer tests advance fake clocks for debounce, retry, and stale TTL. Browser tests cover focus, blur, online/offline, visibility change, storage quota, and tab coordination where relevant.</p>
       </section>
 
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Complexity vs Savings</h3>
-        <HighlightBlock as="p" tier="important">
-          Deduplication adds code complexity. Only worth it if concurrent requests
-          common (e.g., in server-side rendering or rapid component mounting).
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Request Affinity</h3>
-        <HighlightBlock as="p" tier="important">
-          Identical requests must hash to same key. If params order differs, may miss
-          deduplication. Normalize params before hashing.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Failure Propagation</h3>
-        <HighlightBlock as="p" tier="crucial">
-          One request failure fails all subscribers. Some may prefer retrying
-          individually. Allow per-subscriber retry logic.
-        </HighlightBlock>
+      <section className="space-y-5">
+        <h2>Trade offs &amp; Comparison</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Global dedupe saves bandwidth but can couple unrelated screens if cache keys are too broad.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The main consistency trade-off is whether the UI favors latest known data, latest requested data, or latest acknowledged data. Latest known data gives fast rendering but can be stale. Latest requested data prevents older responses from committing but can show loading more often. Latest acknowledged data is safest for financial, auth, and destructive workflows but creates more waiting states.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The main performance trade-off is centralization versus local control. A central runtime reduces duplicated requests, gives shared telemetry, and standardizes failure behavior. It can also become a bottleneck or an overly complex abstraction if every product case is pushed into it. The senior answer is to define extension points for request factory, key derivation, retry classifier, cache policy, and user message mapping without allowing components to bypass lifecycle safety.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The main cost trade-off is how aggressively the client talks to the backend. Deduplication, caching, debounce, batching, and WebSocket subscriptions can reduce request volume, but each one introduces correctness questions. In interviews, defend the policy with observable numbers: p95 latency, request rate per active user, retry amplification, stale-render duration, memory usage, and dropped-event count.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A principal-level comparison should also explain when not to build this abstraction. If the product only has a few simple reads, a mature library is better than a bespoke runtime. If the system has regulated payments, healthcare, or admin control planes, the runtime needs stricter commit guards and audit logs. If the system is collaborative, eventual consistency and merge policy matter more than raw request count.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The design should explicitly choose a consistency model. Most UI networking state is read-your-own-writes for the current tab, monotonic reads for a resource key, and eventual consistency across tabs or devices. Strong consistency is reserved for destructive actions, permissions, token state, and payment-like flows. Naming this model helps defend why stale-while-revalidate is acceptable in one surface and unacceptable in another.</p>
       </section>
 
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Monitoring deduplication effectiveness (rate, subscriber count) essential. Real-world systems must handle concurrent subscriber arrival, timeout</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">failures where all subscribers fail atomically, and memory leaks from unbounded cache growth. Understanding interaction with caching layer (dedup for in-flight, cache for completed) prevents complexity and duplication. This is foundational pattern for building efficient distributed systems.</HighlightBlock>
+      <section className="space-y-5">
+        <h2>Best practices</h2>
+        <ul className="list-disc space-y-2 pl-6 text-slate-700 dark:text-slate-300">
+          <li>Define a stable operation key and test it with reordered object properties, optional parameters, tenant changes, auth changes, and pagination cursors.</li>
+          <li>Keep lifecycle transitions in a reducer or explicit state machine so cancellation, retry, stale response, and cleanup behavior can be tested without rendering React components.</li>
+          <li>Use AbortController where the transport supports it, but still keep a monotonic request token because not every transport or browser path cancels before a response resolves.</li>
+          <li>Separate retry classification from retry scheduling. Classification decides whether an error is retryable; scheduling decides when the next attempt is allowed under deadline and budget.</li>
+          <li>Emit diagnostics for every suppressed or ignored operation. Silent stale-response drops are correct behavior, but they still need debug visibility.</li>
+          <li>Treat auth, tenant, locale, feature flag, and privacy mode as key dimensions when they change returned data or access permissions.</li>
+        </ul>
+      </section>
+
+      <section className="space-y-5">
+        <h2>Common Pitfalls</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A common pitfall is treating design a request deduplication system as a small helper instead of a runtime. A helper usually handles the happy path. A runtime owns cancellation, cleanup, concurrency, memory limits, stale work, metrics, and user-visible recovery.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Another pitfall is conflating transport success with UI success. A 200 response can still be stale, unauthorized for the current tenant, partial, incompatible with the current schema, or obsolete because a newer operation already committed. The commit guard must validate response relevance before updating UI state.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A third pitfall is hiding failures behind generic retry or generic error UI. aborting one consumer must not abort the underlying request unless no subscribers remain. The user experience should make the correct state visible: stale data with a banner, retryable failure with a button, auth failure with re-login, conflict with resolution UI, or disabled action with a clear reason.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A fourth pitfall is failing to bound memory. A registry that never deletes settled operations, an LRU without byte accounting, a retry scheduler that keeps dead timers, or a WebSocket subscription map that keeps handlers after unmount will eventually create production-only failures. The cleanup story should be part of the design, not an implementation afterthought.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A fifth pitfall is making policy impossible to override. Product teams need different policies for admin tools, search inputs, checkout, collaboration, and analytics dashboards. The runtime should expose controlled extension points while keeping the invariants non-negotiable: no stale commit, no auth-scope leak, no unbounded retry, and no silent rollback.</p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/networking-data-systems/request-deduplication-system-failure-model.svg"
+          alt="Design a Request Deduplication System failure and recovery model"
+          caption="Failure model: stale work, retry limits, cache invalidation, auth boundaries, and observer signals decide whether the UI commits, degrades, retries, or rolls back."
+        />
+      </section>
+
+      <section className="space-y-5">
+        <h2>Real-world use cases</h2>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Design a Request Deduplication System appears in product surfaces where users move faster than networks: search boxes, dashboards, admin tools, checkout flows, upload forms, collaboration views, and authenticated SaaS consoles. In these surfaces, one bad race condition can show stale data, double-submit a mutation, hide a failure, or leak information across tenants.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">For staff/principal interviews, anchor the use case in a concrete screen. Example: a settings page loads current settings, the user changes a value, a mutation starts, cached views update optimistically, another tab invalidates the same resource, and the network returns a delayed response. Your answer should describe which event wins, what the user sees, what is persisted, and which metric would prove the runtime behaved correctly.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The production readiness bar includes rollback and abuse handling. Rollback means the UI can revert optimistic or stale state without erasing newer user intent. Abuse handling means the runtime limits request amplification caused by rapid typing, tab storms, retries during outages, reconnect loops, and repeated token refresh failures.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Another real-world use case is incident response. During an outage, this runtime should help operators answer whether the client is retrying too aggressively, whether users are seeing stale state, whether requests are being deduped, whether token refresh is stuck, and which user actions are degraded. That requires event names, counters, and sampled traces designed into the module from the beginning.</p>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">A third use case is migration. Teams often move from hand-written fetch calls to a shared networking runtime gradually. The module should support adapter wrappers so older callers can use the same dedupe, retry, and error handling policy without a full rewrite. Good LLD answers mention migration because principal engineers are judged on adoption paths, not only greenfield design.</p>
+      </section>
+
+      <section className="space-y-5">
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you implement the core module end to end?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">I would define the public API first: dedupe.fetch(key, factory, &#123; subscriberId, abortSignal &#125;). Then I would implement a pure reducer for empty, inFlight, shared, settled, cancelled, evicted. The adapter would normalize keys, read the registry, decide whether to reuse, cache, enqueue, or start transport work, and expose a view model with data, status, error, stale age, retry state, and command callbacks.</p>
+        <h3>How do you prevent stale or duplicate work from corrupting the UI?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">I would use stable operation keys plus a monotonic sequence token. AbortController reduces wasted work, but the token decides whether a response can commit. If a newer operation has started, the older one resolves into an ignored event that updates telemetry but not visible state. For shared in-flight operations, subscriber reference counts decide cleanup without cancelling work still needed by another component.</p>
+        <h3>What breaks at scale?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">Request amplification breaks first: retries, duplicate mounts, rapid typing, reconnect loops, and cache invalidation storms can multiply backend traffic. Memory breaks next if caches, timers, event listeners, and operation journals are never collected. Debuggability breaks if ignored responses and retry decisions are not observable.</p>
+        <h3>How do you handle failure and rollback?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The reducer needs explicit failed, stale, retrying, rolledBack, and degraded states. Rollback should use inverse patches or scoped snapshots instead of resetting an entire cache. User-visible state should distinguish retryable network failure, authorization failure, validation failure, conflict, and stale data. Every rollback or suppressed commit should emit a trace event with operation key and reason.</p>
+        <h3>How do you defend your trade-offs?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">I would defend them with invariants: no stale response can commit after a newer operation, no non-idempotent mutation retries without an idempotency key, no cache entry crosses auth or tenant boundaries, and no retry loop can exceed budget. Then I would show metrics that prove those invariants in production: duplicate suppression count, stale commit suppression count, retry amplification, cache hit rate, p95 stale age, and rollback success rate.</p>
+        <h3>What would you ask the interviewer before coding?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">I would ask which operations are reads versus mutations, which ones are idempotent, whether data is tenant- or permission-scoped, what latency target matters, whether stale data is acceptable, how many components may subscribe to the same resource, and what the expected offline or reconnect behavior is. These questions determine cache policy, retry policy, and commit strictness.</p>
+        <h3>What does the example implementation need to prove?</h3>
+        <p className="text-base leading-8 text-slate-700 dark:text-slate-300">The examples should prove the non-happy paths: duplicate subscribers share work, stale responses are ignored, retry budgets are enforced, rollback does not erase newer state, cache keys include security scope, and telemetry records the reason for every degraded outcome. A one-line example is not enough for this category because the design is mostly about lifecycle behavior under pressure.</p>
+      </section>
+
+      <section className="space-y-4">
+        <h2>References</h2>
+        <ul className="list-disc space-y-2 pl-6 text-slate-700 dark:text-slate-300">
+          <li><a href="https://react.dev/reference/react" target="_blank" rel="noreferrer">React docs: Hooks and effects</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN: AbortController</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" target="_blank" rel="noreferrer">MDN: Fetch API</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket" target="_blank" rel="noreferrer">MDN: WebSocket API</a></li>
+          <li><a href="https://spec.graphql.org/" target="_blank" rel="noreferrer">GraphQL specification</a></li>
+          <li><a href="https://www.rfc-editor.org/rfc/rfc9110" target="_blank" rel="noreferrer">HTTP Semantics RFC 9110</a></li>
+        </ul>
       </section>
     </ArticleLayout>
   );

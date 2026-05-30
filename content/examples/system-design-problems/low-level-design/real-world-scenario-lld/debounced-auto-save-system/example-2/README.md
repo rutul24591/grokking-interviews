@@ -1,6 +1,1 @@
-# Debounced Auto-save System — Example 2
-
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+# Design Debounced Auto-save example 2\n\nConcrete low-level implementation exercise for Design Debounced Auto-save.\n

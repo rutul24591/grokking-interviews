@@ -1,6 +1,1 @@
-# Comments System — Example 1
-
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+# Design a Comments System example 1\n\nConcrete low-level implementation exercise for Design a Comments System.\n

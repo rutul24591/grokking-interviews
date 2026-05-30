@@ -20,10 +20,9 @@ export const metadata: ArticleMetadata = {
   relatedTopics: ["toast-notification-system", "chat-messaging-ui", "stepper-progress-tracker"],
 };
 
-export default function NotificationCenterInboxArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <p>
+export default function NotificationCenterInboxArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Notification Center Inbox</h1><h2>Definition &amp; Context</h2><p>Design a Notification Center Inbox is an implementation-heavy low-level design problem covering initial fetch, real-time merge, unread counters, grouping, mark-read mutation, pagination, deduplication, and cross-tab sync. A principal-level answer must make state ownership, data structures, lifecycle, failure containment, consistency, privacy, cost, and observability explicit.</p><p>Normalize notifications by id and keep an ordered timeline. Unread count derives from acknowledged state and server watermark rather than visual rendering alone. The implementation structures are notification map, ordered ids, unread watermark, group keys, cursor ledger, socket buffer, mutation journal, tab-sync channel, and retention policy.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/notification-center-inbox-runtime.svg" alt="Design a Notification Center Inbox runtime" caption="Topic-specific runtime stages from user intent through durable projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below contains the topic-specific implementation mechanics.</p><p>
         A notification center is deceptively complex. On the surface, it is a list of
         messages with read/unread states. Under the hood, it must handle real-time
         delivery via WebSocket or Server-Sent Events, an in-memory store that reconciles
@@ -41,7 +40,7 @@ export default function NotificationCenterInboxArticle() {
         caption="Notification center architecture: notification store, toast queue, inbox view, badge count and expiry"
       />
 
-      <h2>Clarifying the Requirements</h2>
+      <h3>Clarifying the Requirements</h3>
       <p>
         Before designing, establish the scope:
       </p>
@@ -73,7 +72,7 @@ export default function NotificationCenterInboxArticle() {
         feature requirement.
       </p>
 
-      <h2>The Notification Data Model</h2>
+      <h3>The Notification Data Model</h3>
       <p>
         Each notification has: a unique ID, a type (enum: mention, comment, reaction,
         assignment, system), a timestamp, a read status (boolean), an actor (user who
@@ -96,7 +95,7 @@ export default function NotificationCenterInboxArticle() {
         the group are accessible by expanding the group entry.
       </p>
 
-      <h2>The Notification Store</h2>
+      <h3>The Notification Store</h3>
       <p>
         The notification store is the central state for the inbox. It holds the full
         list of notifications fetched from the server plus any live-pushed events that
@@ -125,7 +124,7 @@ export default function NotificationCenterInboxArticle() {
         store) and count is only recomputed when the store changes.
       </HighlightBlock>
 
-      <h2>Real-Time Delivery</h2>
+      <h3>Real-Time Delivery</h3>
       <p>
         Live notifications arrive via WebSocket or Server-Sent Events. The notification
         service (backend) pushes a notification event whenever a notification is created
@@ -149,7 +148,7 @@ export default function NotificationCenterInboxArticle() {
         ensures no notifications are missed during disconnection.
       </p>
 
-      <h2>The Toast Queue</h2>
+      <h3>The Toast Queue</h3>
       <p>
         The toast queue is a separate, ephemeral state layer (not persisted, not
         server-backed). It controls how many toasts are visible simultaneously and
@@ -180,7 +179,7 @@ export default function NotificationCenterInboxArticle() {
         without layout recalculation.
       </p>
 
-      <h2>Badge Count and Cross-Tab Synchronization</h2>
+      <h3>Badge Count and Cross-Tab Synchronization</h3>
       <p>
         The badge count (the red number on the bell icon) shows unread notifications.
         In a single tab, this is just a derived value from the store's unread count.
@@ -203,7 +202,7 @@ export default function NotificationCenterInboxArticle() {
         re-broadcasting (to prevent infinite loops).
       </p>
 
-      <h2>Inbox UI and Virtual Scrolling</h2>
+      <h3>Inbox UI and Virtual Scrolling</h3>
       <p>
         The inbox panel renders the notification list. For most products, the list
         is bounded (200 notifications maximum) and does not require virtualization.
@@ -234,7 +233,7 @@ export default function NotificationCenterInboxArticle() {
         on panel open state.
       </HighlightBlock>
 
-      <h2>Notification Expiry</h2>
+      <h3>Notification Expiry</h3>
       <p>
         Notifications with an expiry timestamp should be removed from the inbox after
         their expiry time. This is implemented with a cleanup routine that runs
@@ -252,7 +251,7 @@ export default function NotificationCenterInboxArticle() {
         useSyncExternalStore with a time source.
       </p>
 
-      <h2>Accessibility</h2>
+      <h3>Accessibility</h3>
       <p>
         The bell icon button opens the inbox panel. It has aria-label="Notifications"
         and aria-expanded="true/false" based on panel visibility. The badge count is
@@ -276,76 +275,12 @@ export default function NotificationCenterInboxArticle() {
         readers. Update its text with the notification's message when a new toast
         appears. Screen readers announce the message without the user needing to
         navigate to the toast.
-      </p>
-
-      <h2>Interview Q&A</h2>
-
-      <h3>Q: How does the notification store handle the initial fetch plus real-time events race condition?</h3>
-      <p>
-        The race: the client connects to the WebSocket before the initial REST fetch
-        completes. A notification pushed via WebSocket during the fetch may also appear
-        in the fetch response, creating a duplicate. The fix: the WebSocket handler
-        buffers incoming events until the initial fetch completes (store them in a
-        pending array). Once the fetch completes and the store is initialized, replay
-        the buffered events against the store, deduplicating by ID. Alternatively,
-        if the WebSocket connection always starts after the initial fetch, the race
-        does not occur — but this adds latency to the real-time connection. The buffer
-        approach is more resilient and is the production pattern used by Intercom and
-        similar products.
-      </p>
-
-      <h3>Q: How do you limit notification spam when a user receives 100 notifications in 30 seconds?</h3>
-      <p>
-        Rate-limit toasts at the client layer: the toast queue has a maximum display
-        rate (e.g., max 3 toasts per 5 seconds). When the rate is exceeded, buffer
-        additional toasts and release them after the rate window passes. If more than
-        10 toasts are queued, collapse them into a single "You have 12 new notifications"
-        toast rather than showing all individually. The inbox still receives all
-        notifications in the store. This toast throttling prevents the UI from becoming
-        a wall of pop-ups during a high-activity period.
-      </p>
-
-      <h3>Q: How would you implement notification grouping at the store level?</h3>
-      <p>
-        Grouping is a derived transformation of the raw notification list. A selector
-        function takes the raw notification array and returns a grouped list: find all
-        consecutive notifications (by timestamp) with the same groupKey (type + targetId).
-        Collapse them into a GroupedNotification object that includes the count, the
-        most recent notification's content, the list of actor avatars, and a ref to
-        the constituent notification IDs. In the inbox view, grouped items render
-        with an expand button; expanding replaces the group item with the individual
-        items in the list. The grouping selector is pure and memoized (with useMemo
-        or Zustand's selector memoization) so it only recomputes when the raw list
-        changes.
-      </p>
-
-      <h3>Q: How do you persist the notification store across page reloads?</h3>
-      <p>
-        Persisting notifications to localStorage (or sessionStorage) allows the inbox
-        to appear instantly on reload without waiting for the API fetch. On store
-        initialization, read from localStorage first; then fetch from the API and merge
-        (newer API data takes precedence). On every store update, serialize the
-        notification list to localStorage. Limit the persisted list to the most recent
-        50 notifications (since localStorage has a 5–10 MB quota, and each notification
-        is small but still accumulates). Use a debounced write to localStorage
-        (100–200ms) to avoid writing on every individual notification event during
-        a burst. On logout, clear the persisted notifications to prevent data leakage
-        to the next user on the same device.
-      </p>
-
-      <h3>Q: How does the badge count stay accurate when the user has multiple tabs open?</h3>
-      <p>
-        Each tab subscribes to a BroadcastChannel named "notifications." When any tab
-        marks a notification as read, it broadcasts a NOTIFICATION_READ event with
-        the notification ID. All other tabs receive this event and update their local
-        store — marking the same notification as read — which automatically decrements
-        their derived unread count (and badge). When a new notification arrives via
-        WebSocket in one tab, it broadcasts NOTIFICATION_RECEIVED so all tabs add it
-        to their stores and increment their badges. The BroadcastChannel is the
-        authoritative synchronization mechanism for cross-tab badge consistency.
-        localStorage-based solutions (watching for storage events) also work but are
-        more complex and have edge cases around event ordering.
-      </p>
-    </ArticleLayout>
-  );
-}
+      </p></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate input normalization, typed state transitions, derived projection, integration effects, and bounded telemetry. Preview state must not silently become durable state. Every timer, listener, observer, worker, request, pointer capture, and cache entry needs an explicit lifetime.</p><p>Normalize notifications by id and keep an ordered timeline. Unread count derives from acknowledged state and server watermark rather than visual rendering alone. Commit only after applying the latest policy and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/notification-center-inbox-recovery.svg" alt="Design a Notification Center Inbox recovery map" caption="Recovery decisions: contain pressure, retain committed truth, reconcile safely, and emit evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>A polling inbox is operationally simpler; real-time merge is justified for urgent workflows but requires cursor recovery and deduplication.</p><p>The server watermark is authoritative for read state. Socket events merge idempotently; local read actions may project optimistically and reconcile after acknowledgement. The scale pressure is event bursts, reconnect gaps, duplicate delivery, cross-tab actions, partial read failures, and retention windows. Bound work, cancel stale effects, cap memory, and degrade predictably.</p><p>Use optimistic UI only where rollback is deterministic and understandable. Keep authorization and destructive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit state unions, idempotency keys, generation guards, SSR-safe feature checks, and deterministic cleanup. Test keyboard use, accessibility output, stale responses, retries, unmount, constrained devices, and large datasets.</p><p>Measure interaction latency, blocked transitions, stale drops, rollbacks, cache pressure, retries, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing preview and commit, trusting arrival order, leaking resources, accepting stale async work, and implementing custom interaction without semantic fallbacks.</p><p>For this topic, buffer events during initial load, dedupe by id, recompute counters from durable state, retry idempotent read writes, and expose partial connectivity. Security and privacy require the design to validate untrusted input, authorize durable mutations server-side, minimize sensitive telemetry, and bound resource consumption.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies where users repeatedly manipulate state while network, browser, and authorization boundaries can fail independently. Reuse the controller shell, but inject product-specific policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Normalize notifications by id and keep an ordered timeline. Unread count derives from acknowledged state and server watermark rather than visual rendering alone.</p><h3>What breaks at scale?</h3><p>event bursts, reconnect gaps, duplicate delivery, cross-tab actions, partial read failures, and retention windows. I would bound expensive work and cancel obsolete effects.</p><h3>What consistency model applies?</h3><p>The server watermark is authoritative for read state. Socket events merge idempotently; local read actions may project optimistically and reconcile after acknowledgement.</p><h3>How do you recover?</h3><p>I would buffer events during initial load, dedupe by id, recompute counters from durable state, retry idempotent read writes, and expose partial connectivity.</p><h3>Why this architecture?</h3><p>A polling inbox is operationally simpler; real-time merge is justified for urgent workflows but requires cursor recovery and deduplication. The implementation cost is justified only when the required behavior needs it.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li></ul></section>
+</ArticleLayout>}

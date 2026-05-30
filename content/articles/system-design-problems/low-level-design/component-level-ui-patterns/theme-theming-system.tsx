@@ -34,12 +34,11 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function ThemeThemingSystemArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      {/* Section 1: Problem Clarification */}
+export default function ArticlePage(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Theme and Theming System</h1><h2>Definition &amp; Context</h2><p>Design a Theme and Theming System is an implementation-heavy low-level design problem covering token hierarchy, system preference detection, SSR-safe hydration, runtime switching, persistence, component overrides, contrast policy, and migration. A principal-level answer must define state ownership, durable boundaries, lifecycle cleanup, degraded behavior, privacy, cost, and observability.</p><p>Resolve semantic design tokens before rendering components. Theme preference, resolved mode, token package version, and product overrides are distinct state. The core structures are semantic token graph, base palette, resolved mode, user preference, system media query, override scope, storage version, SSR bootstrap, and contrast evidence.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/theme-theming-system-runtime.svg" alt="Design a Theme and Theming System runtime" caption="Topic-specific runtime stages from user intent through durable projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p>{/* Section 1: Problem Clarification */}
       <section>
-        <h2>Problem Clarification</h2>
+        <h3>Problem Clarification</h3>
         <HighlightBlock as="p" tier="important">
           We need to design a reusable theme/theming system for a large-scale React
           application. The system must support multiple visual themes (light mode,
@@ -97,7 +96,7 @@ export default function ThemeThemingSystemArticle() {
 
       {/* Section 2: Requirements */}
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
@@ -214,7 +213,7 @@ export default function ThemeThemingSystemArticle() {
 
       {/* Section 3: High-Level Approach */}
       <section>
-        <h2>High-Level Approach</h2>
+        <h3>High-Level Approach</h3>
         <HighlightBlock as="p" tier="crucial">
           The core idea is to separate <strong>theme definition</strong> (design tokens
           expressed as CSS custom properties), <strong>theme state management</strong>
@@ -265,7 +264,7 @@ export default function ThemeThemingSystemArticle() {
 
       {/* Section 4: System Design (LLD) */}
       <section>
-        <h2>System Design</h2>
+        <h3>System Design</h3>
 
         <ArticleImage
           src="/diagrams/system-design-problems/low-level-design/theme-theming-system-architecture.svg"
@@ -422,7 +421,7 @@ export default function ThemeThemingSystemArticle() {
 
       {/* Section 5: Data Flow / Execution Flow */}
       <section>
-        <h2>Data Flow / Execution Flow</h2>
+        <h3>Data Flow / Execution Flow</h3>
         <p>
           The execution flow follows a clear separation between server-side rendering,
           pre-paint client script, and post-hydration React lifecycle. Each phase has
@@ -492,7 +491,7 @@ export default function ThemeThemingSystemArticle() {
 
       {/* Section 6: Implementation */}
       <section>
-        <h2>Implementation</h2>
+        <h3>Implementation</h3>
         <p>
           The full production implementation is available in the <strong>Example tab</strong>.
           Below is a high-level overview of each module and its key design decisions.
@@ -619,7 +618,7 @@ export default function ThemeThemingSystemArticle() {
 
       {/* Section 7: Performance & Scalability */}
       <section>
-        <h2>Performance &amp; Scalability</h2>
+        <h3>Performance &amp; Scalability</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Time and Space Complexity</h3>
         <div className="my-4 overflow-x-auto">
@@ -722,7 +721,7 @@ export default function ThemeThemingSystemArticle() {
 
       {/* Section 8: Security Considerations */}
       <section>
-        <h2>Security Considerations</h2>
+        <h3>Security Considerations</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Inline Script Security</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -813,7 +812,7 @@ export default function ThemeThemingSystemArticle() {
 
       {/* Section 9: Testing Strategy */}
       <section>
-        <h2>Testing Strategy</h2>
+        <h3>Testing Strategy</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Unit Tests</h3>
         <ul className="space-y-2">
@@ -891,7 +890,7 @@ export default function ThemeThemingSystemArticle() {
 
       {/* Section 10: Interview-Focused Insights */}
       <section>
-        <h2>Interview-Focused Insights</h2>
+        <h3>Interview-Focused Insights</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibold">Common Mistakes Candidates Make</h3>
         <ul className="space-y-3">
@@ -1078,74 +1077,12 @@ export default function ThemeThemingSystemArticle() {
             </p>
           </div>
         </div>
-      </section>
-
-      {/* Section 11: References */}
-      <section>
-        <h2>References &amp; Further Reading</h2>
-        <ul className="space-y-2">
-          <li>
-            <a
-              href="https://design-system.service.gov.uk/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              GOV.UK Design System — Design Token Architecture Reference
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.w3.org/TR/WCAG21/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              WCAG 2.1 — Web Content Accessibility Guidelines
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://css-tricks.com/a-complete-guide-to-custom-properties/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              CSS-Tricks — Complete Guide to CSS Custom Properties
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://nextjs.org/docs/app/api-reference/components/script"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Next.js — Script Component Documentation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://zustand.docs.pmnd.rs/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Zustand — State Management Documentation
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.smashingmagazine.com/2022/04/design-tokens-everything-you-need-to-know/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Smashing Magazine — Design Tokens: Everything You Need to Know
-            </a>
-          </li>
-        </ul>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Normalize input before applying typed transitions. Separate draft, preview, committed state, derived projection, integration effects, and bounded telemetry. Every timer, listener, observer, request, worker, and persisted preference needs an explicit owner and cleanup path.</p><p>Resolve semantic design tokens before rendering components. Theme preference, resolved mode, token package version, and product overrides are distinct state. Commit only after the current policy gate succeeds and retain enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/theme-theming-system-recovery.svg" alt="Design a Theme and Theming System recovery decisions" caption="Recovery flow: invalidate obsolete work, preserve recoverable state, and explain the outcome." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Hard-coded colors are cheap initially; semantic tokens are justified when brands, accessibility, runtime switching, and coordinated migration span many surfaces.</p><p>The server may render a bootstrap preference, while the browser resolves system mode and local preference. Token packages are versioned and overrides reconcile against supported semantic keys. The scale risks are multiple brands, dark and light modes, SSR flashes, stale local storage, nested overrides, token migrations, and inaccessible combinations. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic transitions only when rollback is deterministic and understandable. Keep authorization and conflict-sensitive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit state unions, versioned persistence, generation guards, SSR-safe feature checks, semantic HTML, and idempotent cleanup. Test keyboard use, accessibility output, stale responses, retries, restoration, and constrained devices.</p><p>Measure transition latency, blocked actions, stale drops, rollbacks, cache pressure, retry exhaustion, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing draft and commit, trusting arrival order, leaking resources, accepting obsolete async completion, and hiding rollback from the user.</p><p>For this topic, apply an inline SSR-safe bootstrap, validate stored preference, fall back to system mode, reject unknown overrides, detect contrast regressions, and roll back token packages by version. Validate untrusted input, authorize durable mutations server-side, and bound resource usage.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to repeated workflows where browser, persistence, and policy boundaries can fail independently. Reuse the controller structure while injecting product-specific policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Resolve semantic design tokens before rendering components. Theme preference, resolved mode, token package version, and product overrides are distinct state.</p><h3>What breaks at scale?</h3><p>multiple brands, dark and light modes, SSR flashes, stale local storage, nested overrides, token migrations, and inaccessible combinations. I would bound expensive work and cancel obsolete effects.</p><h3>What consistency model applies?</h3><p>The server may render a bootstrap preference, while the browser resolves system mode and local preference. Token packages are versioned and overrides reconcile against supported semantic keys.</p><h3>How do you recover?</h3><p>I would apply an inline SSR-safe bootstrap, validate stored preference, fall back to system mode, reject unknown overrides, detect contrast regressions, and roll back token packages by version.</p><h3>Why this architecture?</h3><p>Hard-coded colors are cheap initially; semantic tokens are justified when brands, accessibility, runtime switching, and coordinated migration span many surfaces.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li></ul></section>
+</ArticleLayout>}

@@ -2,492 +2,207 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
-import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-lld-clipboard-api",
-  title: "Design Clipboard API",
-  description:
-    "Production-grade clipboard handling with copy/paste, permissions, data formats, and cross-platform compatibility for content sharing.",
+  title: "Design a Clipboard System",
+  description: "Implementation-heavy low-level design for design a clipboard system, covering browser capability checks, state machines, fallbacks, security, performance, and observability.",
   category: "low-level-design",
   subcategory: "web-platform-browser-apis",
   slug: "clipboard-api",
-  wordCount: 5400,
-  readingTime: 33,
-  lastUpdated: "2026-05-06",
-  tags: [
-    "lld",
-    "clipboard",
-    "copy",
-    "paste",
-    "sharing",
-    "permissions",
-  ],
-  relatedTopics: [
-    "geolocation-permissions",
-    "error-state-management",
-    "async-state-handling",
-  ],
+  wordCount: 4700,
+  readingTime: 28,
+  lastUpdated: "2026-05-29",
+  tags: ["lld", "browser-apis", "web-platform", "frontend-architecture", "principal-engineer"],
+  relatedTopics: ["offline-first-architecture", "performance", "permissions-ux"],
 };
 
-export default function ClipboardAPIArticle() {
+export default function ClipboardApiArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">
-          Copy/paste critical for user experience: share content, duplicate
-          data, move between apps. Key challenges: browser security (restrict
-          clipboard access), permissions (ask user), format negotiation (copy
-          HTML vs plain text), and cross-platform (some formats unsupported).
-          Naive approach: use old clipboard APIs (deprecated, unreliable). Better:
-          modern Clipboard API (async, permission-aware, format support).
-        </HighlightBlock>
+        <h1>Design a Clipboard System</h1>
+        <h2>Definition &amp; Context</h2>
         <p>
-          <strong>Assumptions:</strong>
+          Design a Clipboard System is a low-level design problem about wrapping a powerful but inconsistent browser capability in a production-safe permission-gated clipboard coordinator. Browser APIs are not normal libraries: availability differs by browser, permissions can change at runtime, callbacks may fire on the main thread, and user activation, privacy, storage, and lifecycle rules can invalidate a happy-path implementation.
         </p>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">Need to copy content to clipboard (share, export).</HighlightBlock>
-          <HighlightBlock as="li" tier="important">Need to paste from clipboard (import, bulk insert).</HighlightBlock>
-          <HighlightBlock as="li" tier="important">Support multiple formats (HTML, plain text, images, files).</HighlightBlock>
-          <li>Handle permission requests (user consent).</li>
-          <HighlightBlock as="li" tier="important">Cross-browser compatibility (fallback for older browsers).</HighlightBlock>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">
-            <strong>Copy to Clipboard:</strong> Copy text, HTML, images, files
-            to system clipboard.
-          </HighlightBlock>
-          <li>
-            <strong>Paste from Clipboard:</strong> Read text, HTML, images, files
-            from clipboard.
-          </li>
-          <li>
-            <strong>Permissions:</strong> Request clipboard access (user
-            approval).
-          </li>
-          <li>
-            <strong>Format Detection:</strong> Detect available formats (text,
-            html, image/png).
-          </li>
-          <li>
-            <strong>Feedback:</strong> Show copy/paste status (success, denied).
-          </li>
-          <li>
-            <strong>Clipboard Monitoring:</strong> Listen to clipboard changes
-            (paste event).
-          </li>
-          <li>
-            <strong>Clear Clipboard:</strong> Clear sensitive data (password,
-            token).
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <li>
-            <strong>Latency:</strong> Copy/paste &lt;100ms (instant feel).
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Security:</strong> No silent clipboard access (user
-            permission required).
-          </HighlightBlock>
-          <li>
-            <strong>Privacy:</strong> Don't expose clipboard without consent.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Compatibility:</strong> Work in all modern browsers
-            (fallback for older).
-          </HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Edge Cases</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="crucial">
-            Large data: copy 10MB file to clipboard. Handle gracefully (may
-            fail on some browsers).
-          </HighlightBlock>
-          <li>
-            Async operations: copy takes time (user navigates away mid-copy).
-            Handle cancellation.
-          </li>
-          <HighlightBlock as="li" tier="important">
-            Permission denied: user blocks clipboard access. Show fallback (manual
-            copy).
-          </HighlightBlock>
-          <li>
-            Mixed formats: copy as both HTML and plain text (paste chooses).
-          </li>
-          <li>
-            Unsupported format: paste image but app only supports text
-            (graceful degrade).
-          </li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="crucial">Use modern Clipboard API (navigator.clipboard). For copy: prepare
-          data, call writeText/write, handle async. For paste: request
-          permission, read data, parse formats.</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">Fallback for older browsers:
-          document.execCommand('copy') or textarea workaround. Show feedback
-          (toast: "Copied!"). Handle errors (permission denied, unsupported
-          format).</Highlight></HighlightBlock>
-      </section>
-
-      <section>
+        <p>
+          The implementation contract starts with copy(payload, context), paste(expectedType), sanitize(data), fallback(reason). The runtime should model these states explicitly: idle, permissionChecking, writing, reading, denied, unsupported, fallback. The invariant is: Clipboard access must be user-initiated, sanitized, and explainable without leaking sensitive data. The hard case is when a user clicks copy after focus changes and the transient activation token has expired. A principal-ready answer should explain the API facade, capability detection, fallback behavior, lifecycle cleanup, privacy and security constraints, and the telemetry that proves the abstraction works in the field.
+        </p>
         <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/web-platform-browser-apis/clipboard-api.svg"
-          alt="Clipboard API system showing copy flow through permissions check, ClipboardItem construction with multiple MIME types, and paste flow through read permission, MIME detection, DOMPurify sanitization, with execCommand fallback"
-          caption="Clipboard API system showing copy flow through permissions check, ClipboardItem construction with multiple MIME types, and paste flow through read permission, MIME detection, DOMPurify sanitization, with execCommand fallback"
+          src="/diagrams/system-design-problems/low-level-design/web-platform-browser-apis/clipboard-api-runtime.svg"
+          alt="Design a Clipboard System runtime model"
+          caption="Runtime model: browser capability checks, permission and lifecycle gates, guarded execution, fallback path, and observability are owned by the abstraction."
         />
-
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Clipboard API</h3>
-        <p>Modern async clipboard access.</p>
-        <ul className="space-y-2">
-          <li>
-            <strong>navigator.clipboard.writeText:</strong> Copy plain text
-            (simple).
-          </li>
-          <li>
-            <strong>navigator.clipboard.write:</strong> Copy complex data
-            (multiple formats).
-          </li>
-          <li>
-            <strong>navigator.clipboard.readText:</strong> Read plain text
-            (simple).
-          </li>
-          <li>
-            <strong>navigator.clipboard.read:</strong> Read complex data
-            (multiple formats).
-          </li>
-          <li>
-            <strong>Async:</strong> Returns Promise (await for result).
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Copy Operations</h3>
-        <p>Write to clipboard.</p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Simple Text:</strong> await
-            navigator.clipboard.writeText('hello').
-          </li>
-          <li>
-            <strong>Rich Formats:</strong> Create ClipboardItem with multiple
-            MIME types (HTML, plain text).
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Example:</strong> Copy HTML button, but fallback to plain
-            text if HTML unsupported.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            <strong>Feedback:</strong> Show "Copied!" toast on success (timeout
-            3s).
-          </HighlightBlock>
-          <li>
-            <strong>Error Handling:</strong> NotAllowedError if permission
-            denied, show message.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Paste Operations</h3>
-        <p>Read from clipboard.</p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Simple Text:</strong> await navigator.clipboard.readText()
-            gets pasted text.
-          </li>
-          <HighlightBlock as="li" tier="crucial">
-            <strong>Rich Data:</strong> navigator.clipboard.read() returns
-            ClipboardItem array (multiple formats).
-          </HighlightBlock>
-          <li>
-            <strong>Format Check:</strong> item.types array lists available
-            MIME types.
-          </li>
-          <li>
-            <strong>Get Blob:</strong> item.getType('text/html') → blob (read
-            data).
-          </li>
-          <li>
-            <strong>Parsing:</strong> Parse blob to string (text) or handle
-            binary (image).
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Permissions</h3>
-        <p>Request user consent.</p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Clipboard-Read:</strong> Permission to read clipboard
-            (paste).
-          </li>
-          <li>
-            <strong>Clipboard-Write:</strong> Permission to write clipboard
-            (copy).
-          </li>
-          <li>
-            <strong>Request:</strong> navigator.permissions.query({'{'}name:
-            'clipboard-read'{'}'}) check status.
-          </li>
-          <li>
-            <strong>User Gesture:</strong> Copy/read must be triggered by user
-            action (click, not async).
-          </li>
-          <li>
-            <strong>Prompt:</strong> Browser may show permission prompt
-            (Allows/Block).
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Supported Formats</h3>
-        <p>Data types for clipboard.</p>
-        <ul className="space-y-2">
-          <li>
-            <strong>text/plain:</strong> Plain text (always supported).
-          </li>
-          <li>
-            <strong>text/html:</strong> HTML markup (most browsers).
-          </li>
-          <li>
-            <strong>image/png:</strong> PNG image (some browsers).
-          </li>
-          <li>
-            <strong>image/jpeg:</strong> JPEG image (less common).
-          </li>
-          <li>
-            <strong>Custom types:</strong> application/json (app-specific
-            data).
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Copy Button Pattern</h3>
-        <p>Implement copy-to-clipboard button.</p>
-        <ul className="space-y-2">
-          <li>
-            <strong>HTML:</strong> &lt;button onclick="copyToClipboard()"&gt;Copy
-            &lt;/button&gt;
-          </li>
-          <li>
-            <strong>JS:</strong> On click, copy content, show toast "Copied!",
-            hide after 2s.
-          </li>
-          <li>
-            <strong>Icon:</strong> Show copy icon (📋) or change text
-            temporarily ("Copied!").
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Accessibility:</strong> ARIA label, keyboard support
-            (Enter key).
-          </HighlightBlock>
-          <li>
-            <strong>Error:</strong> Permission denied → "Copy manually (Ctrl+C)"
-            message.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Paste Handling</h3>
-        <p>React to paste events.</p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Paste Event:</strong> Fired when user pastes (Ctrl+V,
-            right-click paste).
-          </li>
-          <li>
-            <strong>event.clipboardData:</strong> Contains pasted data
-            (before/after processing).
-          </li>
-          <li>
-            <strong>Prevent Default:</strong> e.preventDefault() stops paste,
-            handle manually.
-          </li>
-          <li>
-            <strong>Use Case:</strong> Rich text editor pastes HTML, sanitize
-            (remove scripts).
-          </li>
-          <li>
-            <strong>File Paste:</strong> Paste files (Ctrl+V), access via
-            clipboardData.files.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Fallback for Older Browsers</h3>
-        <p>Support browsers without Clipboard API.</p>
-        <ul className="space-y-2">
-          <li>
-            <strong>document.execCommand('copy'):</strong> Deprecated but
-            widely supported (older fallback).
-          </li>
-          <li>
-            <strong>textarea Trick:</strong> Create hidden textarea, set text,
-            select, execCommand('copy'), cleanup.
-          </li>
-          <li>
-            <strong>Detection:</strong> Check if navigator.clipboard exists
-            (Clipboard API support).
-          </li>
-          <li>
-            <strong>Graceful Degrade:</strong> If no support, show "Copy manually
-            (Ctrl+C)" instruction.
-          </li>
-          <li>
-            <strong>Modern Approach:</strong> Clipboard API universal in modern
-            browsers (IE 11 no).
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Security & Privacy</h3>
-        <p>Protect user data.</p>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">
-            <strong>No Silent Access:</strong> App cannot read clipboard
-            without permission (security).
-          </HighlightBlock>
-          <li>
-            <strong>User Gesture:</strong> Copy/paste must be user-triggered
-            (no async calls).
-          </li>
-          <li>
-            <strong>HTTPS Only:</strong> Clipboard API works on secure context
-            (https://).
-          </li>
-          <li>
-            <strong>Clear Sensitive:</strong> After operation, clear sensitive
-            data (token, password).
-          </li>
-          <li>
-            <strong>Prompt Context:</strong> Show why clipboard access needed
-            (explain in UI).
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Monitoring & Observability</h3>
-        <p>Track clipboard usage.</p>
-        <ul className="space-y-2">
-          <li>
-            <strong>Copy Rate:</strong> % of users copying content (engagement).
-          </li>
-          <li>
-            <strong>Paste Rate:</strong> % of users pasting (importance of
-            feature).
-          </li>
-          <li>
-            <strong>Permission Grant:</strong> % of users allowing clipboard
-            access.
-          </li>
-          <li>
-            <strong>Fallback Usage:</strong> % relying on manual copy (API
-            unsupported).
-          </li>
-          <li>
-            <strong>Success Rate:</strong> % of copy/paste operations succeeding
-            (errors).
-          </li>
-        </ul>
       </section>
 
       <section>
-        <h2>Implementation Considerations</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">HTTPS Requirement</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Clipboard API only works on https:// (secure context). http://
-          blocked for security. Localhost ok for dev.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">User Gesture</h3>
-        <HighlightBlock as="p" tier="important">
-          Copy/paste must be triggered by user action (click, not async).
-          Prevents malicious scripts from stealing clipboard.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing Clipboard</h3>
-        <HighlightBlock as="p" tier="important">
-          Mock navigator.clipboard in unit tests (real clipboard access hard
-          to test). Integration tests on real browser. Verify toast feedback.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Advanced Production Patterns</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Copy Link Pattern</h3>
-        <HighlightBlock as="p" tier="important">
-          Generate shareable link, copy to clipboard. Common: "Copy link" button
-          for collaboration.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Code Snippet Copy</h3>
-        <HighlightBlock as="p" tier="important">
-          Show code block with copy button. Common in docs. Highlight on copy
-          (visual feedback).
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Rich Format Copy</h3>
-        <HighlightBlock as="p" tier="important">
-          Copy as both HTML (formatted) and plain text (compatibility). Paste
-          chooses best format.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Testing at Scale</h3>
-        <HighlightBlock as="p" tier="important">
-          Copy very large text (10MB+): may fail on some systems. Test graceful
-          failure. Permission edge cases.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Real-World Pitfalls</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Common: copy button not visible (accessibility). Solution: always
-          visible, keyboard accessible. Another: no feedback. Solution: toast
-          "Copied!" (3s timeout).
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Incident Response</h3>
+        <h2>Core Concepts</h2>
         <p>
-          Copy fails silently: check HTTPS, permissions. Paste blocked: app
-          may prevent defaults. Debug: check clipboard on user device.
+          The first concept is feature detection with a policy decision. The runtime should not only check whether an API exists. It should decide whether the API is allowed for this user journey, browser, security context, permission state, and product risk. For example, an API may exist but require HTTPS, transient user activation, foreground tab state, same-origin constraints, or a browser-specific fallback.
+        </p>
+        <p>
+          The second concept is a small state machine around the browser boundary. Directly calling browser APIs from components spreads permission prompts, unsupported states, cleanup, and errors across the app. A runtime with explicit states can reject unsafe calls, produce consistent UI states, and shield product code from browser-specific exception shapes.
+        </p>
+        <p>
+          The third concept is lifecycle ownership. Browser API handles often outlive a render: observers must disconnect, workers must terminate, file references must be released, permission watches must stop, callbacks must be batched, and hidden tabs may throttle timers. The durable structures are permission snapshot, user activation token, MIME allowlist, sanitizer, fallback buffer, audit event. These structures give the implementation enough evidence to clean up safely and debug incidents.
+        </p>
+        <h3>Implementation contract</h3>
+        <p>
+          Public methods should return typed outcomes such as accepted, unsupported, permission-denied, queued, cancelled, throttled, or fallback-used. Components should not infer these outcomes from thrown DOM exceptions. The runtime should also expose a snapshot with capability state, active work, last error, and recovery action so the UI can render coherent affordances.
+        </p>
+        <p>
+          Every browser-facing operation should define input validation, output normalization, cancellation semantics, and cleanup requirements. Sensitive operations need data minimization and audit events. Expensive operations need budgets and backpressure. User-gesture operations need a short-lived activation window and a fallback path when the activation is lost.
+        </p>
+        <h3>Operation classes</h3>
+        <p>
+          Browser work should be classified before implementation. User-activation operations, long-running computation, observer callbacks, permission prompts, file intake, and background work have different safety rules. A copy action may need a foreground click, a worker job may need transferable ownership, an observer may need frame batching, and a location request may need a purpose-specific explanation. Grouping operations this way prevents a single generic wrapper from hiding important browser constraints.
+        </p>
+        <p>
+          Each operation class should define retry behavior, cancellation, privacy limits, and UI fallback. Some operations are safe to retry, some are not; some can run in the background, while others must pause when the document is hidden. Principal-level design means naming those classes and refusing unsafe execution when the browser context no longer matches the operation contract.
         </p>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Convenience vs Security</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Silent copy: convenient but dangerous (malicious scripts steal
-          clipboard). Permission: secure but friction. Browser restricts for
-          security.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Format Support</h3>
-        <HighlightBlock as="p" tier="important">
-          HTML copy: better UX (formatted on paste) but less compatible. Plain
-          text: always works. Copy both.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Compatibility</h3>
-        <HighlightBlock as="p" tier="important">
-          Modern browsers: Clipboard API universal. Old browsers: use fallback
-          (execCommand or manual instruction). Progressive enhancement:
-          detect, provide best experience.
-        </HighlightBlock>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          The architecture has five layers. The component facade accepts product intent. The capability layer checks API support, secure context, permissions, user activation, and document lifecycle. The execution engine calls the browser API through adapters. The fallback layer provides an alternate path when the capability is missing or unsafe. The observer layer records metrics and exposes state changes to UI subscribers.
+        </p>
+        <p>
+          A normal flow starts with a product component calling the facade. The facade validates the request and attaches an operation id. The capability layer returns allowed, denied, unsupported, or deferred. If allowed, the execution engine invokes the browser adapter with cancellation and timeout guards. If denied or unsupported, the fallback layer returns a user-safe alternative rather than throwing a raw browser error into the UI.
+        </p>
+        <p>
+          Cleanup is part of the flow, not a separate afterthought. On unmount, navigation, tab hide, permission change, abort, or worker termination, the runtime should cancel active operations, release resources, and emit a final snapshot. The cleanup path must be idempotent because React remounts, route transitions, service worker updates, and browser lifecycle events can call it more than once.
+        </p>
+        <h3>Data model and invariants</h3>
+        <p>
+          A practical data model includes operation id, capability snapshot, permission state, caller scope, lifecycle state, active handles, timeout deadline, fallback reason, and telemetry fields. Invariants should be enforced before the browser call: no privileged action without the required user activation, no observer callback that mutates layout recursively without batching, no worker result accepted after cancellation, and no sensitive payload logged.
+        </p>
+        <p>
+          The runtime should separate browser adapters from policy. Adapters know how to call Clipboard, Geolocation, Worker, Observer, Visibility, Drag and Drop, or Background Sync APIs. Policy decides whether a call is safe, what fallback to use, what to show the user, and what to record. That split makes tests deterministic and lets product policy evolve without rewriting browser integration code.
+        </p>
+        <h3>Failure matrix</h3>
+        <p>
+          The design should include a failure matrix from browser cause to product response. Unsupported API routes to fallback. Permission denied routes to explanation and manual alternatives. Expired user activation routes to a fresh user action. Hidden document routes to pause or defer. Large payload routes to worker or chunking. Observer loop risk routes to batching and layout guards. This matrix makes the implementation inspectable and keeps feature teams from inventing inconsistent behavior.
+        </p>
+        <p>
+          Browser lifecycle transitions should be modeled as first-class events. Visibility change, page freeze, navigation, bfcache restore, service worker update, worker termination, and permission revocation can all invalidate active handles. The runtime should move to a typed state, cancel or resume work safely, and emit a snapshot that lets the UI explain what happened.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/web-platform-browser-apis/clipboard-api-failure.svg"
+          alt="Design a Clipboard System failure and fallback model"
+          caption="Failure model: unsupported APIs, permission denial, lifecycle changes, and expensive callbacks are routed through explicit fallbacks and telemetry."
+        />
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Paste event handling for rich editors (sanitize HTML). User gesture requirement prevents silent clipboard access (malicious scripts).</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">Monitoring copy/paste rates, permission grant rates, success rates. Testing with mocks and real browser. Real-world systems implement copy-link buttons (collaboration), code snippet copy (docs), and rich format copy (HTML + plain text), with graceful degradation for unsupported browsers.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>
+          Calling browser APIs directly is fast to ship and works for prototypes. It becomes fragile when multiple screens need consistent permission prompts, fallbacks, cleanup, security handling, and observability. A centralized runtime adds indirection, but it turns browser unpredictability into a stable application contract.
+        </p>
+        <p>
+          The main trade-off is control versus native behavior. Native APIs provide capabilities that JavaScript cannot reproduce efficiently, but they come with browser rules that can change or vary. A custom fallback is more predictable, but may be less capable or less performant. A principal-ready design uses native capability when it is safe and valuable, and falls back only for the degraded core journey.
+        </p>
+        <p>
+          Performance trade-offs depend on the API. Observers and visibility can reduce work, but callback storms can create layout thrash. Workers can improve responsiveness, but serialization and transfer overhead can dominate small jobs. Clipboard and permission APIs improve UX when used with user intent, but aggressive prompting harms trust. Background sync improves reliability, but requires idempotency and durable state.
+        </p>
+        <p>
+          Security and privacy are first-class trade-offs. Clipboard, location, file drops, push-like background actions, and worker payloads can expose sensitive data or create abuse paths. The design should minimize payloads, sanitize inputs, respect permissions, avoid logging secrets, and fail closed when the browser cannot prove the user or document state required by the operation.
+        </p>
+        <p>
+          There is also a portability trade-off. A browser-native path may be excellent in Chromium and limited or absent elsewhere. The design should isolate adapters, ship capability metrics, and support feature-flagged rollout. That lets the team use advanced APIs where they are reliable without breaking the baseline journey for users on constrained browsers or enterprise-managed devices.
+        </p>
+      </section>
+
+      <section>
+        <h2>Best practices</h2>
+        <p>
+          Always wrap browser APIs with capability detection, typed errors, and cleanup. Treat browser support as a runtime condition, not a build-time assumption. Check secure context, permissions, document visibility, user activation, and lifecycle state close to the call site because those values can change between render and execution.
+        </p>
+        <p>
+          Batch and budget callbacks. Observer APIs, visibility changes, drag events, worker progress, and sync status messages can fire frequently. Use requestAnimationFrame, microtask batching, or priority queues to avoid re-render storms. Track the cost of callbacks and expose slow-path metrics so the abstraction does not become a hidden performance problem.
+        </p>
+        <p>
+          Provide accessible, honest fallbacks. A disabled button, manual copy field, file input fallback, approximate location mode, read-only state, or visible retry queue should correspond to a real runtime state. The user should understand whether the issue is unsupported browser, denied permission, background throttling, failed validation, or temporary unavailability.
+        </p>
+        <p>
+          Test with browser API adapters rather than real global APIs in most unit tests. Use integration tests for permission denial, unsupported APIs, hidden tab behavior, worker cancellation, observer disconnect, large file drops, and activation expiry. Deterministic adapters make edge cases repeatable instead of timing-dependent.
+        </p>
+        <p>
+          Add operational guardrails. Cap active observers, worker jobs, queued background tasks, pasted payload size, drag-drop file count, and location watcher lifetime. Release resources on route change and expose counts in debug snapshots. These limits are part of the low-level design because browser APIs can exhaust memory, drain battery, or degrade input latency when left unbounded.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>
+          The most common pitfall is assuming support means safe use. A method can exist but still fail because the page is not secure, the tab is hidden, the user activation expired, the permission was denied, the payload is too large, or the browser throttled the callback. The runtime must treat these as normal states.
+        </p>
+        <p>
+          Another pitfall is leaking resources. Observers left connected, workers left running, file object URLs not revoked, geolocation watchers not cleared, and queues not compacted all create slow production failures. Cleanup should be idempotent and connected to component scope, route scope, and document lifecycle.
+        </p>
+        <p>
+          Teams also under-observe browser API failures. Browser-specific issues are hard to reproduce without telemetry. Capture capability state, permission outcome, fallback reason, operation duration, cancellation, and sanitized error class. Avoid capturing payloads, clipboard text, location coordinates, or file names unless the privacy policy explicitly permits it and the data is necessary.
+        </p>
+        <p>
+          A subtle pitfall is mixing rendering state with browser handle state. A component can re-render many times while the underlying observer, worker, permission watch, or drag session should remain stable. Conversely, a route transition can invalidate a handle even if React state still exists. The runtime should own handles explicitly and expose derived UI state rather than letting components hold raw browser objects.
+        </p>
+        <p>
+          Finally, avoid assuming the fallback is only for old browsers. Fallbacks also handle enterprise policies, denied permissions, embedded webviews, privacy modes, hidden tabs, quota pressure, and temporary platform regressions. If the fallback path is not tested and observable, it will fail exactly for the users who need it most.
+        </p>
+        <p>
+          A production-ready implementation should make these fallback transitions as visible in design review as the happy path.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          Browser API runtimes appear in productivity suites, internal admin tools, design editors, field-service apps, analytics dashboards, media uploaders, real-time collaboration products, and offline-capable PWAs. These products need capabilities that are close to the device and browser lifecycle, but they also need predictable behavior across teams and browsers.
+        </p>
+        <p>
+          At staff and principal level, the browser API layer is often platform-owned. Feature teams declare intent and policy, while the platform runtime owns capability checks, adapters, cleanup, fallbacks, accessibility, privacy review, and metrics. This prevents every feature from rediscovering browser edge cases in production.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you design this system end to end?</h3>
+        <p>
+          I would design a facade around the browser API, a capability and permission gate, a state machine, browser adapters, fallback renderers, and telemetry. The facade accepts product intent and returns typed outcomes. The gate checks secure context, support, permission, activation, and lifecycle. The adapter executes the browser call with cancellation and timeout guards. The fallback path keeps the core task usable when the native path is unavailable.
+        </p>
+        <h3>Why this architecture over direct browser calls?</h3>
+        <p>
+          Direct calls duplicate edge handling across components and make behavior inconsistent. A runtime centralizes invariants: Clipboard access must be user-initiated, sanitized, and explainable without leaking sensitive data. It also makes permissions, fallbacks, cleanup, and metrics testable. The cost is an abstraction layer, but the benefit is predictable behavior across browsers and product surfaces.
+        </p>
+        <h3>What breaks at scale?</h3>
+        <p>
+          At scale, browser differences, permission churn, callback storms, memory leaks, hidden-tab throttling, serialization cost, and unsupported fallback paths become the main failures. The design needs adapter tests, capability metrics, bounded queues, idempotent cleanup, callback batching, privacy-safe logging, and rollout flags to disable unsafe paths.
+        </p>
+        <h3>What consistency model applies?</h3>
+        <p>
+          The consistency model is usually local and lifecycle-bound. The browser can confirm that an operation was requested or accepted by the API, but the application may still need server authority, user permission, or visible fallback state. The runtime should expose whether state is confirmed, pending, approximate, stale, cancelled, or fallback-derived instead of presenting every result as equally authoritative.
+        </p>
+        <h3>How do you handle failure, rollback, abuse, privacy, cost, and observability?</h3>
+        <p>
+          Failure becomes typed runtime state. Rollback means cancelling handles, ignoring late results, revoking previews, or returning to fallback UI. Abuse is controlled through user activation, permission checks, payload limits, rate limits, and feature flags. Privacy is protected through data minimization and sanitized telemetry. Cost is managed through batching, cancellation, worker thresholds, and cleanup. Observability records capability, permission outcome, fallback reason, duration, and resource counts.
+        </p>
+        <h3>How would you defend the trade-offs under interviewer pressure?</h3>
+        <p>
+          I would explain that browser APIs are powerful but non-deterministic across environments, so the abstraction optimizes for correctness and user trust. If challenged on complexity, I would scope the runtime to shared invariants and keep product policy injectable. If challenged on performance, I would show batching, budgets, and cancellation. Then I would walk through a user clicks copy after focus changes and the transient activation token has expired and explain the exact state transitions.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API" target="_blank" rel="noreferrer">MDN reference for the primary browser API</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API" target="_blank" rel="noreferrer">MDN Permissions API</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API" target="_blank" rel="noreferrer">MDN Page Visibility API</a></li>
+          <li><a href="https://web.dev/articles/rendering-performance" target="_blank" rel="noreferrer">web.dev Rendering Performance</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li>
+        </ul>
       </section>
     </ArticleLayout>
   );

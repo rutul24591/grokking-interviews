@@ -20,10 +20,9 @@ export const metadata: ArticleMetadata = {
   relatedTopics: ["wizard-multi-step-form", "form-builder", "payment-checkout-ui"],
 };
 
-export default function StepperProgressTrackerArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <p>
+export default function ArticlePage(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Stepper Progress Tracker</h1><h2>Definition &amp; Context</h2><p>Design a Stepper Progress Tracker is an implementation-heavy low-level design problem covering step state transitions, async gates, conditional branches, backward-navigation policy, URL synchronization, draft persistence, and accessibility. A principal-level answer must define state ownership, durable boundaries, lifecycle cleanup, degraded behavior, privacy, cost, and observability.</p><p>Treat the workflow as a directed state machine. The current step, completed steps, validation status, branch inputs, and navigation intent must remain separate. The core structures are step graph, current step id, completed set, branch context, validation generation, draft version, URL projection, dirty flag, and focus target.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/stepper-progress-tracker-runtime.svg" alt="Design a Stepper Progress Tracker runtime" caption="Topic-specific runtime stages from user intent through durable projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><p>
         A stepper component is the backbone of multi-step user flows — checkout funnels,
         onboarding wizards, tax filing forms, insurance applications. The visual
         indicator (numbered steps with connecting lines) seems simple, but the state
@@ -41,7 +40,7 @@ export default function StepperProgressTrackerArticle() {
         caption="Stepper architecture: step state machine, async validation, navigation rules, URL sync and guard"
       />
 
-      <h2>Clarifying the Requirements</h2>
+      <h3>Clarifying the Requirements</h3>
       <p>
         Several dimensions need clarification before designing the architecture:
       </p>
@@ -74,7 +73,7 @@ export default function StepperProgressTrackerArticle() {
         a fixed array.
       </p>
 
-      <h2>The Step State Machine</h2>
+      <h3>The Step State Machine</h3>
       <p>
         Each step has an independent status: pending (not yet visited), active (currently
         shown), completed (visited and successfully validated), invalid (visited but
@@ -106,7 +105,7 @@ export default function StepperProgressTrackerArticle() {
         navigated away, ignore it by comparing response request IDs.
       </HighlightBlock>
 
-      <h2>Backward Navigation Rules</h2>
+      <h3>Backward Navigation Rules</h3>
       <p>
         Backward navigation (clicking Back) seems straightforward but has important edge
         cases. The key question: should going back mark the current step as "pending"
@@ -135,7 +134,7 @@ export default function StepperProgressTrackerArticle() {
         The stepper reads this flag and disables/hides the Back button for those steps.
       </p>
 
-      <h2>Async Validation Gate Implementation</h2>
+      <h3>Async Validation Gate Implementation</h3>
       <p>
         The async validation pattern: when the user clicks Next, the stepper calls the
         current step's validate function (provided by the step's content component via
@@ -165,7 +164,7 @@ export default function StepperProgressTrackerArticle() {
         not need to differentiate — it always awaits the Promise.
       </p>
 
-      <h2>Conditional and Dynamic Step Graphs</h2>
+      <h3>Conditional and Dynamic Step Graphs</h3>
       <p>
         Conditional steps are common in real-world flows. A registration wizard might
         show a "Business information" step only if the user selected "Business account"
@@ -188,7 +187,7 @@ export default function StepperProgressTrackerArticle() {
         (by ID, not index).
       </p>
 
-      <h2>Unsaved Change Guard</h2>
+      <h3>Unsaved Change Guard</h3>
       <p>
         Before allowing navigation away from a step with unsaved changes (either via
         Back, clicking a step indicator, or the browser's own navigation), the stepper
@@ -217,7 +216,7 @@ export default function StepperProgressTrackerArticle() {
         who have legitimately finished the flow.
       </HighlightBlock>
 
-      <h2>URL Synchronization and Progress Persistence</h2>
+      <h3>URL Synchronization and Progress Persistence</h3>
       <p>
         URL synchronization serves two purposes: bookmarkability (the user can share or
         revisit a specific step URL) and browser history integration (the browser's back
@@ -247,7 +246,7 @@ export default function StepperProgressTrackerArticle() {
         silently restoring, to orient the user.
       </p>
 
-      <h2>Step Indicator Component Design</h2>
+      <h3>Step Indicator Component Design</h3>
       <p>
         The step indicator (the row of numbered circles with connecting lines) is a
         presentational component driven by the step status array. Each indicator shows:
@@ -267,7 +266,7 @@ export default function StepperProgressTrackerArticle() {
         ahead with a confirmation.
       </p>
 
-      <h2>Accessibility Model</h2>
+      <h3>Accessibility Model</h3>
       <p>
         The step indicator should use an ordered list (ol) with list items (li) for
         the step indicators. Each step is a list item containing either a button
@@ -295,7 +294,7 @@ export default function StepperProgressTrackerArticle() {
         will do without having to read the entire step indicator.
       </p>
 
-      <h2>Testing Strategy</h2>
+      <h3>Testing Strategy</h3>
       <p>
         Test the stepper's navigation state machine independently of its visual
         rendering. The reducer is a pure function and can be tested exhaustively:
@@ -315,75 +314,12 @@ export default function StepperProgressTrackerArticle() {
         router), simulate navigation, assert the URL parameter updates. Test restoration:
         render with an initial URL containing a step parameter and assert the stepper
         initializes at the correct step.
-      </p>
-
-      <h2>Interview Q&A</h2>
-
-      <h3>Q: How do you prevent double-submission when the user clicks Next rapidly?</h3>
-      <p>
-        Maintain a "validating" boolean in the stepper's reducer state. Set it to true
-        when VALIDATE_START is dispatched; clear it when VALIDATE_SUCCESS or VALIDATE_FAIL
-        is dispatched. In the Next button's click handler, check this flag before
-        starting validation — if already validating, return early. Also set the Next
-        button to disabled when validating. This prevents both the UI click and any
-        programmatic invocations from triggering duplicate validation calls. For the
-        async validation function itself, use a request ID and ignore stale responses
-        (responses whose ID does not match the most recently dispatched request ID).
-      </p>
-
-      <h3>Q: How do conditional steps interact with the completed/invalid status of steps that depended on the now-removed step?</h3>
-      <p>
-        This is an edge case that requires a decision about data coupling. If Step 3
-        was completed and depended on data from Step 2, and Step 2 is later conditionally
-        removed (because the user changed an answer in Step 1), Step 3's data may now
-        be invalid even though it shows as "completed." The safest approach: when a
-        step is removed, mark all subsequent steps as "pending" and clear their
-        completion status (but preserve their form data in case the user re-enables
-        the step). Show a toast notification: "Your progress on later steps may need
-        review since step 2 was removed." This keeps the user informed and prevents
-        submitting an inconsistent form.
-      </p>
-
-      <h3>Q: How do you design the stepper to support server-side rendering for the initial step?</h3>
-      <p>
-        Server-render the first step's content as the default state. The URL-based
-        step parameter drives which step is rendered server-side. For a logged-in user
-        with a saved draft, the server reads the draft from the session and renders
-        the appropriate step's initial form state into the HTML. React hydrates the
-        server-rendered HTML; the stepper reads the step parameter from the URL and
-        the initial state from the server-rendered data attributes (or a script tag
-        with JSON). This avoids the flash of the wrong step on load and ensures that
-        users with slow JavaScript execution (or JS disabled) see the correct step.
-        Without SSR, all users see a loading spinner until JavaScript initializes the
-        stepper, which increases perceived latency.
-      </p>
-
-      <h3>Q: How does the step validation architecture scale to a 20-step wizard?</h3>
-      <p>
-        At 20 steps, a few practices become critical. First, lazy-load step content
-        components — import each step component with dynamic import so only the current
-        step's code is in the JavaScript bundle loaded on mount. This keeps the initial
-        bundle small. Second, use a centralized form state store (Zustand or a context)
-        so step components can be unmounted and remounted without losing their data.
-        Third, batch the validation calls: for server-round-trip validations, batch
-        the data from multiple completed steps into a single API call at the end rather
-        than one call per step — this reduces latency and backend load. Fourth, add
-        autosave: after each step's validation success, silently POST the step data
-        to a draft endpoint so progress is never lost even if the user's session expires.
-      </p>
-
-      <h3>Q: How would you handle a step whose validation depends on a previous step's data?</h3>
-      <p>
-        Cross-step validation dependencies mean the validation function for Step N
-        needs access to Step M's data. Model this by storing all form data in a shared
-        context accessible to all step validators, not in each step's local state.
-        The validate function for Step N receives the entire form state as an argument
-        (or reads it from the context). This is a pure function: given the full form
-        state, it returns a ValidationResult. The stepper calls this function with the
-        current snapshot of form state on each validation attempt. Keeping validators
-        as pure functions (no side effects, no direct DOM reads) makes them testable
-        in isolation.
-      </p>
-    </ArticleLayout>
-  );
-}
+      </p></section>
+<section><h2>Architecture &amp; Flow</h2><p>Normalize input before applying typed transitions. Separate draft, preview, committed state, derived projection, integration effects, and bounded telemetry. Every timer, listener, observer, request, worker, and persisted preference needs an explicit owner and cleanup path.</p><p>Treat the workflow as a directed state machine. The current step, completed steps, validation status, branch inputs, and navigation intent must remain separate. Commit only after the current policy gate succeeds and retain enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/stepper-progress-tracker-recovery.svg" alt="Design a Stepper Progress Tracker recovery decisions" caption="Recovery flow: invalidate obsolete work, preserve recoverable state, and explain the outcome." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>A linear index is enough for fixed onboarding; a state graph is justified when branching, async gates, resumability, and auditability matter.</p><p>The workflow graph and durable draft are server-versioned when persistence matters. Local navigation is provisional until the active gate succeeds for the current draft generation. The scale risks are dynamic branches, async validation races, back navigation, resumed sessions, stale URLs, and steps removed after answers change. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic transitions only when rollback is deterministic and understandable. Keep authorization and conflict-sensitive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit state unions, versioned persistence, generation guards, SSR-safe feature checks, semantic HTML, and idempotent cleanup. Test keyboard use, accessibility output, stale responses, retries, restoration, and constrained devices.</p><p>Measure transition latency, blocked actions, stale drops, rollbacks, cache pressure, retry exhaustion, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing draft and commit, trusting arrival order, leaking resources, accepting obsolete async completion, and hiding rollback from the user.</p><p>For this topic, discard stale validation, recompute reachable steps after branch changes, redirect stale URLs, preserve recoverable drafts, and focus the first actionable error. Validate untrusted input, authorize durable mutations server-side, and bound resource usage.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to repeated workflows where browser, persistence, and policy boundaries can fail independently. Reuse the controller structure while injecting product-specific policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Treat the workflow as a directed state machine. The current step, completed steps, validation status, branch inputs, and navigation intent must remain separate.</p><h3>What breaks at scale?</h3><p>dynamic branches, async validation races, back navigation, resumed sessions, stale URLs, and steps removed after answers change. I would bound expensive work and cancel obsolete effects.</p><h3>What consistency model applies?</h3><p>The workflow graph and durable draft are server-versioned when persistence matters. Local navigation is provisional until the active gate succeeds for the current draft generation.</p><h3>How do you recover?</h3><p>I would discard stale validation, recompute reachable steps after branch changes, redirect stale URLs, preserve recoverable drafts, and focus the first actionable error.</p><h3>Why this architecture?</h3><p>A linear index is enough for fixed onboarding; a state graph is justified when branching, async gates, resumability, and auditability matter.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li></ul></section>
+</ArticleLayout>}

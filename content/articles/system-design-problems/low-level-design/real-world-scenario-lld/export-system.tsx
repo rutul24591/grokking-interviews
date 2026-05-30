@@ -1,123 +1,48 @@
 "use client";
-
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
-import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
-
-export const metadata: ArticleMetadata = {
-  id: "article-lld-export-system",
-  title: "Design Export System (CSV/PDF)",
-  description:
-    "Production-grade export with format support, async processing, large dataset streaming, and download delivery.",
-  category: "low-level-design",
-  subcategory: "real-world-scenario-lld",
-  slug: "export-system",
-  wordCount: 5200,
-  readingTime: 31,
-  lastUpdated: "2026-05-06",
-  tags: ["lld", "export", "csv", "pdf", "async"],
-  relatedTopics: ["bulk-editing-ui", "audit-log-viewer-ui"],
-};
-
-export default function ExportSystemArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">Data export is a fundamental enterprise feature: users need to take their data out of the system for analysis, reporting, archival, or migration. The challenges are format-specific (CSV needs proper escaping, encoding, and column mapping; PDF needs layout, pagination, and styling) and scale-specific (a 1-million-row export cannot be generated synchronously in a 30-second request window). The frontend must handle the async nature of large exports (request → job → poll → download) without making users feel like the export silently failed.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Security is a cross-cutting concern: an export endpoint that accepts arbitrary filter criteria must apply the same access control as the UI. A user who can see only their team's data in the UI must receive only their team's data in an export—the export system cannot be a backdoor to data they shouldn't access. The export must also apply column-level visibility rules (PII columns may be excluded for certain roles).</HighlightBlock>
-        <HighlightBlock as="p" tier="important"><strong>Explicit assumptions:</strong> Exports are user-initiated from a data table or report view. The filters and columns visible in the UI at export time define the export contents. Small exports (under 1000 rows) can be generated synchronously; large exports are async with progress tracking. Files are generated server-side and stored in object storage (S3); the client downloads via a signed URL. File retention is 24 hours.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Format selection:</strong> User chooses CSV or PDF (or Excel/XLSX for financial data). Each format has appropriate generation strategy.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Column selection:</strong> User selects which columns to include. Respects column-level access control (PII columns hidden for non-admin roles).</HighlightBlock>
-          <li><strong>Filter inheritance:</strong> Export applies the same filters currently active in the data view (date range, status, search query).</li>
-          <li><strong>Async processing with progress:</strong> For large exports, show progress (rows processed, estimated completion time) while the server generates the file.</li>
-          <li><strong>Download delivery:</strong> On completion, trigger browser download via signed URL. Optionally email the link for very long exports.</li>
-          <li><strong>Export history:</strong> Show the user's recent exports (last 10) with download links valid for 24 hours.</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="crucial"><strong>Small export latency:</strong> Exports under 1000 rows complete within 5 seconds; the download begins without polling.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Large export scalability:</strong> Exports of 1 million rows complete within 5 minutes; the server streams rows to S3 without loading all rows into memory simultaneously.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Security:</strong> Exports apply the same RBAC as the UI. Signed URLs expire after 24 hours and require authentication to generate.</HighlightBlock>
-          <li><strong>Correctness:</strong> CSV exports properly escape commas, quotes, and newlines in data values. UTF-8 BOM included for Excel compatibility.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="important">The export flow has a synchronous path (small exports) and an asynchronous path (large exports). On export initiation, the server checks the estimated row count. If below the threshold (1000 rows), it generates the file synchronously, stores it in S3, and returns a signed URL in the response—the browser downloads immediately.</HighlightBlock>
-<HighlightBlock as="p" tier="important">If above the threshold, the server creates an export job, returns a jobId with 202 Accepted, and the client polls for progress. On job completion, the signed URL is available in the job status response and the browser initiates the download.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">CSV generation streams rows from the database to S3 in chunks (1000 rows per chunk) to avoid loading the entire dataset into memory. PDF generation uses a headless browser (Puppeteer) or a PDF library (pdfmake) to render the data into a paginated document. Both approaches write the output incrementally to S3 using multipart upload, which allows streaming uploads of arbitrary size.</HighlightBlock>
-      </section>
-
-      <section>
-                <h2>Diagram Walkthrough</h2>
-
-<ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/real-world-scenario-lld/export-system.svg"
-          alt="Export system showing async pipeline with job creation, worker streaming to S3, SSE progress delivery, signed URL download, and CSV vs PDF generation strategies"
-          caption="Export system showing async pipeline with job creation, worker streaming to S3, SSE progress delivery, signed URL download, and CSV vs PDF generation strategies"
-        />
-
-        <HighlightBlock as="p" tier="crucial">
-          Interview signal: the diagram captures the end-to-end flow for <strong>Design Export System (CSV/PDF)</strong>. You should be able to explain the happy path and the failure paths (retries, cancellation, backpressure), not just the API surface.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Look for the &ldquo;control points&rdquo; where correctness is enforced: idempotency keys, monotonic request/version tokens, single-flight coordination, and durable persistence boundaries.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          In interviews, call out observability and operability: what you log/measure (p95 latency, error rates, retries/queue depth) and how you keep degraded modes user-safe (read-only, queued, or cached fallbacks).
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Export Job Lifecycle</h3>
-        <HighlightBlock as="p" tier="important">An export job record contains: jobId (UUID), userId, format (csv, pdf, xlsx), status (queued, processing, completed, failed), rowsProcessed, totalRows, s3Key (set on completion), signedUrl (generated on completion, expires 24h), errorMessage (on failure), createdAt, completedAt, and expiresAt (24h after completedAt). The job is inserted into the database when the export request is received and updated as processing progresses.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Progress updates during processing are published to a Redis pub/sub channel keyed by jobId. The application server subscribes to this channel and streams progress to the client via Server-Sent Events (SSE). This avoids polling the database on every progress check—the worker publishes updates every 5% completion or every 10 seconds (whichever is sooner), and the SSE stream delivers them to the client in real-time.</HighlightBlock>
-        <p>On job completion, the worker updates the job record with the final s3Key and generates a pre-signed S3 URL (valid 24 hours). The SSE stream delivers a final "completed" event with the signed URL. The client closes the SSE connection and initiates the download by setting window.location.href to the signed URL (which triggers a browser download without navigation away from the current page, since the S3 URL returns with Content-Disposition: attachment).</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">CSV Generation: Streaming and Encoding</h3>
-        <HighlightBlock as="p" tier="crucial">CSV generation is a database-to-S3 stream. The worker opens a database cursor (a server-side cursor that fetches rows in batches without loading all into memory), processes each batch through a CSV encoder, and uploads the encoded chunks to S3 using S3's multipart upload API. S3 multipart upload allows splitting a file into parts uploaded in separate requests; the file is finalized when all parts are combined. The minimum part size is 5MB; the worker buffers up to 5MB of CSV before uploading a part.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">CSV encoding correctness requires: escaping any field that contains a comma, double-quote, or newline by wrapping the field in double quotes and escaping internal double-quotes as pairs (""). Including a UTF-8 BOM (bytes EF BB BF) at the start of the file so Excel correctly opens the file as UTF-8 (without the BOM, Excel may misinterpret non-ASCII characters). Writing the header row first (column names as specified by the user's column selection). Ensuring dates are formatted consistently (ISO 8601 or the locale's format based on user preference).</HighlightBlock>
-        <p>Column access control is applied at the query level: the SQL query only selects columns the user is authorized to see. The user's column selection is intersected with their authorized columns before the query is constructed. Never construct the query using user-provided column names directly (SQL injection risk)—maintain a mapping of display column names to database column names and use the mapped names in the query.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">PDF Generation</h3>
-        <HighlightBlock as="p" tier="important">PDF exports are appropriate for human-readable reports (invoices, compliance reports) rather than data-heavy exports (use CSV for data analysis). PDF generation using Puppeteer renders an HTML template as a headless Chrome page and exports it to PDF. The template applies consistent styling (company branding, page headers, footers, page numbers) and paginates the content automatically. Puppeteer's PDF output supports custom page sizes, margins, and header/footer templates.</HighlightBlock>
-        <p>For large PDFs (1000+ rows), Puppeteer memory usage can be significant. Alternatives: pdfmake (a JavaScript library that generates PDFs programmatically without a browser, lower memory but less CSS-rich styling) or reportlab (Python, mature for table-heavy PDFs). For most application-level PDFs, pdfmake provides a good balance: it streams output and has lower memory footprint than Puppeteer. The choice depends on design requirements—if the PDF must match the application's exact visual design, Puppeteer's HTML rendering is hard to beat.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Client-Side Progress UI</h3>
-        <p>When an export job is created asynchronously, the client establishes an SSE connection to GET /exports/:jobId/progress. The SSE stream delivers: rowsProcessed and totalRows (for progress bar), status changes (processing → completed/failed), and the final signedUrl on completion. The client renders a modal or sidebar panel showing the progress bar, the estimated completion time (calculated from the current rate: (rowsProcessed / elapsed_seconds) extrapolated to totalRows), and an option to email the download link when ready (for very long exports).</p>
-        <p>The progress modal should not block the user from continuing their work. Display it as a non-modal notification panel or a minimizable progress indicator in the corner. The user should be able to close the panel; on close, the job continues server-side. If the user navigates away, an in-progress job should not be cancelled—it runs to completion and the user can access the download from the export history page.</p>
-        <p>If the user has no active tab during export generation (they closed the browser), the download link is available in the export history page on their next visit (within the 24-hour expiry window). For very long exports where users are unlikely to wait, offering email delivery of the signed URL when ready is a practical alternative to real-time progress tracking.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Security and Access Control</h3>
-        <p>Every export request must be authenticated and authorized. The server extracts the userId from the session and applies the same RBAC rules as the UI: the query WHERE clauses must include the userId or orgId ownership filter. A user requesting an export of "all orders" should receive only the orders they are authorized to view—not all orders in the database. This is enforced at the query layer, not the application layer (do not filter results after fetching all rows—that defeats the purpose and wastes resources).</p>
-        <p>Signed S3 URLs expire after 24 hours. They are personal (generated for a specific user's download request) and should not be shared publicly. The download endpoint should validate that the user requesting the download is the same user who created the export job. Generating a new signed URL (after the original expires) requires re-authentication. Export jobs older than 24 hours should show "Download expired. Re-run export" in the export history, not attempt to serve a stale file.</p>
-      </section>
-
-      <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="crucial">Synchronous versus always-async: some teams simplify by always using the async path (jobId + polling), even for small exports. This eliminates the branching logic but adds latency for small exports (the user waits for polling rather than an immediate download). The better approach is the hybrid: synchronous for small exports (better UX), async for large (necessary for correctness). The row-count threshold should be set conservatively (1000 rows, not 10,000) because generation time depends on query complexity, not just row count.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">SSE versus polling for progress: SSE is simpler for one-way progress delivery (server pushes, client receives). Polling (GET /exports/:jobId every 2 seconds) is simpler to implement and more compatible with environments that don't support SSE (some CDNs and proxies buffer SSE). For export progress, the update frequency is low enough (every 5-10 seconds) that polling is perfectly adequate and eliminates the SSE connection management complexity. Use SSE if real-time progress is important to UX; polling is often sufficient.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">File storage versus streaming download: storing the file in S3 and serving a signed URL is the standard approach. An alternative is streaming the file directly from the server to the client as it's generated (no S3). Streaming is lower latency for small exports and avoids S3 costs but requires the server to maintain the connection for the duration of generation (potentially minutes for large files), which ties up server resources. S3 is the correct choice for large exports; streaming is acceptable only for small ones.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">The export job lifecycle (queued → processing → completed/failed) is tracked in the database and streamed to the client via SSE. Security requires</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">applying the same RBAC as the UI at the query layer, not as a post-processing filter. Signed URLs expire after 24 hours; an export history page provides access to recent exports. The user experience should allow closing the progress modal without cancelling the job—exports continue server-side.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+export const metadata: ArticleMetadata = { id:"article-lld-export-system", title:"Design an Export System for CSV and PDF", description:"Implementation-heavy low-level design guide for design an export system for csv and pdf.", category:"low-level-design", subcategory:"real-world-scenario-lld", slug:"export-system", wordCount:4700, readingTime:28, lastUpdated:"2026-05-30", tags:["lld","real-world","principal-engineer"], relatedTopics:["state-management","reliability","observability"] };
+export default function ExportSystemArticle(){ return <ArticleLayout metadata={metadata}>
+<section><h1>Design an Export System for CSV and PDF</h1><h2>Definition &amp; Context</h2>
+<p>Design an Export System for CSV and PDF is a low-level design problem about building a production-grade asynchronous export job coordinator. The answer must move beyond screen composition and define public methods, internal state, persistence boundaries, concurrency rules, recovery, and telemetry. The facade is createExport, pollStatus, cancel, download, expire. Runtime states are idle, requesting, queued, generating, ready, downloading, expired, failed.</p>
+<p>The governing invariant is: Large exports must be reproducible, cancellable, access-controlled, and memory-safe. The edge case to defend is when a user starts a huge PDF export, changes filters, and returns after the download URL expires. This forces the implementation to distinguish user intent from server authority and to expose honest pending, blocked, stale, conflicted, and recovered states.</p>
+<ArticleImage src="/diagrams/system-design-problems/low-level-design/real-world-scenario-lld/export-system-runtime.svg" alt="Design an Export System for CSV and PDF runtime" caption="Runtime model: product intent enters a guarded coordinator, durable state is versioned, and user-visible snapshots remain honest under failure." /></section>
+<section><h2>Core Concepts</h2>
+<p>Start with a narrow aggregate boundary. The coordinator owns legal transitions and the structures required to defend them: export job id, filter snapshot, format, progress, signed URL, expiry, audit metadata. UI components request operations and render snapshots; they should not scatter validation, deduplication, permissions, timers, and retries across event handlers.</p>
+<p>Separate optimistic projection from authoritative confirmation. Fast UI may show local intent immediately, but the snapshot must retain pending identity, base revision, and rollback information until the authoritative boundary accepts the operation. That makes ambiguous timeouts, retries, cross-tab races, and external updates explainable.</p>
+<h3>Implementation contract</h3><p>Each public method returns a typed outcome: accepted, pending, rejected, conflicted, degraded, or completed. Each mutation carries operation id, scope, revision, and idempotency key where repeated delivery is possible. Every state transition records a reason and leaves enough evidence for debugging without logging private payloads.</p>
+<p>Classify operations by risk. Cosmetic preferences can converge eventually. Destructive, authorization-sensitive, inventory-sensitive, or payment-adjacent operations need stronger confirmation or fail-closed behavior. This operation-level consistency decision is more credible than claiming one policy for the whole feature.</p></section>
+<section><h2>Architecture &amp; Flow</h2>
+<p>The architecture has six layers: component facade, validator, state machine, effect runner, durable adapter, and observer layer. The facade normalizes intent. The validator checks schema, permission, scope, and revision. The state machine commits the next snapshot. The effect runner performs network, storage, SDK, or worker work after commit. The durable adapter preserves evidence. The observer layer publishes selector-scoped snapshots and metrics.</p>
+<p>A normal mutation validates input, captures rollback state, assigns identity, applies the local projection, invokes the effect, and settles only if operation identity and revision still match. Late responses are ignored or reconciled; they must not overwrite newer intent. Cleanup on navigation, tenant switch, unmount, or cancellation is idempotent.</p>
+<h3>Data model and failure matrix</h3><p>The model should include entity or aggregate id, actor scope, tenant scope when relevant, operation id, base revision, current revision, pending state, last error, timestamps, and trace fields. Store only the payload needed for recovery. Sensitive fields belong behind tokenization, redaction, or server-owned boundaries.</p>
+<p>Define a failure matrix before coding. Validation failure blocks locally. Permission change fails closed. Timeout preserves pending identity for reconciliation. Version mismatch enters merge, refresh, or review. Partial batch failure records per-item outcomes. External dependency outage trips degradation or a circuit breaker. Duplicate delivery returns the prior idempotent result.</p>
+<h3>Lifecycle and concurrency</h3><p>Concurrency is normal input, not an exceptional corner case. Users click twice, navigate during a request, open several tabs, switch accounts, and return after background throttling. Server pushes, SDK callbacks, timers, and network settlements may arrive after the UI intent has changed. Accept a settlement only when operation id, actor scope, tenant scope, and revision still match the active snapshot.</p>
+<p>Lifecycle events need explicit handlers: bootstrap, hydrate, mount, unmount, focus, blur, reconnect, tenant switch, logout, and rollout disablement. A coordinator that only handles button clicks will leak work or display stale data. Cleanup must cancel active effects, detach listeners, invalidate scoped caches, and preserve only the minimum recovery evidence needed for the next safe transition.</p>
+<ArticleImage src="/diagrams/system-design-problems/low-level-design/real-world-scenario-lld/export-system-failure.svg" alt="Design an Export System for CSV and PDF failure handling" caption="Failure model: stale revisions, ambiguous results, authorization changes, and partial failures route through explicit recovery decisions." /></section>
+<section><h2>Trade offs &amp; Comparison</h2>
+<p>Local component state is cheaper for a small page, but it breaks when multiple components, tabs, routes, or teams depend on the same invariant. A domain coordinator adds code and tests, but centralizes revision checks, cancellation, rollback, persistence, and observability.</p>
+<p>Optimistic UX improves perceived latency but creates rollback and reconciliation work. Pessimistic confirmation is easier to reason about but can feel slow. Choose per operation: use optimistic projection for reversible low-risk actions and authoritative confirmation for destructive or externally constrained actions.</p>
+<p>Normalization improves deduplication and partial updates, while snapshots simplify reads and rollback. Durable history improves recovery and auditability, but costs storage and compaction work. The interview answer should tie these choices to latency, correctness, privacy, support burden, and rollout risk.</p>
+<p>There is also a build-versus-platform trade-off. A feature-local implementation moves quickly when the workflow is genuinely isolated. A shared runtime becomes worthwhile when several flows need revision guards, typed errors, permission checks, audit evidence, or rollout controls. The principal-level answer should avoid both extremes: do not create a framework for one button, and do not let high-risk invariants fragment across teams.</p>
+<p>Fail-open and fail-closed choices must be explicit. A stale feed badge can degrade gracefully. A tenant switch, payment attempt, authorization rule, kill switch, or audit export should fail closed when scope or authority is uncertain. This is where implementation details connect directly to abuse prevention and privacy.</p></section>
+<section><h2>Best practices</h2>
+<p>Make illegal states unrepresentable with explicit status unions and guarded transitions. Add operation identity and revision checks at settlement boundaries. Keep effect adapters injectable so timeouts, retries, SDK failures, server errors, and browser lifecycle changes can be tested deterministically.</p>
+<p>Build observability into the coordinator: rejected transitions, stale settlements, retry count, pending age, conflict rate, partial failure count, queue depth, rollback count, and slow subscribers. Add feature flags and kill switches for risky flows. Scope caches and persisted state by user and tenant, and clear them on identity changes.</p>
+<p>Test rapid interaction, duplicate delivery, navigation mid-flight, permission changes, stale revisions, empty states, large datasets, retry exhaustion, and recovery after reload. These cases reveal whether the abstraction protects the product or merely organizes happy-path code.</p>
+<p>Prefer selector-based subscriptions and immutable snapshots so unrelated UI does not re-render. Bound retained history, cached entities, retry ledgers, and debug events. Provide support-friendly evidence such as correlation id, operation phase, revision gap, and sanitized failure reason. These practices reduce mean time to recovery without leaking customer data.</p></section>
+<section><h2>Common Pitfalls</h2><p>Do not model the workflow as unrelated booleans. That permits impossible combinations and ordering bugs. Do not silently swallow stale responses or partial failures. Do not let observers mutate coordinator internals. Do not log sensitive payloads in telemetry.</p>
+<p>Avoid unbounded queues, histories, selections, markers, feed entities, or retries. Add compaction, pagination, virtualization, batching, and backpressure where volume can grow. Treat accessibility, privacy, and degraded UX as runtime behavior, not documentation notes.</p>
+<p>Another pitfall is treating server success as the only settlement state. Timeouts create ambiguous outcomes: the server may have committed while the client saw failure. Reconciliation and idempotency are required whenever repeating the operation could create duplicate side effects or overwrite newer state.</p></section>
+<section><h2>Real-world use cases</h2><p>This pattern appears in high-traffic consumer products and enterprise tools where a seemingly small UI feature crosses network, permission, identity, or external-service boundaries. Platform ownership is useful when several teams need the same transition safety, recovery, and metrics.</p>
+<p>For a principal interview, connect the local implementation to the wider system: server idempotency, authorization, versioning, audit logs, rollout controls, SLOs, and support tooling. The UI runtime is not isolated; it is the final consistency and trust boundary visible to the user.</p>
+<p>Operational ownership should be explicit: define alerts, dashboards, runbooks, rollback controls, and the team responsible for resolving stuck or ambiguous states.</p></section>
+<section><h2>Common interview question with detailed answer</h2>
+<h3>How would you design this end to end?</h3><p>I would define the facade, state machine, data model, effect adapters, and observer snapshots. Every mutation carries identity and revision, every effect settles through guards, and every failure maps to a typed user-visible recovery path.</p>
+<h3>Why this architecture over local state?</h3><p>Local state duplicates invariants and fails under races. The coordinator makes Large exports must be reproducible, cancellable, access-controlled, and memory-safe. enforceable and testable across components.</p>
+<h3>What breaks at scale?</h3><p>Pending work, memory retention, stale responses, partial failures, permission drift, and observability gaps become bottlenecks. Use bounds, compaction, pagination, backpressure, metrics, and rollout controls.</p>
+<h3>What consistency model applies?</h3><p>Use operation-level consistency: optimistic eventual convergence for reversible work, stronger confirmation for destructive or authority-sensitive work, and explicit conflict states when intent is ambiguous.</p>
+<h3>How do you defend failure, rollback, abuse, privacy, and cost?</h3><p>Use typed errors, inverse patches or refresh, idempotency, authorization checks, rate limits, data minimization, redacted telemetry, bounded retention, and kill switches. Then walk through a user starts a huge PDF export, changes filters, and returns after the download URL expires.</p></section>
+<section><h2>References</h2><ul><li><a href="https://react.dev/learn/managing-state" target="_blank" rel="noreferrer">React: Managing State</a></li><li><a href="https://redux.js.org/style-guide/" target="_blank" rel="noreferrer">Redux Style Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://web.dev/articles/vitals" target="_blank" rel="noreferrer">web.dev Web Vitals</a></li></ul></section>
+</ArticleLayout>;}

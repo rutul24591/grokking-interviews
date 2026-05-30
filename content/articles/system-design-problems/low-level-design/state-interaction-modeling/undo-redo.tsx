@@ -2,235 +2,196 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
-import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-lld-undo-redo",
-  title: "Undo/Redo System",
-  description:
-    "Production-grade undo/redo with command pattern, state snapshots, selective undo, and conflict resolution in collaborative editing.",
+  title: "Design Undo Redo",
+  description: "Implementation-heavy low-level design guide for design undo redo, covering APIs, state transitions, edge cases, failure handling, and interview trade-offs.",
   category: "low-level-design",
   subcategory: "state-interaction-modeling",
   slug: "undo-redo",
-  wordCount: 5400,
-  readingTime: 33,
-  lastUpdated: "2026-05-06",
-  tags: ["lld", "undo-redo", "command-pattern", "state-management", "history"],
-  relatedTopics: ["finite-state-machines", "derived-state", "time-travel-debugging"],
+  wordCount: 4600,
+  readingTime: 22,
+  lastUpdated: "2026-05-29",
+  tags: ["lld", "state-modeling", "frontend-architecture", "principal-engineer"],
+  relatedTopics: ["state-management", "race-condition-handling", "observability"],
 };
 
 export default function UndoRedoArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="important">
-          Users perform edits (delete text, move shape, change color). Without undo, mistakes are permanent. With undo, users can revert mistakes instantly. Key challenges: maintaining history (every edit), reverting state (how to go back?), redo (after undo, can redo), and selective undo (undo only specific action, not all).
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">
-          Naive approach: store all previous states (expensive in memory). Better: store commands (edit description, not full state). Replay commands to reconstruct state. For collaborative editing, selective undo is complex (undo your change, not other users' changes).
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Key insight: undo is about reverting the effect of a command, not necessarily reverting state. Example: if user A inserts text, user B modifies it, user A's undo should remove the inserted text (adjusted for B's modification). This distinction becomes critical in collaborative systems where state is shared and mutations from different users are interleaved.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Text editors, design tools like Figma, spreadsheet applications, and IDEs all implement undo/redo. The design requirements differ significantly between single-user (simpler) and collaborative multi-user (requires operational transformation or CRDT) scenarios.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          <strong>Explicit assumptions:</strong> Commands are reversible (can compute inverse). History is linear (branching undo is complex). Undo depth is reasonable (100–1000 commands). Collaborative editing uses OT or CRDT for conflict resolution. The command pattern is the primary abstraction.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important">
-            <strong>Undo:</strong> Revert last action (Ctrl+Z). Can undo multiple times, up to history limit.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            <strong>Redo:</strong> Reapply undone action (Ctrl+Y / Ctrl+Shift+Z). Can redo multiple times.
-          </HighlightBlock>
-          <li>
-            <strong>History Display:</strong> Show list of past actions in UI with descriptive labels.
-          </li>
-          <li>
-            <strong>Command Grouping:</strong> Multiple small actions grouped into single undo unit (e.g., "bold word" = select + apply bold).
-          </li>
-          <li>
-            <strong>Command Merging:</strong> Adjacent similar commands merged (keystroke-by-keystroke typing consolidated into word-level units).
-          </li>
-          <li>
-            <strong>Selective Undo:</strong> Undo specific action from the middle of history, not just the most recent.
-          </li>
-          <li>
-            <strong>History Branching:</strong> After undo, new action clears redo stack (linear history).
-          </li>
-          <HighlightBlock as="li" tier="important">
-            <strong>Undo Limits:</strong> Cap history size (memory management).
-          </HighlightBlock>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="crucial">
-            <strong>Memory:</strong> History limited to 100–1000 commands (configurable). Command objects are much smaller than full state snapshots.
-          </HighlightBlock>
-          <HighlightBlock as="li" tier="important">
-            <strong>Latency:</strong> Undo executes and reflects in UI within &lt;10ms for simple commands.
-          </HighlightBlock>
-          <li>
-            <strong>Responsiveness:</strong> UI updates immediately after undo/redo (no async operations in the critical path).
-          </li>
-          <li>
-            <strong>Persistence:</strong> History can optionally survive page reload via serialization to localStorage or IndexedDB.
-          </li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Edge Cases</h3>
-        <ul className="space-y-2">
-          <li>Undo at beginning of history — nothing to undo, must signal gracefully (disabled button, no-op).</li>
-          <li>Redo with empty redo stack — nothing to redo.</li>
-          <li>Action that cannot be undone (external API call, email sent) — mark as non-undoable, skip in undo chain.</li>
-          <li>Collaborative editing: user A undoes, user B's changes must not be lost or corrupted.</li>
-          <li>Very large commands (paste 100KB of text) — command object itself is large, but still preferable to full state snapshot.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="important">Implement the command pattern: each action is a Command object with execute() and undo() methods. Maintain two stacks: undo stack (executed commands) and redo stack (undone commands).</HighlightBlock>
-<HighlightBlock as="p" tier="important">On action: execute command, push to undo stack, clear redo stack. On undo: pop from undo stack, call command.undo(), push to redo stack. On redo: pop from redo stack, call command.execute(), push to undo stack.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">
-          For collaborative editing, commands are tagged with the userId. Selective undo identifies the target user's most recent command, constructs its inverse, and transforms the inverse against all subsequent commands from other users before applying it. This is the operational transformation approach used in Google Docs.
-        </HighlightBlock>
-      </section>
-
-      <section>
+        <h1>Design Undo Redo</h1>
+        <h2>Definition &amp; Context</h2>
+        <p>
+          Design Undo Redo is a low-level design problem about building a reusable command history manager that product teams can depend on under real user behavior, not just the happy path. In a staff or principal interview, the answer should move past naming a pattern and describe the runtime contract: public API, internal state shape, transition rules, ownership boundaries, observability, and what the component refuses to do when correctness is uncertain.
+        </p>
+        <p>
+          The design target is an implementation that can live inside a complex web application with concurrent user actions, remounts, retries, background work, and multiple teams integrating it. The core API is execute(command), undo(scope), redo(scope), beginGroup(label), compact(). The core state model is ready, grouping, undoing, redoing, compacting, blocked. The most important interview signal is explaining why those states exist, which transitions are legal, and how the design behaves when A user undoes a local edit after a collaborator has changed the same entity remotely.
+        </p>
         <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/state-interaction-modeling/undo-redo.svg"
-          alt="Undo redo system with command stack model, command pattern with execute and undo methods, snapshot pattern, selective undo, and keyboard shortcuts"
-          caption="Undo redo system with command stack model, command pattern with execute and undo methods, snapshot pattern, selective undo, and keyboard shortcuts"
+          src="/diagrams/system-design-problems/low-level-design/state-interaction-modeling/undo-redo-state-runtime.svg"
+          alt="Design Undo Redo runtime state model"
+          caption="Runtime model: public API calls are normalized into guarded state transitions, side effects are isolated, and observers receive stable snapshots."
         />
-
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Command Pattern Deep Dive</h3>
-        <p>
-          Each action is encapsulated as a Command object implementing a standard interface: execute() applies the action, undo() reverses it, canMerge(otherCommand) indicates whether it can be merged with the previous command, and a description string for UI display.
-        </p>
-        <p>
-          The command captures all information needed to both execute and undo the operation. A SetTitleCommand stores newTitle (for execute) and prevTitle (captured at execution time, for undo). The execute function applies newTitle to the document; undo restores prevTitle. Neither references external mutable state — everything needed for reversal is captured at the moment of initial execution.
-        </p>
-        <p>
-          For complex operations like moving a shape from one coordinate to another, the command should capture the shape identifier plus both the original position and the destination position. Execute moves the shape to the destination position; undo restores it to the original position. The command remains self-contained and does not depend on reading the current mutable shape state at undo time, which is critical because intervening commands may have modified the shape.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">History Stack Management</h3>
-        <p>
-          The UndoManager maintains two stacks: undoStack (Array of Commands) and redoStack (Array of Commands). The stacks have a maximum capacity (configurable, typically 100 for design tools, 1000 for text editors). When the undo stack is at capacity and a new command is pushed, the oldest command is dropped from the bottom of the stack.
-        </p>
-        <HighlightBlock as="p" tier="crucial">
-          The invariant "new action clears redo stack" is enforced by the UndoManager: every call to execute() calls redoStack.clear() after pushing to undoStack. This implements linear history — after undoing 5 steps and then making a new edit, those 5 redo steps are permanently gone. This matches user mental models ("I made a change, so redo is no longer valid") and is the design chosen by virtually all major applications.
-        </HighlightBlock>
-        <p>
-          For applications that want branching history (DAG of possible futures), a tree structure replaces the stack. Each node stores the command and pointers to children (possible redo branches). This is significantly more complex to implement and almost never expected by users, so it's generally reserved for specialized tools (version-control-aware editors, time-travel debugging systems).
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Command Grouping (Transactions)</h3>
-        <p>
-          Multiple atomic commands can be grouped into a single undo unit — a CompositeCommand. Example: "bold the selected word" comprises three individual commands: SaveSelectionCommand, SetBoldCommand, RestoreSelectionCommand. Wrapped in a CompositeCommand("Bold Selection"), they appear as a single undo step. Undoing "Bold Selection" executes all three commands' undo() methods in reverse order.
-        </p>
-        <p>
-          The UndoManager provides beginTransaction() and commitTransaction(). Commands executed between these calls are collected into a CompositeCommand. On commit, the CompositeCommand is pushed to the undo stack as a single unit. Transactions can be nested — inner transactions become sub-CompositeCommands of the outer CompositeCommand.
-        </p>
-        <p>
-          Transaction rollback (if an operation fails midway): the UndoManager can abort a transaction by calling undo() on all commands executed since beginTransaction(), restoring the state to before the transaction started. This is the transactional safety guarantee needed for multi-step operations that must succeed atomically.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Command Merging</h3>
-        <p>
-          Without merging, typing a 50-character sentence creates 50 individual InsertCharacter commands — each Ctrl+Z removes one character. Users expect typing to undo in word-level chunks. Command merging addresses this: when a new command is pushed to the undo stack, the UndoManager checks if it can merge with the top command via canMerge().
-        </p>
-        <HighlightBlock as="p" tier="important">
-          InsertCharacterCommand.canMerge(prevCommand): returns true if prevCommand is also an InsertCharacterCommand AND the insertion is adjacent (no cursor movement between characters) AND the time gap between commands is under a threshold (e.g., 500ms — a pause in typing signals a new undo unit). On merge, the top command's content is extended: prev.text = prev.text + this.text. The merged command represents the entire typed word or phrase.
-        </HighlightBlock>
-        <p>
-          This pattern extends to other continuous operations: drag-to-resize, brush strokes in a drawing tool, incremental slider adjustments. The merge condition checks spatial adjacency, temporal proximity, and command type compatibility. Merging happens at push time — the undo stack always contains the latest merged state.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Snapshot Pattern as Alternative</h3>
-        <p>
-          The command pattern stores operations (reversible transformations). An alternative is the snapshot pattern: store the full application state before each operation. Undo = restore the previous snapshot. This is simpler to implement (no inverse computation, no merge logic) but memory-intensive for large application states.
-        </p>
-        <HighlightBlock as="p" tier="important">
-          The hybrid approach uses structural sharing (via Immer) to make snapshots cheap: only the changed subtree of the state is copied; unchanged subtrees share references with previous snapshots. An application with a 1MB state that changes 1KB per operation stores approximately 1KB per snapshot, not 1MB. This makes snapshot-based undo competitive with command-based undo for many applications.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          The trade-off: snapshots require O(changed state size) per step, regardless of how conceptually simple the operation was. Command-based requires O(command parameters) per step, but requires implementing and testing the inverse for every command type. For applications with complex business logic and many command types, snapshots with structural sharing are often simpler overall.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Undoable Commands</h3>
-        <p>
-          Some operations cannot meaningfully be undone: sending an email, publishing a post, making a payment, API calls with external side effects. These should be handled in one of two ways: mark the command as non-undoable (Command.isUndoable = false) and skip it when the undo chain encounters it; or apply a "soft undo" that reverses the local state change but notifies the user that the external action cannot be reversed.
-        </p>
-        <p>
-          When the undo stack contains a non-undoable command, pressing Ctrl+Z should stop at that command, not skip over it and undo earlier undoable commands. Skipping over non-undoable commands would undo changes that the user made after the non-undoable command, which could produce inconsistent state relative to the external action that was taken.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Selective Undo in Collaborative Systems</h3>
-        <p>
-          In collaborative editors, each user's undo should revert only their own changes. User A's undo should not revert User B's changes, even if B's changes are more recent on the shared history. This selective undo requires tracking authorship on every command and computing the inverse of a command that may need to be adjusted for the intervening changes made by other users.
-        </p>
-        <p>
-          The operational transformation (OT) approach: to undo command C from user A (at position P in history), compute C's inverse (C⁻¹). Transform C⁻¹ against all commands between position P and the current history head that are not from user A. The transformation adjusts C⁻¹'s positions to account for text insertions/deletions by other users that happened after C was originally applied. Apply the transformed C⁻¹ to the current state.
-        </p>
-        <p>
-          This is complex to implement correctly and is the same transformation engine that drives real-time collaborative editing. For most applications, the simpler "last action undo" (not selective) is sufficient and the correct choice. Selective undo is appropriate for: design tools where different users own different elements, document editors where per-user attribution matters, and any system where undo scope is scoped to the individual user's session.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Persistence and Serialization</h3>
-        <p>
-          Persisting the undo history enables users to undo after page reload — valuable for long editing sessions. The serialization challenge is that commands are objects with methods; JSON cannot serialize functions. Serialization must convert commands to plain-object representations (type, payload) and deserialization must reconstruct them as command instances using a registry (commandRegistry['SetTitle'] → SetTitleCommand).
-        </p>
-        <p>
-          Not all commands need to be persisted. For many applications, persisting the last N commands (rather than all N) is sufficient. Command persistence is most valuable for: document editors (users expect to continue editing after reload), design tools (projects may be open for days), and form-based applications where partially completed work has high recovery value.
-        </p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">UI Indicators and Keyboard Shortcuts</h3>
-        <p>
-          The UndoManager exposes state to the UI: canUndo (undo stack non-empty), canRedo (redo stack non-empty), undoLabel (description of the top command: "Undo Set Title"), redoLabel (description of top redo command). These drive the enabled state and tooltip text of undo/redo buttons.
-        </p>
-        <HighlightBlock as="p" tier="important">
-          Keyboard shortcuts: Ctrl+Z (undo, macOS: Cmd+Z), Ctrl+Y or Ctrl+Shift+Z (redo, macOS: Cmd+Shift+Z). Register these globally (document-level keydown handler) rather than on individual components to ensure they work regardless of focus. Prevent default browser behavior (browser may have its own undo for textarea inputs — decide whether to intercept or delegate based on focus context).
-        </HighlightBlock>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Command Pattern vs Snapshot Pattern</h3>
-        <HighlightBlock as="p" tier="important">
-          Command pattern is memory-efficient (stores only operation parameters, not full state) but requires implementing and testing inverses for every command type. Snapshot pattern with structural sharing is simpler to implement correctly (no inverse logic) but requires a structural-sharing state management system (Immer). For applications with complex, heterogeneous command types, snapshots with Immer is often the better ROI. For applications with a small, well-defined set of reversible operations, the command pattern is more efficient.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Linear vs Branching History</h3>
-        <HighlightBlock as="p" tier="crucial">
-          Linear history (new action clears redo) matches user expectations in virtually every mainstream application. Branching history (redo tree) matches the mental model of developers using version control but is genuinely unfamiliar to most users. Unless your application's core value proposition involves non-linear history (a dedicated version-control tool, a time-travel debugging interface), use linear history. The complexity of branching history rarely pays off in user experience.
-        </HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Memory vs Depth</h3>
-        <HighlightBlock as="p" tier="important">
-          A deeper undo history (1000 steps) is more forgiving for users but uses more memory. The right limit depends on the command size and application type. A text editor with merged word-level commands rarely needs more than 100 undo steps in practice. A design tool with individual shape operations may benefit from 500 steps. Profile the typical session's command count and memory usage to calibrate the limit, rather than using an arbitrary default.
-        </HighlightBlock>
+        <h2>Core Concepts</h2>
+        <p>
+          Start with a narrow ownership boundary. The command history manager owns transition validity, deduplication of unsafe work, disposal, and telemetry. UI components should not manually coordinate the same rules with scattered booleans. A component may ask for a transition, but the runtime decides whether the event is accepted, ignored, coalesced, retried, or rejected with a typed reason.
+        </p>
+        <p>
+          The internal model should be explicit rather than inferred from incidental fields. For this topic the durable structures are undo stack, redo stack, command log, inverse patch, checkpoint, scope index, non-undoable barrier. These structures let the implementation answer hard questions: which operation is current, which subscribers are still alive, whether a replay is deterministic, whether a persisted snapshot belongs to the current user, or whether a conflict needs to be surfaced instead of hidden.
+        </p>
+        <p>
+          The implementation should separate pure state transitions from effects. Reducer-like logic calculates the next snapshot and an effect description. A runner performs I/O, timers, persistence, or subscriber callbacks after the state commit. This makes race handling testable, prevents side effects from firing during speculative transitions, and gives the design a place to add cancellation, rollback, and debug instrumentation.
+        </p>
+        <h3>Implementation contract</h3>
+        <p>
+          The contract for Design Undo Redo should be written as if another team will build a complex feature on top of it without reading the internals. The runtime must define what identity means, what a version represents, which events are idempotent, which methods are safe after disposal, and whether callers can observe intermediate states. Ambiguity in this contract usually becomes a production incident: duplicate notifications, stale UI, lost rollback information, or a memory leak that only appears after navigation loops.
+        </p>
+        <p>
+          A strong implementation also defines its negative behavior. If an event is not legal in the current state, the runtime should reject it with a typed reason and telemetry, not silently drop it. If data is stale, the snapshot should make that visible. If the caller passes an invalid owner, scope, or version, the runtime should fail closed. These details are what distinguish a principal-level LLD answer from a pattern summary.
+        </p>
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">The snapshot pattern with structural sharing (Immer) is a competitive alternative to command-based undo for applications with complex state trees and many heterogeneous command types. For staff-level engineers,</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">the critical design decisions are: choose between command vs snapshot pattern based on the complexity of inverse computation vs state tree size; implement command merging before deploying to text-editing scenarios (per-character undo is a usability failure); handle non-undoable commands explicitly; and treat collaborative selective undo as a separate and significantly more complex subsystem requiring OT/CRDT infrastructure.</HighlightBlock>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          The production design has five layers. The API facade accepts domain-specific calls and validates input. The event normalizer converts those calls into a small event vocabulary. The transition engine checks legal state movement and computes the next snapshot. The effect runner performs work outside the reducer, using cancellation tokens and idempotency keys where needed. The observer layer publishes stable snapshots, metrics, and debug events without leaking internal mutable data.
+        </p>
+        <p>
+          A typical flow starts with a caller invoking the primary API method. The facade attaches operation identity, current version, and caller scope. The transition engine moves from the current state into the next legal state, records why the transition happened, and returns an effect plan. Only after the state commit does the runtime invoke effects. Settlement events must include the original operation identity so stale completions, duplicate messages, or late callbacks can be ignored safely.
+        </p>
+        <p>
+          The design should expose snapshots rather than internal mutable objects. A snapshot contains status, data needed by the UI, last error, version, and debug metadata. For React-style consumers, subscriptions should be scoped by selector and cleaned up by a disposer. For non-UI consumers, the same runtime can expose an event stream, but event stream delivery must not be the source of truth.
+        </p>
+        <h3>Data model and invariants</h3>
+        <p>
+          The data model should include a stable resource key, operation id, monotonic version, owner or scope, status, last committed payload, optional pending payload, error envelope, and trace metadata. Invariants should be asserted at the boundary: there can be only one active operation for a single latest-intent key, terminal states cannot still own live abort handles, disposed subscribers cannot be notified, and rollback data must be captured before the forward effect runs.
+        </p>
+        <p>
+          For shared state, the runtime should never expose mutable references. It should return frozen or copied snapshots and keep internal indices private. That protects the consistency model from accidental mutation and lets the implementation change from arrays to maps, path indexes, ring buffers, or compacted logs without breaking callers. This is also the point where a principal candidate can discuss memory limits and compaction policies, because state runtimes often fail by retaining old closures and history forever.
+        </p>
+        <h3>Lifecycle and concurrency</h3>
+        <p>
+          Lifecycle events need the same rigor as user events. Mount subscribes, unmount disposes, focus may resume work, blur may pause non-critical work, reconnect may replay queued events, and navigation may invalidate a scope. Concurrency should be handled through identity and version checks rather than timing assumptions. If two operations race, the one with the accepted identity wins; the late one becomes a stale settlement with telemetry.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/state-interaction-modeling/undo-redo-failure-debugging.svg"
+          alt="Design Undo Redo failure and debugging model"
+          caption="Failure model: unsafe transitions are blocked early, effect failures become typed settlement events, and debug logs preserve enough context to defend behavior."
+        />
+      </section>
+
+      <section>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>
+          A simple component-local implementation is cheaper for one screen, but it pushes correctness into every caller. That approach usually fails when several components share the same resource, when work outlives a component, or when a late event arrives after the user has changed intent. A centralized runtime adds indirection, but it gives the organization one place to enforce per-scope command ordering with explicit barriers when remote version or side-effect consistency is unsafe.
+        </p>
+        <p>
+          A fully generic framework can reduce boilerplate, but it can also hide domain rules behind opaque configuration. For principal-level design, prefer a small domain runtime with explicit events and typed state. It should be generic only where the invariants are actually shared: transition execution, disposal, listener notification, snapshot versioning, and telemetry. Domain-specific policies, such as conflict resolution or retry rules, should remain injectable and testable.
+        </p>
+        <p>
+          The main trade-off is between strictness and flexibility. Strict state machines prevent invalid combinations and make incidents easier to debug. Loose object state is easier to evolve but allows impossible states, such as success with an active cancellation token or replaying while live side effects are enabled. At staff and principal levels, the stronger answer is to make illegal states unrepresentable, then add escape hatches only with explicit audit logs.
+        </p>
+        <p>
+          There is also a trade-off between eager and lazy work. Eager computation makes snapshots simple and predictable, but it can waste CPU when many updates are superseded. Lazy computation reduces work, but it requires invalidation bookkeeping and can move latency to the reader. The correct answer depends on user-visible latency and update frequency. A principal-ready design names that choice and explains how metrics would prove it in production.
+        </p>
+        <p>
+          Another trade-off is whether to fail open or fail closed. For low-risk cosmetic state, dropping a stale event may be acceptable. For authorization, payment, collaboration, or persisted user data, fail closed with a visible error or conflict. This is where the implementation connects to privacy and abuse concerns: a stale persisted snapshot must not leak another tenant, a replay tool must not repeat destructive effects, and a cross-context message must not be trusted without version and origin checks.
+        </p>
+      </section>
+
+      <section>
+        <h2>Best practices</h2>
+        <p>
+          Design the state shape before implementing handlers. Write down legal transitions, terminal states, and whether each transition is synchronous, asynchronous, retryable, or reversible. Every public method should either commit a transition, return a typed rejection, or be a no-op with an observable reason. Silent failure makes interview designs look simple while making production systems impossible to diagnose.
+        </p>
+        <p>
+          Keep effect execution idempotent where possible. Attach operation IDs, resource versions, tab IDs, or command IDs to work that may settle later. Use cancellation for work that can be stopped, and settlement guards for work that cannot be stopped. Those two mechanisms solve different problems: cancellation reduces waste, while settlement guards preserve correctness.
+        </p>
+        <p>
+          Build observability into the runtime. Track transition counts, rejected events, stale settlements, queue depth, retry count, listener count, and average notification time. These are not cosmetic metrics. They tell you whether the abstraction is protecting the application or becoming a hidden bottleneck.
+        </p>
+        <p>
+          Keep tests at the transition level, not only at the component level. Unit tests should cover invalid transitions, stale settlement, disposal, retry exhaustion, rollback, and listener exceptions. Integration tests should verify that the UI sees stable snapshots during rapid user actions. Property-style tests are useful when a runtime has many event permutations because they can reveal impossible states that hand-written examples miss.
+        </p>
+        <p>
+          Prefer small adapters around browser or framework APIs. Timers, storage, network, BroadcastChannel, and random IDs should be injectable so replay, testing, and server rendering remain deterministic. This also improves operability because incidents can be reproduced with recorded events instead of relying on a user to recreate timing-sensitive behavior.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>
+          The most common pitfall is modeling this problem as disconnected boolean flags. Booleans allow contradictory states and make edge cases dependent on update ordering. A principal-ready design names states and transitions directly, then validates the transition before committing any state or effect.
+        </p>
+        <p>
+          Another pitfall is treating cleanup as a UI concern. Components unmount, tabs close, effects resolve late, subscribers throw, persisted data becomes stale, and debug tools replay old events. Cleanup and settlement rules belong inside the runtime because callers cannot reliably coordinate them from the outside.
+        </p>
+        <p>
+          The third pitfall is ignoring redo branch invalidated by new command, external side effect cannot be undone, stack grows without compaction until after the implementation is shipped. These failures must be represented in state and telemetry from the beginning. If the runtime cannot explain what happened after a bad transition, it is not ready for production or a principal-level interview answer.
+        </p>
+        <p>
+          A subtle pitfall is allowing observers to become part of the commit path. If one listener throws, is slow, or triggers a nested update, it can corrupt the experience for every other subscriber. The runtime should isolate listener failures, cap nested dispatch depth, batch notifications where appropriate, and record slow subscribers without letting them mutate internal state.
+        </p>
+        <p>
+          Another pitfall is adding persistence before defining ownership. Persisted state must be scoped by user, tenant, app version, and sometimes feature flag. Without that scope, rehydration can resurrect stale privileges, replay an old workflow after logout, or show data from a previous account. The implementation should include schema versioning and a quarantine path for invalid snapshots.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          This design appears in collaborative editors, dashboards, multi-step workflows, offline-capable applications, design tools, and internal admin consoles. These products need predictable user-visible state even when the network is slow, multiple browser contexts are active, or debugging tools replay previous behavior.
+        </p>
+        <p>
+          In a large application, this runtime is usually owned as a platform primitive. Feature teams provide domain policies and UI rendering, while the primitive guarantees transition safety, cleanup, versioning, and instrumentation. That split lets product teams move quickly without re-solving the same correctness issues in every component.
+        </p>
+        <p>
+          In enterprise software, this design also supports auditability. Admin consoles, workflow builders, editors, and support tools need to explain why the interface moved from one state to another. A transition log with operation identity and rejection reasons gives support engineers and developers enough evidence to debug without exposing private payloads in logs.
+        </p>
+        <p>
+          In consumer products, the same ideas protect perceived performance. Users click quickly, navigate away, return from background tabs, and lose connectivity. A state runtime that treats those cases as normal input, rather than exceptional behavior, keeps the interface responsive while preserving correctness under pressure.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you design the implementation end to end?</h3>
+        <p>
+          I would define the public facade first, then map each method to a small event vocabulary. The runtime would keep undo stack, redo stack, command log, inverse patch, checkpoint, scope index, non-undoable barrier and expose read-only snapshots. The transition engine would validate legal movement across ready, grouping, undoing, redoing, compacting, blocked and return effect descriptions. Effects would run after commit with operation identity, cancellation, and settlement guards. Observers would receive selector-scoped snapshots so UI rendering stays predictable.
+        </p>
+        <h3>Why choose this architecture over local component state?</h3>
+        <p>
+          Local state is acceptable for isolated screens, but it spreads race handling, cleanup, and failure semantics across callers. This architecture centralizes invariants and makes per-scope command ordering with explicit barriers when remote version or side-effect consistency is unsafe. enforceable. The cost is more design upfront, but the benefit is consistent behavior across screens and easier incident debugging.
+        </p>
+        <h3>What breaks at scale?</h3>
+        <p>
+          At scale, listener count, stale events, memory retention, and ambiguous ownership become the bottlenecks. The runtime needs bounded queues, explicit disposal, compaction where history is stored, backpressure for notification storms, and metrics that reveal rejected transitions or slow subscribers before users notice.
+        </p>
+        <h3>How do you handle rollback and failure?</h3>
+        <p>
+          Rollback depends on whether the transition is reversible. Pure state transitions can store inverse patches or previous snapshots. External effects require compensating actions or explicit non-reversible barriers. Failures become typed settlement events, not thrown surprises, so the system can move to an error, blocked, conflicted, or ready state with a visible reason.
+        </p>
+        <h3>How would you defend the trade-offs under interviewer pressure?</h3>
+        <p>
+          I would state that the design optimizes for correctness, debuggability, and reuse across high-value flows. If the interviewer pushes on complexity, I would narrow the runtime to the invariants that must be shared and keep feature policy outside the core. If they push on latency, I would explain batching, selector subscriptions, and lazy recomputation. If they push on edge cases, I would walk through A user undoes a local edit after a collaborator has changed the same entity remotely.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul>
+          <li><a href="https://react.dev/reference/react" target="_blank" rel="noreferrer">React documentation: component state, effects, and transitions</a></li>
+          <li><a href="https://redux.js.org/style-guide/" target="_blank" rel="noreferrer">Redux Style Guide: state modeling and reducer principles</a></li>
+          <li><a href="https://zustand.docs.pmnd.rs/" target="_blank" rel="noreferrer">Zustand documentation: store subscriptions and selectors</a></li>
+          <li><a href="https://immerjs.github.io/immer/update-patterns/" target="_blank" rel="noreferrer">Immer documentation: immutable update and patch patterns</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel" target="_blank" rel="noreferrer">MDN BroadcastChannel API</a></li>
+        </ul>
       </section>
     </ArticleLayout>
   );

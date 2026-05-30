@@ -1,6 +1,1 @@
-# Multi-tenant UI — Example 2
-
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+# Design a Multi-tenant UI example 2\n\nConcrete low-level implementation exercise for Design a Multi-tenant UI.\n

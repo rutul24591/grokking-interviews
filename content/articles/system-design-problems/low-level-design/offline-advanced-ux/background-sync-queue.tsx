@@ -2,131 +2,198 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
-import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
   id: "article-lld-background-sync-queue",
-  title: "Background Sync Queue System",
-  description: "Application-level queueing and coordination of operations for syncing when network connectivity restores",
+  title: "Design a Background Sync Queue",
+  description: "Implementation-heavy low-level design guide for design a background sync queue, with offline state models, queues, conflict handling, fallback behavior, and production trade-offs.",
   category: "low-level-design",
   subcategory: "offline-advanced-ux",
   slug: "background-sync-queue",
-  wordCount: 5400,
-  readingTime: 33,
-  lastUpdated: "2026-05-06",
-  tags: ["lld", "offline", "queue", "sync", "offline-first"],
-  relatedTopics: ["background-sync", "offline-first-architecture"],
+  wordCount: 4700,
+  readingTime: 28,
+  lastUpdated: "2026-05-29",
+  tags: ["lld", "offline", "advanced-ux", "resilience", "principal-engineer"],
+  relatedTopics: ["network-failure-handling", "state-management", "progressive-enhancement"],
 };
 
 export default function BackgroundSyncQueueArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Problem Clarification</h2>
-        <HighlightBlock as="p" tier="crucial">A note-taking app allows offline editing. User creates 5 notes while offline. When they come online, all 5 notes must sync to the server. Without queueing: the app might attempt to sync all 5 simultaneously, overwhelming the server or experiencing partial failures where some succeed and others fail. With queueing: operations sync in order, with visibility into progress, allowing the app to coordinate dependencies (note A must sync before comment on note A).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">More complex scenario: user creates note, comments on it, deletes a comment, edits the note. Operations have dependencies: the note must sync before the comment, and if the comment is deleted, the comment-add and comment-delete operations can be coalesced or reordered. Without queuing, you get duplicate comments or out-of-order operations corrupting the note.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Background sync queue is application-level queueing and coordination. It's distinct from the Service Worker Background Sync API (which retries failed requests). The queue manages multiple interdependent operations, coordinates their order, groups them if possible, and provides UI feedback on sync status.</HighlightBlock>
-        <HighlightBlock as="p" tier="important"><strong>Explicit assumptions:</strong> Operations are stored in local storage/IndexedDB. Operations can be retried or coalesced. Server supports idempotency (same operation applied twice = same result). Network connectivity can be detected. Operations have dependencies or ordering requirements.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Requirements</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="important"><strong>Queue management:</strong> Add operations to queue, persist, process in order on reconnect.</HighlightBlock>
-          <HighlightBlock as="li" tier="important"><strong>Dependency tracking:</strong> Specify operation dependencies; don't process dependent operations before dependencies complete.</HighlightBlock>
-          <li><strong>Coalescing:</strong> Combine redundant operations (two edits to same field → single operation).</li>
-          <HighlightBlock as="li" tier="important"><strong>Retry logic:</strong> Automatically retry failed operations with backoff.</HighlightBlock>
-          <li><strong>Partial sync:</strong> If one operation fails, continue syncing others (don't block).</li>
-          <li><strong>Conflict resolution:</strong> Handle conflicts (server version diverges from queued operation); user chooses resolution.</li>
-          <li><strong>Sync status:</strong> Display queue depth, which operations are syncing, which have failed.</li>
-          <li><strong>Manual trigger:</strong> Allow users to manually trigger sync (don't wait for auto-detection of network recovery).</li>
-        </ul>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Non-Functional Requirements</h3>
-        <ul className="space-y-2">
-          <HighlightBlock as="li" tier="crucial"><strong>Latency:</strong> Sync starts within 5 seconds of network restoration. Operations process at 1 per 100-500ms depending on server latency.</HighlightBlock>
-          <li><strong>Persistence:</strong> Queue survives app restart; all operations retained until successful or explicitly deleted.</li>
-          <HighlightBlock as="li" tier="important"><strong>Memory:</strong> Queue in IndexedDB (efficient); in-memory working set under about 10 MB.</HighlightBlock>
-          <li><strong>Throughput:</strong> Process 100+ queued operations efficiently without blocking main thread.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>High-Level Approach</h2>
-        <HighlightBlock as="p" tier="crucial">When a user action occurs offline, instead of immediately updating local state and hoping to sync later, the app enqueues an operation describing the action. The operation includes: action type (create, update, delete), resource ID, payload, and optional dependencies.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">The queue stores operations in IndexedDB, persisting across app restarts. The app processes the queue: when online, dequeue operation, execute on server, mark as synced. If server rejects (conflict, validation error), handle gracefully (move to failed, notify user). If server accepts, remove from queue.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Dependencies ensure ordering: if "create note" and "add comment to note" are queued, the create must complete first. The queue respects this: blocks dependent operations until their dependencies sync.</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Coalescing optimizes: if the same operation is queued twice in quick succession, or if operations cancel each other (add then delete), the queue combines them into a single server call.</HighlightBlock>
-      </section>
-
-      <section>
+        <h1>Design a Background Sync Queue</h1>
+        <h2>Definition &amp; Context</h2>
+        <p>
+          Design a Background Sync Queue is a low-level design problem about building a durable mutation queue that keeps a user journey coherent when the network, browser capability, storage, or server version cannot be trusted. A principal-ready answer should not stop at saying &quot;cache it&quot; or &quot;retry later&quot;. It should define the public API, local durability model, conflict semantics, privacy boundaries, and the exact user-visible states when the system cannot safely continue.
+        </p>
+        <p>
+          The implementation contract starts with enqueue(operation), flush(reason), pause(scope), acknowledge(serverAck), compact(). The runtime should make these states explicit: idle, collecting, queued, flushing, retrying, paused, blocked, drained. The central invariant is: User intent must survive reloads and replay exactly once at the server boundary. The hard case to defend in an interview is when a browser restarts after enqueueing a payment-related mutation but before receiving the server acknowledgement. That case forces the design to explain durability, ordering, rollback, and how much ambiguity the UI is allowed to hide.
+        </p>
         <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/offline-advanced-ux/background-sync-queue.svg"
-          alt="Background sync queue architecture showing offline write enqueue, persisted IndexedDB queue, Background Sync API, retry logic, and sync status UI"
-          caption="Background sync queue architecture showing offline write enqueue, persisted IndexedDB queue, Background Sync API, retry logic, and sync status UI"
+          src="/diagrams/system-design-problems/low-level-design/offline-advanced-ux/background-sync-queue-runtime.svg"
+          alt="Design a Background Sync Queue runtime architecture"
+          caption="Runtime architecture: user intent is captured locally first, classified by capability and connectivity, then replayed or resolved through guarded sync."
         />
-
-        <h2>Detailed Design</h2>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Queue Data Structure</h3>
-        <HighlightBlock as="p" tier="important">Each operation in the queue is a record: unique ID, action type, resource ID, payload, dependencies (array of operation IDs that must complete first), status (pending, syncing, synced, failed, conflict), retry count, last retry timestamp, created timestamp.</HighlightBlock>
-        <p>Indexing: index by status to quickly find pending operations. Index by resource ID to find all operations on a resource (for coalescing). Index by dependencies to track dependent operations.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Operation Processing Loop</h3>
-        <HighlightBlock as="p" tier="crucial">Main loop: query IndexedDB for pending operations without unmet dependencies. For each, mark status as syncing. POST the operation to the server. On success (2xx), mark as synced, remove from queue. On retriable error (5xx, network timeout), mark as failed, increment retry count, schedule retry. On non-retriable error (4xx, validation), move to failed, notify user.</HighlightBlock>
-        <p>Dependency resolution: before processing an operation, check its dependencies. If any depend operation has status != synced, delay processing. This prevents child operations from executing before parent completes.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Coalescing and Optimization</h3>
-        <p>Naive: queue "edit title to X", "edit title to Y", "edit title to Z" as 3 operations. Result: server processes 3 updates. Better: coalesce into single "edit title to Z". Before enqueuing, check if pending operation exists for same resource + action. If yes and they can merge (e.g., two edits to same field), merge payloads or replace old operation.</p>
-        <p>Cancellation: if user queues "add comment" then immediately "delete comment" (before sync), the two operations can be removed from queue entirely (no net change). Detect this: if delete's dependency is the add operation, cancel both.</p>
-        <HighlightBlock as="p" tier="important"><strong>Coalescing Strategies and Tradeoffs:</strong> Three approaches: (1) Last-write-wins: replace old operation with new. Example: title edited 5 times → only last edit sent to server. Saves bandwidth but loses intermediate edits (acceptable for simple fields). (2) Merge-safe operations: if operations are commutative (order doesn't matter), combine them. Example: "add tag A" then "add tag B" → single "add tags [A, B]". Requires operation semantics understanding. (3) Semantic coalescing: for field edits, send final state. Example: title "Hello" → "Hi" → "Greetings" → send single "set title to Greetings". Implementation: before enqueueing a new operation, scan pending queue: if same resource and compatible action type exists, update or replace it. Mark old operation as superseded.</HighlightBlock>
-        <p><strong>Cancellation and Rollback Logic:</strong> User can manually cancel a queued operation (before it syncs). Two cases: (1) Operation is pending (not yet synced): simply remove from queue. No server call needed. (2) Operation is syncing or already synced: more complex. If already synced, the user's action is already on the server; the cancel operation is actually a "undo" request (send inverse operation to server). Example: user queues "delete note", then cancels. If not yet synced, remove from queue. If already synced, send "restore note". For edit operations, cancelling a synced edit requires explicit undo operation. Alternatively, offer client-side only: undo in the local app, but don't change server state (user reconciles on next sync).</p>
-        <p><strong>Dependency Cycles and DAG Validation:</strong> Dependencies must form a DAG (directed acyclic graph), not a cycle. If operation A depends on B, and B depends on C, then A → B → C (valid). But if C also depends on A, you have a cycle (invalid, system can never resolve). When adding operation with dependencies, validate: walk the dependency chain; if we revisit a node, cycle detected, reject the operation with error message: "Cannot queue operation with circular dependencies". This prevents deadlocks in queue processing.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Conflict Resolution</h3>
-        <p>Conflict: user edits note offline, server copy was also edited. When sync happens, versions diverge. Three strategies: (1) last-write-wins (server overwrites, offline changes lost), (2) client-wins (ignore server state, force client version), (3) merge (attempt to merge edits).</p>
-        <p>CRDTs (Conflict-free Replicated Data Types) handle merge automatically: operations are commutative (order doesn't matter), so server and client can apply edits in any order and reach same state. Requires structured data (not free-form text).</p>
-        <p>For most apps, three-way merge or custom merge logic: server state, offline changes, common ancestor (state when user went offline). Merge tool (diff3) detects conflicts, user chooses resolution.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Network Detection and Sync Triggering</h3>
-        <p>Online/offline events trigger sync check: when online event fires, check if queue has pending operations. If yes, start processing. Also provide manual "sync now" button for user control.</p>
-        <HighlightBlock as="p" tier="important">Exponential backoff for retries: first retry immediately, then 1s, 2s, 4s, 8s, capping at 30s. After 5-10 retries with no success, move operation to permanent failed state (user manual intervention required).</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">UI Status and Progress</h3>
-        <p>Display sync status: "Syncing (3/10 operations)" shows progress. "2 pending, 1 failed" shows breakdown. Detailed view shows each operation: status, retry count, error message (if failed). Allow user to retry failed operations or discard them.</p>
-        <p>Per-resource status: in the note list, mark each note with sync status (✓ synced, ⟳ syncing, ⚠ failed). User sees at a glance which items have synced and which are pending.</p>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Performance and Cleanup</h3>
-        <HighlightBlock as="p" tier="important">Memory: queue operations are stored in IndexedDB (disk), not memory. Working set (in-memory) contains only actively processing operations (typically under about 10 MB). After an operation syncs and is marked completed, remove it from IndexedDB after N hours (archive old synced operations to keep the database lean).</HighlightBlock>
-        <p>Throughput: process operations serially (one at a time) to maintain order and avoid overwhelming the server. If independent operations exist (no dependencies), could parallelize (e.g., 3 operations on different resources), but simpler to serialize.</p>
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
-        <HighlightBlock as="p" tier="crucial">Strict ordering vs throughput: serial processing respects all dependencies but is slower. Parallel processing (independent operations in parallel) is faster but more complex. For most apps, serial is fine (a few hundred ms delay is acceptable).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Client-side merging vs server-side: client attempts merge/conflict resolution locally (UX: no server round-trip needed). Server attempts merge (UX: more likely to succeed, but slower). Hybrid: client optimistic merge, server verifies (if divergence detected, server re-syncs).</HighlightBlock>
-        <HighlightBlock as="p" tier="important">Permanent failure handling: after max retries, operation is stuck. User must manually delete (discard changes) or resolve conflict. Alternative: auto-resolve (pick client or server version), but risks data loss.</HighlightBlock>
+        <h2>Core Concepts</h2>
+        <p>
+          The first concept is local intent capture. Offline systems should record what the user meant to do, not only the final rendered value. A durable intent contains an operation id, actor id, target resource, base version, payload, timestamp, dependency list, and idempotency key. Capturing intent gives the implementation enough information to replay, rebase, reject, or ask for human resolution after reconnect.
+        </p>
+        <p>
+          The second concept is capability-aware degradation. Browser online status, service worker availability, storage access, push permission, background sync support, and server reachability are separate signals. A robust runtime combines them into a health state instead of making one boolean decide the user experience. This is especially important on mobile browsers, private browsing modes, captive portals, enterprise proxies, and low-memory devices.
+        </p>
+        <p>
+          The third concept is convergence with evidence. The system should know which local operations are pending, which server acknowledgements have been received, which conflicts were auto-merged, and which conflicts were shown to the user. The durable structures are operation log, idempotency key, dependency graph, retry schedule, durable cursor, ack ledger, poison queue. These structures are the difference between a demo and a production design that can survive reloads, retries, and support investigations.
+        </p>
+        <h3>Implementation contract</h3>
+        <p>
+          The runtime should define which calls are synchronous, which are asynchronous, which require storage, and which can be safely retried. Public methods should return typed outcomes such as accepted, queued, blocked, conflicted, degraded, or rejected. They should not expose raw browser exceptions to product components because those components cannot make consistent decisions across browsers and network states.
+        </p>
+        <p>
+          Local state must be scoped by user, tenant, device, app version, and feature flag where applicable. Without that scope, an offline cache can leak data after account switch, replay old writes under a new identity, or resurrect a feature that has been remotely disabled. A principal-level answer should call this out because offline UX and privacy are tightly coupled.
+        </p>
+        <h3>Operation classes</h3>
+        <p>
+          Not every operation deserves the same offline behavior. Draft edits, UI preferences, and local annotations can usually be accepted locally and reconciled later. Inventory reservations, payments, permission changes, and destructive admin actions should either require server confirmation or use a narrow pending state that cannot be mistaken for completion. Classifying operations early keeps the design from promising offline availability where the business invariant requires server authority.
+        </p>
+        <p>
+          Each operation class should define durability, replay, merge, rollback, and privacy rules. A draft update may store the full payload locally, while a sensitive workflow may store only a redacted intent and require reauthentication before replay. A push notification preference may require consent state and device token freshness. A progressive enhancement may require a baseline fallback rather than persistence. These distinctions make the design defendable under interviewer pressure.
+        </p>
       </section>
 
       <section>
-        <h2>Implementation Patterns</h2>
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Pattern 1: Simple FIFO Queue</h3>
-        <HighlightBlock as="p" tier="crucial">Enqueue operations as they occur. Process in FIFO order on sync. No coalescing, no dependencies. Works for simple apps without complex relationships.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Pattern 2: Dependency Graph with Coalescing</h3>
-        <HighlightBlock as="p" tier="important">Track operation dependencies. Coalesce redundant operations. Process respecting dependencies. Works for complex offline scenarios with related edits.</HighlightBlock>
-
-        <h3 className="mt-6 mb-3 text-lg font-semibuild">Pattern 3: CRDT-Based Sync</h3>
-        <HighlightBlock as="p" tier="important">Use CRDT data structure for operations (e.g., Yjs, Automerge). Operations are commutative; no strict ordering required. Merge naturally. Most robust for collaborative editing.</HighlightBlock>
+        <h2>Architecture &amp; Flow</h2>
+        <p>
+          The architecture has six layers. The interaction layer captures the user action and assigns an operation identity. The local durability layer writes intent to IndexedDB, Cache Storage, or a scoped in-memory fallback before showing success-like UI. The health coordinator classifies network and capability state. The sync engine drains eligible operations using idempotency keys and retry budgets. The conflict engine compares base, local, and remote versions. The presentation layer shows current, stale, queued, conflicted, or blocked state with accessible controls.
+        </p>
+        <p>
+          The normal flow starts with the user action entering the facade. The facade validates scope, writes an intent record, updates the local projection, and emits a snapshot. If the system is healthy, the sync engine sends the operation immediately. If the system is offline or degraded, the operation remains queued and visible. When connectivity returns, the engine drains operations in dependency order, applies server acknowledgements, compacts acknowledged records, and moves conflicts to a review state instead of silently overwriting data.
+        </p>
+        <p>
+          The design should treat reconnect as a reconciliation phase, not just a retry trigger. Reconnect can reveal schema changes, expired auth, revoked permissions, server-side validation changes, or remote edits. The runtime must revalidate credentials, refresh configuration, migrate local data, and compare versions before replaying writes. That extra work is what prevents offline UX from becoming a data integrity risk.
+        </p>
+        <h3>Data model and invariants</h3>
+        <p>
+          A practical data model contains a local entity table, an operation log, a server acknowledgement ledger, a sync cursor, and a projection table optimized for rendering. The entity table answers current reads. The operation log preserves intent. The acknowledgement ledger prevents duplicate replay after reload. The sync cursor supports incremental server pulls. The projection table lets the UI show local and remote facts together without recomputing the whole world on every render.
+        </p>
+        <p>
+          Invariants should be asserted at every boundary. An operation cannot be compacted until its acknowledgement is durable. A conflict cannot be marked resolved until the chosen resolution passes validation against the latest server version. A notification cannot be routed until permission and preference state agree. An enhanced experience cannot replace the baseline path unless the core task still completes when the enhancement fails.
+        </p>
+        <h3>Failure matrix</h3>
+        <p>
+          The implementation should maintain a failure matrix that maps cause to action. Storage quota failure moves the feature to read-only or in-memory pending state. Expired auth blocks replay and asks for reauthentication. Version mismatch enters conflict review or rebase. API timeout keeps the operation queued with backoff. Unsupported capability falls back to the baseline experience. Permission denial changes the prompt strategy and prevents repeated prompting. Each branch should be observable and user-visible enough to avoid silent data loss.
+        </p>
+        <p>
+          Reconciliation should be transactional from the client&apos;s point of view. Pull the latest remote metadata, validate local schema, check auth and tenant scope, choose eligible operations, send them with idempotency keys, persist acknowledgements, update local projections, and only then compact. If the browser closes in the middle, the next boot should resume from durable evidence rather than guessing which work completed.
+        </p>
+        <ArticleImage
+          src="/diagrams/system-design-problems/low-level-design/offline-advanced-ux/background-sync-queue-reconciliation.svg"
+          alt="Design a Background Sync Queue reconciliation and failure model"
+          caption="Reconciliation model: local intent, remote version, permissions, and capability signals converge through explicit guardrails rather than hidden retries."
+        />
       </section>
 
       <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Real-world systems (Notion, Obsidian, Figma) use queue-based sync with CRDTs for robust handling of offline edits. For best results,</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">implement dependency tracking and coalescing to minimize server load, use exponential backoff for retries (max 30s, up to 10 retries), provide clear UI status, and test thoroughly with simulated offline scenarios. CRDT-based approach is most robust for collaborative documents.</HighlightBlock>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>
+          A network-first design is simpler and easier to reason about because the server remains the immediate source of truth. It breaks down when users expect creation, editing, reading, or notification management to keep working during poor connectivity. An offline-first design improves perceived reliability, but it moves consistency, privacy, storage limits, and conflict resolution into the client. The right choice depends on whether the task is critical enough to justify that client complexity.
+        </p>
+        <p>
+          The key consistency trade-off is at-least-once local replay with server-side idempotency and client-side ack compaction. Strong consistency would block more actions until the server confirms them, reducing merge complexity but hurting availability. Eventual consistency keeps the user moving, but it requires durable intent, visible pending state, replay safety, and conflict handling. For principal interviews, the strongest answer is to pick consistency per operation: low-risk drafts can be queued, destructive operations may require confirmation, and security-sensitive changes should fail closed.
+        </p>
+        <p>
+          There is also a cost trade-off. More local durability increases storage use, migration burden, and privacy review surface. More aggressive retries improve time-to-sync but risk retry storms and battery drain. More detailed conflict visualization improves trust but slows the user down. These are not abstract trade-offs; they should map to metrics such as queue age, conflict rate, replay success rate, storage quota errors, retry count, stale view duration, and user abandonment during conflict resolution.
+        </p>
+        <p>
+          A principal-level answer should also compare optimistic completion with explicit pending completion. Optimistic completion feels fast, but it can mislead the user when the server later rejects the operation. Explicit pending completion is more honest, but it can make the product feel slower. The compromise is to make low-risk operations appear locally complete while preserving a visible sync status and to keep high-risk operations in a pending or blocked state until the authoritative system confirms them.
+        </p>
+      </section>
+
+      <section>
+        <h2>Best practices</h2>
+        <p>
+          Persist intent before optimistic UI when the operation matters. If the UI updates first and the tab closes before durability, the user will believe work was saved when it was not. For lower-risk interactions, an in-memory pending state may be acceptable, but the UI should not imply durable completion until the write has crossed the chosen durability boundary.
+        </p>
+        <p>
+          Use idempotency keys and monotonic local sequence numbers for replay. Assume the client may send the same operation more than once after reload, timeout, service worker restart, or ambiguous server response. Server APIs should accept the idempotency key and return the prior result when replay is duplicated. Client code should still keep an acknowledgement ledger so it can compact safely.
+        </p>
+        <p>
+          Design user-visible states deliberately. A subtle banner, disabled action, merge review sheet, retry affordance, or stale data indicator should correspond to a real runtime state. Avoid generic &quot;something went wrong&quot; messaging for offline flows because the corrective action differs: wait, retry, reconnect, reauthenticate, resolve conflict, or discard local changes.
+        </p>
+        <p>
+          Build observability into the client. Track queue depth, oldest pending operation age, storage quota failures, conflict types, retry budget exhaustion, permission prompt outcomes, and degraded-mode duration. These metrics tell whether the offline design is protecting the journey or creating hidden support debt.
+        </p>
+        <p>
+          Test with deterministic adapters. Replace timers, network probes, storage, service worker messages, permission prompts, and clocks with test doubles so edge cases can be reproduced. Important tests include reload after enqueue, duplicate acknowledgement, storage write failure, conflict after reconnect, account switch with pending operations, schema migration during offline edit, and retry exhaustion while the UI remains mounted.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>
+          The most common pitfall is using a single online boolean as the system truth. Browser connectivity APIs are hints, not guarantees. A device can be online but unable to reach your API, authenticated but forbidden to replay an old mutation, or capable of service workers but blocked from persistent storage. The runtime needs active probes and failure classification.
+        </p>
+        <p>
+          Another pitfall is silently resolving conflicts with last-write-wins. That policy is acceptable for low-value telemetry or ephemeral preferences, but it is dangerous for collaborative documents, settings, payments, and enterprise workflows. If user intent is ambiguous, surface the conflict with enough context to choose, preview, and audit the resolution.
+        </p>
+        <p>
+          Teams also underinvest in migration and cleanup. Offline stores live longer than a page session. Schema changes, feature removal, auth changes, and tenant switching all need migration or quarantine paths. Without cleanup, local data becomes a privacy risk and sync performance degrades as obsolete operations accumulate.
+        </p>
+        <p>
+          Another common mistake is hiding stale state behind normal UI. If the user cannot tell whether they are seeing fresh server data, local pending data, or a conflicted projection, they cannot make a safe decision. The UI does not need to be noisy, but it must show the right affordance at the right time: sync pending, retry, conflict review, read-only, permission required, or stale data.
+        </p>
+      </section>
+
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>
+          Offline and advanced UX patterns appear in field-service apps, document editors, dashboards, e-commerce carts, travel products, creator tools, messaging interfaces, and enterprise admin consoles. The common thread is that a user journey crosses unreliable boundaries: network, storage, permissions, browser capability, or multi-device state.
+        </p>
+        <p>
+          In a staff or principal role, this design is often a platform concern. Product teams provide domain operations and conflict policy, while the platform runtime owns durable queues, capability detection, replay, conflict surfaces, privacy scoping, and instrumentation. That split prevents each feature from inventing its own fragile offline behavior.
+        </p>
+      </section>
+
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you design this system end to end?</h3>
+        <p>
+          I would start with the user journey and classify which operations must work offline, which can be read-only, and which must fail closed. Then I would define the facade API, durable intent model, health coordinator, sync engine, conflict engine, and presentation states. The implementation would persist operation records with idempotency keys, update a local projection, drain the queue when healthy, reconcile against remote versions, and surface conflicts when the merge policy cannot preserve intent safely.
+        </p>
+        <h3>Why this architecture over a simple retry wrapper?</h3>
+        <p>
+          A retry wrapper handles transient failures for one request. It does not preserve user intent across reloads, classify capability failures, prevent duplicate replay, compare base and remote versions, or show conflict states. This architecture is heavier, but it solves the full lifecycle: capture, durability, replay, reconciliation, compaction, and user-visible recovery.
+        </p>
+        <h3>What breaks at scale?</h3>
+        <p>
+          Queue depth, storage quota, schema migration, conflict volume, battery usage, retry storms, and support visibility become the pressure points. The design needs compaction, retry budgets, backoff with jitter, storage quotas, migration versioning, per-operation metrics, and admin tools or logs that explain why a local operation was blocked or conflicted.
+        </p>
+        <h3>What consistency model applies?</h3>
+        <p>
+          Most offline UX uses eventual consistency for user intent and stronger consistency for safety-sensitive operations. The client can be locally authoritative for drafts, pending edits, and cached reads, but the server remains authoritative for permissions, payment state, inventory, and shared records. The runtime should encode that difference per operation instead of pretending one consistency model fits every action.
+        </p>
+        <h3>How do you handle failure, rollback, abuse, privacy, cost, and observability?</h3>
+        <p>
+          Failure is handled with typed states and replay policies. Rollback uses inverse patches or conflict review when an optimistic projection cannot be committed. Abuse is controlled with idempotency, rate limits, permission checks before replay, and feature flags that can disable unsafe queues. Privacy is handled through user and tenant scoping, encryption where appropriate, cache cleanup, and avoiding sensitive payloads in telemetry. Cost is controlled through compaction, bounded retries, and selective caching. Observability tracks queue age, replay outcomes, conflicts, storage errors, and degraded-mode duration.
+        </p>
+        <h3>How would you defend the trade-offs under pressure?</h3>
+        <p>
+          I would state that the design optimizes for task continuity without hiding correctness risk. If the interviewer pushes on complexity, I would narrow offline support to critical operations and keep risky operations server-confirmed. If they push on consistency, I would separate local availability from server authority. If they push on privacy, I would explain scoped storage, cleanup, and fail-closed replay checks. Then I would walk through the hard edge case: a browser restarts after enqueueing a payment-related mutation but before receiving the server acknowledgement.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ul>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API" target="_blank" rel="noreferrer">MDN Service Worker API</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API" target="_blank" rel="noreferrer">MDN IndexedDB API</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Background_Synchronization_API" target="_blank" rel="noreferrer">MDN Background Synchronization API</a></li>
+          <li><a href="https://web.dev/learn/pwa/" target="_blank" rel="noreferrer">web.dev Progressive Web Apps guidance</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API" target="_blank" rel="noreferrer">MDN Notifications API</a></li>
+        </ul>
       </section>
     </ArticleLayout>
   );

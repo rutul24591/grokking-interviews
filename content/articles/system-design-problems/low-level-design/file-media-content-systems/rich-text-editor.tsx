@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function RichTextEditorArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function RichTextEditorArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Rich Text Editor</h1><h2>Definition &amp; Context</h2><p>Design a Rich Text Editor is an implementation-heavy low-level design problem covering structured document schema, transactions, selection mapping, undo grouping, paste sanitization, plugins, serialization, and collaboration boundaries. A principal-level answer must explain state ownership, browser or worker boundaries, scale limits, consistency, rollback, privacy, cost, and observability.</p><p>The structured document is authoritative. DOM selection and rendered nodes are projections mapped through schema-valid transactions. The core structures are document tree, schema, transaction log, selection bookmark, undo groups, plugin registry, sanitizer policy, serialization format, and collaboration version.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/file-media-content-systems/rich-text-editor-runtime.svg" alt="Design a Rich Text Editor runtime" caption="Topic-specific runtime from source intake through guarded projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -103,7 +102,7 @@ export default function RichTextEditorArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -150,7 +149,7 @@ export default function RichTextEditorArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -196,14 +195,10 @@ export default function RichTextEditorArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/rich-text-editor-architecture.svg"
-        alt="Rich Text Editor Architecture"
-        caption="Document model (ProseMirror/Lexical) ← Schema (allowed nodes/marks) + Plugins (mentions, images, paste sanitizer, history, keymap) → Toolbar + Floating menu + Mention dropdown. Selection & cursor managed by the framework; React renders nodes via node views."
-      />
+      
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <p>
           The editor is built on ProseMirror or Lexical
           (we&rsquo;ll describe the architecture
@@ -334,7 +329,7 @@ export default function RichTextEditorArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial">
           <strong>Plugins</strong> (history, keymap, mentions, images, paste,
           markdown rules) extend behavior.
@@ -347,7 +342,7 @@ export default function RichTextEditorArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">Mention dropdown,
           slash menu state lives in plugin state.
           Image upload status</HighlightBlock>
@@ -357,7 +352,7 @@ export default function RichTextEditorArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Inputs:{" "}
           <code>initialDoc</code>, </Highlight><code>schema</code>,
@@ -372,7 +367,7 @@ export default function RichTextEditorArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="crucial">Image upload is async; the
           placeholder doesn&rsquo;t block typing.</HighlightBlock>
 <HighlightBlock as="p" tier="important"><Highlight tier="important">Long documents stay fast because the
@@ -380,7 +375,7 @@ export default function RichTextEditorArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">Paste from{" "}
           <Highlight tier="important">external sources</Highlight>
           preserves intended formatting where
@@ -391,7 +386,7 @@ export default function RichTextEditorArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">Mention
           dropdown is a real combobox with
           <code> aria-activedescendant</code>.
@@ -404,7 +399,7 @@ export default function RichTextEditorArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="crucial">Custom
           schema marks/nodes go through the same
           security review as any user-content
@@ -415,7 +410,7 @@ export default function RichTextEditorArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="crucial">Unit tests for plugin transactions
           (mention insertion, image placeholder
           replacement).</HighlightBlock>
@@ -429,7 +424,7 @@ export default function RichTextEditorArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">Concurrent edits in
           collab mode: CRDT/OT engine handles;
           the user sees the merge. Undo across an
@@ -441,7 +436,7 @@ export default function RichTextEditorArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           The wrapper around ProseMirror/Lexical is
           reusable <Highlight tier="important">across products. Extensions
@@ -452,7 +447,7 @@ export default function RichTextEditorArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Toolbar labels, placeholder text,
           accessibility announcements via i18n.
@@ -464,7 +459,7 @@ export default function RichTextEditorArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>ProseMirror vs Lexical vs from-scratch</h3>
         <HighlightBlock as="p" tier="important">
@@ -508,7 +503,7 @@ export default function RichTextEditorArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">Real-time collaboration with CRDTs.
           Comments anchored to text ranges with
           threading. Suggestion mode (track
@@ -517,96 +512,12 @@ export default function RichTextEditorArticle() {
           Rich embeds (Twitter, YouTube, Loom)
           via oEmbed. Tables with cell selection.
           Custom voice input.</Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. Why use a framework like
-          ProseMirror?</strong> The foundational
-          problems (document model, selection,
-          undo, schema, rendering) are immensely
-          complex. Frameworks have years of work
-          poured in. Building from scratch is
-          rarely justified.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How does paste sanitization
-          work?</strong> Read HTML and plain text
-          from clipboard. Run HTML through
-          DOMPurify with strict allowlist. Convert
-          to document model. If sanitization
-          empties content, fall back to plain
-          text.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>3. How are mentions
-          implemented?</strong> A plugin watches
-          for &ldquo;@&rdquo;. Opens a dropdown
-          anchored to the cursor. Search query
-          fetches candidates. On selection,
-          inserts an atomic mention node inline.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>4. How does image upload
-          integrate?</strong> Drag/paste inserts
-          a placeholder node with upload state.
-          File ships through file upload system.
-          On success, replace placeholder with
-          final node. On failure, show error
-          with retry.
-        </HighlightBlock>
-
-        <p>
-          <strong>5. How does undo/redo work?</strong>{" "}
-          The framework&rsquo;s history plugin
-          records inverse transactions. Cmd-Z
-          applies the inverse. Redo applies the
-          original.
-        </p>
-
-        <p>
-          <strong>6. How are markdown shortcuts
-          implemented?</strong> Input rules: pattern
-          matchers run on input events; matched
-          patterns trigger transactions
-          (e.g. &ldquo;# &rdquo; → heading).
-        </p>
-
-        <p>
-          <strong>7. How do collaborative editing
-          hooks work?</strong> A plugin intercepts
-          local transactions, ships to server.
-          Server-relayed remote transactions apply
-          locally. Conflict resolution (CRDT or
-          OT) is the engine&rsquo;s job; we
-          provide the integration points.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>8. What&rsquo;s the trade-off
-          between ProseMirror and Lexical?</strong>{" "}
-          ProseMirror is mature with rich
-          extensions; Lexical is React-first and
-          newer. Both solve foundations well.
-          Pick based on ecosystem fit and team
-          familiarity.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">The framework
-          handles the foundations (document model,
-          selection, history, schema); our layer</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">adds the product-specific magic. The
-          result is Google-Docs-class editing
-          embedded in your product.</Highlight></HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate durable source data, transient interaction state, derived render state, remote or worker effects, and bounded telemetry. Every object URL, request, worker, listener, timer, cache entry, and decoder task needs an explicit owner and cleanup path.</p><p>The structured document is authoritative. DOM selection and rendered nodes are projections mapped through schema-valid transactions. Commit durable changes only after policy validation and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/file-media-content-systems/rich-text-editor-recovery.svg" alt="Design a Rich Text Editor recovery" caption="Recovery flow: classify failure, preserve stable state, and degrade predictably." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>A textarea or Markdown editor is cheaper; structured editing is justified for rich semantics, controlled output, extensibility, and collaboration.</p><p>Transactions are ordered against a document version. Persisted or collaborative operations reconcile explicitly; rendered HTML is output, not durable truth. Scale pressure comes from large documents, malformed paste, IME composition, selection drift, plugin conflicts, undo memory, and collaborative transforms. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic projection only when rollback is deterministic and visible. Keep authorization, validation, and destructive actions server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed states, generation guards, bounded queues, abortable effects, semantic HTML, and idempotent cleanup. Test accessibility, stale work, retries, unmount, constrained devices, large files, and corrupted input.</p><p>Measure latency, memory, queue pressure, stale drops, retries, fallbacks, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include treating rendered output as durable truth, leaking resources, accepting stale worker completion, unbounded prefetch, and hiding degraded behavior.</p><p>For this topic, sanitize paste, reject unsupported nodes, isolate plugin failure, map selections, bound undo history, and retain plain-text fallback. Validate untrusted content, authorize durable mutations, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to content-heavy product surfaces where browser APIs, workers, networks, and remote policy fail independently. Reuse the controller boundary while injecting product-specific fallback and retention policy.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>The structured document is authoritative. DOM selection and rendered nodes are projections mapped through schema-valid transactions.</p><h3>What breaks at scale?</h3><p>large documents, malformed paste, IME composition, selection drift, plugin conflicts, undo memory, and collaborative transforms. I would bound work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>Transactions are ordered against a document version. Persisted or collaborative operations reconcile explicitly; rendered HTML is output, not durable truth.</p><h3>How do you recover?</h3><p>I would sanitize paste, reject unsupported nodes, isolate plugin failure, map selections, bound undo history, and retain plain-text fallback.</p><h3>Why this architecture?</h3><p>A textarea or Markdown editor is cheaper; structured editing is justified for rich semantics, controlled output, extensibility, and collaboration.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API" target="_blank" rel="noreferrer">MDN Web Workers API</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

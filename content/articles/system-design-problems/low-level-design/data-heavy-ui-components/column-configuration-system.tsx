@@ -31,11 +31,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function ColumnConfigurationSystemArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function ColumnConfigurationSystemArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Column Configuration System</h1><h2>Definition &amp; Context</h2><p>Design a Column Configuration System is an implementation-heavy low-level design problem covering column schema, visibility, ordering, resizing, pinning, type-aware rendering, persistence, migration, and permission filtering. A principal-level answer must define state ownership, consistency, lifecycle cleanup, scale limits, rollback, privacy, cost, and observability.</p><p>Keep canonical server-allowed columns separate from user preferences. Preferences reference stable column ids and are reconciled whenever schema or permission policy changes. The core structures are column registry, allowed-id set, display order, visibility set, width map, pinned groups, renderer registry, storage version, and migration result.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/column-configuration-system-runtime.svg" alt="Design a Column Configuration System runtime" caption="Topic-specific data flow from input or payload through guarded projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -95,7 +94,7 @@ export default function ColumnConfigurationSystemArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -136,7 +135,7 @@ export default function ColumnConfigurationSystemArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -181,12 +180,8 @@ export default function ColumnConfigurationSystemArticle() {
       </section>
 
       <section>
-        <h2>🧠 Solution Approach</h2>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/column-configuration-system-architecture.svg"
-          alt="Column configuration system architecture showing column definition model, column state, visibility toggle panel, column reorder via drag-and-drop, resize handle, auto-fit, persistence, and export"
-          caption="Architecture Overview"
-        />
+        <h3>🧠 Solution Approach</h3>
+        
         <HighlightBlock as="p" tier="important">
           The system is structured as a <strong>layered
           configuration model</strong> with three layers:
@@ -278,7 +273,7 @@ export default function ColumnConfigurationSystemArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial"><strong>ConfigStore</strong> holds the three
           layers and the merged effective config.
           <strong> DefaultsLoader</strong> fetches system,
@@ -294,7 +289,7 @@ export default function ColumnConfigurationSystemArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">Configuration state lives in an external store
           per table. The table&rsquo;s rendering reads the
           merged effective config via selector hooks.</HighlightBlock>
@@ -303,7 +298,7 @@ export default function ColumnConfigurationSystemArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="crucial">The config is keyed by column ID and stores
           presentation preferences such as visibility, width,
           pinning, and relative order.</HighlightBlock>
@@ -314,7 +309,7 @@ export default function ColumnConfigurationSystemArticle() {
       </section>
 
       <section>
-        <h2>⚡ Rendering &amp; Performance</h2>
+        <h3>⚡ Rendering &amp; Performance</h3>
         <HighlightBlock as="p" tier="crucial">Merging is O(columns) once on load and on
           edit. The merged config is memoized; subsequent
           renders reuse it via referential equality.</HighlightBlock>
@@ -325,7 +320,7 @@ export default function ColumnConfigurationSystemArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">The Column Chooser shows columns grouped by
           their schema-declared groups, each row with
           visibility toggle, drag handle, width input.
@@ -337,7 +332,7 @@ export default function ColumnConfigurationSystemArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="important">Visibility toggles are checkboxes. Drag-to-
           reorder has keyboard alternative (Up/Down</HighlightBlock>
 <HighlightBlock as="p" tier="important">arrows
@@ -350,7 +345,7 @@ export default function ColumnConfigurationSystemArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="crucial">
           The server enforces ownership and scope: per-user configs are keyed by user
           id, and org defaults are guarded by org admin permissions.
@@ -367,7 +362,7 @@ export default function ColumnConfigurationSystemArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="crucial">
           Golden-path integration: edit config, save, reload, and verify persistence and
           config repair behavior under schema evolution.
@@ -383,7 +378,7 @@ export default function ColumnConfigurationSystemArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="important">User had hidden column X; admin removes column X from schema. Config</HighlightBlock>
 <HighlightBlock as="p" tier="important">repairer drops the entry on next load. User had column Y first; admin renames Y to</HighlightBlock>
 <HighlightBlock as="p" tier="important">Z in schema. Migration step in the repairer updates the user config to use Z.</HighlightBlock>
@@ -399,7 +394,7 @@ export default function ColumnConfigurationSystemArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="crucial">
           The configuration system is generic over schema: any table integrates by
           registering its schema and a persistence endpoint.
@@ -415,7 +410,7 @@ export default function ColumnConfigurationSystemArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="crucial">Column names from the schema are typically
           translated by the consumer (the</HighlightBlock>
 <HighlightBlock as="p" tier="important">schema declares
@@ -425,7 +420,7 @@ export default function ColumnConfigurationSystemArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Layered defaults vs flat config</h3>
         <HighlightBlock as="p" tier="important">
@@ -465,7 +460,7 @@ export default function ColumnConfigurationSystemArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">Multiple presets per user (named
           configurations). Sharing presets with team
           members. Column groups with collapse/expand.
@@ -475,90 +470,12 @@ export default function ColumnConfigurationSystemArticle() {
           (&ldquo;you never look at column X — hide
           it?&rdquo;). Sync configurations across devices
           beyond just localStorage.</Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. Why a layered configuration
-          model?</strong> Admins set norms; users
-          customize on top; system defaults are the
-          fallback. Layering gives Reset semantics
-          (revert to the layer below) and supports
-          enterprise needs without losing user agency.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How do you handle schema
-          evolution?</strong> A repairer step on load:
-          drop orphan ids, insert new columns at
-          sensible positions, run migrations for
-          renamed ids. Users don&rsquo;t lose their
-          customizations across schema changes.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>3. How does persistence work?</strong>{" "}
-          Server is authoritative; localStorage is a
-          write-through cache for instant first paint.
-          Saves are debounced and idempotent. Save
-          failures retain local edits with background
-          retry.
-        </HighlightBlock>
-
-        <p>
-          <strong>4. How do concurrent admin and user
-          edits resolve?</strong> Server optimistic
-          locking with version checks. If a user&rsquo;s
-          save is based on stale org defaults, the
-          server can either accept (last-write-wins)
-          or surface a conflict; we configure per
-          product.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>5. What&rsquo;s in a configuration
-          payload?</strong> Per-column overrides:
-          visible, width, pinned, order. The full user
-          config replaces prior versions on save (no
-          partial diffs). Schema-derived data is not
-          duplicated — only overrides are stored.
-        </HighlightBlock>
-
-        <p>
-          <strong>6. How does Reset work?</strong> Remove
-          the user&rsquo;s override at the layer being
-          reset. Reset width → user&rsquo;s width
-          override is removed; org default applies.
-          Reset all → user&rsquo;s entire override is
-          removed.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>7. How is the UI accessible?</strong>{" "}
-          Real checkboxes for visibility, keyboard
-          alternative for drag-reorder, labeled inputs
-          for width, accessible Reset buttons. Save
-          status announces.
-        </HighlightBlock>
-
-        <p>
-          <strong>8. How does this scale to many
-          tables?</strong> Per-table preferences; the
-          server stores them keyed by (user id, table
-          id). Loads happen in parallel with table
-          mount. Cache prevents per-mount network
-          dependency.
-        </p>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">The merged effective config drives the table; reset semantics flow from the</HighlightBlock>
-<HighlightBlock as="p" tier="important">layering. The result is a customization experience that respects both</HighlightBlock>
-<HighlightBlock as="p" tier="important">individual workflow and organizational norms — neither at the expense of the other.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate canonical data, user intent, transient projection, remote effects, and bounded telemetry. Every cursor, subscription, cache entry, request, timer, observer, and worker requires an explicit owner and cleanup path. Stable ids are mandatory because indexes and DOM nodes are disposable views.</p><p>Keep canonical server-allowed columns separate from user preferences. Preferences reference stable column ids and are reconciled whenever schema or permission policy changes. Commit durable changes only after applying the current policy and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/data-heavy-ui-components/column-configuration-system-recovery.svg" alt="Design a Column Configuration System recovery" caption="Recovery flow: validate versions, contain scale pressure, preserve stable truth, and explain the result." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Hard-coded columns are simplest; configuration is justified when users need durable personalized views without bypassing data-access policy.</p><p>Server policy determines allowed columns. User preferences are local or remotely persisted projections that must drop inaccessible ids and migrate versioned defaults. Scale pressure comes from hundreds of columns, schema evolution, permission changes, stale preferences, responsive layouts, and expensive custom renderers. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic projection only where rollback is deterministic and visible. Keep authorization and conflict-sensitive truth server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed events, explicit versions, cursor validation, generation guards, bounded caches, semantic HTML, and idempotent cleanup. Test keyboard use, accessibility output, stale responses, reconnects, retries, scroll restoration, and large datasets.</p><p>Measure interaction latency, render cost, cache pressure, stale drops, conflicts, retries, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include confusing visible data with complete data, trusting arrival order, leaking subscriptions, accepting stale completion, using indexes as identity, and hiding rollback.</p><p>For this topic, filter forbidden columns, clamp widths, migrate stored preferences, restore defaults on invalid state, isolate renderer failure, and preserve a usable table. Validate untrusted inputs, authorize durable actions server-side, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to operational interfaces where users manipulate large, changing datasets under partial failure. Reuse the controller shape while injecting query, authorization, persistence, and fallback policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep canonical server-allowed columns separate from user preferences. Preferences reference stable column ids and are reconciled whenever schema or permission policy changes.</p><h3>What breaks at scale?</h3><p>hundreds of columns, schema evolution, permission changes, stale preferences, responsive layouts, and expensive custom renderers. I would bound expensive work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>Server policy determines allowed columns. User preferences are local or remotely persisted projections that must drop inaccessible ids and migrate versioned defaults.</p><h3>How do you recover?</h3><p>I would filter forbidden columns, clamp widths, migrate stored preferences, restore defaults on invalid state, isolate renderer failure, and preserve a usable table.</p><h3>Why this architecture?</h3><p>Hard-coded columns are simplest; configuration is justified when users need durable personalized views without bypassing data-access policy.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

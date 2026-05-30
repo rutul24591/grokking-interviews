@@ -23,7 +23,17 @@ export const metadata: ArticleMetadata = {
 export default function AudioVideoPlayerArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      <p>
+      <section>
+        <h1>Design an Audio/Video Player</h1>
+        <h2>Definition &amp; Context</h2>
+        <p>Design an Audio/Video Player is a low-level design problem about implementing media element events, manifest loading, segment buffering, caption cues, seek previews, fullscreen, and Picture-in-Picture. A principal-level interview answer must define ownership boundaries, browser and accessibility semantics, local data structures, lifecycle cleanup, server reconciliation, and explicit degraded behavior.</p>
+        <p>The browser media element remains the playback source of truth; the UI store mirrors durable presentation state and reconciles after every media event. The central structures are buffered TimeRanges, playback intent, active quality level, bandwidth estimate, caption cue index, seek-preview sprite map, controls timer, and recovery counters. The implementation is not complete until cancellation, stale work, SSR behavior, privacy, metrics, and rollback are deliberate rather than incidental.</p>
+        <ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/audio-video-player-runtime.svg" alt="Design an Audio/Video Player runtime flow" caption="Runtime flow: input becomes a guarded state transition, a semantic projection, and a recoverable outcome." />
+      </section>
+      <section>
+        <h2>Core Concepts</h2>
+        <p>The following deep dive preserves the component-specific mechanics and browser constraints that determine the implementation.</p>
+        <p>
         Building a video player that works well across devices, network conditions, and
         accessibility requirements is substantially harder than wrapping an HTML video
         element with custom controls. A production player must handle adaptive bitrate
@@ -40,7 +50,7 @@ export default function AudioVideoPlayerArticle() {
         caption="Player architecture: media state, HLS adaptive streaming, seek and buffer, controls and accessibility"
       />
 
-      <h2>Clarifying the Requirements</h2>
+      <h3>Clarifying the Requirements</h3>
       <p>
         The key design questions determine the architecture's complexity:
       </p>
@@ -72,7 +82,7 @@ export default function AudioVideoPlayerArticle() {
         Chrome.
       </p>
 
-      <h2>Media State Model</h2>
+      <h3>Media State Model</h3>
       <p>
         The player's state is a snapshot of the HTML media element's current state plus
         application-level metadata. It includes: playing (boolean), currentTime (float
@@ -100,7 +110,7 @@ export default function AudioVideoPlayerArticle() {
         handlers.
       </HighlightBlock>
 
-      <h2>HLS Adaptive Bitrate Streaming</h2>
+      <h3>HLS Adaptive Bitrate Streaming</h3>
       <p>
         HLS (HTTP Live Streaming) serves video as a playlist file (M3U8) referencing
         short segments (typically 2–10 seconds each) in multiple quality variants
@@ -136,7 +146,7 @@ export default function AudioVideoPlayerArticle() {
         duration. Display this as the "loaded" portion of the seek bar.
       </p>
 
-      <h2>Seek Bar and Seek Preview</h2>
+      <h3>Seek Bar and Seek Preview</h3>
       <p>
         The seek bar has three visual layers: a background track (the full duration),
         a buffered indicator (the loaded ranges), and a played indicator (0 to currentTime).
@@ -162,7 +172,7 @@ export default function AudioVideoPlayerArticle() {
         network overhead.
       </p>
 
-      <h2>Caption Rendering</h2>
+      <h3>Caption Rendering</h3>
       <p>
         WebVTT captions can be rendered using the video element's native track element
         (add a track element as a child of video with kind="subtitles" and src pointing
@@ -187,7 +197,7 @@ export default function AudioVideoPlayerArticle() {
         is more precise than relying on timeupdate frequency.
       </p>
 
-      <h2>Custom Controls Architecture</h2>
+      <h3>Custom Controls Architecture</h3>
       <p>
         Custom controls overlay the video element. They auto-hide on inactivity (after
         3 seconds without mouse movement) using a debounced mousemove handler that resets
@@ -210,7 +220,7 @@ export default function AudioVideoPlayerArticle() {
         as a fallback for iOS.
       </p>
 
-      <h2>Keyboard Accessibility</h2>
+      <h3>Keyboard Accessibility</h3>
       <p>
         The player container should have tabIndex=0 to be focusable. When focused,
         keyboard events control the player. The standard keyboard map (following YouTube
@@ -243,7 +253,7 @@ export default function AudioVideoPlayerArticle() {
         without being too noisy.
       </HighlightBlock>
 
-      <h2>Picture-in-Picture</h2>
+      <h3>Picture-in-Picture</h3>
       <p>
         The Picture-in-Picture API (video.requestPictureInPicture()) detaches the
         video into a floating window that persists across tab switches. Feature-detect
@@ -256,7 +266,7 @@ export default function AudioVideoPlayerArticle() {
         the OS media control center.
       </p>
 
-      <h2>Error Handling and Recovery</h2>
+      <h3>Error Handling and Recovery</h3>
       <p>
         Video element errors are reported via the error event with a MediaError code:
         MEDIA_ERR_ABORTED (1), MEDIA_ERR_NETWORK (2), MEDIA_ERR_DECODE (3), and
@@ -273,80 +283,50 @@ export default function AudioVideoPlayerArticle() {
         a buffer reset and seeks back to the current position). Network errors can
         trigger a fragment retry with exponential backoff.
       </p>
-
-      <h2>Interview Q&A</h2>
-
-      <h3>Q: How does adaptive bitrate streaming decide when to switch quality levels?</h3>
-      <p>
-        Quality switching in hls.js (and similar implementations) uses a bandwidth
-        estimation algorithm based on recent segment download throughput. For each
-        fetched segment, record (segment size in bits) / (download duration in seconds)
-        as the effective bandwidth. Apply exponential weighted moving average (EWMA)
-        to smooth out fluctuations: new_estimate = alpha * recent_bandwidth + (1 - alpha)
-        * old_estimate. To select the next quality level, choose the highest quality
-        level whose average segment bitrate is below a confidence margin of the estimated
-        bandwidth (typically 80% of the estimate, to leave headroom for estimation error).
-        Switching is also constrained by the buffer health: do not upgrade quality if
-        the buffer is below a minimum threshold (e.g., 5 seconds), because the higher
-        bitrate segments will take longer to download and may stall playback.
-      </p>
-
-      <h3>Q: How do you implement a seek thumbnail preview efficiently at scale?</h3>
-      <p>
-        The sprite thumbnail approach: a media processing pipeline generates a single
-        image containing a grid of thumbnails captured every 10 seconds, and a VTT
-        file mapping time ranges to (x, y, width, height) coordinates within the sprite.
-        The player fetches the VTT file on load, parses the coordinate data, and on
-        hover uses CSS background-image and background-position to display the correct
-        thumbnail from the sprite sheet. For a 2-hour video at 10-second intervals,
-        this is 720 thumbnails — easily fitting in one or two sprite sheets. The player
-        reads the VTT cue whose time range contains the hovered timestamp, extracts
-        the sprite coordinates, and sets them as CSS properties. No network requests
-        during hover — only the initial sprite fetch.
-      </p>
-
-      <h3>Q: How do you handle autoplay policies across browsers?</h3>
-      <p>
-        Modern browsers block autoplay with audio for videos loaded without user
-        interaction. The policy: autoplay is allowed for muted video, and for
-        audible video only if the user has previously interacted with the site.
-        The practical implementation: attempt autoplay with video.play() which returns
-        a Promise. If the Promise rejects with a NotAllowedError, the browser blocked
-        autoplay. At this point, mute the video (video.muted = true) and retry — muted
-        autoplay is almost always permitted. Display a "Click to unmute" overlay that
-        unmutes on user interaction, satisfying the browser's gesture requirement for
-        future audible playback. Never assume autoplay will succeed; always handle the
-        rejection.
-      </p>
-
-      <h3>Q: How do you design the player to support server-side ad insertion?</h3>
-      <p>
-        Server-Side Ad Insertion (SSAI) stitches ad segments directly into the video
-        stream at the server level. The player receives a single HLS playlist containing
-        both content and ad segments transparently — no client-side ad scheduling is
-        needed. The player detects ad boundaries from HLS EXT-X-DATERANGE or EXT-X-CUE-OUT
-        tags in the manifest. When playback enters an ad range, the player: disables
-        seeking (ads cannot be skipped), hides the seek bar, shows an "Ad" indicator,
-        and starts a countdown to the skip button (if the ad is skippable after 5 seconds).
-        After the ad range, restore seeking and the seek bar. The player must also
-        fire ad tracking beacons (impression, quartile, complete URLs from the manifest)
-        via fetch() at the appropriate playback positions.
-      </p>
-
-      <h3>Q: How would you implement a player that works offline after first view?</h3>
-      <p>
-        Offline playback requires caching media segments using a Service Worker and the
-        Cache API. On first playback, the Service Worker intercepts each HLS segment
-        request and stores the response in a named cache. On subsequent plays (offline),
-        the Service Worker serves segments from the cache. For HLS, cache the lowest
-        quality level's segments to minimize storage. Store the M3U8 manifest with
-        updated segment URLs pointing to the cached versions. The video duration and
-        metadata are cached in IndexedDB. On the application side, expose a "Download
-        for offline" button that triggers the Service Worker to pre-fetch all segments
-        for a given quality level. Show download progress via a ServiceWorkerMessageChannel.
-        Manage storage quotas with navigator.storage.estimate() and evict old downloads
-        when approaching the limit.
-      </p>
+      </section>
+      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>Implement the component as a small runtime with five boundaries. The input adapter normalizes keyboard, pointer, touch, browser, and async events. The state controller applies guards and separates preview state from committed state. The projection layer derives semantic DOM and ARIA relationships. The integration adapter owns server requests, URL synchronization, or browser APIs. The observability adapter emits bounded evidence for failures and slow paths.</p>
+        <p>For this topic, the critical state rule is: The browser media element remains the playback source of truth; the UI store mirrors durable presentation state and reconciles after every media event. During interaction, record enough context to cancel safely. On commit, validate the latest intent, update the durable projection, and release temporary listeners, timers, observers, pointer capture, and abort controllers. On unmount, cleanup must be idempotent.</p>
+        <ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/audio-video-player-edge-cases.svg" alt="Design an Audio/Video Player edge-case defense map" caption="Edge-case map: validate intent, contain scale pressure, recover from failure, reconcile committed state, and emit evidence." />
+      </section>
+      <section>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>native controls are cheaper and more robust; custom controls are justified only when product requirements need adaptive-stream observability, branded interaction, or richer accessibility. The custom design should still lean on native semantics and browser primitives where they remain correct. Replacing them creates testing obligations for keyboard behavior, focus ownership, reduced motion, touch interaction, zoom, SSR hydration, and assistive technology.</p>
+        <p>Playback control is locally authoritative, while analytics and resume-position sync are asynchronous and monotonic so delayed events cannot move a user backward. At scale, the failure pressure is long live streams, unstable mobile networks, codec incompatibility, segment retry storms, and excessive caption or thumbnail work. Defend the latency budget by batching measurement, aborting stale async work, bounding caches and prefetch, and emitting analytics only for committed outcomes.</p>
+        <p>A principal answer should distinguish local responsiveness from durable correctness. Optimistic UI is appropriate when the rollback is deterministic and visible. It is inappropriate when the client cannot validate authorization, inventory, resource conflicts, or destructive side effects.</p>
+      </section>
+      <section>
+        <h2>Best practices</h2>
+        <p>Use explicit state unions, typed events, idempotent cleanup, stable ids, native semantics, SSR-safe feature detection, abortable requests, and deterministic tests. Exercise keyboard-only use, touch cancellation, screen-reader output, high zoom, reduced motion, slow network, stale responses, unmount during work, and browser back-forward behavior where relevant.</p>
+        <p>Observe blocked transitions, rollback frequency, stale-response drops, slow interaction latency, cache pressure, retry count, and accessibility regression results. Keep telemetry small and avoid sensitive payloads. Publish the public behavior contract before changing shared component semantics.</p>
+      </section>
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>Common failures include mixing draft and committed state, treating rendering state as the source of truth for browser-owned behavior, leaving listeners or timers active after unmount, accepting stale async completion, trusting client-side authorization, and producing inaccessible custom controls.</p>
+        <p>For this component specifically, the failure policy is to fall back from MSE to native HLS where supported, cap segment retries, downgrade quality before surfacing an error, and preserve an accessible retry action. Security and privacy require the implementation to validate remote media origins, caption content, signed URLs, analytics payload size, and autoplay behavior; never let untrusted cue markup enter the DOM.</p>
+      </section>
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>Representative deployments include a live sports player near the live edge, a learning platform with captions and speed control, and an audio application that continues through OS media controls. In each case, the same component shell may be reused, but the policy layer changes: latency budget, permissions, persistence, fallback, and telemetry should be injected explicitly instead of hidden in presentation code.</p>
+      </section>
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you model component state?</h3><p>I would separate committed state, transient interaction state, derived presentation, and async request generations. For this component, The browser media element remains the playback source of truth; the UI store mirrors durable presentation state and reconciles after every media event. That model makes cancellation and rollback explicit.</p>
+        <h3>What breaks at scale?</h3><p>The dominant pressures are long live streams, unstable mobile networks, codec incompatibility, segment retry storms, and excessive caption or thumbnail work. I would bound work per interaction, virtualize or cache only where measured, and cancel work that is no longer relevant.</p>
+        <h3>What consistency model applies?</h3><p>Playback control is locally authoritative, while analytics and resume-position sync are asynchronous and monotonic so delayed events cannot move a user backward. The interview answer must state which layer is authoritative and how stale completion is rejected.</p>
+        <h3>How do you handle failure and rollback?</h3><p>I would fall back from MSE to native HLS where supported, cap segment retries, downgrade quality before surfacing an error, and preserve an accessible retry action. I would also emit a reason code so product metrics distinguish expected cancellation from defects and provider failures.</p>
+        <h3>How do you defend the architecture over alternatives?</h3><p>native controls are cheaper and more robust; custom controls are justified only when product requirements need adaptive-stream observability, branded interaction, or richer accessibility. I would choose the smallest design that satisfies the required behavior and explicitly accept the testing and operability cost of custom interaction.</p>
+      </section>
+      <section>
+        <h2>References</h2>
+        <ul>
+          <li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events" target="_blank" rel="noreferrer">MDN Pointer events</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li>
+          <li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React: Sharing State Between Components</a></li>
+        </ul>
+      </section>
     </ArticleLayout>
   );
 }

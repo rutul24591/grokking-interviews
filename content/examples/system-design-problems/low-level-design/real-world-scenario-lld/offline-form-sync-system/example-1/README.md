@@ -1,6 +1,1 @@
-# Offline Form Sync System — Example 1
-
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+# Design Offline Form Sync example 1\n\nConcrete low-level implementation exercise for Design Offline Form Sync.\n

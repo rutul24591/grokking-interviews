@@ -1,6 +1,3 @@
-# Component Library System — Example 3
+# Component library system example 3
 
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+Concrete implementation exercise covering token resolution, release gates, or adoption diagnostics.

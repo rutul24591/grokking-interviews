@@ -1,6 +1,3 @@
-# Idle Task Scheduling System — Example 1
+# Design Idle Task Scheduling example 1
 
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+Concrete browser API runtime example for Design Idle Task Scheduling. It covers capability gates, lifecycle-safe execution, fallback decisions, and privacy-safe telemetry.

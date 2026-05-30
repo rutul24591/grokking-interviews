@@ -1,6 +1,1 @@
-# Export System (CSV/PDF) — Example 1
-
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+# Design an Export System for CSV and PDF example 1\n\nConcrete low-level implementation exercise for Design an Export System for CSV and PDF.\n

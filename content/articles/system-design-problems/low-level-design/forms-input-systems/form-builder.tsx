@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function FormBuilderArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function ArticlePage(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Form Builder System</h1><h2>Definition &amp; Context</h2><p>Design a Form Builder System is an implementation-heavy low-level design problem covering schema editing, field registry, drag layout, condition authoring, preview, validation composition, version migration, autosave, and publication. A principal-level answer must explain state ownership, durable boundaries, lifecycle cleanup, failure recovery, privacy, cost, and observability.</p><p>Treat the form schema as versioned data. Editor selection and drag projection are transient; preview consumes a validated immutable snapshot. The core structures are schema tree, stable field ids, field registry, condition AST, layout projection, schema version, migration pipeline, undo journal, preview snapshot, and publish receipt.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/forms-input-systems/form-builder-runtime.svg" alt="Design a Form Builder System runtime" caption="Topic-specific runtime from input intent through validated durable state." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -118,7 +117,7 @@ export default function FormBuilderArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="important">
@@ -178,7 +177,7 @@ export default function FormBuilderArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -267,7 +266,7 @@ export default function FormBuilderArticle() {
       </section>
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <HighlightBlock as="p" tier="important">
           The end-to-end design treats a form as four cooperating layers: a
           <strong> schema layer</strong> (declarative, serializable description),
@@ -386,14 +385,10 @@ export default function FormBuilderArticle() {
         </p>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/form-builder-architecture.svg"
-        alt="Form Builder Architecture"
-        caption="Schema → Compilation → Per-form Store + Validation Engine + Conditional Engine → Field subscriptions. The store is the single writer; field components subscribe via selectors so re-renders stay surgical."
-      />
+      
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
 
         <h3>Hierarchy and Responsibilities</h3>
         <p>
@@ -487,7 +482,7 @@ export default function FormBuilderArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management Strategy</h2>
+        <h3>🔄 State Management Strategy</h3>
 
         <h3>State Classification</h3>
         <HighlightBlock as="p" tier="important">
@@ -558,7 +553,7 @@ export default function FormBuilderArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
 
         <h3>Inputs and Outputs</h3>
         <HighlightBlock as="p" tier="important">
@@ -618,7 +613,7 @@ export default function FormBuilderArticle() {
       </section>
 
       <section>
-        <h2>⚡ Rendering &amp; Performance Strategy</h2>
+        <h3>⚡ Rendering &amp; Performance Strategy</h3>
 
         <h3>Rendering Strategy</h3>
         <HighlightBlock as="p" tier="important">
@@ -685,7 +680,7 @@ export default function FormBuilderArticle() {
       </section>
 
       <section>
-        <h2>🎨 UI/UX &amp; Interaction Design</h2>
+        <h3>🎨 UI/UX &amp; Interaction Design</h3>
         <HighlightBlock as="p" tier="crucial">
           The default validation strategy is <em>onBlur first, onChange
           after error</em>. Validating on every keystroke creates noisy,
@@ -716,7 +711,7 @@ export default function FormBuilderArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">
           Accessibility cannot be retrofitted into a form engine; it
           has to be a baked-in invariant. Every input ships with a
@@ -749,7 +744,7 @@ export default function FormBuilderArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security Considerations</h2>
+        <h3>🔐 Security Considerations</h3>
         <HighlightBlock as="p" tier="important">Schema-driven systems are tempting injection surfaces. We
           neutralize them by treating schema as data with a strict
           shape. Labels, descriptions, and error messages render as
@@ -780,7 +775,7 @@ export default function FormBuilderArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing Strategy</h2>
+        <h3>🧪 Testing Strategy</h3>
         <HighlightBlock as="p" tier="important">Testing covers four layers. Unit tests verify the building blocks: validator composition produces the right ordered error list; the dependency graph extracts references</HighlightBlock>
 <HighlightBlock as="p" tier="important">correctly from predicates; the store reducer handles edge cases like setting the same value twice or transitioning submit state. Component tests exercise Field and</HighlightBlock>
 <HighlightBlock as="p" tier="important">FieldControl in isolation: a controlled input round-trips values; an async validator transitions from pending to invalid; a server error appears, is announced, and clears on edit.</HighlightBlock>
@@ -798,21 +793,21 @@ export default function FormBuilderArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases &amp; Failure Handling</h2>
+        <h3>🚨 Edge Cases &amp; Failure Handling</h3>
         <HighlightBlock as="p" tier="crucial">Network offline at submit : the engine surfaces an inline retry banner and, if a draft persistence layer is wired up, ensures the in-flight payload is queued for replay. Cyclic conditional dependencies : detected at schema compile time;</HighlightBlock>
 <HighlightBlock as="p" tier="important">the engine throws with the cycle path so authors can fix them rather than discovering a hung UI in production. Deep-linking into a specific step : the navigator validates prior steps before accepting the deep link; otherwise it redirects to</HighlightBlock>
 <HighlightBlock as="p" tier="important">the earliest invalid step and announces the redirect. Browser autofill for password managers writes directly to DOM, which bypasses React; we listen for input events on each control and reconcile the store with whatever the DOM now holds.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🔁 Reusability &amp; Extensibility</h2>
+        <h3>🔁 Reusability &amp; Extensibility</h3>
         <HighlightBlock as="p" tier="crucial">Validator factories ( required() , min(n) , matches(regex) , asyncUnique(endpoint) ) compose into rule chains and can be combined and</HighlightBlock>
 <HighlightBlock as="p" tier="important">shared across forms. Schema versioning is supported via a schemaVersion field and a registry of upgrade functions: when the engine</HighlightBlock>
 <HighlightBlock as="p" tier="important">encounters an old version, it runs the upgrade chain to produce a current-shaped schema and logs the migration so we can monitor stale clients.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important">Labels and validation messages never travel as raw strings inside the engine. A validator emits</HighlightBlock>
 <HighlightBlock as="p" tier="important">an Issue with a stable key and a params bag; the host app&rsquo;s i18n function resolves key</HighlightBlock>
 <HighlightBlock as="p" tier="important">against the active locale and interpolates parameters using ICU MessageFormat for plurals and gender.</HighlightBlock>
@@ -828,7 +823,7 @@ export default function FormBuilderArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs &amp; Design Decisions</h2>
+        <h3>⚖️ Trade-offs &amp; Design Decisions</h3>
 
         <h3>External store vs React Context for form state</h3>
         <HighlightBlock as="p" tier="important">
@@ -899,124 +894,18 @@ export default function FormBuilderArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">Cross-tab synchronization for partially filled forms (so opening the same form in another tab picks up where</HighlightBlock>
 <HighlightBlock as="p" tier="important">the user left off) plugs in via BroadcastChannel on top of the draft persistence layer. Finally, an AI auto-fill</HighlightBlock>
 <HighlightBlock as="p" tier="important">layer can subscribe to the same event stream and propose values; the engine itself stays out of that complexity.</HighlightBlock>
       </section>
 
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. How do you prevent re-rendering 100 fields when one
-          changes?</strong> Use an external store with per-field selector
-          subscriptions and <code>useSyncExternalStore</code>. Treat
-          context as a carrier for stable references only. Memoize
-          field controls with primitive props.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>2. How would you implement conditional fields whose
-          predicates depend on multiple other fields?</strong> Build a
-          dependency graph at schema compile time by walking each
-          predicate AST and recording referenced field names. On any
-          field change, look up the affected rules in O(1) via an
-          inverse index, evaluate them in topological order, and emit
-          the resulting visibility / required / disabled effects to
-          the store. Detect cycles at compile time and fail fast.
-        </HighlightBlock>
-
-        <p>
-          <strong>3. Sync vs async validation — orchestration order and
-          race handling?</strong> Run sync validators first; only fire
-          async when sync passes. Each async run gets a token; only
-          the latest token may write its result. Pending and
-          inconclusive states are first-class so the UI doesn&rsquo;t
-          flicker between valid and invalid while a request is in
-          flight.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. How does submission flow map server errors back to
-          fields?</strong> Define a normalized server-error shape
-          (<code>fieldErrors</code> map plus an optional
-          <code>formError</code>). On submit failure, the engine merges
-          <code>fieldErrors</code> into the same error pipeline as
-          client validators. Editing a field clears its server error
-          so users do not fight stale messages.
-        </HighlightBlock>
-
-        <p>
-          <strong>5. How would you support nested array fields (for
-          example, a dynamic list of contacts)?</strong> Use bracketed
-          name paths (<code>contacts[0].email</code>). The renderer
-          maps the array slice to a list of sub-trees; add/remove
-          mutates the slice and the engine re-runs the dependency
-          graph for affected names. Validators on the array itself
-          (<code>min length 1</code>) live alongside per-item
-          validators; both contribute to the same error map.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>6. How do you make this SSR-friendly when default
-          values come from cookies?</strong> Read cookies on the server,
-          pass them as <code>defaultValues</code>; the form is a
-          client island that hydrates with those defaults already in
-          place. The store is initialized synchronously in
-          <code>useMemo</code> so the hydrated tree matches the
-          server-rendered tree on first paint and avoids hydration
-          mismatch warnings.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>7. Compare schema-driven vs React Hook Form / Formik.
-          Why pick yours?</strong> Hook Form and Formik are excellent
-          field-level state libraries, but they leave structural
-          concerns (conditional logic, multi-step flows, plugin
-          registries, schema versioning) to the application. A Form
-          Builder unifies those concerns behind one runtime so that
-          a schema is a complete description of behavior, not a
-          starting point. For organizations with many forms, that is
-          a much better leverage point.
-        </HighlightBlock>
-
-        <p>
-          <strong>8. How would you migrate to React Server Components?</strong>
-          The form runtime stays a client island because it&rsquo;s
-          inherently interactive. RSC helps everywhere else: the page
-          shell, layout chrome, and read-only confirmation screens
-          can be server components, and large select option lists can
-          be passed in as serializable props from a server component
-          rather than fetched client-side. The engine API does not
-          need to change; the boundary between server and client just
-          moves outward.
-        </p>
       </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="important">A robust Form Builder is a <strong>headless engine plus a
-          plugin renderer</strong> driven by a declarative schema. The
-          engine owns one store per form, exposes selector-based
-          subscriptions to keep renders local, and orchestrates sync
-          and async validation, conditional behavior, and multi-step
-          flows deterministically.</HighlightBlock>
-<HighlightBlock as="p" tier="important">Schema-as-data with a safe
-          predicate DSL keeps the surface secure even when schemas
-          arrive from a CMS. The right invariants — DOM-order
-          conditional insertion, abortable async validators, per-form
-          state scoping, server-error ingestion — separate a
-          forgettable form library from a load-bearing platform
-          component.</HighlightBlock>
-        <HighlightBlock as="p" tier="crucial">
-          Use this approach when forms are numerous, change
-          frequently, or are authored by non-engineers; prefer
-          hand-rolled forms when you have a small number with bespoke
-          interaction patterns where the cost of a runtime engine
-          exceeds the marginal value of consistency.
-        </HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+<section><h2>Architecture &amp; Flow</h2><p>Separate field input, typed state transitions, derived projections, persistence effects, and bounded telemetry. Draft, preview, validated, and submitted states must not collapse into one mutable object. Every debounce timer, request, storage write, worker, and subscription needs an explicit owner and cleanup path.</p><p>Treat the form schema as versioned data. Editor selection and drag projection are transient; preview consumes a validated immutable snapshot. Commit only after the current policy gate succeeds and retain enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/forms-input-systems/form-builder-recovery.svg" alt="Design a Form Builder System recovery" caption="Recovery flow: reject obsolete work, preserve recoverable drafts, and explain the outcome." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Hard-coded forms are cheaper for stable flows; a builder is justified when operations teams need controlled change without product deployments.</p><p>Published schema versions are immutable. Draft edits autosave against a base version and preview only a last-known-valid schema snapshot. Scale pressure comes from large schemas, cyclic conditions, plugin fields, autosave conflicts, inaccessible generated forms, and incompatible migrations. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic transitions only when rollback is deterministic and understandable. Authorization and final validation remain server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable field ids, typed events, explicit state unions, schema versions, generation guards, SSR-safe feature checks, semantic HTML, and idempotent cleanup. Test keyboard use, screen-reader output, stale responses, offline recovery, retries, restoration, and constrained devices.</p><p>Measure field latency, blocked actions, stale drops, save conflicts, retries, storage pressure, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing drafts and committed values, trusting client validation, leaking resources, accepting stale async completion, and hiding rollback from the user.</p><p>For this topic, validate schema before preview, detect cycles, reject unknown field types, migrate explicitly, preserve drafts after conflicts, and isolate plugin failures. Validate untrusted input, authorize durable mutations server-side, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to high-value forms where users expect responsive input while browser, persistence, validation, and policy boundaries can fail independently. Reuse the controller structure while injecting product policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Treat the form schema as versioned data. Editor selection and drag projection are transient; preview consumes a validated immutable snapshot.</p><h3>What breaks at scale?</h3><p>large schemas, cyclic conditions, plugin fields, autosave conflicts, inaccessible generated forms, and incompatible migrations. I would bound expensive work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>Published schema versions are immutable. Draft edits autosave against a base version and preview only a last-known-valid schema snapshot.</p><h3>How do you recover?</h3><p>I would validate schema before preview, detect cycles, reject unknown field types, migrate explicitly, preserve drafts after conflicts, and isolate plugin failures.</p><h3>Why this architecture?</h3><p>Hard-coded forms are cheaper for stable flows; a builder is justified when operations teams need controlled change without product deployments.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank" rel="noreferrer">MDN localStorage</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

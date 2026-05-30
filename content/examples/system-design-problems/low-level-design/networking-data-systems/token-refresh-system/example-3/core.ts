@@ -1,90 +1,107 @@
-export type tokenRefreshSystemRuntimeState = {
-  topic: "token-refresh-system";
-  mounted: boolean;
-  lastSuccessfulVersion: number;
-  pendingVersion: number;
-  lastInteractionAtMs: number;
-  lastRecoveryAtMs?: number;
-  signal: {
-    attempt: number;
-    deadlineMs: number;
-    cacheAgeMs: number;
-    conflictCount: number;
-  };
+export type TokenRefreshSystemExample3Operation = {
+  key: string;
+  tenantId: string;
+  sequence: number;
+  startedAtMs: number;
+  deadlineMs: number;
+  idempotencyKey?: string;
+  payloadBytes: number;
 };
 
-export type tokenRefreshSystemRecoveryPlan = {
-  mode: "continue" | "degrade" | "block-and-recover";
-  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
-  actions: Array<"reuse-inflight-request" | "rollback-optimistic-update" | "retry-with-jitter" | "emit-telemetry" | "keep-current-state">;
-  evidence: string[];
+export type TokenRefreshSystemExample3RuntimeState = {
+  currentSequence: number;
+  status: "idle" | "loading" | "success" | "retrying" | "degraded" | "failed";
+  cacheAgeMs: number;
+  subscribers: number;
+  retryBudget: number;
+  lastCommittedKey?: string;
 };
 
-function minutes(ms: number) {
-  return Math.round(ms / 60_000);
-}
+export type TokenRefreshSystemExample3Decision = {
+  action:
+    | "start-transport"
+    | "reuse-inflight"
+    | "serve-cache-and-revalidate"
+    | "ignore-stale-response"
+    | "schedule-retry"
+    | "degrade-visible-state"
+    | "commit";
+  reasons: string[];
+  nextState: TokenRefreshSystemExample3RuntimeState;
+  telemetry: Record<string, string | number | boolean | undefined>;
+};
 
-export function planTokenRefreshSystemRecovery(
-  state: tokenRefreshSystemRuntimeState,
+const topic = "Design a Token Refresh System";
+const invariant = "refresh token rotation failure must reject queued requests and clear client auth state";
+
+export function evaluateTokenRefreshSystemExample3(
+  operation: TokenRefreshSystemExample3Operation,
+  state: TokenRefreshSystemExample3RuntimeState,
   nowMs: number,
-): tokenRefreshSystemRecoveryPlan {
-  const evidence: string[] = [];
-  const actions: tokenRefreshSystemRecoveryPlan["actions"] = ["emit-telemetry"];
-  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
-  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
+): TokenRefreshSystemExample3Decision {
+  const reasons: string[] = [];
+  const expired = nowMs - operation.startedAtMs > operation.deadlineMs;
+  const staleSequence = operation.sequence < state.currentSequence;
+  const freshCache = state.cacheAgeMs < 5_000;
 
-  if (!state.mounted) evidence.push("component-unmounted-before-completion");
-  if (versionGap > 1) evidence.push("multiple-versions-pending");
-  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
-  if (state.signal.attempt > 2_000) evidence.push("attempt-breached");
-  if (state.signal.deadlineMs > 0) evidence.push("deadlineMs-requires-operator-attention");
-  if (state.signal.cacheAgeMs > 0.2) evidence.push("cacheAgeMs-unsafe-for-silent-commit");
+  if (staleSequence) reasons.push("stale-sequence");
+  if (expired) reasons.push("deadline-expired");
+  if (operation.payloadBytes > 256_000) reasons.push("payload-too-large-for-interactive-path");
+  if (state.subscribers > 1 && !expired) reasons.push("shared-subscribers-can-reuse-work");
+  if (freshCache && state.status === "success") reasons.push("fresh-cache-available");
+  if (state.retryBudget <= 0 && expired) reasons.push("retry-budget-exhausted");
 
-  if (!state.mounted) {
-    actions.push("reuse-inflight-request");
-    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
-  }
-
-  if (versionGap > 1 || state.signal.cacheAgeMs > 0.2) {
-    actions.push("rollback-optimistic-update", "retry-with-jitter");
-    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
-  }
-
-  actions.push("keep-current-state");
-  return { mode: "continue", userVisibleState: "current", actions, evidence };
-}
-
-export function runTokenRefreshSystemEdgeCaseScenario() {
-  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
-  const normal = planTokenRefreshSystemRecovery(
-    {
-      topic: "token-refresh-system",
-      mounted: true,
-      lastSuccessfulVersion: 21,
-      pendingVersion: 22,
-      lastInteractionAtMs: nowMs - 90_000,
-      signal: { attempt: 160, deadlineMs: 0, cacheAgeMs: 0.01, conflictCount: 0 },
-    },
-    nowMs,
-  );
-
-  const failure = planTokenRefreshSystemRecovery(
-    {
-      topic: "token-refresh-system",
-      mounted: true,
-      lastSuccessfulVersion: 21,
-      pendingVersion: 25,
-      lastInteractionAtMs: nowMs - 18 * 60_000,
-      signal: { attempt: 2_900, deadlineMs: 2, cacheAgeMs: 0.42, conflictCount: 4 },
-    },
-    nowMs,
-  );
+  let action: TokenRefreshSystemExample3Decision["action"] = "start-transport";
+  if (staleSequence) action = "ignore-stale-response";
+  else if (freshCache) action = "serve-cache-and-revalidate";
+  else if (state.subscribers > 1 && state.status === "loading") action = "reuse-inflight";
+  else if (expired && state.retryBudget > 0) action = "schedule-retry";
+  else if (expired) action = "degrade-visible-state";
+  else if (state.status === "loading") action = "commit";
 
   return {
-    topic: "Token Refresh System",
-    subcategory: "networking-data-systems",
-    invariant: "Retries, dedupe, and optimistic updates must be idempotent and observable.",
-    normal,
-    failure,
+    action,
+    reasons,
+    nextState: {
+      ...state,
+      currentSequence: Math.max(state.currentSequence, operation.sequence),
+      status: action === "commit" ? "success" : action === "schedule-retry" ? "retrying" : action === "degrade-visible-state" ? "degraded" : state.status,
+      retryBudget: action === "schedule-retry" ? state.retryBudget - 1 : state.retryBudget,
+      lastCommittedKey: action === "commit" ? operation.key : state.lastCommittedKey,
+    },
+    telemetry: {
+      topic,
+      focus: "recovery",
+      key: operation.key,
+      tenantId: operation.tenantId,
+      action,
+      invariant,
+      cacheAgeMs: state.cacheAgeMs,
+      retryBudget: state.retryBudget,
+    },
   };
+}
+
+export function runTokenRefreshSystemExample3Scenario() {
+  const nowMs = Date.parse("2026-05-29T10:00:00.000Z");
+  const baseState: TokenRefreshSystemExample3RuntimeState = {
+    currentSequence: 8,
+    status: "success",
+    cacheAgeMs: 2_000,
+    subscribers: 3,
+    retryBudget: 0,
+    lastCommittedKey: "token-refresh-system:previous",
+  };
+
+  const operation: TokenRefreshSystemExample3Operation = {
+    key: "token-refresh-system:tenant-acme:resource-42",
+    tenantId: "tenant-acme",
+    sequence: 9,
+    startedAtMs: nowMs - 40_000,
+    deadlineMs: 15_000,
+    idempotencyKey: "idem-token-refresh-system-42",
+    payloadBytes: 4_200,
+  };
+
+  return evaluateTokenRefreshSystemExample3(operation, baseState, nowMs);
 }

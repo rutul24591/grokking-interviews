@@ -1,89 +1,31 @@
-export type auditLogViewerUiSignal = {
-  latencyMs: number;
-  staleAgeMs: number;
-  conflictCount: number;
-  errorRate: number;
-};
-
-export type auditLogViewerUiEvent = {
-  id: string;
-  topic: "audit-log-viewer-ui";
-  actorId: string;
-  sequence: number;
-  receivedAtMs: number;
-  expectedVersion: number;
-  currentVersion: number;
-  payloadSize: number;
-  signal: auditLogViewerUiSignal;
-};
-
-export type auditLogViewerUiDecision = {
-  accepted: boolean;
-  action: "show-stale-state" | "queue-repair" | "record-audit-event" | "commit";
-  nextVersion: number;
-  reasons: string[];
-  audit: string[];
-};
-
-const topicInvariant = "The UI should preserve user intent while exposing stale, failed, or conflicting state clearly.";
-
-export function evaluateAuditLogViewerUiEvent(event: auditLogViewerUiEvent): auditLogViewerUiDecision {
-  const reasons: string[] = [];
-
-  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
-  if (event.sequence <= 0) reasons.push("invalid-sequence");
-  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
-  if (event.signal.latencyMs > 2_000) reasons.push("latencyMs-outside-slo");
-  if (event.signal.conflictCount > 0.2) reasons.push("conflictCount-requires-guardrail");
-
-  let action: auditLogViewerUiDecision["action"] = "commit";
-  if (reasons.includes("version-mismatch")) action = "show-stale-state";
-  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "queue-repair";
-  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "record-audit-event";
-
-  return {
-    accepted: reasons.length === 0,
-    action,
-    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
-    reasons,
-    audit: [
-      "topic:Audit Log Viewer UI",
-      "subcategory:real-world-scenario-lld",
-      "entity:product workflow event",
-      "state:screen state snapshot",
-      "operation:user-visible state transition",
-      "invariant:" + topicInvariant,
-      "actor:" + event.actorId,
-      "event:" + event.id,
-    ],
-  };
+export interface AuditLogViewerUiMutation{id:string;
+scope:string;
+baseVersion:number;
+payloadSize:number;
+authorized:boolean;
+idempotencyKey:string;
 }
-
-export function runAuditLogViewerUiContractScenario() {
-  const base = Date.parse("2026-05-29T09:00:00.000Z");
-  const accepted = evaluateAuditLogViewerUiEvent({
-    id: "audit-log-viewer-ui-evt-1",
-    topic: "audit-log-viewer-ui",
-    actorId: "user-42",
-    sequence: 7,
-    receivedAtMs: base,
-    expectedVersion: 12,
-    currentVersion: 12,
-    payloadSize: 18_500,
-    signal: { latencyMs: 180, staleAgeMs: 0, conflictCount: 0.01, errorRate: 1 },
-  });
-
-  const guarded = evaluateAuditLogViewerUiEvent({
-    id: "audit-log-viewer-ui-evt-late",
-    topic: "audit-log-viewer-ui",
-    actorId: "user-42",
-    sequence: 8,
-    receivedAtMs: base + 4_000,
-    expectedVersion: 12,
-    currentVersion: 14,
-    payloadSize: 310_000,
-    signal: { latencyMs: 2_700, staleAgeMs: 3, conflictCount: 0.34, errorRate: 2 },
-  });
-
-  return { accepted, guarded };
+export interface AuditLogViewerUiDecision{accepted:boolean;
+action:"commit"|"refresh"|"block"|"dedupe"|"review";
+reasons:string[];
+nextVersion:number;
+}
+export class AuditLogViewerUiPolicy{private seen=new Set<string>();
+constructor(private version:number){}evaluate(m:AuditLogViewerUiMutation):AuditLogViewerUiDecision{const reasons:string[]=[];
+if(!m.authorized)reasons.push("unauthorized");
+if(m.baseVersion!==this.version)reasons.push("version-mismatch");
+if(m.payloadSize>256000)reasons.push("payload-too-large");
+if(this.seen.has(m.idempotencyKey))return{accepted:true,action:"dedupe",reasons:["duplicate-idempotency-key"],nextVersion:this.version};
+if(reasons.includes("unauthorized"))return{accepted:false,action:"block",reasons,nextVersion:this.version};
+if(reasons.includes("version-mismatch"))return{accepted:false,action:"review",reasons,nextVersion:this.version};
+if(reasons.length)return{accepted:false,action:"block",reasons,nextVersion:this.version};
+this.seen.add(m.idempotencyKey);
+this.version+=1;
+return{accepted:true,action:"commit",reasons,nextVersion:this.version};
+}}
+export function runAuditLogViewerUiPolicy(){const p=new AuditLogViewerUiPolicy(7);
+const accepted=p.evaluate({id:"1",scope:"tenant-a",baseVersion:7,payloadSize:1024,authorized:true,idempotencyKey:"k1"});
+const conflict=p.evaluate({id:"2",scope:"tenant-a",baseVersion:4,payloadSize:1024,authorized:true,idempotencyKey:"k2"});
+const duplicate=p.evaluate({id:"3",scope:"tenant-a",baseVersion:8,payloadSize:1024,authorized:true,idempotencyKey:"k1"});
+return{accepted,conflict,duplicate};
 }

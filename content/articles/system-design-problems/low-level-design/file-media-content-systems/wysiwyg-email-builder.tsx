@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function WYSIWYGEmailBuilderArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function WYSIWYGEmailBuilderArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a WYSIWYG Email Builder</h1><h2>Definition &amp; Context</h2><p>Design a WYSIWYG Email Builder is an implementation-heavy low-level design problem covering block schema, drag layout, style allowlist, template versioning, variable substitution, deterministic HTML compilation, client preview, and test send. A principal-level answer must explain state ownership, browser or worker boundaries, scale limits, consistency, rollback, privacy, cost, and observability.</p><p>Treat the block schema as durable truth. Canvas DOM, generated email HTML, plaintext output, and client previews are disposable projections. The core structures are block tree, stable block ids, style whitelist, variable registry, schema version, undo journal, renderer version, compatibility warnings, preview cache, and receipt.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/file-media-content-systems/wysiwyg-email-builder-runtime.svg" alt="Design a WYSIWYG Email Builder runtime" caption="Topic-specific runtime from source intake through guarded projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -97,7 +96,7 @@ export default function WYSIWYGEmailBuilderArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -137,7 +136,7 @@ export default function WYSIWYGEmailBuilderArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -185,14 +184,10 @@ export default function WYSIWYGEmailBuilderArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/wysiwyg-email-builder-architecture.svg"
-        alt="WYSIWYG Email Builder Architecture"
-        caption="Block palette → Document model (ordered list of blocks with content + style) → Canvas (drag/drop, edit) + Preview pane (responsive, dark/light) → Output renderer (MJML or hand-rolled table HTML). Variables interpolate at send time."
-      />
+      
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <p>
           The builder has three main planes: a
           <strong> block-based document model</strong>{" "}
@@ -310,7 +305,7 @@ export default function WYSIWYGEmailBuilderArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important"><strong> Inspector</strong></Highlight> renders edit
           controls for the selected block.
           <strong> PreviewPane</strong> renders the
@@ -324,7 +319,7 @@ export default function WYSIWYGEmailBuilderArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Document, selection, undo stack, theme <Highlight tier="important">— all
           in external store. Palette,</Highlight> inspector,
@@ -333,7 +328,7 @@ export default function WYSIWYGEmailBuilderArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="crucial">Document shape:{" "}
           <code>{` { id, version, subject, preview, theme, blocks: [...] } `}</code>.</HighlightBlock>
 <HighlightBlock as="p" tier="important">Block shape:{" "}
@@ -345,7 +340,7 @@ export default function WYSIWYGEmailBuilderArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Memoized block renders. Preview iframe
           updates throttled. Drag uses pointer events
@@ -356,7 +351,7 @@ export default function WYSIWYGEmailBuilderArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">Variable picker as a popover from
           text editors. Drop indicators during drag.
           Empty canvas</HighlightBlock>
@@ -366,7 +361,7 @@ export default function WYSIWYGEmailBuilderArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Drag has keyboard alternative (focus a
           block, Cut, <Highlight tier="important">navigate, Paste). Inspector
@@ -377,7 +372,7 @@ export default function WYSIWYGEmailBuilderArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="crucial">Variables interpolate at send time only,
           not at preview time (preview shows
           placeholders).</HighlightBlock>
@@ -387,7 +382,7 @@ export default function WYSIWYGEmailBuilderArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="crucial">Visual regression tests of
           rendered output across mail clients
           (using</HighlightBlock>
@@ -397,7 +392,7 @@ export default function WYSIWYGEmailBuilderArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">button line-height):
           handled by the renderer&rsquo;s known
           quirks. Dark mode rendering: preview shows
@@ -409,7 +404,7 @@ export default function WYSIWYGEmailBuilderArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="crucial"><Highlight tier="important">The pattern (document model + canvas
           + preview + renderer) reuses across</Highlight></HighlightBlock>
 <HighlightBlock as="p" tier="important">other
@@ -418,7 +413,7 @@ export default function WYSIWYGEmailBuilderArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="crucial">UI strings via i18n. Email content is the
           marketer&rsquo;s own language;</HighlightBlock>
 <HighlightBlock as="p" tier="important">variables can localize per recipient at
@@ -429,7 +424,7 @@ export default function WYSIWYGEmailBuilderArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>MJML vs hand-rolled tables</h3>
         <HighlightBlock as="p" tier="important">
@@ -467,106 +462,18 @@ export default function WYSIWYGEmailBuilderArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">Dynamic content blocks based on recipient
           attributes. Spam score integration.</HighlightBlock>
 <HighlightBlock as="p" tier="important"><Highlight tier="important">Real-time collaborative editing.
           Cross-channel (email + push + SMS) unified
           composer.</Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. Why MJML?</strong> Mail clients
-          render HTML inconsistently; tables and
-          inline styles are required. MJML
-          abstracts these concerns: write
-          semantic MJML, get robust output. It
-          handles Outlook quirks, Gmail rules,
-          mobile responsiveness, and dark mode.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How does live preview work?</strong>{" "}
-          Render the document to HTML/MJML, set as
-          srcdoc on a sandboxed iframe at the
-          chosen device width. Throttle updates to
-          avoid stuttering on rapid edits.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>3. How are variables handled?</strong>{" "}
-          Inserted as tokens
-          (<code>{`{{ firstName }}`}</code>). At
-          edit time, render as styled chips. At
-          preview time, render placeholder values.
-          Interpolation happens at send time
-          server-side.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. How does responsive preview
-          work?</strong> Set the iframe width to
-          desktop (640 px), tablet (480 px), or
-          mobile (320 px). The output HTML uses
-          MJML&rsquo;s responsive primitives so
-          layout adapts.
-        </HighlightBlock>
-
-        <p>
-          <strong>5. How is undo/redo
-          implemented?</strong> Command-pattern
-          stack. Each edit is a command with
-          apply/undo. Stack pushes on commit;
-          undo pops and applies inverse.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>6. How is dark mode handled?</strong>{" "}
-          Mail clients vary — some auto-invert,
-          some respect prefers-color-scheme. The
-          renderer outputs styles that work for
-          both via the
-          <code> @media (prefers-color-scheme: dark)</code>{" "}
-          rule for clients that support it, and
-          color schemes that look good when
-          inverted for those that don&rsquo;t.
-        </HighlightBlock>
-
-        <p>
-          <strong>7. How is the output
-          tested?</strong> Tools like Litmus and
-          Email on Acid render the output across
-          dozens of mail clients and produce
-          screenshots. Visual regression tests
-          alert on changes. Internal test sends
-          to QA accounts.
-        </p>
-
-        <p>
-          <strong>8. How does this differ from a
-          regular page builder?</strong> Email
-          rendering is constrained by mail-client
-          quirks (table-based layouts, inline
-          styles, Outlook&rsquo;s Word renderer).
-          Page builders target browsers, which
-          support modern CSS. The block model is
-          similar; the output renderer is
-          dramatically different.
-        </p>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">Brand themes
-          parameterize visual style. Variables
-          interpolate at send time. The</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">result is
-          marketers composing branded, reliable
-          emails without writing HTML.</Highlight></HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate durable source data, transient interaction state, derived render state, remote or worker effects, and bounded telemetry. Every object URL, request, worker, listener, timer, cache entry, and decoder task needs an explicit owner and cleanup path.</p><p>Treat the block schema as durable truth. Canvas DOM, generated email HTML, plaintext output, and client previews are disposable projections. Commit durable changes only after policy validation and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/file-media-content-systems/wysiwyg-email-builder-recovery.svg" alt="Design a WYSIWYG Email Builder recovery" caption="Recovery flow: classify failure, preserve stable state, and degrade predictably." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Raw HTML editing is flexible but unsafe; a block schema is justified for non-technical users and predictable output across hostile clients.</p><p>Published templates are immutable versions. Draft schemas autosave by version; compilation is deterministic for a renderer version while delivery remains external. Scale pressure comes from large templates, nested blocks, unsafe markup, missing variables, Outlook quirks, schema migration, images, and client rendering divergence. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic projection only when rollback is deterministic and visible. Keep authorization, validation, and destructive actions server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed states, generation guards, bounded queues, abortable effects, semantic HTML, and idempotent cleanup. Test accessibility, stale work, retries, unmount, constrained devices, large files, and corrupted input.</p><p>Measure latency, memory, queue pressure, stale drops, retries, fallbacks, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include treating rendered output as durable truth, leaking resources, accepting stale worker completion, unbounded prefetch, and hiding degraded behavior.</p><p>For this topic, reject unsupported nesting, sanitize paste, require defaults, surface client warnings, preserve valid drafts, and roll back publication by version. Validate untrusted content, authorize durable mutations, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to content-heavy product surfaces where browser APIs, workers, networks, and remote policy fail independently. Reuse the controller boundary while injecting product-specific fallback and retention policy.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Treat the block schema as durable truth. Canvas DOM, generated email HTML, plaintext output, and client previews are disposable projections.</p><h3>What breaks at scale?</h3><p>large templates, nested blocks, unsafe markup, missing variables, Outlook quirks, schema migration, images, and client rendering divergence. I would bound work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>Published templates are immutable versions. Draft schemas autosave by version; compilation is deterministic for a renderer version while delivery remains external.</p><h3>How do you recover?</h3><p>I would reject unsupported nesting, sanitize paste, require defaults, surface client warnings, preserve valid drafts, and roll back publication by version.</p><h3>Why this architecture?</h3><p>Raw HTML editing is flexible but unsafe; a block schema is justified for non-technical users and predictable output across hostile clients.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API" target="_blank" rel="noreferrer">MDN Web Workers API</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

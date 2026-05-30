@@ -1,89 +1,107 @@
-export type tokenRefreshSystemSignal = {
-  attempt: number;
-  deadlineMs: number;
-  cacheAgeMs: number;
-  conflictCount: number;
-};
-
-export type tokenRefreshSystemEvent = {
-  id: string;
-  topic: "token-refresh-system";
-  actorId: string;
+export type TokenRefreshSystemExample2Operation = {
+  key: string;
+  tenantId: string;
   sequence: number;
-  receivedAtMs: number;
-  expectedVersion: number;
-  currentVersion: number;
-  payloadSize: number;
-  signal: tokenRefreshSystemSignal;
+  startedAtMs: number;
+  deadlineMs: number;
+  idempotencyKey?: string;
+  payloadBytes: number;
 };
 
-export type tokenRefreshSystemDecision = {
-  accepted: boolean;
-  action: "reuse-inflight-request" | "rollback-optimistic-update" | "retry-with-jitter" | "commit";
-  nextVersion: number;
+export type TokenRefreshSystemExample2RuntimeState = {
+  currentSequence: number;
+  status: "idle" | "loading" | "success" | "retrying" | "degraded" | "failed";
+  cacheAgeMs: number;
+  subscribers: number;
+  retryBudget: number;
+  lastCommittedKey?: string;
+};
+
+export type TokenRefreshSystemExample2Decision = {
+  action:
+    | "start-transport"
+    | "reuse-inflight"
+    | "serve-cache-and-revalidate"
+    | "ignore-stale-response"
+    | "schedule-retry"
+    | "degrade-visible-state"
+    | "commit";
   reasons: string[];
-  audit: string[];
+  nextState: TokenRefreshSystemExample2RuntimeState;
+  telemetry: Record<string, string | number | boolean | undefined>;
 };
 
-const topicInvariant = "Retries, dedupe, and optimistic updates must be idempotent and observable.";
+const topic = "Design a Token Refresh System";
+const invariant = "refresh token rotation failure must reject queued requests and clear client auth state";
 
-export function evaluateTokenRefreshSystemEvent(event: tokenRefreshSystemEvent): tokenRefreshSystemDecision {
+export function evaluateTokenRefreshSystemExample2(
+  operation: TokenRefreshSystemExample2Operation,
+  state: TokenRefreshSystemExample2RuntimeState,
+  nowMs: number,
+): TokenRefreshSystemExample2Decision {
   const reasons: string[] = [];
+  const expired = nowMs - operation.startedAtMs > operation.deadlineMs;
+  const staleSequence = operation.sequence < state.currentSequence;
+  const freshCache = state.cacheAgeMs < 10_000;
 
-  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
-  if (event.sequence <= 0) reasons.push("invalid-sequence");
-  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
-  if (event.signal.attempt > 2_000) reasons.push("attempt-outside-slo");
-  if (event.signal.cacheAgeMs > 0.2) reasons.push("cacheAgeMs-requires-guardrail");
+  if (staleSequence) reasons.push("stale-sequence");
+  if (expired) reasons.push("deadline-expired");
+  if (operation.payloadBytes > 256_000) reasons.push("payload-too-large-for-interactive-path");
+  if (state.subscribers > 1 && !expired) reasons.push("shared-subscribers-can-reuse-work");
+  if (freshCache && state.status === "success") reasons.push("fresh-cache-available");
+  if (state.retryBudget <= 0 && expired) reasons.push("retry-budget-exhausted");
 
-  let action: tokenRefreshSystemDecision["action"] = "commit";
-  if (reasons.includes("version-mismatch")) action = "reuse-inflight-request";
-  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "rollback-optimistic-update";
-  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "retry-with-jitter";
+  let action: TokenRefreshSystemExample2Decision["action"] = "start-transport";
+  if (staleSequence) action = "ignore-stale-response";
+  else if (freshCache) action = "serve-cache-and-revalidate";
+  else if (state.subscribers > 1 && state.status === "loading") action = "reuse-inflight";
+  else if (expired && state.retryBudget > 0) action = "schedule-retry";
+  else if (expired) action = "degrade-visible-state";
+  else if (state.status === "loading") action = "commit";
 
   return {
-    accepted: reasons.length === 0,
     action,
-    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
     reasons,
-    audit: [
-      "topic:Token Refresh System",
-      "subcategory:networking-data-systems",
-      "entity:client request",
-      "state:cache and in-flight registry",
-      "operation:network data transition",
-      "invariant:" + topicInvariant,
-      "actor:" + event.actorId,
-      "event:" + event.id,
-    ],
+    nextState: {
+      ...state,
+      currentSequence: Math.max(state.currentSequence, operation.sequence),
+      status: action === "commit" ? "success" : action === "schedule-retry" ? "retrying" : action === "degrade-visible-state" ? "degraded" : state.status,
+      retryBudget: action === "schedule-retry" ? state.retryBudget - 1 : state.retryBudget,
+      lastCommittedKey: action === "commit" ? operation.key : state.lastCommittedKey,
+    },
+    telemetry: {
+      topic,
+      focus: "edge",
+      key: operation.key,
+      tenantId: operation.tenantId,
+      action,
+      invariant,
+      cacheAgeMs: state.cacheAgeMs,
+      retryBudget: state.retryBudget,
+    },
   };
 }
 
-export function runTokenRefreshSystemContractScenario() {
-  const base = Date.parse("2026-05-29T09:00:00.000Z");
-  const accepted = evaluateTokenRefreshSystemEvent({
-    id: "token-refresh-system-evt-1",
-    topic: "token-refresh-system",
-    actorId: "user-42",
+export function runTokenRefreshSystemExample2Scenario() {
+  const nowMs = Date.parse("2026-05-29T10:00:00.000Z");
+  const baseState: TokenRefreshSystemExample2RuntimeState = {
+    currentSequence: 8,
+    status: "loading",
+    cacheAgeMs: 120_000,
+    subscribers: 2,
+    retryBudget: 2,
+    lastCommittedKey: "token-refresh-system:previous",
+  };
+
+  const operation: TokenRefreshSystemExample2Operation = {
+    key: "token-refresh-system:tenant-acme:resource-42",
+    tenantId: "tenant-acme",
     sequence: 7,
-    receivedAtMs: base,
-    expectedVersion: 12,
-    currentVersion: 12,
-    payloadSize: 18_500,
-    signal: { attempt: 180, deadlineMs: 0, cacheAgeMs: 0.01, conflictCount: 1 },
-  });
+    startedAtMs: nowMs - 800,
+    deadlineMs: 15_000,
+    idempotencyKey: "idem-token-refresh-system-42",
+    payloadBytes: 18_000,
+  };
 
-  const guarded = evaluateTokenRefreshSystemEvent({
-    id: "token-refresh-system-evt-late",
-    topic: "token-refresh-system",
-    actorId: "user-42",
-    sequence: 8,
-    receivedAtMs: base + 4_000,
-    expectedVersion: 12,
-    currentVersion: 14,
-    payloadSize: 310_000,
-    signal: { attempt: 2_700, deadlineMs: 3, cacheAgeMs: 0.34, conflictCount: 2 },
-  });
-
-  return { accepted, guarded };
+  return evaluateTokenRefreshSystemExample2(operation, baseState, nowMs);
 }

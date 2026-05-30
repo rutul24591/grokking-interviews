@@ -1,6 +1,3 @@
-# Retry Mechanism — Example 1
+# Design a Retry Mechanism - Example 1
 
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+This example implements a concrete backoff with jitter, deadline cancellation, retryable classifier, and retry budget scenario for Design a Retry Mechanism. Inspect `core.ts` for the runtime state, operation contract, guard decisions, telemetry, and edge-case handling.

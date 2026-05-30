@@ -21,11 +21,10 @@ export const metadata: ArticleMetadata = {
   relatedTopics: ["form-builder", "theme-theming-system"],
 };
 
-export default function ColorPickerArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function ArticlePage(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Color Picker Input System</h1><h2>Definition &amp; Context</h2><p>Design a Color Picker Input System is an implementation-heavy low-level design problem covering canonical color representation, channel editing, pointer sampling, alpha, palette storage, contrast checks, keyboard adjustments, and form commit. A principal-level answer must explain state ownership, durable boundaries, lifecycle cleanup, failure recovery, privacy, cost, and observability.</p><p>Use one canonical RGBA value and derive HSV, HSL, hex, and contrast projections. Keep pointer preview separate from the committed form value. The core structures are canonical RGBA, channel drafts, hue position, saturation-value plane, alpha, palette history, contrast target, dirty state, and undo boundary.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/forms-input-systems/color-picker-runtime.svg" alt="Design a Color Picker Input System runtime" caption="Topic-specific runtime from input intent through validated durable state." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -83,7 +82,7 @@ export default function ColorPickerArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -117,7 +116,7 @@ export default function ColorPickerArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -173,7 +172,7 @@ export default function ColorPickerArticle() {
       </section>
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <HighlightBlock as="p" tier="important">
           The picker is built on three architectural decisions
           that reinforce each other: <strong>canonical RGBA
@@ -289,14 +288,10 @@ export default function ColorPickerArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/color-picker-architecture.svg"
-        alt="Color Picker Architecture"
-        caption="Canonical RGBA float storage; HSV / HSL / HEX derived on demand. SV area + hue + alpha + format inputs all bind to the same canonical value through pure converters, with EyeDropper feature-detected and ContrastPreview computed live."
-      />
+      
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="important">
           <strong>ColorPicker</strong> is the container; owns
           canonical RGBA state, exposes
@@ -347,7 +342,7 @@ export default function ColorPickerArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="important">Canonical state:{" "}
           <code>{`{ r, g, b, a }`}</code> in [0..1] floats.
           Derived state: HSV (computed from RGB on demand),
@@ -371,7 +366,7 @@ export default function ColorPickerArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important">Inputs:{" "}
           <code>value</code>, </Highlight><code>onChange</code>,
           <code> defaultValue</code>, <code>format</code>,
@@ -387,28 +382,28 @@ export default function ColorPickerArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance Strategy</h2>
+        <h3>⚡ Performance Strategy</h3>
         <HighlightBlock as="p" tier="crucial">Format converters are pure and cheap; we run them on every change without concern. Memoized</HighlightBlock>
 <HighlightBlock as="p" tier="important">Intl.NumberFormat instances per locale for displaying numeric values. Persistence (recents,</HighlightBlock>
 <HighlightBlock as="p" tier="important">saved palettes) writes are debounced; we don&rsquo;t write on every drag, only on pointer up.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🎨 UI/UX Considerations</h2>
+        <h3>🎨 UI/UX Considerations</h3>
         <HighlightBlock as="p" tier="crucial">Contrast badge updates live but doesn&rsquo;t flash obnoxiously — we</HighlightBlock>
 <HighlightBlock as="p" tier="important">transition the color and ratio text smoothly. The alpha slider&rsquo;s checkerboard</HighlightBlock>
 <HighlightBlock as="p" tier="important">makes transparency visible at a glance, much clearer than a numeric value alone.</HighlightBlock>
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">The hue and alpha sliders use native range inputs where possible — they get keyboard, screen reader, and high-contrast mode for free. Numeric inputs are labeled</HighlightBlock>
 <HighlightBlock as="p" tier="important">with the format and channel (&ldquo;Red&rdquo;, &ldquo;Hue&rdquo;). The format toggle is a real radio group with proper labels. Contrast preview reports both</HighlightBlock>
 <HighlightBlock as="p" tier="important">the numeric ratio and a textual conclusion (&ldquo;Passes AA for normal text&rdquo;) so screen reader users get the same information visual users see in the badge.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="crucial">Strict parsers reject unparseable strings rather than
           guessing. CSS color names that map to host
           environments (<code>currentColor</code>,
@@ -423,7 +418,7 @@ export default function ColorPickerArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing Strategy</h2>
+        <h3>🧪 Testing Strategy</h3>
         <HighlightBlock as="p" tier="important">Unit tests cover format conversions across the corner cases (R=G=B=0 has undefined hue; alpha=0</HighlightBlock>
 <HighlightBlock as="p" tier="important">should not mutate RGB; HSV vs HSL boundary cases), contrast ratio math against the WCAG 2.x reference</HighlightBlock>
 <HighlightBlock as="p" tier="important">vectors, and parser correctness for HEX, RGB, HSL, HSV, and modern CSS Color Module Level 4 syntaxes.</HighlightBlock>
@@ -437,14 +432,14 @@ export default function ColorPickerArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases &amp; Failure Handling</h2>
+        <h3>🚨 Edge Cases &amp; Failure Handling</h3>
         <HighlightBlock as="p" tier="crucial">Pasted colors with whitespace and modern syntax ( rgb(R G B / A) ): the parser handles current CSS Color Module Level 4</HighlightBlock>
 <HighlightBlock as="p" tier="important">syntax. Numeric input values out of range: clamp on commit with a brief inline note explaining the clamp. SV area drag that</HighlightBlock>
 <HighlightBlock as="p" tier="important">goes outside the bounding rect: pointer capture + clamp ensures the drag continues smoothly and the value stays within bounds.</HighlightBlock>
       </section>
 
       <section>
-        <h2>🔁 Reusability &amp; Extensibility</h2>
+        <h3>🔁 Reusability &amp; Extensibility</h3>
         <HighlightBlock as="p" tier="crucial">The headless core hook can power inline editors,
           popovers, modal dialogs, or completely custom UIs. The
           color model registry supports adding new formats (OKLCH,
@@ -458,7 +453,7 @@ export default function ColorPickerArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="crucial">Format labels, channel names, and badges resolve through
           the host&rsquo;s i18n function. Numeric inputs honor
           locale decimal separators (<code>0,5</code> in many
@@ -470,7 +465,7 @@ export default function ColorPickerArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs &amp; Design Decisions</h2>
+        <h3>⚖️ Trade-offs &amp; Design Decisions</h3>
 
         <h3>Canonical RGB vs HSL</h3>
         <HighlightBlock as="p" tier="important">
@@ -535,103 +530,18 @@ export default function ColorPickerArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">Server-shared palettes for team theming tools. Image-based palette extraction.</HighlightBlock>
 <HighlightBlock as="p" tier="important">APCA as the default contrast standard once it&rsquo;s formalized. Native</HighlightBlock>
 <HighlightBlock as="p" tier="important">EyeDropper polyfill via screen capture API for browsers without EyeDropper support.</HighlightBlock>
       </section>
 
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. Why store RGBA canonically and derive HSV?</strong>
-          Storing one model and deriving others avoids round-trip
-          drift on format switches. Storing HSL and converting to
-          RGB and back loses precision via rounding; storing RGB
-          and deriving HSL doesn&rsquo;t. RGB is also the model
-          that matches display directly, so no extra conversion
-          for rendering.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>2. How do you make the SV area accessible?</strong>{" "}
-          Implement the WAI-ARIA 2D slider pattern: render as
-          <code> role=&quot;slider&quot;</code> with
-          <code> aria-valuemin/max/now</code> on each axis and
-          <code> aria-valuetext</code> describing both axes
-          combined. Arrow keys move; Shift+arrow moves larger
-          steps; Page Up/Down to extremes. Pointer capture for
-          drag.
-        </HighlightBlock>
-
-        <p>
-          <strong>3. How do you avoid hue jitter when alpha
-          changes?</strong> Preserve RGB values when alpha hits 0;
-          don&rsquo;t snap RGB to a default. The user might still
-          want to adjust other channels with alpha at 0; the
-          intuitive behavior is that alpha is independent of
-          hue.
-        </p>
-
-        <p>
-          <strong>4. How is the contrast ratio computed?</strong>{" "}
-          WCAG 2.x: compute relative luminance for each color
-          (gamma-corrected linear weighting of R, G, B), then
-          ratio = (L1 + 0.05) / (L2 + 0.05) with the lighter as
-          L1. AA passes at 4.5:1 for normal text, 3:1 for large
-          text; AAA passes at 7:1 normal, 4.5:1 large.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>5. How do you handle keyboard step sizes?</strong>{" "}
-          Default arrow step is small (0.01 in [0..1] units) for
-          fine adjustments; Shift+arrow is larger (0.1); Page
-          Up/Down jumps to extremes. We expose step
-          configuration so consumers can tune for their
-          context.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>6. How do you support the EyeDropper API with
-          graceful fallback?</strong> Feature-detect
-          <code> window.EyeDropper</code>; render the button only
-          when present. Don&rsquo;t show a disabled button — that
-          confuses users into thinking the feature is broken
-          rather than absent. On call, handle permission
-          rejection silently (no error UI unless user
-          explicitly tried to act).
-        </HighlightBlock>
-
-        <p>
-          <strong>7. What happens to precision under repeated format
-          switches?</strong> Canonical RGBA is held as floats;
-          format conversions derive on demand. Switching HSL →
-          HSV → HSL doesn&rsquo;t go through RGB and back; the
-          canonical RGB doesn&rsquo;t change. Display values round
-          for readability but don&rsquo;t affect the canonical
-          state. So no drift.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>8. How would you add P3 support without breaking
-          existing forms?</strong> Add a wide-gamut canonical
-          mode opt-in via a prop or schema flag. By default,
-          values stay sRGB and clamp on input; in wide-gamut
-          mode, the canonical value can extend beyond sRGB and
-          we surface a gamut warning when displays can&rsquo;t
-          render. Form values still serialize to standard CSS
-          syntax (now including <code>color()</code> notation
-          for wide-gamut).
-        </HighlightBlock>
       </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">CSS-gradient backgrounds keep drag cheap, eyedropper and contrast preview turn the picker from a toy into a real design tool, and a</HighlightBlock>
-<HighlightBlock as="p" tier="important">headless core hook keeps it composable into theming editors, form fields, and annotation tools alike. The non-negotiables are canonical storage,</HighlightBlock>
-<HighlightBlock as="p" tier="important">separated focus and selection on 2D slidesr, and feature-detection for optional surfaces. Get those right and the rest is presentation polish.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+<section><h2>Architecture &amp; Flow</h2><p>Separate field input, typed state transitions, derived projections, persistence effects, and bounded telemetry. Draft, preview, validated, and submitted states must not collapse into one mutable object. Every debounce timer, request, storage write, worker, and subscription needs an explicit owner and cleanup path.</p><p>Use one canonical RGBA value and derive HSV, HSL, hex, and contrast projections. Keep pointer preview separate from the committed form value. Commit only after the current policy gate succeeds and retain enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/forms-input-systems/color-picker-recovery.svg" alt="Design a Color Picker Input System recovery" caption="Recovery flow: reject obsolete work, preserve recoverable drafts, and explain the outcome." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Native color input is robust but limited; a custom picker is justified for alpha, tokens, palette reuse, and accessibility guidance.</p><p>Preview is local and high frequency. Commit one validated color value to form state so undo and persistence do not record every pointer sample. Scale pressure comes from high-frequency pointer updates, invalid paste, rounding drift, wide-gamut values, accessibility contrast, and persisted palette growth. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic transitions only when rollback is deterministic and understandable. Authorization and final validation remain server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable field ids, typed events, explicit state unions, schema versions, generation guards, SSR-safe feature checks, semantic HTML, and idempotent cleanup. Test keyboard use, screen-reader output, stale responses, offline recovery, retries, restoration, and constrained devices.</p><p>Measure field latency, blocked actions, stale drops, save conflicts, retries, storage pressure, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include mixing drafts and committed values, trusting client validation, leaking resources, accepting stale async completion, and hiding rollback from the user.</p><p>For this topic, retain the last valid value, clamp channels, parse strictly, debounce expensive projections, bound palette storage, and announce contrast failures. Validate untrusted input, authorize durable mutations server-side, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to high-value forms where users expect responsive input while browser, persistence, validation, and policy boundaries can fail independently. Reuse the controller structure while injecting product policy explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Use one canonical RGBA value and derive HSV, HSL, hex, and contrast projections. Keep pointer preview separate from the committed form value.</p><h3>What breaks at scale?</h3><p>high-frequency pointer updates, invalid paste, rounding drift, wide-gamut values, accessibility contrast, and persisted palette growth. I would bound expensive work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>Preview is local and high frequency. Commit one validated color value to form state so undo and persistence do not record every pointer sample.</p><h3>How do you recover?</h3><p>I would retain the last valid value, clamp channels, parse strictly, debounce expensive projections, bound palette storage, and announce contrast failures.</p><h3>Why this architecture?</h3><p>Native color input is robust but limited; a custom picker is justified for alpha, tokens, palette reuse, and accessibility guidance.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank" rel="noreferrer">MDN localStorage</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

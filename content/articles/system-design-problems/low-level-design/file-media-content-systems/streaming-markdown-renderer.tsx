@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function StreamingMarkdownRendererArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function StreamingMarkdownRendererArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Streaming Markdown Renderer</h1><h2>Definition &amp; Context</h2><p>Design a Streaming Markdown Renderer is an implementation-heavy low-level design problem covering chunk buffering, incremental parsing, partial structures, render batching, syntax highlighting, auto-scroll, sanitization, and accessible announcements. A principal-level answer must explain state ownership, browser or worker boundaries, scale limits, consistency, rollback, privacy, cost, and observability.</p><p>Keep raw chunks, parser carry state, committed blocks, open partial block, highlight generations, and scroll-follow state separate. The core structures are chunk buffer, parser carry, committed block list, partial block, RAF scheduler, highlight worker generation, sanitizer policy, follow-bottom flag, and announcement timer.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/file-media-content-systems/streaming-markdown-renderer-runtime.svg" alt="Design a Streaming Markdown Renderer runtime" caption="Topic-specific runtime from source intake through guarded projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific implementation mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -99,7 +98,7 @@ export default function StreamingMarkdownRendererArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -139,7 +138,7 @@ export default function StreamingMarkdownRendererArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -188,13 +187,9 @@ export default function StreamingMarkdownRendererArticle() {
       </section>
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
 
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/file-media-content-systems/streaming-markdown-renderer-architecture.svg"
-          alt="Streaming markdown renderer architecture showing token buffer, incremental parse, syntax highlighting, and scroll UX"
-          caption="Architecture Overview"
-        />
+        
 
         <p>
           The renderer has three core components: an
@@ -330,7 +325,7 @@ export default function StreamingMarkdownRendererArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial"><strong>InlineRenderers</strong>{" "}
           (bold, italic, link, code, math) handle
           inline tokens. <strong>HighlightWorker</strong>{" "}
@@ -343,7 +338,7 @@ export default function StreamingMarkdownRendererArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">Highlighting state
           per code block (pending, complete) lives
           in a small</HighlightBlock>
@@ -353,7 +348,7 @@ export default function StreamingMarkdownRendererArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Inputs:{" "}
           <code>stream</code> (a ReadableStream of
@@ -368,7 +363,7 @@ export default function StreamingMarkdownRendererArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important">Stable keys for reconciliation.
           Memory bounded by the markdown text plus
           rendered DOM;</Highlight></HighlightBlock>
@@ -378,7 +373,7 @@ export default function StreamingMarkdownRendererArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">Code
           blocks show plain monospace until closed,
           then highlight. Auto-scroll keeps new
@@ -390,7 +385,7 @@ export default function StreamingMarkdownRendererArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">on paragraph completion) rather
           than per token. Code blocks have a
           language</HighlightBlock>
@@ -400,7 +395,7 @@ export default function StreamingMarkdownRendererArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="crucial">Code-block content rendered as
           text only (never executed). Math rendered</HighlightBlock>
 <HighlightBlock as="p" tier="important"><Highlight tier="important">via KaTeX (sandboxed by KaTeX itself
@@ -408,7 +403,7 @@ export default function StreamingMarkdownRendererArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important">Partial-structure tests (open
           code block, unclosed bold). Performance
           tests at 100</Highlight></HighlightBlock>
@@ -418,7 +413,7 @@ export default function StreamingMarkdownRendererArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">Embedded HTML with disallowed tags:
           stripped silently. Very long single
           paragraph (no breaks): renders, may need
@@ -432,7 +427,7 @@ export default function StreamingMarkdownRendererArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Generic over markdown source — works <Highlight tier="important">for
           LLM streams, file streams, any</Highlight> chunked
@@ -442,7 +437,7 @@ export default function StreamingMarkdownRendererArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Markdown content is the source language.
           UI strings <Highlight tier="important">(auto-scroll banner, error
@@ -452,7 +447,7 @@ export default function StreamingMarkdownRendererArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Re-parse vs incremental parse</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -499,7 +494,7 @@ export default function StreamingMarkdownRendererArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">Real incremental parsing for very long
           responses. Streaming Mermaid (render
           partial diagrams).</HighlightBlock>
@@ -511,98 +506,12 @@ export default function StreamingMarkdownRendererArticle() {
           synthesis of the stream. Smart
           summarization of very long completed
           responses.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. How does parsing work
-          incrementally?</strong> Re-parse the full
-          text buffer on each chunk (most parsers
-          are fast enough). For very long streams,
-          checkpoint at stable block boundaries
-          and re-parse only from the last
-          checkpoint.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How are partial structures
-          handled?</strong> Render the best
-          interpretation given current state.
-          An open code fence renders as a code
-          block (might close later). Unclosed
-          bold renders as bold. Interpretation
-          may shift slightly as more tokens
-          arrive.
-        </HighlightBlock>
-
-        <p>
-          <strong>3. Why RAF-align renders?</strong>{" "}
-          High token rates (50+/sec) would cause
-          flicker without batching. RAF aligns
-          updates with the browser&rsquo;s render
-          cycle for smooth streaming.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. When is syntax highlighting
-          run?</strong> Only after a code block
-          closes. Before that, plain monospace.
-          Highlighting runs in a Web Worker so
-          long blocks don&rsquo;t block the main
-          thread.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>5. How does auto-scroll work?</strong>{" "}
-          While near bottom, auto-scroll on each
-          render. When user scrolls up, pause and
-          show a Jump-to-bottom indicator. On
-          click or scroll-back-to-bottom, resume.
-        </HighlightBlock>
-
-        <p>
-          <strong>6. How is HTML sanitized?</strong>{" "}
-          DOMPurify with strict allowlist. Allowed:
-          structural tags (p, ul, ol, etc.).
-          Disallowed: script, iframe, on*-handlers,
-          javascript: URLs.
-        </p>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>7. How is accessibility
-          handled?</strong> Polite live region with
-          throttled announcements (chunked, not
-          per-token). Code blocks labeled with
-          language. Tables render as proper tables.
-          Math blocks have alt text.
-        </HighlightBlock>
-
-        <p>
-          <strong>8. How does this differ from
-          static markdown rendering?</strong>{" "}
-          Static is one-shot: parse and render.
-          Streaming handles partial input,
-          incrementally updates, lazy-applies
-          expensive operations (highlighting,
-          math), and manages auto-scroll.
-        </p>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="important">Parse on each chunk;
-          render the best interpretation
-          including partial structures; batch
-          render commits via RAF; defer syntax
-          highlighting</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="crucial">and math/Mermaid until
-          structures close. The result is LLM
-          responses that feel alive, render
-          smoothly, and remain accessible and
-          secure.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate durable source data, transient interaction state, derived render state, remote or worker effects, and bounded telemetry. Every object URL, request, worker, listener, timer, cache entry, and decoder task needs an explicit owner and cleanup path.</p><p>Keep raw chunks, parser carry state, committed blocks, open partial block, highlight generations, and scroll-follow state separate. Commit durable changes only after policy validation and preserve enough evidence to reconcile failure.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/file-media-content-systems/streaming-markdown-renderer-recovery.svg" alt="Design a Streaming Markdown Renderer recovery" caption="Recovery flow: classify failure, preserve stable state, and degrade predictably." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Static Markdown rendering is simpler; incremental rendering is justified for token streams where latency and visual stability matter.</p><p>Source text order is authoritative. Parsed DOM is a progressive projection; syntax-highlighting results are accepted only for the closed block version that requested them. Scale pressure comes from high token rates, partial fences, long code blocks, sanitizer cost, worker lag, user scroll override, and reconnect duplication. Bound work, reject stale effects, cap memory, and degrade predictably.</p><p>Use optimistic projection only when rollback is deterministic and visible. Keep authorization, validation, and destructive actions server-side.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, typed states, generation guards, bounded queues, abortable effects, semantic HTML, and idempotent cleanup. Test accessibility, stale work, retries, unmount, constrained devices, large files, and corrupted input.</p><p>Measure latency, memory, queue pressure, stale drops, retries, fallbacks, and accessibility regressions. Avoid sensitive telemetry.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include treating rendered output as durable truth, leaking resources, accepting stale worker completion, unbounded prefetch, and hiding degraded behavior.</p><p>For this topic, batch commits with RAF, keep partial structures stable, sanitize output, defer highlighting until close, discard stale workers, and pause auto-scroll when users read history. Validate untrusted content, authorize durable mutations, and minimize sensitive retention.</p></section>
+<section><h2>Real-world use cases</h2><p>This runtime applies to content-heavy product surfaces where browser APIs, workers, networks, and remote policy fail independently. Reuse the controller boundary while injecting product-specific fallback and retention policy.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep raw chunks, parser carry state, committed blocks, open partial block, highlight generations, and scroll-follow state separate.</p><h3>What breaks at scale?</h3><p>high token rates, partial fences, long code blocks, sanitizer cost, worker lag, user scroll override, and reconnect duplication. I would bound work and reject obsolete effects.</p><h3>What consistency model applies?</h3><p>Source text order is authoritative. Parsed DOM is a progressive projection; syntax-highlighting results are accepted only for the closed block version that requested them.</p><h3>How do you recover?</h3><p>I would batch commits with RAF, keep partial structures stable, sanitize output, defer highlighting until close, discard stale workers, and pause auto-scroll when users read history.</p><h3>Why this architecture?</h3><p>Static Markdown rendering is simpler; incremental rendering is justified for token streams where latency and visual stability matter.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API" target="_blank" rel="noreferrer">MDN Web Workers API</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

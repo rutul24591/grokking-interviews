@@ -32,7 +32,17 @@ export const metadata: ArticleMetadata = {
 export default function CommandPaletteArticle() {
   return (
     <ArticleLayout metadata={metadata}>
-      <p>
+      <section>
+        <h1>Design a Command Palette</h1>
+        <h2>Definition &amp; Context</h2>
+        <p>Design a Command Palette is a low-level design problem about implementing shortcut arbitration, focus trapping, query normalization, fuzzy ranking, async provider fan-out, stale-response rejection, nested navigation, and command execution. A principal-level interview answer must define ownership boundaries, browser and accessibility semantics, local data structures, lifecycle cleanup, server reconciliation, and explicit degraded behavior.</p>
+        <p>Treat registered commands, the current query, active result, nested route, and async request generation as separate state so stale providers cannot overwrite newer results. The central structures are command registry, permission predicate, normalized search index, ranked result list, request generation, nested route stack, recent-command weights, and execution audit event. The implementation is not complete until cancellation, stale work, SSR behavior, privacy, metrics, and rollback are deliberate rather than incidental.</p>
+        <ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/command-palette-runtime.svg" alt="Design a Command Palette runtime flow" caption="Runtime flow: input becomes a guarded state transition, a semantic projection, and a recoverable outcome." />
+      </section>
+      <section>
+        <h2>Core Concepts</h2>
+        <p>The following deep dive preserves the component-specific mechanics and browser constraints that determine the implementation.</p>
+        <p>
         The command palette (Cmd+K or Ctrl+K) is one of the most ergonomic power-user
         interfaces in modern software — Figma, Vercel, Linear, GitHub, VS Code, and
         Notion all have one. It surfaces any action or navigation target through a
@@ -50,7 +60,7 @@ export default function CommandPaletteArticle() {
         caption="Command palette architecture: command registry, fuzzy search, async data sources, keyboard navigation"
       />
 
-      <h2>Clarifying the Requirements</h2>
+      <h3>Clarifying the Requirements</h3>
       <p>
         Key scope questions before designing:
       </p>
@@ -79,7 +89,7 @@ export default function CommandPaletteArticle() {
         The ranking of results should weight recency and frequency.
       </p>
 
-      <h2>The Command Registry</h2>
+      <h3>The Command Registry</h3>
       <p>
         The command registry is a static list (or Map) of all available commands.
         Each command has: an id (unique string), a label (displayed text), keywords
@@ -107,7 +117,7 @@ export default function CommandPaletteArticle() {
         currently registered.
       </HighlightBlock>
 
-      <h2>Fuzzy Search Algorithm</h2>
+      <h3>Fuzzy Search Algorithm</h3>
       <p>
         The search must find relevant results even when the user's query is not an
         exact prefix match. Fuzzy matching allows for typographical flexibility:
@@ -135,7 +145,7 @@ export default function CommandPaletteArticle() {
         extremely fast in practice.
       </p>
 
-      <h2>Search Result Ranking</h2>
+      <h3>Search Result Ranking</h3>
       <p>
         Beyond fuzzy match score, result ranking incorporates recency and frequency.
         Items the user has selected recently or frequently should rank higher for
@@ -164,7 +174,7 @@ export default function CommandPaletteArticle() {
         "recent items" view that makes the palette immediately useful without typing.
       </p>
 
-      <h2>Async Data Sources</h2>
+      <h3>Async Data Sources</h3>
       <p>
         Entity search results (issues, documents, users, pages) are fetched from the
         backend. The fetch is triggered by each query change, debounced by 150–200ms
@@ -190,7 +200,7 @@ export default function CommandPaletteArticle() {
         show a blocking error.
       </p>
 
-      <h2>Grouping and Sectioning</h2>
+      <h3>Grouping and Sectioning</h3>
       <p>
         Results are grouped by category for visual clarity. Categories: "Recent" (items
         from the recency store), "Commands" (static command registry matches), "Pages"
@@ -209,7 +219,7 @@ export default function CommandPaletteArticle() {
         list compact.
       </p>
 
-      <h2>Keyboard Navigation</h2>
+      <h3>Keyboard Navigation</h3>
       <p>
         The command palette is keyboard-first. Mouse support is secondary. The
         interaction model:
@@ -245,7 +255,7 @@ export default function CommandPaletteArticle() {
         the old list.
       </HighlightBlock>
 
-      <h2>Nested Commands (Sub-menus)</h2>
+      <h3>Nested Commands (Sub-menus)</h3>
       <p>
         Some commands lead to a sub-menu — "Change status" opens a list of status
         options. This is implemented as a navigation stack: the current palette view
@@ -263,7 +273,7 @@ export default function CommandPaletteArticle() {
         commands. The search scope is always the current level.
       </p>
 
-      <h2>Portal and Focus Management</h2>
+      <h3>Portal and Focus Management</h3>
       <p>
         The palette renders in a React portal (ReactDOM.createPortal) at the document
         body, avoiding z-index and overflow: hidden issues from ancestor elements.
@@ -281,7 +291,7 @@ export default function CommandPaletteArticle() {
         does not steal focus from the palette while the palette is open.
       </p>
 
-      <h2>ARIA and Screen Reader Semantics</h2>
+      <h3>ARIA and Screen Reader Semantics</h3>
       <p>
         The palette's input element is a combobox: role="combobox" with aria-expanded,
         aria-controls pointing to the listbox ID, and aria-autocomplete="list."
@@ -302,7 +312,7 @@ export default function CommandPaletteArticle() {
         without requiring them to navigate to a visual spinner.
       </p>
 
-      <h2>Performance Optimizations</h2>
+      <h3>Performance Optimizations</h3>
       <p>
         Fuzzy search over a large command registry (thousands of commands) can stall
         the main thread if done synchronously. Move the search to a Web Worker: send
@@ -324,74 +334,50 @@ export default function CommandPaletteArticle() {
         is sufficient. Avoid per-item animation during search to prevent the constant
         motion from distracting the user.
       </p>
-
-      <h2>Interview Q&A</h2>
-
-      <h3>Q: How do you implement highlight of the matched characters in the result label?</h3>
-      <p>
-        The fuzzy matcher returns not just a score but the indices of the matched
-        characters within the result string. Use these indices to split the label
-        string into matched and unmatched segments, and render matched segments with
-        a highlight class (bold or background color). For example, if "ci" matches
-        "Create issue" at positions 0 and 7 (C and i), split the string into "C" (match),
-        "reate " (no match), "i" (match), "ssue" (no match), and wrap each segment in
-        a span with or without the highlight class. This makes it visually clear why
-        a result matched the query, improving user trust in the search.
-      </p>
-
-      <h3>Q: How do you handle a very large command registry efficiently?</h3>
-      <p>
-        For registries with thousands of commands, sequential fuzzy matching (O(n*m)
-        per command) scales linearly in the number of commands. Mitigations: pre-index
-        the registry using an inverted index (for each character pair, a list of
-        command IDs containing that bigram). On query, intersect the sets for each
-        bigram in the query to get candidate commands. Only run the full fuzzy match
-        on candidates, not all commands. This reduces the search space from all N
-        commands to O(k) candidates where k is typically much smaller. For command
-        palettes embedded in IDEs or design tools with thousands of extensions, this
-        approach (used by VS Code) keeps search latency below 10ms even with very
-        large registries.
-      </p>
-
-      <h3>Q: How do you prevent the palette from showing stale results when the user types quickly?</h3>
-      <p>
-        Two mechanisms: debouncing and request cancellation. Debounce the search
-        trigger (150ms for synchronous search, 200–250ms for async) so the search
-        only runs when the user pauses typing. For async searches, cancel in-flight
-        requests using AbortController when a new query is submitted. For synchronous
-        fuzzy search running in a Web Worker, send a cancel message (or simply ignore
-        the response if a newer query's result arrives first — by tagging each request
-        with a sequence number and discarding responses whose sequence number is less
-        than the current one).
-      </p>
-
-      <h3>Q: How do you design the command palette to be extensible by third-party plugins?</h3>
-      <p>
-        The command registry exposes a public API: registerCommands(commands) and
-        unregisterCommands(ids). A plugin calls registerCommands at initialization
-        with its command definitions and unregisterCommands at teardown. The commands
-        are plain data objects (not React components), so plugins do not need access
-        to the palette's internal React tree. For context-sensitive commands, plugins
-        use the registerCommands API within their own React components (in a useEffect),
-        which are part of the main application's render tree. The palette reads only
-        from the registry and is oblivious to which plugin registered which command.
-        This is the same architecture used by VS Code's extension API and Figma's
-        plugin API.
-      </p>
-
-      <h3>Q: How would you implement a "scoped" palette that changes context based on the focused element?</h3>
-      <p>
-        Some palettes change their available commands based on what is focused — focusing
-        a canvas element shows "canvas commands"; focusing a table shows "table commands."
-        Implement this via a context scope system: each focusable region of the app
-        registers a scope name. The currently active scope is tracked in global state.
-        Commands in the registry have an optional scope field. When the palette opens,
-        the search preferentially shows commands matching the active scope (higher score
-        multiplier) while still including all commands without a scope constraint.
-        Commands with a scope that does not match the active scope are shown with lower
-        priority or in a separate "Other" category. This gives the user context-aware
-        results without hiding globally applicable commands.
-      </p>
+      </section>
+      <section>
+        <h2>Architecture &amp; Flow</h2>
+        <p>Implement the component as a small runtime with five boundaries. The input adapter normalizes keyboard, pointer, touch, browser, and async events. The state controller applies guards and separates preview state from committed state. The projection layer derives semantic DOM and ARIA relationships. The integration adapter owns server requests, URL synchronization, or browser APIs. The observability adapter emits bounded evidence for failures and slow paths.</p>
+        <p>For this topic, the critical state rule is: Treat registered commands, the current query, active result, nested route, and async request generation as separate state so stale providers cannot overwrite newer results. During interaction, record enough context to cancel safely. On commit, validate the latest intent, update the durable projection, and release temporary listeners, timers, observers, pointer capture, and abort controllers. On unmount, cleanup must be idempotent.</p>
+        <ArticleImage src="/diagrams/system-design-problems/low-level-design/component-level-ui-patterns/command-palette-edge-cases.svg" alt="Design a Command Palette edge-case defense map" caption="Edge-case map: validate intent, contain scale pressure, recover from failure, reconcile committed state, and emit evidence." />
+      </section>
+      <section>
+        <h2>Trade offs &amp; Comparison</h2>
+        <p>a static menu is easier to discover; a command palette earns its complexity for expert workflows, large action sets, and cross-surface navigation. The custom design should still lean on native semantics and browser primitives where they remain correct. Replacing them creates testing obligations for keyboard behavior, focus ownership, reduced motion, touch interaction, zoom, SSR hydration, and assistive technology.</p>
+        <p>Local registry filtering is immediate. Remote provider results are eventually consistent but generation-guarded; authorization is rechecked when a command executes. At scale, the failure pressure is thousands of commands, plugin providers, CJK composition, slow remote search, repeated shortcuts, and permission changes while the palette is open. Defend the latency budget by batching measurement, aborting stale async work, bounding caches and prefetch, and emitting analytics only for committed outcomes.</p>
+        <p>A principal answer should distinguish local responsiveness from durable correctness. Optimistic UI is appropriate when the rollback is deterministic and visible. It is inappropriate when the client cannot validate authorization, inventory, resource conflicts, or destructive side effects.</p>
+      </section>
+      <section>
+        <h2>Best practices</h2>
+        <p>Use explicit state unions, typed events, idempotent cleanup, stable ids, native semantics, SSR-safe feature detection, abortable requests, and deterministic tests. Exercise keyboard-only use, touch cancellation, screen-reader output, high zoom, reduced motion, slow network, stale responses, unmount during work, and browser back-forward behavior where relevant.</p>
+        <p>Observe blocked transitions, rollback frequency, stale-response drops, slow interaction latency, cache pressure, retry count, and accessibility regression results. Keep telemetry small and avoid sensitive payloads. Publish the public behavior contract before changing shared component semantics.</p>
+      </section>
+      <section>
+        <h2>Common Pitfalls</h2>
+        <p>Common failures include mixing draft and committed state, treating rendering state as the source of truth for browser-owned behavior, leaving listeners or timers active after unmount, accepting stale async completion, trusting client-side authorization, and producing inaccessible custom controls.</p>
+        <p>For this component specifically, the failure policy is to abort superseded requests, discard stale responses, preserve keyboard position when groups change, and show provider-level partial failure without closing the palette. Security and privacy require the implementation to filter commands by authorization, sanitize labels, cap provider latency and result count, protect destructive actions with confirmation, and audit execution.</p>
+      </section>
+      <section>
+        <h2>Real-world use cases</h2>
+        <p>Representative deployments include an IDE palette, an administration console with permissioned actions, and a collaborative editor with plugin-provided commands. In each case, the same component shell may be reused, but the policy layer changes: latency budget, permissions, persistence, fallback, and telemetry should be injected explicitly instead of hidden in presentation code.</p>
+      </section>
+      <section>
+        <h2>Common interview question with detailed answer</h2>
+        <h3>How would you model component state?</h3><p>I would separate committed state, transient interaction state, derived presentation, and async request generations. For this component, Treat registered commands, the current query, active result, nested route, and async request generation as separate state so stale providers cannot overwrite newer results. That model makes cancellation and rollback explicit.</p>
+        <h3>What breaks at scale?</h3><p>The dominant pressures are thousands of commands, plugin providers, CJK composition, slow remote search, repeated shortcuts, and permission changes while the palette is open. I would bound work per interaction, virtualize or cache only where measured, and cancel work that is no longer relevant.</p>
+        <h3>What consistency model applies?</h3><p>Local registry filtering is immediate. Remote provider results are eventually consistent but generation-guarded; authorization is rechecked when a command executes. The interview answer must state which layer is authoritative and how stale completion is rejected.</p>
+        <h3>How do you handle failure and rollback?</h3><p>I would abort superseded requests, discard stale responses, preserve keyboard position when groups change, and show provider-level partial failure without closing the palette. I would also emit a reason code so product metrics distinguish expected cancellation from defects and provider failures.</p>
+        <h3>How do you defend the architecture over alternatives?</h3><p>a static menu is easier to discover; a command palette earns its complexity for expert workflows, large action sets, and cross-surface navigation. I would choose the smallest design that satisfies the required behavior and explicitly accept the testing and operability cost of custom interaction.</p>
+      </section>
+      <section>
+        <h2>References</h2>
+        <ul>
+          <li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices Guide</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events" target="_blank" rel="noreferrer">MDN Pointer events</a></li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li>
+          <li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React: Sharing State Between Components</a></li>
+        </ul>
+      </section>
     </ArticleLayout>
   );
 }

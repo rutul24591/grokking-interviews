@@ -1,6 +1,3 @@
-# Network Failure Handling — Example 2
+# Design Network Failure Handling example 2
 
-Files:
-- `EXPLANATION.md`
-- `README.md`
-- `core.ts`
+Concrete low-level implementation exercise for Design Network Failure Handling. It models durable offline state, capability classification, conflict handling, and edge cases that align with the article.
