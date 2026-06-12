@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function ThreadedConversationSystemArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function ThreadedConversationSystemArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Threaded Conversation System</h1><h2>Definition &amp; Context</h2><p>Design a Threaded Conversation System is an implementation-heavy low-level design problem covering normalized comments, lazy replies, cursors, optimistic posting, edits, moderation, reactions, and collapse state. A principal-level answer must define ordering, ephemeral versus durable state, reconnect behavior, rollback, abuse controls, privacy, cost, and observability.</p><p>Store comments by id with parent references and ordered child lists. Optimistic drafts remain separate from committed comments. The core structures are comment map, root cursor, child cursors, parent-child index, optimistic ids, edit version, moderation state, reaction counts, and collapsed set.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/threaded-conversation-system-runtime.svg" alt="Design a Threaded Conversation System runtime" caption="Real-time flow from input through merge policy and UI projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -92,7 +91,7 @@ export default function ThreadedConversationSystemArticle() {
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h3>⚙️ Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -130,7 +129,7 @@ export default function ThreadedConversationSystemArticle() {
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h3>📊 Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -171,14 +170,10 @@ export default function ThreadedConversationSystemArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/comment-thread-architecture.svg"
-        alt="Threaded Conversation Architecture"
-        caption="Comment tree source → flatten visible tree (depth-capped) → virtualized renderer → per-comment with reply composer + collapse + lazy-load. Optimistic post; real-time additions via WebSocket; permalinks via URL fragment."
-      />
+      
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <HighlightBlock as="p" tier="crucial">
           The system has four parts: <strong>tree
           source</strong> (fetch with depth and
@@ -285,7 +280,7 @@ export default function ThreadedConversationSystemArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial"><strong>ReplyComposer</strong>{" "}
           inline composer.
           <strong> CollapseToggle</strong> on
@@ -297,7 +292,7 @@ export default function ThreadedConversationSystemArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Tree structure with expand state and
           loaded-children cache in <Highlight tier="important">external
@@ -308,7 +303,7 @@ export default function ThreadedConversationSystemArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important">
           <Highlight tier="crucial">Comment shape:</Highlight>{" "}
           <Highlight tier="important">
@@ -320,7 +315,7 @@ export default function ThreadedConversationSystemArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Virtualization on the flattened tree.
           Lazy-load replies <Highlight tier="important">on expand. Memoized
@@ -331,7 +326,7 @@ export default function ThreadedConversationSystemArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">Indentation makes hierarchy visible.
           Visual guides aid following deep
           threads. Collapse toggles unobtrusive.</HighlightBlock>
@@ -342,7 +337,7 @@ export default function ThreadedConversationSystemArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">Tree structure with proper ARIA
           (<code>role=&quot;tree&quot;</code>,
           <code> role=&quot;treeitem&quot;</code>,
@@ -357,7 +352,7 @@ export default function ThreadedConversationSystemArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Comment content sanitized. Server
           enforces post permissions. Rate-limit.
@@ -368,7 +363,7 @@ export default function ThreadedConversationSystemArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="crucial">Unit tests for tree flattening with
           depth cap. Integration tests: expand</HighlightBlock>
 <HighlightBlock as="p" tier="important">loads replies; reply optimistic posts;
@@ -379,7 +374,7 @@ export default function ThreadedConversationSystemArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">Permalink to a
           deleted comment: surface
           &ldquo;Comment unavailable&rdquo;.
@@ -393,7 +388,7 @@ export default function ThreadedConversationSystemArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Generic over comment <Highlight tier="important">shape. Pattern
           reuses for blog comments,</Highlight> issue
@@ -402,7 +397,7 @@ export default function ThreadedConversationSystemArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           UI strings via i18n. <Highlight tier="important">Timestamps via
           Intl.RelativeTimeFormat. RTL flips
@@ -412,7 +407,7 @@ export default function ThreadedConversationSystemArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Indented vs flat threading</h3>
         <HighlightBlock as="p" tier="important">
@@ -447,7 +442,7 @@ export default function ThreadedConversationSystemArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Threaded read state per user. AI-
           <Highlight tier="important">summarized branches. Sentiment
@@ -455,100 +450,12 @@ export default function ThreadedConversationSystemArticle() {
           Real-time presence in threads (who&rsquo;s
           reading).
         </Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. How do you render deeply
-          nested threads?</strong> Flatten the
-          visible tree to a 1D list with
-          per-comment depth metadata; render
-          via 1D virtualization. Cap depth at
-          a threshold; deeper renders flat
-          with a &ldquo;Continue thread&rdquo;
-          link.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How does lazy-load of
-          replies work?</strong> Server pre-loads
-          some replies; rest fetched on
-          expand. The tree node has a
-          &ldquo;Load more&rdquo; affordance
-          when there are unloaded children.
-        </HighlightBlock>
-
-        <p>
-          <strong>3. How are real-time additions
-          handled?</strong> WebSocket inserts
-          new comments into the tree at the
-          appropriate parent. If the parent is
-          collapsed, show a count badge but
-          don&rsquo;t expand. If user is
-          mid-scroll, surface a banner rather
-          than auto-jumping.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. How are optimistic posts
-          handled?</strong> Insert with
-          temporary id and posting status.
-          Server confirms; map to real id;
-          status changes to confirmed. Failure
-          rolls back with retry.
-        </HighlightBlock>
-
-        <p>
-          <strong>5. How does permalink
-          work?</strong> URL fragment encodes
-          the comment id. On mount, expand
-          ancestors of that comment, scroll to
-          it, highlight.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>6. What happens on depth
-          cap?</strong> Deeper replies render
-          flat with a &ldquo;Continue this
-          thread&rdquo; link to a focused view
-          where indentation resets at depth 0.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>7. How is this
-          accessible?</strong> Tree role with
-          proper ARIA (or accessible flat
-          list with parent context). Each
-          comment focusable. Reply composer
-          accessible. Real-time additions
-          announce in chunks.
-        </HighlightBlock>
-
-        <p>
-          <strong>8. How does this differ from
-          chat?</strong> Chat is linear (newest
-          at bottom); thread is hierarchical
-          (replies under parents). Chat has
-          presence and typing; thread has
-          collapse/expand and lazy-load.
-          Different mental models for
-          different products.
-        </p>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">Indentation preserves
-          hierarchy; depth cap preserves
-          readability; lazy-load scales to
-          large threads. Permalinks</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">make
-          conversations linkable. The result is
-          discussions that can grow large
-          without becoming unusable.</Highlight></HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate durable records, optimistic intent, transport events, ephemeral awareness, rendered projection, and telemetry. Every connection, timer, cursor, replay buffer, subscription, and retry queue needs an explicit owner and cleanup path.</p><p>Store comments by id with parent references and ordered child lists. Optimistic drafts remain separate from committed comments.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/threaded-conversation-system-recovery.svg" alt="Design a Threaded Conversation System recovery" caption="Recovery flow: classify gaps, retain stable truth, replay safely, and emit evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Flat timelines are simpler; normalized threads are justified for reply context, lazy loading, and moderation.</p><p>Server versions are authoritative for edits and moderation. Creation is provisional and reactions may merge eventually. Scale pressure comes from deep threads, hot roots, deleted parents, concurrent edits, pagination, moderation, and duplicate retries. Bound queues, dedupe events, expire ephemeral state, and degrade predictably.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, event sequences, idempotency keys, monotonic watermarks, TTLs, replay cursors, bounded buffers, authorization checks, and cleanup. Test reconnect gaps, duplicates, stale events, offline recovery, privacy settings, and accessibility announcements.</p><p>Measure latency, backlog, reconnect rate, gap recovery, retries, stale drops, TTL expiry, and accessibility regressions without logging sensitive content.</p><h3>Operational implementation: normalized thread graph and moderation tombstones</h3><p>Store comments by id and child lists by parent. Create optimistically with idempotency keys, retain tombstones for deleted parents, page replies lazily, condition edits on version, and keep moderation state authoritative.</p><p>Define explicit metrics for accepted events, duplicate drops, stale drops, replay gap size, reconnect duration, queue depth, TTL expiry, degraded-mode entry, authorization denial, and rollback outcome. Redact user content and sensitive identifiers from telemetry. Test duplicate delivery, out-of-order events, disconnect during mutation, hidden tabs, unmount cleanup, multiple tabs, permission removal, burst traffic, and a rollback to the previous policy version.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include treating ephemeral state as durable, trusting arrival order, leaking timers or sockets, missing dedupe, unbounded replay, and hiding degraded connectivity.</p><p>For this topic, dedupe retries, retain tombstones, rollback rejected edits, page children lazily, and preserve navigation context.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to collaborative products where transport, persistence, and UI projection fail independently. Inject product policy for authorization, retention, fallback, and observability explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Store comments by id with parent references and ordered child lists. Optimistic drafts remain separate from committed comments.</p><h3>What breaks at scale?</h3><p>deep threads, hot roots, deleted parents, concurrent edits, pagination, moderation, and duplicate retries.</p><h3>What consistency applies?</h3><p>Server versions are authoritative for edits and moderation. Creation is provisional and reactions may merge eventually.</p><h3>How do you recover?</h3><p>dedupe retries, retain tombstones, rollback rejected edits, page children lazily, and preserve navigation context.</p><h3>Why this architecture?</h3><p>Flat timelines are simpler; normalized threads are justified for reply context, lazy loading, and moderation.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket" target="_blank" rel="noreferrer">MDN WebSocket</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA APG</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

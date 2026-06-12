@@ -133,6 +133,7 @@ export function SidebarItem({
         )}
         onFocus={() => setFocusedItemId(id)}
         role="treeitem"
+        aria-selected={false}
         aria-expanded={hasChildren ? isExpanded : undefined}
         aria-label={name}
       >

@@ -21,9 +21,9 @@ export const metadata: ArticleMetadata = {
 
 export default function CdFundamentalsReleasePipelineArchitectureArticle() {
   return (
-    <ArticleLayout metadata={metadata}>
+    <ArticleLayout metadata={metadata}><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Compare the simple baseline with the optimized or production-ready approach so the trade-off is explicit.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Name the data structure, state machine, pipeline stage, or control plane that owns each decision.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Include the cost model: preprocessing cost, per-operation cost, storage cost, latency impact, and failure recovery cost.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Call out common mistakes because they are often what interviewers use to distinguish memorized answers from reasoned answers.</HighlightBlock>
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Interview lens: frame CD Fundamentals and Release Pipeline Architecture around release safety, progressive rollout, environment promotion, deployment observability, rollback, and auditability. This is what turns the article from concept notes into interview-ready reasoning.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           CD Fundamentals and Release Pipeline Architecture is the discipline of designing CI/CD so that a verified artifact is promoted through environments and user exposure safely, observably, and reversibly. The useful interview answer explains the risk model, not just the toolchain.
         </HighlightBlock>
@@ -46,7 +46,7 @@ export default function CdFundamentalsReleasePipelineArchitectureArticle() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core invariant to defend: a deployment pipeline should increase blast radius only when evidence says the current stage is healthy.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           The core concept is not more automation. The core concept is trustworthy decision-making: each stage should produce evidence that justifies the next increase in blast radius.
         </HighlightBlock>
@@ -172,7 +172,7 @@ export default function CdFundamentalsReleasePipelineArchitectureArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="important" className="mb-4">Decision quality comes from naming the constraint, the chosen technique, the proof boundary, and the cost model before discussing implementation details.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           The architecture should make the topic's control loop visible: inputs, execution boundary, evidence, gate decision, ownership, and recovery path.
         </HighlightBlock>
@@ -283,7 +283,7 @@ export default function CdFundamentalsReleasePipelineArchitectureArticle() {
       </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="important" className="mb-4">Failure modes to call out: manual approvals without evidence, irreversible migrations, config drift, rollback that cannot run under incident pressure, and SLO gates without ownership.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           The key trade-off is not simply speed versus safety. It is deciding which evidence is worth collecting before the next decision and which risks are better controlled by rollback, isolation, or post-release monitoring.
         </HighlightBlock>
@@ -401,7 +401,7 @@ export default function CdFundamentalsReleasePipelineArchitectureArticle() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="important" className="mb-4">Useful signals or metrics: deployment frequency, lead time, change failure rate, rollback time, canary abort rate, and SLO burn during rollout.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           Best practices should be evaluated by whether they improve correctness, operability, auditability, and developer behavior for this specific topic.
         </HighlightBlock>
@@ -503,7 +503,7 @@ export default function CdFundamentalsReleasePipelineArchitectureArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="important" className="mb-4">Compare the simple approach with the production/interview approach: what gets faster, what gets safer, and what new complexity appears.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           The most dangerous pitfalls are the ones that make the delivery system appear healthy while reducing actual confidence.
         </HighlightBlock>
@@ -568,7 +568,7 @@ export default function CdFundamentalsReleasePipelineArchitectureArticle() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="important" className="mb-4">For staff/principal depth, explain how this topic behaves under scale, partial failure, adversarial input, migration pressure, and observability gaps.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           A strong real-world answer maps the topic to service criticality, team size, release frequency, compliance needs, and rollback constraints.
         </HighlightBlock>
@@ -653,7 +653,7 @@ export default function CdFundamentalsReleasePipelineArchitectureArticle() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="important" className="mb-4">Close the answer with edge cases and tests: smallest input, largest input, invalid input, concurrent or repeated operations, and rollback or recovery behavior.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           Answer these questions by connecting the mechanism to production risk, operational ownership, and recovery behavior.
         </HighlightBlock>

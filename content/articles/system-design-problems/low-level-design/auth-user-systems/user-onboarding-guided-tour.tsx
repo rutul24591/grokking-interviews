@@ -3,7 +3,6 @@
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -20,11 +19,10 @@ export const metadata: ArticleMetadata = {
   relatedTopics: ["login-session-management", "stepper-progress-tracker", "modal-dialog-state"],
 };
 
-export default function UserOnboardingGuidedTourArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
+export default function UserOnboardingGuidedTourArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a User Onboarding Guided Tour</h1><h2>Definition &amp; Context</h2><p>Design a User Onboarding Guided Tour is a security-sensitive low-level design problem covering eligibility, step anchors, progress persistence, feature flags, dismissal, accessibility, analytics, and migration. A principal-level answer must state the authoritative server boundary, threat model, lifecycle, abuse controls, rollback, privacy, observability, and user-safe degraded behavior.</p><p>Keep tour definition, user progress, current projection, and feature eligibility separate. The tour must never block core product use. Core structures: tour version, step registry, eligible steps, current id, dismissed state, progress record, anchor observer, and analytics event.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/auth-user-systems/user-onboarding-guided-tour-runtime.svg" alt="Design a User Onboarding Guided Tour runtime" caption="Security flow from user intent through authoritative validation and audit." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>Problem Clarification</h3>
         <HighlightBlock as="p" tier="important">A new user signs up for a project management app. They see a blank dashboard with confusing buttons. They don't know how to create a project, invite teammates, or set up workflows. Without guidance, they get lost, frustrated, and abandon the app (high churn). With a guided tour, they click through 5 steps: "Create your first project", "Invite teammates", "Set up workflow", "Configure notifications", "Start using". By the end, they're activated and confident.</HighlightBlock>
         <HighlightBlock as="p" tier="important">Onboarding is critical for user activation. But it's also tricky: users hate being patronized with obvious tutorials, they want to explore independently, and forcing them through long walkthroughs causes rage-quits. The challenge is balancing guidance (new users need help) with autonomy (experienced users want freedom).</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">Key challenges: (1) engagement (tutorials are boring, make them interactive and in-context), (2) optionality (allow users to skip and explore), (3) progress tracking (user closes tab mid-tour, can they resume?), (4) role-based tours (onboarding differs for admin vs regular user), (5) mobile responsiveness (tour must work on phone), and (6) performance (tour overlay doesn't slow app).</HighlightBlock>
@@ -33,7 +31,7 @@ export default function UserOnboardingGuidedTourArticle() {
       </section>
 
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
         <ul className="space-y-2">
           <HighlightBlock as="li" tier="important"><strong>Multi-Step Guided Tours:</strong> Display sequenced tour steps (5-15 steps). Each step highlights a target UI element and shows instructions. Steps can be navigated forward/backward with Next/Previous buttons. Include step counter (e.g., "Step 3 of 7").</HighlightBlock>
@@ -55,7 +53,7 @@ export default function UserOnboardingGuidedTourArticle() {
       </section>
 
         <section>
-          <h2>High-Level Approach</h2>
+          <h3>High-Level Approach</h3>
           <HighlightBlock as="p" tier="important">The tour system has three components: tour definition (structured steps), runtime (render highlights and tooltips), and persistence (track progress).</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">Definition: Create a tour configuration (data, not markup). Each step specifies a target element selector, title, description, an action type (Next, Confirm, Action), and optional conditions for whether the step should appear. For example, a first step might target the create-project button, show a short title, and advance on Next.</HighlightBlock>
         <HighlightBlock as="p" tier="important">Runtime: On app load, check if user should see tour (first time, not completed). If yes, render overlay (semi-transparent dark layer), highlight target element (spotlight or bright background), position tooltip near element, show navigation buttons. On "Next", advance to step 2. On "Skip", mark tour as dismissed. On "Previous", go back.</HighlightBlock>
@@ -64,13 +62,9 @@ export default function UserOnboardingGuidedTourArticle() {
       </section>
 
       <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/auth-user-systems/user-onboarding-guided-tour.svg"
-          alt="User onboarding tour flow, smart tooltip positioning engine, step configuration schema, and tour state persistence"
-          caption="User onboarding tour flow, smart tooltip positioning engine, step configuration schema, and tour state persistence"
-        />
+        
 
-        <h2>Detailed Design</h2>
+        <h3>Detailed Design</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Tour Configuration and Structure</h3>
         <p>Tours are defined as structured configs (JSON or code). Each tour has: id (unique, e.g., "onboarding-v1"), name ("Onboarding"), steps (array of step objects), conditions (show if first_time_user && user_role === "editor"), priority (1-10, higher shows first). Each step includes: target (CSS selector of element to highlight), title ("Create Your First Project"), description (longer explanation), action ("next" or "confirm"), optional conditions (show if feature_enabled), and optional callback (execute when step completes, e.g., log analytics).</p>
@@ -114,7 +108,7 @@ export default function UserOnboardingGuidedTourArticle() {
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
+        <h3>Trade-offs and Considerations</h3>
         <HighlightBlock as="p" tier="important"><strong>Mandatory vs Optional Tours:</strong> Mandatory tours (can't skip, must complete) guarantee visibility and learning but frustrate power users (high abandonment). Optional tours (skip anytime) respect user autonomy but many skip and miss crucial info. Compromise: make tours optional, but show prominent "Help" link so users can access later. Alternatively, make only the critical onboarding mandatory (3-5 steps), optional advanced tours can be skipped.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial"><strong>Tour Length vs Completion Rate:</strong> Long comprehensive tours (15 steps) cover everything but have low completion (users drop off mid-tour). Short focused tours (5-7 steps) have high completion but might miss details. Solution: break into multiple shorter tours. First tour covers essentials (5 steps, high completion). Second tour covers advanced features (optional). Users complete the first, skip the second if not interested.</HighlightBlock>
         <HighlightBlock as="p" tier="important"><strong>Pre-Built vs Contextual Tours:</strong> Pre-built tours explain features in a fixed order, independent of what user is doing. Contextual tours appear when user hovers over elements (more discoverable). Contextual tours have better UX but harder to implement. Compromise: use pre-built for onboarding, contextual tooltips for advanced features.</HighlightBlock>
@@ -122,7 +116,7 @@ export default function UserOnboardingGuidedTourArticle() {
       </section>
 
       <section>
-        <h2>Implementation Patterns</h2>
+        <h3>Implementation Patterns</h3>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Pattern 1: Multi-Step Sequential Tour</h3>
         <HighlightBlock as="p" tier="crucial">Define 5-7 critical steps. Show step 1 immediately after signup. User navigates forward with Next button. Steps have progress counter ("Step 1 of 5"). Include optional Skip button to exit anytime. Resume from last step on revisit.</HighlightBlock>
 
@@ -137,13 +131,12 @@ export default function UserOnboardingGuidedTourArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Pattern 5: Analytics-Driven Tour Optimization</h3>
         <HighlightBlock as="p" tier="important">Track completion rate per step. If step 4 has 50% drop-off, rewrite or check element exists. A/B test different wording. Monitor over time, iterate.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Real-world systems (Slack, Figma, Notion) use tour libraries, track completion metrics, and iterate based on user behavior. For best results, keep initial onboarding</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">short (5-7 critical steps), allow skip (respect user autonomy), provide replay option, track analytics (identify where users drop off), A/B test content, and supplement with contextual help (tooltips on UI elements). Well-designed onboarding significantly improves user activation, reduces support tickets, and improves retention.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate user intent, browser-safe projection, server validation, durable security record, audit evidence, and cleanup. Frontend state improves UX but never replaces server enforcement. Tokens, challenges, sessions, and privileged grants need explicit expiry and revocation.</p><p>Keep tour definition, user progress, current projection, and feature eligibility separate. The tour must never block core product use.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/auth-user-systems/user-onboarding-guided-tour-recovery.svg" alt="Design a User Onboarding Guided Tour threat recovery" caption="Threat recovery: validate, deny safely, preserve authoritative truth, audit, and recover." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Server or local progress is eventually consistent. Tour definitions are versioned and migration policy decides whether users restart. Scale and threat pressure comes from missing anchors, responsive layout, product changes, repeated prompts, accessibility, and stale progress. Fail closed for privilege while keeping error UX actionable.</p></section>
+<section><h2>Best practices</h2><p>Use short-lived scoped grants, secure cookies, CSRF defenses, replay prevention, rotation, versioned writes, server-side authorization, rate limits, redacted logs, and explicit audit events. Test expiry, replay, revocation, retries, multiple tabs, and permission drift.</p></section>
+<h3>Principal defense: authority, consistency, and abuse cost</h3><p>Use server-authoritative consistency for security decisions. Browser state is a revocable projection that can improve responsiveness but cannot grant access, extend expiry, or confirm a privileged transition. Every mutation carries a version, expiry, nonce, or idempotency key as appropriate; stale projections refresh or fail closed. Rollback means revoking the grant, session family, policy version, or pending intent while retaining an audit trail.</p><p>Model abuse and cost together. Rate-limit sensitive attempts by account, device, network, and risk cohort without turning the UI into an enumeration oracle. Bound session inventory, audit retention, challenge issuance, cross-tab broadcasts, and refresh retries. Emit denial reason classes, revocation lag, suspicious reuse, policy version, and correlation ids while avoiding sensitive payloads in telemetry.</p><section><h2>Common Pitfalls</h2><p>Common failures include trusting frontend guards, storing bearer tokens in localStorage, leaking account existence, missing idempotency, weak redirect validation, and incomplete audit evidence.</p><p>For this topic, skip missing anchors, allow dismissal, restore focus, respect reduced motion, migrate progress, and avoid dark-pattern blocking.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to user identity and access workflows where convenience must not weaken authoritative server enforcement or incident evidence.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>What is authoritative?</h3><p>Server or local progress is eventually consistent. Tour definitions are versioned and migration policy decides whether users restart.</p><h3>What breaks under abuse?</h3><p>missing anchors, responsive layout, product changes, repeated prompts, accessibility, and stale progress.</p><h3>How do you recover?</h3><p>skip missing anchors, allow dismissal, restore focus, respect reduced motion, migrate progress, and avoid dark-pattern blocking.</p><h3>What does the client enforce?</h3><p>The client improves usability and fails closed for privileged views; the server enforces every protected read and mutation.</p><h3>How do you observe incidents?</h3><p>Emit redacted audit records with subject, actor, policy version, reason, outcome, and correlation id.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.rfc-editor.org/rfc/rfc7636" target="_blank" rel="noreferrer">RFC 7636 PKCE</a></li><li><a href="https://www.w3.org/TR/webauthn-3/" target="_blank" rel="noreferrer">WebAuthn Level 3</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies" target="_blank" rel="noreferrer">MDN Cookies</a></li><li><a href="https://owasp.org/www-project-cheat-sheets/" target="_blank" rel="noreferrer">OWASP Cheat Sheets</a></li></ul></section>
+</ArticleLayout>}

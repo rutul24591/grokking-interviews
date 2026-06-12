@@ -1,90 +1,50 @@
-export type imageGalleryLightboxRuntimeState = {
-  topic: "image-gallery-lightbox";
-  mounted: boolean;
-  lastSuccessfulVersion: number;
-  pendingVersion: number;
-  lastInteractionAtMs: number;
-  lastRecoveryAtMs?: number;
-  signal: {
-    uploadedBytes: number;
-    checksumMismatch: number;
-    transcodeLagMs: number;
-    retryCount: number;
-  };
+export type ImageGalleryLightboxRecoveryInput = {
+  operationId: string;
+  committedRevision: number;
+  observedRevision: number;
+  pressure: string;
+  retryBudget: number;
 };
 
-export type imageGalleryLightboxRecoveryPlan = {
-  mode: "continue" | "degrade" | "block-and-recover";
-  userVisibleState: "current" | "stale-with-banner" | "disabled-with-retry";
-  actions: Array<"resume-from-checkpoint" | "verify-checksum" | "serve-lower-rendition" | "emit-telemetry" | "keep-current-state">;
+export type ImageGalleryLightboxRecoveryPlan = {
+  disposition: "retry" | "degrade" | "manual-review";
+  repair: string;
   evidence: string[];
+  nextRetryBudget: number;
 };
 
-function minutes(ms: number) {
-  return Math.round(ms / 60_000);
-}
-
+// Recovery is explicit so a UI does not silently corrupt the lightbox projection.
 export function planImageGalleryLightboxRecovery(
-  state: imageGalleryLightboxRuntimeState,
-  nowMs: number,
-): imageGalleryLightboxRecoveryPlan {
-  const evidence: string[] = [];
-  const actions: imageGalleryLightboxRecoveryPlan["actions"] = ["emit-telemetry"];
-  const idleMinutes = minutes(nowMs - state.lastInteractionAtMs);
-  const versionGap = state.pendingVersion - state.lastSuccessfulVersion;
-
-  if (!state.mounted) evidence.push("component-unmounted-before-completion");
-  if (versionGap > 1) evidence.push("multiple-versions-pending");
-  if (idleMinutes > 10) evidence.push("interaction-state-stale:" + idleMinutes + "m");
-  if (state.signal.uploadedBytes > 2_000) evidence.push("uploadedBytes-breached");
-  if (state.signal.checksumMismatch > 0) evidence.push("checksumMismatch-requires-operator-attention");
-  if (state.signal.transcodeLagMs > 0.2) evidence.push("transcodeLagMs-unsafe-for-silent-commit");
-
-  if (!state.mounted) {
-    actions.push("resume-from-checkpoint");
-    return { mode: "block-and-recover", userVisibleState: "disabled-with-retry", actions, evidence };
+  input: ImageGalleryLightboxRecoveryInput,
+): ImageGalleryLightboxRecoveryPlan {
+  const evidence = [
+    `operation:${input.operationId}`,
+    `committed:${input.committedRevision}`,
+    `observed:${input.observedRevision}`,
+    `pressure:${input.pressure}`,
+  ];
+  if (input.retryBudget <= 0) {
+    return {
+      disposition: "manual-review",
+      repair: "preserve the last committed projection and surface an actionable recovery state",
+      evidence,
+      nextRetryBudget: 0,
+    };
   }
-
-  if (versionGap > 1 || state.signal.transcodeLagMs > 0.2) {
-    actions.push("verify-checksum", "serve-lower-rendition");
-    return { mode: "degrade", userVisibleState: "stale-with-banner", actions, evidence };
-  }
-
-  actions.push("keep-current-state");
-  return { mode: "continue", userVisibleState: "current", actions, evidence };
+  return {
+    disposition: input.observedRevision < input.committedRevision ? "degrade" : "retry",
+    repair: "ignore the stale decode generation, retain the current index, and continue prefetching adjacent assets",
+    evidence,
+    nextRetryBudget: input.retryBudget - 1,
+  };
 }
 
-export function runImageGalleryLightboxEdgeCaseScenario() {
-  const nowMs = Date.parse("2026-05-29T09:15:00.000Z");
-  const normal = planImageGalleryLightboxRecovery(
-    {
-      topic: "image-gallery-lightbox",
-      mounted: true,
-      lastSuccessfulVersion: 21,
-      pendingVersion: 22,
-      lastInteractionAtMs: nowMs - 90_000,
-      signal: { uploadedBytes: 160, checksumMismatch: 0, transcodeLagMs: 0.01, retryCount: 0 },
-    },
-    nowMs,
-  );
-
-  const failure = planImageGalleryLightboxRecovery(
-    {
-      topic: "image-gallery-lightbox",
-      mounted: true,
-      lastSuccessfulVersion: 21,
-      pendingVersion: 25,
-      lastInteractionAtMs: nowMs - 18 * 60_000,
-      signal: { uploadedBytes: 2_900, checksumMismatch: 2, transcodeLagMs: 0.42, retryCount: 4 },
-    },
-    nowMs,
-  );
-
-  return {
-    topic: "Image Gallery Lightbox",
-    subcategory: "file-media-content-systems",
-    invariant: "Large file and media operations must be resumable, verified, and safe to retry.",
-    normal,
-    failure,
-  };
+export function runImageGalleryLightboxRecoveryScenario() {
+  return planImageGalleryLightboxRecovery({
+    operationId: "image-gallery-lightbox-edge-42",
+    committedRevision: 12,
+    observedRevision: 9,
+    pressure: "a slow decode completed after the user navigated twice",
+    retryBudget: 2,
+  });
 }

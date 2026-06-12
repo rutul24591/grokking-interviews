@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,7 +24,7 @@ export default function WebWorkersThreadingArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h1>Design Web Worker Computation</h1>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Design Web Worker Computation should be framed as an implementation-level design problem with a clear runtime boundary, not as a visual mock or helper function.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview signal: identify the browser capability detection, permission UX, worker boundaries, observers, scheduling, and progressive enhancement before discussing APIs or code structure.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">The answer should connect user-visible behavior to engineering constraints: correctness, accessibility, latency, failure recovery, testability, and operational ownership.</HighlightBlock>
         <p>
           Design Web Worker Computation is a low-level design problem about wrapping a powerful but inconsistent browser capability in a production-safe worker pool and message protocol. Browser APIs are not normal libraries: availability differs by browser, permissions can change at runtime, callbacks may fire on the main thread, and user activation, privacy, storage, and lifecycle rules can invalidate a happy-path implementation.
         </p>
@@ -38,7 +39,7 @@ export default function WebWorkersThreadingArticle() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core invariant: browser APIs must be invoked after capability and permission checks, with SSR-safe fallbacks and cleanup for observers, workers, listeners, and handles.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design Web Worker Computation, the strongest explanation names the state model, the data structures that hold that state, and the events allowed to mutate it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not skip ownership: distinguish product-owned state, platform-owned policy, browser/runtime state, server-authoritative state, and speculative local state.</HighlightBlock>
         <p>
           The first concept is feature detection with a policy decision. The runtime should not only check whether an API exists. It should decide whether the API is allowed for this user journey, browser, security context, permission state, and product risk. For example, an API may exist but require HTTPS, transient user activation, foreground tab state, same-origin constraints, or a browser-specific fallback.
         </p>
@@ -65,7 +66,7 @@ export default function WebWorkersThreadingArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture flow should cover input event, validation, state transition, side effect, commit guard, cleanup, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Key design decisions: feature detection, permission prompts, worker transfer boundaries, observer lifecycle, idle scheduling, visibility behavior, and fallback UI.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A principal-level answer should describe the hard path, not only the happy path: delayed responses, unmounts, retries, stale state, permission changes, and partial degradation.</HighlightBlock>
         <p>
           The architecture has five layers. The component facade accepts product intent. The capability layer checks API support, secure context, permissions, user activation, and document lifecycle. The execution engine calls the browser API through adapters. The fallback layer provides an alternate path when the capability is missing or unsafe. The observer layer records metrics and exposes state changes to UI subscribers.
         </p>
@@ -97,7 +98,7 @@ export default function WebWorkersThreadingArticle() {
       </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: choose the design that keeps correctness and recovery explicit while bounding latency, memory, and integration complexity.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized runtime behavior with local component control. Centralization improves consistency and observability, but can become a bottleneck if extension points are not governed.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design Web Worker Computation, defend what is intentionally strict, what is configurable, and what should remain outside the abstraction.</HighlightBlock>
         <p>
           Calling browser APIs directly is fast to ship and works for prototypes. It becomes fragile when multiple screens need consistent permission prompts, fallbacks, cleanup, security handling, and observability. A centralized runtime adds indirection, but it turns browser unpredictability into a stable application contract.
         </p>
@@ -116,7 +117,7 @@ export default function WebWorkersThreadingArticle() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make illegal or ambiguous states unrepresentable through explicit state unions, typed events, stable IDs, and guarded transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Test the lifecycle, not just the render output: rapid interaction, stale async settlement, unmount cleanup, keyboard-only use, SSR hydration, degraded capability, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Expose diagnostics that prove the design works in production: transition counts, suppressed stale work, failure reasons, cleanup counts, latency, fallback rate, and user-visible recovery.</HighlightBlock>
         <p>
           Always wrap browser APIs with capability detection, typed errors, and cleanup. Treat browser support as a runtime condition, not a build-time assumption. Check secure context, permissions, document visibility, user activation, and lifecycle state close to the call site because those values can change between render and execution.
         </p>
@@ -135,7 +136,7 @@ export default function WebWorkersThreadingArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Main risks to call out: hydration errors, permission dead ends, leaked observers, main-thread jank, unsupported browsers, privacy leaks, and APIs called during SSR render.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A common interview failure is describing the API surface but not the lifecycle guarantees that prevent stale work, leaked resources, inaccessible states, or unsafe commits.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not hide failure behind generic loading and error flags. Name the difference between blocked, cancelled, stale, degraded, retrying, unauthorized, conflicted, and committed states.</HighlightBlock>
         <p>
           The most common pitfall is assuming support means safe use. A method can exist but still fail because the page is not secure, the tab is hidden, the user activation expired, the permission was denied, the payload is too large, or the browser throttled the callback. The runtime must treat these as normal states.
         </p>
@@ -157,7 +158,7 @@ export default function WebWorkersThreadingArticle() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world use: clipboard, geolocation, background sync, visibility tracking, web workers, observer APIs, native drag-drop, and idle-task scheduling.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the design to operational behavior: how teams roll it out, observe it, debug it, migrate consumers, and roll it back without breaking active users.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">At staff/principal level, explain how this component or runtime reduces repeated product-team mistakes while still allowing legitimate product-specific policy.</HighlightBlock>
         <p>
           Browser API runtimes appear in productivity suites, internal admin tools, design editors, field-service apps, analytics dashboards, media uploaders, real-time collaboration products, and offline-capable PWAs. These products need capabilities that are close to the device and browser lifecycle, but they also need predictable behavior across teams and browsers.
         </p>
@@ -167,7 +168,7 @@ export default function WebWorkersThreadingArticle() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">When asked to design Design Web Worker Computation, lead with the invariant, then walk through state, events, data structures, failure handling, and measurable production signals.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A strong answer includes a concrete edge-case walkthrough where the system receives conflicting or delayed events and still commits the correct final state.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Close by naming complexity and test strategy: runtime cost, memory bounds, cleanup guarantees, accessibility tests, race tests, and observability checks.</HighlightBlock>
         <h3>How would you design this system end to end?</h3>
         <p>
           I would design a facade around the browser API, a capability and permission gate, a state machine, browser adapters, fallback renderers, and telemetry. The facade accepts product intent and returns typed outcomes. The gate checks secure context, support, permission, activation, and lifecycle. The adapter executes the browser call with cancellation and timeout guards. The fallback path keeps the core task usable when the native path is unavailable.

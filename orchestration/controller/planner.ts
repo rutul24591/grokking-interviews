@@ -858,10 +858,12 @@ function deslugify(value: string) {
     .join(" ");
 }
 
-export default {
+const planner = {
   REQUIRED_SECTIONS,
   createRun,
   refreshRunState,
   loadPipelineDefinition,
   scanArticleContent,
 };
+
+export default planner;

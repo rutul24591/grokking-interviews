@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function PresenceLastSeenSystemArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function PresenceLastSeenSystemArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Presence and Last-Seen System</h1><h2>Definition &amp; Context</h2><p>Design a Presence and Last-Seen System is an implementation-heavy low-level design problem covering heartbeat renewal, TTL expiry, device aggregation, privacy policy, last-seen persistence, visibility changes, and reconnect. A principal-level answer must define ordering, ephemeral versus durable state, reconnect behavior, rollback, abuse controls, privacy, cost, and observability.</p><p>Separate ephemeral online presence from durable last-seen metadata and user privacy preferences. The core structures are participant map, device sessions, heartbeat interval, TTL expiry, last-seen timestamp, privacy mode, visibility state, and reconnect token.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/presence-last-seen-system-runtime.svg" alt="Design a Presence and Last-Seen System runtime" caption="Real-time flow from input through merge policy and UI projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -85,7 +84,7 @@ export default function PresenceLastSeenSystemArticle() {
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h3>⚙️ Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -126,7 +125,7 @@ export default function PresenceLastSeenSystemArticle() {
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h3>📊 Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -169,12 +168,8 @@ export default function PresenceLastSeenSystemArticle() {
       </section>
 
       <section>
-        <h2>🧠 Solution Approach</h2>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/communication-collaboration/presence-last-seen-system-architecture.svg"
-          alt="Presence and last-seen system architecture showing presence record model, status rules, client heartbeat, server TTL with Redis, presence indicator UI, last-seen text formatting, privacy controls, and scale considerations"
-          caption="Architecture Overview"
-        />
+        <h3>🧠 Solution Approach</h3>
+        
         <HighlightBlock as="p" tier="important">
           The system has four parts: <strong>local
           heartbeat sender</strong> (periodic
@@ -255,7 +250,7 @@ export default function PresenceLastSeenSystemArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="important">
           <Highlight tier="crucial"><strong>HeartbeatSender</strong></Highlight>,
           <strong> ActivityTracker</strong>,
@@ -267,7 +262,7 @@ export default function PresenceLastSeenSystemArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Local presence state in a small ref-
           backed <Highlight tier="important">cache. Per-user presence in an
@@ -277,7 +272,7 @@ export default function PresenceLastSeenSystemArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important">
           <Highlight tier="crucial">Heartbeat:</Highlight>{" "}
           <code>{`POST /presence/heartbeat`}</code> (small body). Presence event:{" "}
@@ -289,7 +284,7 @@ export default function PresenceLastSeenSystemArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Heartbeats are tiny. Activity throttled.
           Cross-tab <Highlight tier="important">election uses lightweight
@@ -300,7 +295,7 @@ export default function PresenceLastSeenSystemArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Presence dot small but visible (green/
           yellow/gray). <Highlight tier="important">Last-seen text subtle
@@ -311,7 +306,7 @@ export default function PresenceLastSeenSystemArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Dot has text equivalent in tooltip and
           <Highlight tier="important">aria-label. Status changes don&rsquo;t
@@ -321,7 +316,7 @@ export default function PresenceLastSeenSystemArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Privacy preferences server-enforced.
           Authorization: <Highlight tier="important">only friends or
@@ -332,7 +327,7 @@ export default function PresenceLastSeenSystemArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Unit tests for heartbeat timing, idle
           detection, cross-tab election.
@@ -343,7 +338,7 @@ export default function PresenceLastSeenSystemArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important">Privacy hide:
           server serves offline regardless. Mobile
           browser backgrounding: heartbeats</Highlight></HighlightBlock>
@@ -353,7 +348,7 @@ export default function PresenceLastSeenSystemArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Generic; any product with users-and-
           <Highlight tier="important">friends benefits. Presence + last-seen
@@ -362,7 +357,7 @@ export default function PresenceLastSeenSystemArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="crucial">Last-seen via{" "}
           <Highlight tier="important"><code>Intl.RelativeTimeFormat</code></Highlight>.{" "}
           <Highlight tier="important">Status labels via i18n</Highlight>.
@@ -370,7 +365,7 @@ export default function PresenceLastSeenSystemArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Heartbeat interval</h3>
         <HighlightBlock as="p" tier="important">
@@ -409,7 +404,7 @@ export default function PresenceLastSeenSystemArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">Cross-device presence (online on phone
           counts even if web is offline). AI-
           predicted &ldquo;likely online&rdquo;
@@ -417,83 +412,12 @@ export default function PresenceLastSeenSystemArticle() {
 <HighlightBlock as="p" tier="important"><Highlight tier="important">Custom status auto-set based
           on calendar (in a meeting). Activity
           richness (typing, viewing, editing).</Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. How is online state
-          determined?</strong> Heartbeat every 30 s
-          while tab active. Server marks online
-          on heartbeat; offline if no heartbeat
-          for 90 s.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How is away
-          detected?</strong> Activity tracker
-          watches input events. After threshold
-          (5 min) without activity, mark away.
-          Activity resumes online.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>3. How is cross-tab
-          handled?</strong> BroadcastChannel
-          elects a leader tab. Leader sends
-          heartbeats. If leader dies, another
-          tab takes over.
-        </HighlightBlock>
-
-        <p>
-          <strong>4. How does last-seen
-          work?</strong> Server records the
-          time of last heartbeat. For offline
-          users, others see &ldquo;Last seen X
-          ago&rdquo; via
-          <code> Intl.RelativeTimeFormat</code>.
-        </p>
-
-        <p>
-          <strong>5. How are privacy preferences
-          enforced?</strong> Server-side. When
-          hidden, server serves
-          &ldquo;offline&rdquo; or
-          &ldquo;unknown&rdquo; to others
-          regardless of actual state.
-        </p>
-
-        <p>
-          <strong>6. How does this scale?</strong>{" "}
-          Heartbeats are tiny. Server batches
-          presence broadcasts to subscribers.
-          Per-user subscriptions limit fanout.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>7. What happens on tab
-          close?</strong> WebSocket disconnect
-          fires; server eventually marks
-          offline (heartbeat timeout).
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>8. How is this
-          accessible?</strong> Dot has text
-          equivalent. Status announces on focus.
-          Last-seen reads as text.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial"><Highlight tier="important">Cross-tab coordination</Highlight>
-          minimizes load. Last-seen via Intl.
-          The</HighlightBlock>
-<HighlightBlock as="p" tier="important">result is glanceable, trustworthy
-          presence indicators throughout the app.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate durable records, optimistic intent, transport events, ephemeral awareness, rendered projection, and telemetry. Every connection, timer, cursor, replay buffer, subscription, and retry queue needs an explicit owner and cleanup path.</p><p>Separate ephemeral online presence from durable last-seen metadata and user privacy preferences.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/presence-last-seen-system-recovery.svg" alt="Design a Presence and Last-Seen System recovery" caption="Recovery flow: classify gaps, retain stable truth, replay safely, and emit evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Perfect online accuracy is expensive and misleading; bounded-staleness presence is justified for useful social context.</p><p>Online state is eventually consistent TTL state. Last-seen is a durable server projection filtered by privacy policy. Scale pressure comes from many devices, lost heartbeats, hidden tabs, clock skew, reconnect storms, and privacy restrictions. Bound queues, dedupe events, expire ephemeral state, and degrade predictably.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, event sequences, idempotency keys, monotonic watermarks, TTLs, replay cursors, bounded buffers, authorization checks, and cleanup. Test reconnect gaps, duplicates, stale events, offline recovery, privacy settings, and accessibility announcements.</p><p>Measure latency, backlog, reconnect rate, gap recovery, retries, stale drops, TTL expiry, and accessibility regressions without logging sensitive content.</p><h3>Operational implementation: privacy-aware presence TTL and last-seen projection</h3><p>Treat online presence as TTL state and last-seen as a privacy-controlled projection. Newer heartbeats supersede older ones, invisible mode suppresses fan-out, and the UI rounds last-seen timestamps according to policy rather than exposing exact activity.</p><p>Define explicit metrics for accepted events, duplicate drops, stale drops, replay gap size, reconnect duration, queue depth, TTL expiry, degraded-mode entry, authorization denial, and rollback outcome. Redact user content and sensitive identifiers from telemetry. Test duplicate delivery, out-of-order events, disconnect during mutation, hidden tabs, unmount cleanup, multiple tabs, permission removal, burst traffic, and a rollback to the previous policy version.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include treating ephemeral state as durable, trusting arrival order, leaking timers or sockets, missing dedupe, unbounded replay, and hiding degraded connectivity.</p><p>For this topic, expire stale sessions, aggregate devices, pause responsibly in hidden tabs, refresh on reconnect, and redact restricted timestamps.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to collaborative products where transport, persistence, and UI projection fail independently. Inject product policy for authorization, retention, fallback, and observability explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Separate ephemeral online presence from durable last-seen metadata and user privacy preferences.</p><h3>What breaks at scale?</h3><p>many devices, lost heartbeats, hidden tabs, clock skew, reconnect storms, and privacy restrictions.</p><h3>What consistency applies?</h3><p>Online state is eventually consistent TTL state. Last-seen is a durable server projection filtered by privacy policy.</p><h3>How do you recover?</h3><p>expire stale sessions, aggregate devices, pause responsibly in hidden tabs, refresh on reconnect, and redact restricted timestamps.</p><h3>Why this architecture?</h3><p>Perfect online accuracy is expensive and misleading; bounded-staleness presence is justified for useful social context.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket" target="_blank" rel="noreferrer">MDN WebSocket</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA APG</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

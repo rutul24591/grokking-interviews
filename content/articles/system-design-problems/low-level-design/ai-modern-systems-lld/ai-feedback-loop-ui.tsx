@@ -23,6 +23,8 @@ export const metadata: ArticleMetadata = {
 export default function AIFeedbackLoopArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame AI Feedback Loop UI around system boundary, state ownership, failure handling, scalability, security, and observable recovery. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock><p>AI Feedback Loop UI is an implementation-heavy low-level design problem. A principal-level answer must define authoritative state, client projections, lifecycle transitions, failure behavior, privacy boundaries, abuse controls, cost limits, rollback, and observability.</p><p>The immutable feedback event is authoritative; dashboards, training exports, and preference pairs are derived views with explicit model and prompt attribution.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/ai-modern-systems/ai-feedback-loop-ui-runtime.svg" alt="AI Feedback Loop UI runtime lifecycle" caption="Runtime lifecycle with authority boundaries and observable checkpoints." /></section>
+      <section><h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: the design must preserve correctness under latency, concurrency, partial failure, and changing permissions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For AI Feedback Loop UI, the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock><p>The retained deep dive below covers the topic-specific implementation mechanics.</p>
       <p>
         A deployed AI assistant generates thousands of responses per day. Without
         a feedback mechanism, the product team has no systematic way to know which
@@ -34,14 +36,7 @@ export default function AIFeedbackLoopArticle() {
         at scale without degrading the primary user experience: every modal, every
         required rating, every feedback form adds friction that reduces engagement.
       </p>
-
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/ai-modern-systems/ai-feedback-loop-ui.svg"
-        alt="AI feedback loop showing collection UI with thumbs up/down and correction form, feedback to training pipeline, feedback schema, analytics dashboard, and implicit vs explicit signals"
-        caption="AI feedback loop: collection UI, implicit signal capture, training pipeline stages, and analytics monitoring"
-      />
-
-      <h2>Clarifying the Requirements</h2>
+<h2>Clarifying the Requirements</h2>
       <p>
         Feedback systems vary enormously in scope. A simple thumbs up/down collecting
         preference signals for A/B experimentation is fundamentally different from a full
@@ -327,48 +322,8 @@ export default function AIFeedbackLoopArticle() {
         rather than automatically included as positive or negative examples.
       </HighlightBlock>
 
-      <h2>Interview Q&A</h2>
 
-      <h3>Q: How do you attribute feedback to the right model version when a deployment is in progress?</h3>
-      <p>
-        Each AI response is generated with a specific model version and prompt version
-        identified at the time of generation. These identifiers are embedded in the
-        response metadata and passed back to the client as opaque tokens in the response
-        payload (not visible to users). When the user rates a response, the client sends
-        these tokens back as part of the feedback record. The feedback collection API
-        records them verbatim — it never infers version from the current deployment state,
-        because that state may have changed between generation and feedback. This ensures
-        feedback is always attributed to the version that actually produced the response,
-        even if a new version deployed in the interim.
-      </p>
-
-      <h3>Q: How do you handle feedback on responses that are still streaming?</h3>
-      <p>
-        Feedback submitted on a streaming-in-progress response should be attributed to
-        the partial response and flagged as "early" feedback. This is important because
-        early feedback often reflects impatience ("this is taking too long") rather than
-        quality judgment of the final response. The feedback record includes a streamingState
-        field: "complete", "in_progress", or "cancelled". Analytics dashboards filter out
-        "in_progress" feedback from quality metrics (it's latency feedback, not content
-        quality feedback) but retain it for streaming performance monitoring. RLHF training
-        data selection also excludes early feedback — preference pairs must compare
-        completed responses.
-      </p>
-
-      <h3>Q: How would you design the feedback system to support multiple AI products from one platform?</h3>
-      <p>
-        A shared feedback platform with product-level namespacing. The feedback record
-        includes a productId and a productConfigId (the specific AI configuration within
-        that product — different feature areas may have different models or prompts).
-        Analytics dashboards support product-level filtering. The human review queue
-        supports assignment rules so corrections for product A route to the team that
-        owns product A. The RLHF training data is product-specific — a correction for
-        a customer support bot should not inform training for a code assistant. The shared
-        platform reuses infrastructure (collection API, queue, warehouse, review tool)
-        while maintaining logical separation of data and human review workflows per product.
-      </p>
-
-      <h2>Feedback Attribution Across Sessions</h2>
+<h2>Feedback Attribution Across Sessions</h2>
       <p>
         A user who receives a response at 2pm, uses the information, and rates the response
         at 5pm presents an attribution challenge. The response was generated with model
@@ -484,23 +439,14 @@ export default function AIFeedbackLoopArticle() {
         area after 7 days — training pipelines should ingest them promptly and not rely
         on the staging area for long-term storage.
       </p>
-
-      <h3>Q: How do you handle the case where users provide feedback that directly contradicts the AI's factually correct response?</h3>
-      <p>
-        User corrections are not ground truth. A user who provides a correction to a
-        technically correct AI response — perhaps because they misunderstood the response,
-        or because they hold an incorrect belief — will submit a correction that would
-        degrade the model if trained on uncritically. The review pipeline's human reviewers
-        are the primary guard against this: they evaluate whether the correction is
-        actually better than the original response. For factual domains (medical, legal,
-        scientific), reviewers should have subject matter expertise or access to authoritative
-        references. Flag corrections that contradict established facts (identified by a
-        fact-checking LLM judge that evaluates the correction against a trusted reference
-        corpus) for expert review rather than general reviewer review. Track the percentage
-        of "user-incorrect" corrections by query category — high rates indicate users
-        are systematically misinformed about a topic, which is itself a signal for improving
-        the AI's explanatory approach.
-      </p>
+</section>
+      <section><h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: state model, API contracts, cache policy, async workflow, authorization, rollout, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock><p>Model the runtime as explicit transitions: capture signal to dedupe to moderate to aggregate to export dataset. Every asynchronous completion carries a generation, version, or correlation id so stale work can be rejected safely. Separate user intent, untrusted transport input, validated intermediate state, durable truth, and derived UI projection.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/ai-modern-systems/ai-feedback-loop-ui-recovery.svg" alt="AI Feedback Loop UI failure containment and rollback" caption="Failure containment, rollback controls, and audit evidence." /></section>
+      <section><h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock><p>The immutable feedback event is authoritative; dashboards, training exports, and preference pairs are derived views with explicit model and prompt attribution.</p><p>The major pressure points are duplicate clicks, adversarial feedback, model rollout overlap, delayed implicit signals, privacy deletion, sampling bias, and export reproducibility. Prefer explicit bounded degradation over hidden correctness loss. Caches and optimistic UI improve latency only when invalidation, expiry, cancellation, and stale-response rejection are designed with them.</p></section>
+      <section><h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: latency, error rate, fallback rate, conversion, stale-state duration, and rollback success.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock><p>Use typed state machines, immutable identifiers, bounded queues, idempotent writes, cancellation propagation, versioned contracts, redacted logs, privacy-aware retention, and stage-level metrics. Test stale callbacks, retries, partial failure, duplicate input, slow consumers, access-control changes, rollback, and degraded dependencies.</p></section>
+      <h3>Principal defense: consistency, cost, and rollback</h3><p>State the consistency boundary explicitly. User intent, request generation, model or retrieval bundle version, and terminal status belong to one attributable execution. Streaming tokens and previews are derived projections; durable history, approved revisions, feedback events, and citation access checks are authoritative records. Reject late generations after cancellation or supersession even when transport continues to deliver bytes.</p><p>Defend cost as a product constraint, not an infrastructure footnote. Bound context, retrieval fan-out, concurrent generations, retry budgets, preview depth, and retained history. Record bundle id, latency by stage, token or candidate volume, refusal reason, and fallback outcome. Roll back by immutable revision or alias swap so a bad prompt, model, parser, or retrieval policy can be isolated without rewriting evidence.</p><section><h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: stale state, hidden partial failure, unbounded retries, ownership ambiguity, and missing observability.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock><p>Avoid treating derived UI as authoritative, accepting stale asynchronous completion, hiding unsupported states, leaking sensitive payloads into telemetry, retrying non-idempotent work blindly, and adding expensive AI calls without latency and cost budgets.</p></section>
+      <section><h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock><p>This design applies to thumbs feedback, RLHF preference capture, AI quality dashboards, safety review queues, and model-release monitoring.</p></section>
+      <section><h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock><h3>What state is authoritative, and what may remain optimistic?</h3><p>The immutable feedback event is authoritative; dashboards, training exports, and preference pairs are derived views with explicit model and prompt attribution.</p><h3>What fails first under scale, abuse, or degraded dependencies?</h3><p>Pressure-test duplicate clicks, adversarial feedback, model rollout overlap, delayed implicit signals, privacy deletion, sampling bias, and export reproducibility. Bound queues, reject stale transitions, preserve provenance, and make degraded behavior explicit rather than silently returning misleading UI.</p><h3>How do you recover or roll back without corrupting user-visible state?</h3><p>deduplicate by interaction, preserve append-only provenance, quarantine suspicious cohorts, version exports, and roll back training datasets independently of UI writes</p><h3>How do you make the design observable in production?</h3><p>Emit redacted correlation ids, stage latency, terminal status, retry count, rejection reason, version identifiers, queue depth, and recovery outcome. Alert on ratios and tail latency, not only aggregate success counts.</p><h3>How do you defend the architecture against a simpler alternative?</h3><p>Start with the simplest state machine that preserves authority boundaries. Add asynchronous stages, caching, workers, or secondary indexes only when measured latency, scale, or isolation requirements justify their operational cost.</p></section>
+      <section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Streams_API" target="_blank" rel="noreferrer">MDN Streams API</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://owasp.org/www-project-cheat-sheets/" target="_blank" rel="noreferrer">OWASP Cheat Sheet Series</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices</a></li></ul></section>
     </ArticleLayout>
   );
 }

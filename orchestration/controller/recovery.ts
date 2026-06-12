@@ -46,7 +46,9 @@ export function failTask(runId: string, taskId: string, reason: string) {
   return refreshRunState(runId);
 }
 
-export default {
+const recovery = {
   recoverRun,
   failTask,
 };
+
+export default recovery;

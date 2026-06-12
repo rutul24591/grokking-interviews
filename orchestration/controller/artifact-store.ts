@@ -190,7 +190,7 @@ function inferExtension(contentType: ArtifactRecord["contentType"]) {
   }
 }
 
-export default {
+const artifactStore = {
   getRunDir,
   getArtifactsDir,
   getArtifactRecordsDir,
@@ -210,3 +210,5 @@ export default {
   registerInlineArtifact,
   persistEvaluation,
 };
+
+export default artifactStore;

@@ -3,7 +3,6 @@
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -25,11 +24,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function PermissionEditorUIArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
+export default function PermissionEditorUIArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Permission Editor UI</h1><h2>Definition &amp; Context</h2><p>Design a Permission Editor UI is a security-sensitive low-level design problem covering role and permission matrix, effective access preview, dirty edits, validation, approval, versioned save, and audit diff. A principal-level answer must state the authoritative server boundary, threat model, lifecycle, abuse controls, rollback, privacy, observability, and user-safe degraded behavior.</p><p>Keep editable draft separate from effective permissions and server version. The UI is not the authorization engine. Core structures: principal id, role map, permission catalog, inherited grants, draft diff, effective preview, base version, approval state, and audit receipt.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/auth-user-systems/permission-editor-ui-runtime.svg" alt="Design a Permission Editor UI runtime" caption="Security flow from user intent through authoritative validation and audit." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>Problem Clarification</h3>
         <HighlightBlock as="p" tier="important">
           An admin must grant a new employee permission to view documents, but
           not delete them. Another admin needs to bulk-grant a team of 20
@@ -84,7 +82,7 @@ export default function PermissionEditorUIArticle() {
       </section>
 
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">
           Functional Requirements
         </h3>
@@ -172,7 +170,7 @@ export default function PermissionEditorUIArticle() {
       </section>
 
       <section>
-        <h2>High-Level Approach</h2>
+        <h3>High-Level Approach</h3>
         <HighlightBlock as="p" tier="important">A permission editor UI has three components: permission selection,
           role presets, and confirmation/audit. Users start by selecting target
           (a specific user, or multiple users for bulk edit). The UI then
@@ -197,13 +195,9 @@ export default function PermissionEditorUIArticle() {
       </section>
 
       <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/auth-user-systems/permission-editor-ui.svg"
-          alt="Permission editor UI with toggle controls, data model with role inheritance, bulk operations, and audit trail requirements"
-          caption="Permission editor UI with toggle controls, data model with role inheritance, bulk operations, and audit trail requirements"
-        />
+        
 
-        <h2>Detailed Design</h2>
+        <h3>Detailed Design</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">
           Permission Model and Representation
@@ -524,7 +518,7 @@ export default function PermissionEditorUIArticle() {
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
+        <h3>Trade-offs and Considerations</h3>
         <HighlightBlock as="p" tier="important">
           <strong>Granular vs Role-Based:</strong> Granular permissions (100+
           individual checkboxes) provide ultimate flexibility but overwhelming
@@ -572,7 +566,7 @@ export default function PermissionEditorUIArticle() {
       </section>
 
       <section>
-        <h2>Implementation Patterns</h2>
+        <h3>Implementation Patterns</h3>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">
           Pattern 1: Role-Based Presets with Granular Override
         </h3>
@@ -613,13 +607,12 @@ export default function PermissionEditorUIArticle() {
           Clicking undo reverts that single change, logged as a new entry.
           Provides safety net while preventing "undo everything" chaos.
         </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Real-world systems (GitHub, Datadog, Slack) use role presets as primary interface with advanced granular control, visual inheritance indicators (lighter color for inherited), and mandatory confirmation on dangerous</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">operations (revoke all, grant admin). For best results, lead with presets, provide search for large permission sets, always show before/after diff, require explicit confirmation on dangerous and bulk operations, prevent self-lock (don't let only admin revoke their own admin), provide audit trail, and fail-secure (when in doubt, require confirmation). Permission editors are critical UX—small improvements prevent security incidents and user frustration.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate user intent, browser-safe projection, server validation, durable security record, audit evidence, and cleanup. Frontend state improves UX but never replaces server enforcement. Tokens, challenges, sessions, and privileged grants need explicit expiry and revocation.</p><p>Keep editable draft separate from effective permissions and server version. The UI is not the authorization engine.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/auth-user-systems/permission-editor-ui-recovery.svg" alt="Design a Permission Editor UI threat recovery" caption="Threat recovery: validate, deny safely, preserve authoritative truth, audit, and recover." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Server policy evaluation and versioned writes are authoritative. UI preview is advisory and filtered by editor permissions. Scale and threat pressure comes from large matrices, inherited grants, stale versions, privilege escalation, bulk edits, and partial visibility. Fail closed for privilege while keeping error UX actionable.</p></section>
+<section><h2>Best practices</h2><p>Use short-lived scoped grants, secure cookies, CSRF defenses, replay prevention, rotation, versioned writes, server-side authorization, rate limits, redacted logs, and explicit audit events. Test expiry, replay, revocation, retries, multiple tabs, and permission drift.</p></section>
+<h3>Principal defense: authority, consistency, and abuse cost</h3><p>Use server-authoritative consistency for security decisions. Browser state is a revocable projection that can improve responsiveness but cannot grant access, extend expiry, or confirm a privileged transition. Every mutation carries a version, expiry, nonce, or idempotency key as appropriate; stale projections refresh or fail closed. Rollback means revoking the grant, session family, policy version, or pending intent while retaining an audit trail.</p><p>Model abuse and cost together. Rate-limit sensitive attempts by account, device, network, and risk cohort without turning the UI into an enumeration oracle. Bound session inventory, audit retention, challenge issuance, cross-tab broadcasts, and refresh retries. Emit denial reason classes, revocation lag, suspicious reuse, policy version, and correlation ids while avoiding sensitive payloads in telemetry.</p><section><h2>Common Pitfalls</h2><p>Common failures include trusting frontend guards, storing bearer tokens in localStorage, leaking account existence, missing idempotency, weak redirect validation, and incomplete audit evidence.</p><p>For this topic, validate grants server-side, block self-escalation, show inherited sources, require approval where needed, preserve conflict diff, and audit changes.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to user identity and access workflows where convenience must not weaken authoritative server enforcement or incident evidence.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>What is authoritative?</h3><p>Server policy evaluation and versioned writes are authoritative. UI preview is advisory and filtered by editor permissions.</p><h3>What breaks under abuse?</h3><p>large matrices, inherited grants, stale versions, privilege escalation, bulk edits, and partial visibility.</p><h3>How do you recover?</h3><p>validate grants server-side, block self-escalation, show inherited sources, require approval where needed, preserve conflict diff, and audit changes.</p><h3>What does the client enforce?</h3><p>The client improves usability and fails closed for privileged views; the server enforces every protected read and mutation.</p><h3>How do you observe incidents?</h3><p>Emit redacted audit records with subject, actor, policy version, reason, outcome, and correlation id.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.rfc-editor.org/rfc/rfc7636" target="_blank" rel="noreferrer">RFC 7636 PKCE</a></li><li><a href="https://www.w3.org/TR/webauthn-3/" target="_blank" rel="noreferrer">WebAuthn Level 3</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies" target="_blank" rel="noreferrer">MDN Cookies</a></li><li><a href="https://owasp.org/www-project-cheat-sheets/" target="_blank" rel="noreferrer">OWASP Cheat Sheets</a></li></ul></section>
+</ArticleLayout>}

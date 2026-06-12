@@ -97,11 +97,13 @@ function cleanText(value) {
 }
 
 function extractString(source, key) {
+  // eslint-disable-next-line security/detect-non-literal-regexp -- key is an internal metadata field name.
   const match = source.match(new RegExp(`${key}:\\s*"([^"]+)"|${key}:\\s*'([^']+)'`));
   return match ? match[1] || match[2] : "";
 }
 
 function extractArray(source, key) {
+  // eslint-disable-next-line security/detect-non-literal-regexp -- key is an internal metadata field name.
   const match = source.match(new RegExp(`${key}:\\s*\\[([\\s\\S]*?)\\]`));
   if (!match) return [];
   return [...match[1].matchAll(/"([^"]+)"|'([^']+)'/g)].map((item) =>

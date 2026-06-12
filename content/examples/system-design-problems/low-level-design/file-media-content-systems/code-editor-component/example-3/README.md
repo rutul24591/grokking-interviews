@@ -1,4 +1,3 @@
-# Code Editor — Example 3
+# CodeEditorComponent: recovery scenario
 
-Edge-case checklist for code editors.
-
+This example models the failure case where language-server diagnostics arrived for a stale document version. The recovery plan is explicit: discard stale diagnostics and request analysis for the latest model version.

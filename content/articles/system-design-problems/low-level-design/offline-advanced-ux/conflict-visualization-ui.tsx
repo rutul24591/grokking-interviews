@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,7 +24,7 @@ export default function ConflictVisualizationUiArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h1>Design a Conflict Visualization UI</h1>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Design a Conflict Visualization UI should be framed as an implementation-level design problem with a clear runtime boundary, not as a visual mock or helper function.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview signal: identify the local-first state, sync queues, conflict policy, degraded UX, and reconnect recovery before discussing APIs or code structure.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">The answer should connect user-visible behavior to engineering constraints: correctness, accessibility, latency, failure recovery, testability, and operational ownership.</HighlightBlock>
         <p>
           Design a Conflict Visualization UI is a low-level design problem about building a merge review and resolution interface that keeps a user journey coherent when the network, browser capability, storage, or server version cannot be trusted. A principal-ready answer should not stop at saying &quot;cache it&quot; or &quot;retry later&quot;. It should define the public API, local durability model, conflict semantics, privacy boundaries, and the exact user-visible states when the system cannot safely continue.
         </p>
@@ -38,7 +39,7 @@ export default function ConflictVisualizationUiArticle() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core invariant: local actions must be durable, replayable, conflict-aware, and clearly labeled until the server acknowledges them.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design a Conflict Visualization UI, the strongest explanation names the state model, the data structures that hold that state, and the events allowed to mutate it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not skip ownership: distinguish product-owned state, platform-owned policy, browser/runtime state, server-authoritative state, and speculative local state.</HighlightBlock>
         <p>
           The first concept is local intent capture. Offline systems should record what the user meant to do, not only the final rendered value. A durable intent contains an operation id, actor id, target resource, base version, payload, timestamp, dependency list, and idempotency key. Capturing intent gives the implementation enough information to replay, rebase, reject, or ask for human resolution after reconnect.
         </p>
@@ -65,7 +66,7 @@ export default function ConflictVisualizationUiArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture flow should cover input event, validation, state transition, side effect, commit guard, cleanup, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Key design decisions: operation journals, conflict resolution, background sync, network detection, storage limits, replay order, and user-visible reconciliation.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A principal-level answer should describe the hard path, not only the happy path: delayed responses, unmounts, retries, stale state, permission changes, and partial degradation.</HighlightBlock>
         <p>
           The architecture has six layers. The interaction layer captures the user action and assigns an operation identity. The local durability layer writes intent to IndexedDB, Cache Storage, or a scoped in-memory fallback before showing success-like UI. The health coordinator classifies network and capability state. The sync engine drains eligible operations using idempotency keys and retry budgets. The conflict engine compares base, local, and remote versions. The presentation layer shows current, stale, queued, conflicted, or blocked state with accessible controls.
         </p>
@@ -97,7 +98,7 @@ export default function ConflictVisualizationUiArticle() {
       </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: choose the design that keeps correctness and recovery explicit while bounding latency, memory, and integration complexity.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized runtime behavior with local component control. Centralization improves consistency and observability, but can become a bottleneck if extension points are not governed.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design a Conflict Visualization UI, defend what is intentionally strict, what is configurable, and what should remain outside the abstraction.</HighlightBlock>
         <p>
           A network-first design is simpler and easier to reason about because the server remains the immediate source of truth. It breaks down when users expect creation, editing, reading, or notification management to keep working during poor connectivity. An offline-first design improves perceived reliability, but it moves consistency, privacy, storage limits, and conflict resolution into the client. The right choice depends on whether the task is critical enough to justify that client complexity.
         </p>
@@ -113,7 +114,7 @@ export default function ConflictVisualizationUiArticle() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make illegal or ambiguous states unrepresentable through explicit state unions, typed events, stable IDs, and guarded transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Test the lifecycle, not just the render output: rapid interaction, stale async settlement, unmount cleanup, keyboard-only use, SSR hydration, degraded capability, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Expose diagnostics that prove the design works in production: transition counts, suppressed stale work, failure reasons, cleanup counts, latency, fallback rate, and user-visible recovery.</HighlightBlock>
         <p>
           Persist intent before optimistic UI when the operation matters. If the UI updates first and the tab closes before durability, the user will believe work was saved when it was not. For lower-risk interactions, an in-memory pending state may be acceptable, but the UI should not imply durable completion until the write has crossed the chosen durability boundary.
         </p>
@@ -132,7 +133,7 @@ export default function ConflictVisualizationUiArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Main risks to call out: lost writes, duplicate replay, silent conflicts, stale offline assumptions, quota failures, and UI that pretends speculative state is committed.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A common interview failure is describing the API surface but not the lifecycle guarantees that prevent stale work, leaked resources, inaccessible states, or unsafe commits.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not hide failure behind generic loading and error flags. Name the difference between blocked, cancelled, stale, degraded, retrying, unauthorized, conflicted, and committed states.</HighlightBlock>
         <p>
           The most common pitfall is using a single online boolean as the system truth. Browser connectivity APIs are hints, not guarantees. A device can be online but unable to reach your API, authenticated but forbidden to replay an old mutation, or capable of service workers but blocked from persistent storage. The runtime needs active probes and failure classification.
         </p>
@@ -148,7 +149,7 @@ export default function ConflictVisualizationUiArticle() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world use: offline-first apps, field-service workflows, mobile PWAs, collaboration tools, poor-network checkout, and resilient form submission.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the design to operational behavior: how teams roll it out, observe it, debug it, migrate consumers, and roll it back without breaking active users.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">At staff/principal level, explain how this component or runtime reduces repeated product-team mistakes while still allowing legitimate product-specific policy.</HighlightBlock>
         <p>
           Offline and advanced UX patterns appear in field-service apps, document editors, dashboards, e-commerce carts, travel products, creator tools, messaging interfaces, and enterprise admin consoles. The common thread is that a user journey crosses unreliable boundaries: network, storage, permissions, browser capability, or multi-device state.
         </p>
@@ -158,7 +159,7 @@ export default function ConflictVisualizationUiArticle() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">When asked to design Design a Conflict Visualization UI, lead with the invariant, then walk through state, events, data structures, failure handling, and measurable production signals.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A strong answer includes a concrete edge-case walkthrough where the system receives conflicting or delayed events and still commits the correct final state.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Close by naming complexity and test strategy: runtime cost, memory bounds, cleanup guarantees, accessibility tests, race tests, and observability checks.</HighlightBlock>
         <h3>How would you design this system end to end?</h3>
         <p>
           I would start with the user journey and classify which operations must work offline, which can be read-only, and which must fail closed. Then I would define the facade API, durable intent model, health coordinator, sync engine, conflict engine, and presentation states. The implementation would persist operation records with idempotency keys, update a local projection, drain the queue when healthy, reconcile against remote versions, and surface conflicts when the merge policy cannot preserve intent safely.

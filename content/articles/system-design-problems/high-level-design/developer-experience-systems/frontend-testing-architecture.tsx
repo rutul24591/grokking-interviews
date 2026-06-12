@@ -28,7 +28,7 @@ export default function FrontendTestingArchitectureHLDArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame Design a Frontend Testing Architecture around system boundary, state ownership, failure handling, scalability, security, and observable recovery. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock>
         <HighlightBlock as="p" tier="important">
           A frontend testing architecture is the strategy, tooling, infrastructure, and governance model that gives teams confidence to change user interfaces quickly without breaking critical flows. It includes unit tests, component tests, integration tests, visual regression, accessibility checks, browser end-to-end tests, contract tests, performance budgets, flake management, and CI orchestration. In staff and principal interviews, the expected answer is not a list of test tools. It is a system design for reliable feedback under product scale, team scale, and deployment scale.
         </HighlightBlock>
@@ -38,7 +38,7 @@ export default function FrontendTestingArchitectureHLDArticle() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: the design must preserve correctness under latency, concurrency, partial failure, and changing permissions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design a Frontend Testing Architecture, the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock>
         <p>
           The foundation is a frontend-specific test pyramid. Pure logic, selectors, reducers, validators, and formatting functions belong at the bottom because they are fast and deterministic. Component tests verify UI behavior, accessibility semantics, and state transitions with realistic providers. Integration tests exercise feature slices with network mocks at the boundary. Browser end-to-end tests cover the few journeys whose failure would materially hurt users or revenue.
         </p>
@@ -57,7 +57,7 @@ export default function FrontendTestingArchitectureHLDArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: state model, API contracts, cache policy, async workflow, authorization, rollout, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock>
         <p>
           The CI pipeline should run independent feedback loops in parallel: type checking, linting, unit and component tests, integration tests with mocked network, visual regression, browser end-to-end tests against preview deployments, bundle analysis, performance budgets, and contract verification. The pipeline should use affected-test selection and remote caching where the repository structure supports it, while still running full critical-path tests before release.
         </p>
@@ -100,7 +100,7 @@ export default function FrontendTestingArchitectureHLDArticle() {
       </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock>
         <p>
           Unit tests are fast and precise but do not prove that the UI works. End-to-end tests prove real integration but are slower, more expensive, and more fragile. Component and integration tests are the middle ground: they catch most UI regressions with deterministic setup. A good design moves as many scenarios as possible down the pyramid while keeping a small number of high-value browser tests for complete journeys.
         </p>
@@ -122,7 +122,7 @@ export default function FrontendTestingArchitectureHLDArticle() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: latency, error rate, fallback rate, conversion, stale-state duration, and rollback success.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock>
         <p>
           Optimize for mean time to trustworthy feedback. Keep local unit and component tests fast, shard CI tests by historical duration, cache unchanged outputs, and separate smoke checks from full release gates. Use semantic queries and accessibility roles in tests so the test suite reinforces accessible UI. Mock at the network boundary and derive mock types from API contracts where possible.
         </p>
@@ -156,7 +156,7 @@ export default function FrontendTestingArchitectureHLDArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: stale state, hidden partial failure, unbounded retries, ownership ambiguity, and missing observability.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock>
         <p>
           The most common pitfall is an inverted test pyramid where almost every meaningful check runs through a browser. That slows CI, increases flakes, and makes developers distrust failures. Another pitfall is mocking implementation details instead of user-visible behavior; tests then pass through refactors but fail to catch real regressions, or fail on harmless refactors and block useful changes.
         </p>
@@ -172,7 +172,7 @@ export default function FrontendTestingArchitectureHLDArticle() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock>
         <p>
           Consumer products use frontend testing architecture to protect signup, checkout, search, feed, and account flows. Enterprise SaaS products use it to protect role-based workflows, bulk actions, admin settings, and audit views. Component platform teams use it to ensure design system changes remain compatible with many downstream applications.
         </p>
@@ -185,7 +185,7 @@ export default function FrontendTestingArchitectureHLDArticle() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock>
         <h3>How do you decide how many end-to-end tests to write?</h3>
         <p>
           I reserve browser end-to-end tests for critical journeys where only a real browser and deployed app can catch the risk: checkout, authentication, core creation flows, collaboration, and important permission boundaries. If a scenario can be tested reliably with a component or integration test using network mocks, I move it down the pyramid. The goal is maximum regression detection per minute of CI time, not maximum browser coverage.

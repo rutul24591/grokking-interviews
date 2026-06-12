@@ -3,7 +3,6 @@
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -20,11 +19,10 @@ export const metadata: ArticleMetadata = {
   relatedTopics: ["login-session-management", "password-reset-system", "route-component-access-guard"],
 };
 
-export default function SecureTokenStorageUXArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
+export default function SecureTokenStorageUXArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design Secure Token Storage UX</h1><h2>Definition &amp; Context</h2><p>Design Secure Token Storage UX is a security-sensitive low-level design problem covering cookie policy, in-memory state, CSRF defense, refresh rotation, expiry handling, logout propagation, and degraded UX. A principal-level answer must state the authoritative server boundary, threat model, lifecycle, abuse controls, rollback, privacy, observability, and user-safe degraded behavior.</p><p>Prefer secure HttpOnly SameSite cookies or a BFF session. Avoid persisting bearer tokens in browser-readable storage. Core structures: cookie attributes, session projection, CSRF token, refresh family, expiry timer, tab channel, logout reason, and retry state.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/auth-user-systems/secure-token-storage-ux-runtime.svg" alt="Design Secure Token Storage UX runtime" caption="Security flow from user intent through authoritative validation and audit." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>Problem Clarification</h3>
         <HighlightBlock as="p" tier="important">After login, a web app receives an authentication token (JWT, session token). This token is required for all subsequent API requests to identify the user. But where should the token be stored? The naive choice—localStorage—works until an attacker injects malicious JavaScript via XSS. The injected script reads localStorage, steals the token, and makes API requests as the user. The attacker silently drains the user's bank account or deletes critical data.</HighlightBlock>
         <HighlightBlock as="p" tier="important">The challenge is balancing security and UX. Maximum security would store tokens only in server memory (no client-side storage), but this requires fetching the token from server on every page reload, adding latency. Typical web apps must persist tokens across page reloads (users close tabs, refresh pages, and expect to stay logged in). But persistence on the client opens attack vectors: XSS (JavaScript steals token from storage), CSRF (attacker tricks user into making requests from another site), or cookie theft (attacker intercepts HTTP traffic).</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">Multiple storage mechanisms exist, each with trade-offs. localStorage: accessible to JavaScript, persists across tab close, but vulnerable to XSS. sessionStorage: same as localStorage but cleared when tab closes. HttpOnly cookies: inaccessible to JavaScript (safe from XSS), sent automatically with requests (convenient), but vulnerable to CSRF. Memory-only: safest (XSS can't steal what's not stored), but lost on refresh (poor UX).</HighlightBlock>
@@ -33,7 +31,7 @@ export default function SecureTokenStorageUXArticle() {
       </section>
 
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
         <ul className="space-y-2">
           <HighlightBlock as="li" tier="important"><strong>Secure Token Storage:</strong> Store authentication token (JWT or session token) safely after login, protected from XSS and CSS attacks. Token must be persistent (survive page reloads) and automatically included in subsequent API requests.</HighlightBlock>
@@ -56,7 +54,7 @@ export default function SecureTokenStorageUXArticle() {
       </section>
 
       <section>
-        <h2>High-Level Approach</h2>
+        <h3>High-Level Approach</h3>
         <HighlightBlock as="p" tier="important">The recommended architecture uses three components: HttpOnly cookies for auth tokens, separate CSRF protection, and automatic token refresh.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">Layer 1 (Storage): On login, server sends a Set-Cookie header with the auth token (HttpOnly, Secure, SameSite attributes). The browser stores this cookie in its cookie jar (not accessible to JavaScript). On subsequent requests, the browser automatically includes this cookie in the Authorization header or as a Cookie header. The token is never exposed to JavaScript, preventing XSS theft.</HighlightBlock>
         <HighlightBlock as="p" tier="important">Layer 2 (CSRF Protection): HttpOnly cookies are sent automatically by the browser, making them vulnerable to CSRF attacks (attacker website tricks browser into sending request). Mitigate by requiring a CSRF token (stored in non-HttpOnly cookie or localStorage). For sensitive operations (POST, PUT, DELETE), the CSRF token must be explicitly included in request header (X-CSRF-Token) or body. Attacker's cross-site request can't include the CSRF token (browser blocks access), so the attack fails.</HighlightBlock>
@@ -65,13 +63,9 @@ export default function SecureTokenStorageUXArticle() {
       </section>
 
       <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/auth-user-systems/secure-token-storage-ux.svg"
-          alt="Token storage comparison, recommended two-token pattern with memory and httpOnly cookie, XSS and CSRF mitigations, and token rotation"
-          caption="Token storage comparison, recommended two-token pattern with memory and httpOnly cookie, XSS and CSRF mitigations, and token rotation"
-        />
+        
 
-        <h2>Detailed Design</h2>
+        <h3>Detailed Design</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Storage Mechanism Comparison</h3>
         <HighlightBlock as="p" tier="crucial">Multiple storage mechanisms are available, each with trade-offs. HttpOnly cookies: securely stored by browser, cannot be read by JavaScript (XSS-safe), sent automatically with requests (convenient), but vulnerable to CSRF (browser sends them automatically). localStorage: accessible to JavaScript (XSS-vulnerable), not sent automatically (must manually include in request header), persists indefinitely, cross-domain accessible. sessionStorage: similar to localStorage but cleared when tab closes, still XSS-vulnerable. Memory-only: safest against XSS (attacker can't steal from memory... but can still make requests using the token), but lost on page reload (inconvenient UX, users expect to stay logged in).</HighlightBlock>
@@ -126,7 +120,7 @@ export default function SecureTokenStorageUXArticle() {
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
+        <h3>Trade-offs and Considerations</h3>
         <HighlightBlock as="p" tier="crucial"><strong>Security vs Simplicity:</strong> HttpOnly cookies are more secure (XSS-safe) but require CSRF protection and refresh token logic (more backend complexity). localStorage is simpler (no CSRF needed, auto-included in fetch requests) but XSS-vulnerable. The extra complexity of HttpOnly cookies is worth the security gain (XSS is common, CSRF is manageable).</HighlightBlock>
         <HighlightBlock as="p" tier="important"><strong>UX vs Security Friction:</strong> Silent refresh (proactive, automatic) provides seamless experience but uses extra bandwidth (refresh calls even if user doesn't make requests). Manual "session expired, please re-login" is simpler (no refresh calls) but poor UX. Silent refresh wins for modern apps where user retention matters.</HighlightBlock>
         <HighlightBlock as="p" tier="important"><strong>Token Lifetime vs Risk:</strong> Shorter-lived tokens (5 minutes) reduce window if stolen but require more refresh calls. Longer-lived tokens (1 hour) reduce overhead but increase exposure. Standard is 15-30 minutes for access tokens, 7 days for refresh tokens. Adjust based on risk tolerance (security-critical apps: shorter; convenience-focused: longer).</HighlightBlock>
@@ -135,7 +129,7 @@ export default function SecureTokenStorageUXArticle() {
       </section>
 
       <section>
-        <h2>Implementation Patterns</h2>
+        <h3>Implementation Patterns</h3>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Pattern 1: HttpOnly Cookies with CSRF Tokens</h3>
         <HighlightBlock as="p" tier="crucial">Backend sets auth token as HttpOnly cookie on login. Also generates CSRF token in non-HttpOnly cookie or returned in response. Frontend includes CSRF token in request header (X-CSRF-Token) for sensitive operations. Simple, secure, and widely used.</HighlightBlock>
 
@@ -147,13 +141,12 @@ export default function SecureTokenStorageUXArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Pattern 4: Multi-Tab Logout Synchronization</h3>
         <HighlightBlock as="p" tier="important">When user logs out in one tab, other tabs should also logout. Use storage event listener: when tab A clears localStorage, tab B detects event and clears its auth state. Or use shared worker to broadcast logout event to all tabs.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Security principles: never store sensitive tokens in localStorage, never log token values, always transmit over HTTPS, clear cookies on logout (set Max-Age=0), implement Content Security Policy to mitigate XSS, and always verify tokens server-side</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">(never trust client-side token state). Real-world systems (Google, GitHub, AWS) use HttpOnly cookies with CSRF tokens and proactive refresh. For best results, implement silent refresh (user unaware of token expiry), handle network errors gracefully (exponential backoff), support multi-tab logout (broadcast logout event), and provide clear error messages (session expired, require re-login). Token storage is a critical security layer—implementation errors expose all user accounts to compromise.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate user intent, browser-safe projection, server validation, durable security record, audit evidence, and cleanup. Frontend state improves UX but never replaces server enforcement. Tokens, challenges, sessions, and privileged grants need explicit expiry and revocation.</p><p>Prefer secure HttpOnly SameSite cookies or a BFF session. Avoid persisting bearer tokens in browser-readable storage.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/auth-user-systems/secure-token-storage-ux-recovery.svg" alt="Design Secure Token Storage UX threat recovery" caption="Threat recovery: validate, deny safely, preserve authoritative truth, audit, and recover." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Server session and cookie validation are authoritative. Browser-readable state is a minimal projection. Scale and threat pressure comes from XSS, CSRF, refresh theft, token replay, multi-tab drift, expiry mid-action, and offline mode. Fail closed for privilege while keeping error UX actionable.</p></section>
+<section><h2>Best practices</h2><p>Use short-lived scoped grants, secure cookies, CSRF defenses, replay prevention, rotation, versioned writes, server-side authorization, rate limits, redacted logs, and explicit audit events. Test expiry, replay, revocation, retries, multiple tabs, and permission drift.</p></section>
+<h3>Principal defense: authority, consistency, and abuse cost</h3><p>Use server-authoritative consistency for security decisions. Browser state is a revocable projection that can improve responsiveness but cannot grant access, extend expiry, or confirm a privileged transition. Every mutation carries a version, expiry, nonce, or idempotency key as appropriate; stale projections refresh or fail closed. Rollback means revoking the grant, session family, policy version, or pending intent while retaining an audit trail.</p><p>Model abuse and cost together. Rate-limit sensitive attempts by account, device, network, and risk cohort without turning the UI into an enumeration oracle. Bound session inventory, audit retention, challenge issuance, cross-tab broadcasts, and refresh retries. Emit denial reason classes, revocation lag, suspicious reuse, policy version, and correlation ids while avoiding sensitive payloads in telemetry.</p><section><h2>Common Pitfalls</h2><p>Common failures include trusting frontend guards, storing bearer tokens in localStorage, leaking account existence, missing idempotency, weak redirect validation, and incomplete audit evidence.</p><p>For this topic, use HttpOnly cookies, rotate refresh, defend CSRF, clear tabs, avoid localStorage tokens, and explain reauthentication.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to user identity and access workflows where convenience must not weaken authoritative server enforcement or incident evidence.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>What is authoritative?</h3><p>Server session and cookie validation are authoritative. Browser-readable state is a minimal projection.</p><h3>What breaks under abuse?</h3><p>XSS, CSRF, refresh theft, token replay, multi-tab drift, expiry mid-action, and offline mode.</p><h3>How do you recover?</h3><p>use HttpOnly cookies, rotate refresh, defend CSRF, clear tabs, avoid localStorage tokens, and explain reauthentication.</p><h3>What does the client enforce?</h3><p>The client improves usability and fails closed for privileged views; the server enforces every protected read and mutation.</p><h3>How do you observe incidents?</h3><p>Emit redacted audit records with subject, actor, policy version, reason, outcome, and correlation id.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.rfc-editor.org/rfc/rfc7636" target="_blank" rel="noreferrer">RFC 7636 PKCE</a></li><li><a href="https://www.w3.org/TR/webauthn-3/" target="_blank" rel="noreferrer">WebAuthn Level 3</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies" target="_blank" rel="noreferrer">MDN Cookies</a></li><li><a href="https://owasp.org/www-project-cheat-sheets/" target="_blank" rel="noreferrer">OWASP Cheat Sheets</a></li></ul></section>
+</ArticleLayout>}

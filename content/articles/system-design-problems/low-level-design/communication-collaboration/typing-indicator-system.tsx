@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function TypingIndicatorSystemArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function TypingIndicatorSystemArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Typing Indicator System</h1><h2>Definition &amp; Context</h2><p>Design a Typing Indicator System is an implementation-heavy low-level design problem covering debounced broadcast, renewal, stop events, TTL cleanup, multi-user aggregation, accessibility announcements, and reconnect. A principal-level answer must define ordering, ephemeral versus durable state, reconnect behavior, rollback, abuse controls, privacy, cost, and observability.</p><p>Treat typing indicators as lossy conversation-scoped TTL state, never as durable message data. The core structures are conversation id, participant map, last renewal, expiry TTL, local debounce, broadcast throttle, aggregate label, and announcement state.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/typing-indicator-system-runtime.svg" alt="Design a Typing Indicator System runtime" caption="Real-time flow from input through merge policy and UI projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -81,7 +80,7 @@ export default function TypingIndicatorSystemArticle() {
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h3>⚙️ Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -114,7 +113,7 @@ export default function TypingIndicatorSystemArticle() {
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h3>📊 Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -153,12 +152,8 @@ export default function TypingIndicatorSystemArticle() {
       </section>
 
       <section>
-        <h2>🧠 Solution Approach</h2>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/communication-collaboration/typing-indicator-system-architecture.svg"
-          alt="Typing indicator system architecture showing typing payload model, client state, throttled emit strategy, debounce stop logic, server fan-out via Redis pub/sub, ephemeral persistence, indicator UI with 3-dot animation, and timeout cleanup"
-          caption="Architecture Overview"
-        />
+        <h3>🧠 Solution Approach</h3>
+        
         <HighlightBlock as="p" tier="crucial">
           The system has three parts: <strong>local
           detector</strong> (broadcasts typing
@@ -216,7 +211,7 @@ export default function TypingIndicatorSystemArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial"><strong>TypingProvider</strong> instantiates
           detector and aggregator.
           <strong> LocalTypingDetector</strong>{" "}
@@ -230,7 +225,7 @@ export default function TypingIndicatorSystemArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">Per-conversation typer set in external
           store. Local typing state is</HighlightBlock>
 <HighlightBlock as="p" tier="important">component-
@@ -241,7 +236,7 @@ export default function TypingIndicatorSystemArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Events: <code>typing.start</code>,
           </Highlight><code> typing.renew</code>,
@@ -252,7 +247,7 @@ export default function TypingIndicatorSystemArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Throttle broadcast to 1/sec.
           Aggregation is <Highlight tier="important">O(typers) per render.
@@ -262,7 +257,7 @@ export default function TypingIndicatorSystemArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Indicator at the bottom of the chat
           thread <Highlight tier="important">(above the input). Subtle
@@ -273,7 +268,7 @@ export default function TypingIndicatorSystemArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">Announce on state transition only:
           when first appearing (&ldquo;Alice is
           typing&rdquo;), and when</HighlightBlock>
@@ -286,7 +281,7 @@ export default function TypingIndicatorSystemArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Transport authenticated; server
           enforces conversation <Highlight tier="important">membership.
@@ -296,7 +291,7 @@ export default function TypingIndicatorSystemArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Unit tests for debounce timing.
           Integration with mock <Highlight tier="important">transport:
@@ -307,7 +302,7 @@ export default function TypingIndicatorSystemArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">Many
           typers (a busy group chat): aggregation
           handles via &ldquo;X and N others&rdquo;.
@@ -319,7 +314,7 @@ export default function TypingIndicatorSystemArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Generic over transport. Aggregation
           <Highlight tier="important">string customizable. Pattern reuses
@@ -329,7 +324,7 @@ export default function TypingIndicatorSystemArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Aggregation strings via i18n with
           plurals <Highlight tier="important">(ICU MessageFormat handles
@@ -340,7 +335,7 @@ export default function TypingIndicatorSystemArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Renew vs single send</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -370,7 +365,7 @@ export default function TypingIndicatorSystemArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">Smart typing detection (don&rsquo;t
           broadcast for clearing the input or
           deletion). Cursor-attached typing in
@@ -379,85 +374,12 @@ export default function TypingIndicatorSystemArticle() {
           hasn&rsquo;t added text in seconds.
           Pause indicators during longer
           composition.</Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. How is typing
-          detected?</strong> Input events fire
-          typing-start; renews periodically while
-          typing; typing-stop on send, blur, or
-          inactivity.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How are stale indicators
-          cleaned up?</strong> Per-typer
-          last-renewed timestamp. Periodic check
-          (every second) removes entries older
-          than 5 s without renewal.
-        </HighlightBlock>
-
-        <p>
-          <strong>3. How is multi-user typing
-          aggregated?</strong> 1 → &ldquo;X is
-          typing&rdquo;. 2 → &ldquo;X and Y are
-          typing&rdquo;. 3+ → &ldquo;X and N
-          others are typing&rdquo;.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. How do you avoid network
-          flood?</strong> Renew at most once per
-          second. Stop fires only on real state
-          changes (send, blur, timeout).
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>5. How is this
-          accessible?</strong> Announce on
-          transition only (when indicator
-          appears). Don&rsquo;t announce per
-          renewal. Live region polite.
-        </HighlightBlock>
-
-        <p>
-          <strong>6. What if the network
-          drops?</strong> Local indicator stays
-          for the user; remote times out.
-          Reconnect refreshes state.
-        </p>
-
-        <p>
-          <strong>7. How is per-conversation scope
-          enforced?</strong> Events carry
-          conversation id; aggregator maintains a
-          per-conversation typer set.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>8. How does this integrate with
-          chat?</strong> Typing indicator renders
-          inside the chat thread, above the
-          send input. Sending immediately broadcasts
-          stop. The aggregator drives the
-          indicator string.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="important">Renew
-          periodically to recover from lost stops;
-          stop on send and blur; aggregate
-          multiple typers naturally;</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="crucial">announce
-          only on transitions for accessibility.
-          A small feature with outsized impact on
-          how alive a chat feels.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate durable records, optimistic intent, transport events, ephemeral awareness, rendered projection, and telemetry. Every connection, timer, cursor, replay buffer, subscription, and retry queue needs an explicit owner and cleanup path.</p><p>Treat typing indicators as lossy conversation-scoped TTL state, never as durable message data.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/typing-indicator-system-recovery.svg" alt="Design a Typing Indicator System recovery" caption="Recovery flow: classify gaps, retain stable truth, replay safely, and emit evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Reliable event history is unnecessary; TTL latest-value state is justified for responsive low-cost indicators.</p><p>Latest renewal wins and expires locally. No durable consistency is required beyond bounded staleness. Scale pressure comes from many typers, lost stop events, reconnect, hidden tabs, network flood, and screen-reader noise. Bound queues, dedupe events, expire ephemeral state, and degrade predictably.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, event sequences, idempotency keys, monotonic watermarks, TTLs, replay cursors, bounded buffers, authorization checks, and cleanup. Test reconnect gaps, duplicates, stale events, offline recovery, privacy settings, and accessibility announcements.</p><p>Measure latency, backlog, reconnect rate, gap recovery, retries, stale drops, TTL expiry, and accessibility regressions without logging sensitive content.</p><h3>Operational implementation: conversation-scoped typing TTL and renewal</h3><p>Emit start after a short debounce, renew at a bounded interval, stop on send or blur, and expire missing stop events locally. Aggregate labels from current TTL entries and announce only meaningful transitions to assistive technology.</p><p>Define explicit metrics for accepted events, duplicate drops, stale drops, replay gap size, reconnect duration, queue depth, TTL expiry, degraded-mode entry, authorization denial, and rollback outcome. Redact user content and sensitive identifiers from telemetry. Test duplicate delivery, out-of-order events, disconnect during mutation, hidden tabs, unmount cleanup, multiple tabs, permission removal, burst traffic, and a rollback to the previous policy version.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include treating ephemeral state as durable, trusting arrival order, leaking timers or sockets, missing dedupe, unbounded replay, and hiding degraded connectivity.</p><p>For this topic, renew periodically, stop on send and blur, expire missing stops, throttle broadcasts, and announce only transitions.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to collaborative products where transport, persistence, and UI projection fail independently. Inject product policy for authorization, retention, fallback, and observability explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Treat typing indicators as lossy conversation-scoped TTL state, never as durable message data.</p><h3>What breaks at scale?</h3><p>many typers, lost stop events, reconnect, hidden tabs, network flood, and screen-reader noise.</p><h3>What consistency applies?</h3><p>Latest renewal wins and expires locally. No durable consistency is required beyond bounded staleness.</p><h3>How do you recover?</h3><p>renew periodically, stop on send and blur, expire missing stops, throttle broadcasts, and announce only transitions.</p><h3>Why this architecture?</h3><p>Reliable event history is unnecessary; TTL latest-value state is justified for responsive low-cost indicators.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket" target="_blank" rel="noreferrer">MDN WebSocket</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA APG</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

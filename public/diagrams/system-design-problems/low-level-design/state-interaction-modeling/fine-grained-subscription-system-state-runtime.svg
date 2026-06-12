@@ -1,53 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
-  <title id="title">a Fine-Grained Subscription System runtime model</title>
-  <desc id="desc">A state runtime with API calls, guarded transitions, effect runner, snapshots, subscribers, and observability.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="system-ui, -apple-system, BlinkMacSystemFont, sans-serif" role="img" aria-label="Fine Grained Subscription System: reducer ownership map">
   <defs>
-    <marker id="arrow-fine-grained-subscription-system" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L9,3 z" fill="#2563eb"/>
-    </marker>
-    <filter id="shadow-fine-grained-subscription-system" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.18"/>
-    </filter>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#2563eb"/></marker>
+    <marker id="arrow-teal" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#0f766e"/></marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#c2410c"/></marker>
+    <marker id="arrow-rose" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#be123c"/></marker>
   </defs>
-  <rect width="1200" height="720" rx="28" fill="#f8fafc"/>
-  <rect x="38" y="34" width="1124" height="652" rx="24" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
-  <text x="72" y="86" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700" fill="#0f172a">a Fine-Grained Subscription System: guarded state runtime</text>
-  <text x="72" y="120" font-family="Inter, Arial, sans-serif" font-size="16" fill="#475569">Implementation view: API intent becomes a validated transition before effects or UI observers run.</text>
-  <g filter="url(#shadow-fine-grained-subscription-system)">
-    <path d="M78 182 C150 120, 260 136, 322 200 C380 260, 338 356, 240 366 C130 378, 48 308, 78 182" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
-    <text x="128" y="218" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700" fill="#1e3a8a">Callers</text>
-    <text x="104" y="250" font-family="Inter, Arial, sans-serif" font-size="15" fill="#1e40af">components</text>
-    <text x="104" y="274" font-family="Inter, Arial, sans-serif" font-size="15" fill="#1e40af">hooks</text>
-    <text x="104" y="298" font-family="Inter, Arial, sans-serif" font-size="15" fill="#1e40af">debug tools</text>
-  </g>
-  <path d="M330 258 L452 258" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow-fine-grained-subscription-system)"/>
-  <g filter="url(#shadow-fine-grained-subscription-system)">
-    <rect x="456" y="166" width="286" height="184" rx="18" fill="#ecfeff" stroke="#0891b2" stroke-width="3"/>
-    <text x="486" y="210" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700" fill="#164e63">Transition engine</text>
-    <text x="486" y="244" font-family="Inter, Arial, sans-serif" font-size="15" fill="#155e75">registered -&gt; scheduled -&gt; notified</text>
-    <text x="486" y="274" font-family="Inter, Arial, sans-serif" font-size="15" fill="#155e75">guard table + version check</text>
-    <text x="486" y="304" font-family="Inter, Arial, sans-serif" font-size="15" fill="#155e75">reject impossible transitions</text>
-  </g>
-  <path d="M742 258 C805 258, 808 168, 872 168" stroke="#2563eb" stroke-width="4" fill="none" marker-end="url(#arrow-fine-grained-subscription-system)"/>
-  <g filter="url(#shadow-fine-grained-subscription-system)">
-    <rect x="874" y="120" width="236" height="126" rx="18" fill="#fef3c7" stroke="#d97706" stroke-width="3"/>
-    <text x="906" y="162" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="700" fill="#78350f">Effect runner</text>
-    <text x="906" y="195" font-family="Inter, Arial, sans-serif" font-size="15" fill="#92400e">I/O, timers, storage</text>
-    <text x="906" y="219" font-family="Inter, Arial, sans-serif" font-size="15" fill="#92400e">abort + settlement guard</text>
-  </g>
-  <path d="M742 304 C812 330, 812 438, 890 452" stroke="#2563eb" stroke-width="4" fill="none" marker-end="url(#arrow-fine-grained-subscription-system)"/>
-  <g filter="url(#shadow-fine-grained-subscription-system)">
-    <rect x="880" y="392" width="246" height="146" rx="18" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/>
-    <text x="912" y="434" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="700" fill="#14532d">Snapshots</text>
-    <text x="912" y="468" font-family="Inter, Arial, sans-serif" font-size="15" fill="#166534">selector notifications</text>
-    <text x="912" y="492" font-family="Inter, Arial, sans-serif" font-size="15" fill="#166534">readonly versions</text>
-    <text x="912" y="516" font-family="Inter, Arial, sans-serif" font-size="15" fill="#166534">metrics + debug trace</text>
-  </g>
-  <path d="M992 246 C1002 304, 1002 334, 992 392" stroke="#64748b" stroke-width="3" stroke-dasharray="8 8" fill="none"/>
-  <g>
-    <rect x="154" y="478" width="626" height="86" rx="18" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
-    <text x="184" y="512" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="700" fill="#0f172a">Internal structures</text>
-    <text x="184" y="542" font-family="Inter, Arial, sans-serif" font-size="15" fill="#334155">subscriber registry, selector cache, path index, batched notifier, dispose token, render budget metrics</text>
-  </g>
-  <path d="M458 350 C410 414, 330 446, 222 478" stroke="#2563eb" stroke-width="3" stroke-dasharray="10 8" fill="none" marker-end="url(#arrow-fine-grained-subscription-system)"/>
+  <rect x="18" y="18" width="924" height="524" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="54" y="56" font-size="18" font-weight="700" fill="#172033">Fine Grained Subscription System: reducer ownership map</text>
+  <text x="54" y="78" font-size="11.5" fill="#526074">Events, transient projection, effects, commit guards, visible state, and cleanup have distinct owners.</text>
+  <rect x="48" y="106" width="864" height="330" rx="9" fill="#ecfdf5" stroke="#0f766e" stroke-width="1.1"/>
+  <text x="68" y="129" font-size="12.5" font-weight="700" fill="#0f766e">STATE GRAPH AND EFFECT OWNERSHIP</text><circle cx="480" cy="266" r="62" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="480" y="263" text-anchor="middle" font-size="12" font-weight="700" fill="#172033">transition reducer</text>
+  <text x="480" y="284" text-anchor="middle" font-size="10" fill="#526074">owned reducer state</text><line x1="480" y1="266" x2="176" y2="170" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <circle cx="176" cy="170" r="44" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="176" y="174" text-anchor="middle" font-size="10.5" font-weight="700" fill="#172033">event</text><line x1="480" y1="266" x2="480" y2="152" stroke="#c2410c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+    <circle cx="480" cy="152" r="44" fill="#fff7ed" stroke="#c2410c" stroke-width="1.5"/>
+    <text x="480" y="156" text-anchor="middle" font-size="10.5" font-weight="700" fill="#172033">authoritative ...</text><line x1="480" y1="266" x2="784" y2="170" stroke="#6d28d9" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <circle cx="784" cy="170" r="44" fill="#f5f3ff" stroke="#6d28d9" stroke-width="1.5"/>
+    <text x="784" y="174" text-anchor="middle" font-size="10.5" font-weight="700" fill="#172033">derived projec...</text><line x1="480" y1="266" x2="176" y2="366" stroke="#be123c" stroke-width="2" marker-end="url(#arrow-rose)"/>
+    <circle cx="176" cy="366" r="44" fill="#fff1f2" stroke="#be123c" stroke-width="1.5"/>
+    <text x="176" y="370" text-anchor="middle" font-size="10.5" font-weight="700" fill="#172033">effect queue</text><line x1="480" y1="266" x2="480" y2="386" stroke="#0f766e" stroke-width="2" marker-end="url(#arrow-teal)"/>
+    <circle cx="480" cy="386" r="44" fill="#ecfdf5" stroke="#0f766e" stroke-width="1.5"/>
+    <text x="480" y="390" text-anchor="middle" font-size="10.5" font-weight="700" fill="#172033">debug trace</text><line x1="480" y1="266" x2="784" y2="366" stroke="#c2410c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+    <circle cx="784" cy="366" r="44" fill="#fff7ed" stroke="#c2410c" stroke-width="1.5"/>
+    <text x="784" y="370" text-anchor="middle" font-size="10.5" font-weight="700" fill="#172033">cleanup</text><text x="72" y="474" font-size="11" fill="#172033">Invariant: transient nodes may disappear at any time; committed state changes only through an accepted transition.</text>
 </svg>

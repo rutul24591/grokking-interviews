@@ -9,7 +9,7 @@ import { ORCHESTRATION_ROOT, STATE_ROOT, readJson, readText, truncate, writeJson
 export function claimNextTask(runId: string, agentId: AgentId) {
   refreshRunState(runId);
 
-  const run = loadRun(runId);
+  loadRun(runId);
   const tasks = loadTasks(runId);
   const profile = loadAgentProfile(agentId);
   const activeWriteIntents = new Set(
@@ -175,8 +175,10 @@ function isTaskCompatible(task: TaskRecord, profile: AgentProfile) {
   return profile.supportedTaskTypes.includes(task.taskType);
 }
 
-export default {
+const dispatcher = {
   claimNextTask,
   listReadyTasks,
   renderPromptPacket,
 };
+
+export default dispatcher;

@@ -124,8 +124,10 @@ function isAgentId(value: unknown): value is AgentId {
   return typeof value === "string" && AGENT_IDS.includes(value as AgentId);
 }
 
-export default {
+const routing = {
   loadRoutingPolicy,
   loadAgentProfiles,
   resolveTaskRouting,
 };
+
+export default routing;

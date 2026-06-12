@@ -29,20 +29,6 @@ const PATH_MAPPINGS: Record<string, string> = {
   "other/ci-cd": "other/ci-cd",
 };
 
-// Map sidebar slugs back to filesystem paths (for subcategory manifest)
-const SIDEBAR_TO_FS_MAP: Record<string, string> = {
-  "system-design-concepts/frontend-concepts": "system-design/frontend",
-  "system-design-concepts/backend-concepts": "system-design/backend",
-  "requirements/functional-requirements": "requirements/functional-requirements",
-  "requirements/non-functional-requirements": "requirements/non-functional-requirements",
-  "system-design-problems/high-level-design": "system-design-problems/high-level-design",
-  "system-design-problems/low-level-design": "system-design-problems/low-level-design",
-  "other/artificial-intelligence/core-concepts": "other/artificial-intelligence/core-concepts",
-  "other/artificial-intelligence/additional-topics": "other/artificial-intelligence/additional-topics",
-  "other/ci-cd/continuous-integration-ci": "other/ci-cd/continuous-integration-ci",
-  "other/ci-cd/continuous-deployment-cd": "other/ci-cd/continuous-deployment-cd",
-};
-
 function main() {
   console.log("🔍 Scanning article files...\n");
 
@@ -152,7 +138,9 @@ function main() {
  * To update: run \`pnpm generate-article-routes\`
  */
 
-export const ${exportName}: Record<string, () => Promise<any>> = {
+import type { ArticleModule } from "./types";
+
+export const ${exportName}: Record<string, () => Promise<ArticleModule>> = {
 ${routeLines.join("\n")}
 };
 `;
@@ -160,12 +148,23 @@ ${routeLines.join("\n")}
   }
 
   // Write the index barrel for article-routes
+  const articleRoutesTypes = `import type { ComponentType } from "react";
+import type { ArticleMetadata } from "@/types/article";
+
+export type ArticleModule = {
+  metadata?: ArticleMetadata;
+  default?: ComponentType;
+};
+`;
+  fs.writeFileSync(path.join(ARTICLE_ROUTES_DIR, "types.ts"), articleRoutesTypes, "utf-8");
+
   const articleRoutesIndex = `import { systemDesignConceptsRoutes } from "./system-design-concepts";
 import { requirementsRoutes } from "./requirements";
 import { systemDesignProblemsRoutes } from "./system-design-problems";
 import { otherRoutes } from "./other";
+import type { ArticleModule } from "./types";
 
-export const articleRoutes: Record<string, () => Promise<any>> = {
+export const articleRoutes: Record<string, () => Promise<ArticleModule>> = {
   ...systemDesignConceptsRoutes,
   ...requirementsRoutes,
   ...systemDesignProblemsRoutes,
@@ -199,10 +198,14 @@ export async function loadArticle(domain: string, category: string, subcategory:
   }
 
   try {
-    const module = await loadModule();
+    const articleModule = await loadModule();
+    if (!articleModule.default) {
+      return null;
+    }
+
     return {
-      metadata: module.metadata,
-      component: module.default,
+      metadata: articleModule.metadata,
+      component: articleModule.default,
     };
   } catch {
     return null;

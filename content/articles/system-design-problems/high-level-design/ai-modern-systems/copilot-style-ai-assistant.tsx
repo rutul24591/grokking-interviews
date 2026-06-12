@@ -45,7 +45,7 @@ export default function CopilotStyleAiAssistantArticle() {
         caption="Copilot architecture: product context → intent classification → permission guard → streaming answer or approval gate → tool execution → audit log"
       />
 
-      <h2>Definition &amp; Context</h2>
+      <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame Design a Copilot-Style AI Assistant (Embedded in a Product) around model latency, grounding, safety, feedback loops, streaming UX, evaluation, and cost control. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock>
       <p>
         The scope of a copilot varies enormously. Define these upfront:
       </p>
@@ -73,11 +73,11 @@ export default function CopilotStyleAiAssistantArticle() {
         the system prompt.
       </HighlightBlock>
 
-      <h2>Core Concepts</h2>
+      <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: AI output must remain attributable, bounded, recoverable, and safe even when generation is probabilistic or partially streamed.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design a Copilot-Style AI Assistant (Embedded in a Product), the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock>
       <p>The core concepts are product-context assembly, intent classification, read versus write action separation, tool execution, approval gates, audit logging, disambiguation, privacy minimization, and tenant-aware control planes. These concepts define the production contract for copilot-style AI assistant: what the UI can promise, what the backend must enforce, and what operators need to observe when the feature behaves unexpectedly.</p>
       <p>For principal-level interviews, frame this as a product system rather than a model demo. The answer should cover ownership, permissions, safety, rollback, quality measurement, degraded behavior, and cost control in addition to the visible interaction.</p>
 
-      <h2>Architecture &amp; Flow</h2>
+      <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: prompt/context assembly, retrieval boundary, moderation, streaming protocol, fallback behavior, human review, and evaluation signals.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock>
       <p>
         When the user opens the copilot panel or submits a query, the product context
         is assembled into a structured block included in the LLM prompt. Context assembly
@@ -392,23 +392,23 @@ export default function CopilotStyleAiAssistantArticle() {
         caption="Enterprise control plane: tenant policy, context gateway, DLP, user-scoped tool execution, audit search, and incident switches."
       />
 
-      <h2>Trade offs &amp; Comparison</h2>
+      <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock>
       <p>The core trade-off is capability versus control. Rich AI experiences improve user productivity, but they add uncertainty, cost, latency, data-access risk, and operational complexity. A principal-ready design explains which paths are authoritative, which paths are best-effort, and how the system degrades when retrieval, model execution, policy checks, or tool calls fail.</p>
       <p>The design should also compare build-versus-buy boundaries. Provider APIs, vector stores, evaluation tools, moderation classifiers, and orchestration frameworks can accelerate delivery, but the product still owns permission enforcement, user trust, auditability, rollback, and quality measurement.</p>
 
-      <h2>Best practices</h2>
+      <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: first-token latency, completion latency, groundedness, deflection rate, moderation hit rate, cost per task, and user correction rate.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock>
       <p>Use explicit contracts between UI, orchestration, model, retrieval, policy, and tool layers. Persist durable state, keep correlation IDs across model and tool calls, separate user-visible confidence from internal scores, and make failed or degraded states visible. Treat prompts, policies, retrieval settings, and model versions as production configuration with owners and rollback.</p>
       <p>Measure quality continuously with offline evaluation sets, production feedback, latency and cost telemetry, safety outcomes, and incident reviews. Principal-level systems do not rely on subjective demos to decide whether an AI feature is working.</p>
 
-      <h2>Common Pitfalls</h2>
+      <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: hallucination, prompt injection, stale retrieval, runaway cost, unsafe content, and UI that overstates model certainty.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock>
       <p>Common pitfalls include letting the model decide authorization, hiding uncertainty, storing sensitive context unnecessarily, treating provider streaming formats as frontend contracts, and shipping without replayable traces. Another frequent issue is optimizing for impressive answers while neglecting source evidence, policy enforcement, and operator visibility.</p>
       <p>Teams also underestimate lifecycle problems: model behavior changes, documents are deleted, prompts drift, evaluation sets go stale, and users discover adversarial inputs. The architecture needs ongoing governance, not only launch-time safeguards.</p>
 
-      <h2>Real-world use cases</h2>
+      <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock>
       <p>These patterns apply to enterprise copilots, knowledge assistants, developer tools, moderation systems, model-evaluation platforms, support automation, document Q&A, search products, and workflow automation. In each case, the AI surface becomes a governance and reliability surface as soon as users depend on it for real decisions.</p>
       <p>For staff and principal interviews, connect the design to rollout safety, tenant isolation, incident response, data access, cost controls, and measurable quality improvement. That is what separates a feature explanation from a system design answer.</p>
 
-      <h2>Common interview question with detailed answer</h2>
+      <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock>
 
       <h3>Q: How do you prevent the LLM from hallucinating product data that doesn't exist in the context?</h3>
       <p>

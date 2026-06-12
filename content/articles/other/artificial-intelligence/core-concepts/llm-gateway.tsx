@@ -34,10 +34,10 @@ export const metadata: ArticleMetadata = {
 
 export default function ArticlePage() {
   return (
-    <ArticleLayout metadata={metadata}>
+    <ArticleLayout metadata={metadata}><HighlightBlock as="p" tier="crucial" className="mb-4">Interview focus: LLM Gateway — Centralized AI Proxy for Production Systems should be explained through a correctness invariant first, then through the implementation technique.</HighlightBlock><HighlightBlock as="p" tier="crucial" className="mb-4">Interview focus: In interviews, the decisive point is why this approach is valid under the stated constraints, not just what API or algorithm is used.</HighlightBlock><HighlightBlock as="p" tier="crucial" className="mb-4">Interview focus: The production-quality answer separates source of truth, derived state, failure behavior, and measurable cost.</HighlightBlock>
       {/* ── 1. Definition & Context ─────────────────────────────── */}
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Interview lens: frame LLM Gateway — Centralized AI Proxy for Production Systems around model behavior, grounding, memory, evaluation, safety boundaries, latency, and cost control. This is what turns the article from concept notes into interview-ready reasoning.</HighlightBlock>
 
         <HighlightBlock tier="important">
           An LLM Gateway is a reverse-proxy layer that sits between every
@@ -103,7 +103,7 @@ export default function ArticlePage() {
 
       {/* ── 2. Core Concepts ────────────────────────────────────── */}
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core invariant to defend: AI systems must keep generated output attributable, bounded, observable, and recoverable despite probabilistic behavior.</HighlightBlock>
 
         <HighlightBlock tier="important">
           The five pillars of an LLM Gateway are: unified credential management
@@ -219,7 +219,7 @@ export default function ArticlePage() {
 
       {/* ── 3. Architecture & Flow ──────────────────────────────── */}
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="important" className="mb-4">Decision quality comes from naming the constraint, the chosen technique, the proof boundary, and the cost model before discussing implementation details.</HighlightBlock>
 
         <HighlightBlock tier="important">
           The complete request path through an LLM Gateway is: client presents
@@ -388,7 +388,7 @@ export default function ArticlePage() {
 
       {/* ── 6. Common Pitfalls ──────────────────────────────────── */}
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="important" className="mb-4">Failure modes to call out: hallucination, prompt injection, stale retrieval, unbounded context growth, hidden model cost, and UI that overstates certainty.</HighlightBlock>
 
         <HighlightBlock tier="important">
           Semantic cache serving stale responses for time-sensitive queries is

@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function MultiplayerLobbyUIArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function MultiplayerLobbyUIArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Multiplayer Lobby UI</h1><h2>Definition &amp; Context</h2><p>Design a Multiplayer Lobby UI is an implementation-heavy low-level design problem covering room snapshots, membership events, ready state, host migration, matchmaking transitions, reconnect, and permissions. A principal-level answer must define ordering, ephemeral versus durable state, reconnect behavior, rollback, abuse controls, privacy, cost, and observability.</p><p>Keep authoritative room snapshot separate from optimistic UI intent and ephemeral presence. The core structures are room version, member map, ready set, host id, invite policy, matchmaking state, reconnect token, event sequence, and error evidence.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/multiplayer-lobby-ui-runtime.svg" alt="Design a Multiplayer Lobby UI runtime" caption="Real-time flow from input through merge policy and UI projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -83,7 +82,7 @@ export default function MultiplayerLobbyUIArticle() {
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h3>⚙️ Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -116,7 +115,7 @@ export default function MultiplayerLobbyUIArticle() {
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h3>📊 Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -156,12 +155,8 @@ export default function MultiplayerLobbyUIArticle() {
       </section>
 
       <section>
-        <h2>🧠 Solution Approach</h2>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/communication-collaboration/multiplayer-lobby-ui-architecture.svg"
-          alt="Multiplayer lobby UI architecture showing room model, player model, join flow, lobby list UI, ready toggle gate, game settings, game start sequence, and reconnect handling"
-          caption="Architecture Overview"
-        />
+        <h3>🧠 Solution Approach</h3>
+        
         <HighlightBlock as="p" tier="crucial">
           The lobby has three planes: <strong>room
           list</strong> (browse + create + join),
@@ -235,7 +230,7 @@ export default function MultiplayerLobbyUIArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial"><strong>LobbyProvider</strong>{" "}
           instantiates backend connection.
           <strong> RoomList</strong> renders</HighlightBlock>
@@ -251,7 +246,7 @@ export default function MultiplayerLobbyUIArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Room list, active room state,
           <Highlight tier="important">membership, ready states in external
@@ -261,7 +256,7 @@ export default function MultiplayerLobbyUIArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Events:{" "}
           <code>room.created</code>,
@@ -280,7 +275,7 @@ export default function MultiplayerLobbyUIArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Real-time events batched per RAF tick
           to avoid <Highlight tier="important">render flooding. Member list
@@ -290,7 +285,7 @@ export default function MultiplayerLobbyUIArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial"><Highlight tier="important">Host controls
           visible only to host. Start button
           dim until conditions</Highlight></HighlightBlock>
@@ -300,7 +295,7 @@ export default function MultiplayerLobbyUIArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">Room list accessible. Member list with
           ready states announced. Ready toggle
           is a real button. Host controls
@@ -312,7 +307,7 @@ export default function MultiplayerLobbyUIArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Authenticated. Server enforces <Highlight tier="important">host
           privileges (kick, settings, start).
@@ -321,7 +316,7 @@ export default function MultiplayerLobbyUIArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Integration tests with mock backend:
           create room, join, <Highlight tier="important">ready up, start
@@ -332,7 +327,7 @@ export default function MultiplayerLobbyUIArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">Settings change while members ready:
           reset ready (you ready against a
           specific setup). Network drop: try</HighlightBlock>
@@ -342,7 +337,7 @@ export default function MultiplayerLobbyUIArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Pattern reuses <Highlight tier="important">for any pre-session
           coordination — games,</Highlight> classroom,
@@ -351,7 +346,7 @@ export default function MultiplayerLobbyUIArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           UI strings <Highlight tier="important">via i18n. Player names as
           authored.</Highlight> Room names sanitized.
@@ -359,7 +354,7 @@ export default function MultiplayerLobbyUIArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Auto-start vs explicit host start</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -387,90 +382,18 @@ export default function MultiplayerLobbyUIArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Skill-based matchmaking integration.
           <Highlight tier="important">Cross-platform play. Tournament brackets.
           Spectator mode.</Highlight> Voice chat baked in.
         </Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. How does the room list update
-          in real time?</strong> WebSocket events
-          for room.created/updated/removed.
-          Subscribers re-render.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How is host transfer
-          handled?</strong> On host disconnect,
-          backend transfers to next member.
-          Clients see host change via
-          broadcast.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>3. When does ready reset?</strong>{" "}
-          On settings change (ensures everyone
-          ready against current settings). On
-          host transfer (new host may want to
-          re-confirm).
-        </HighlightBlock>
-
-        <p>
-          <strong>4. How is the start gated?</strong>{" "}
-          Default: host clicks Start when all
-          members ready (or override). Server
-          validates state at the moment of
-          start.
-        </p>
-
-        <p>
-          <strong>5. How does session handoff
-          work?</strong> Host triggers start;
-          backend transitions room state;
-          members receive session-start event
-          and navigate to the session.
-        </p>
-
-        <p>
-          <strong>6. How does reconnect after a
-          drop work?</strong> Try to rejoin the
-          room if still available. If gone,
-          navigate to lobby list with banner.
-        </p>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>7. How does this scale to many
-          rooms?</strong> Server-side
-          pagination on room list with
-          filters. Virtualize the rendered
-          list.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>8. How is this
-          accessible?</strong> Real lists with
-          item announcements. Buttons with
-          labels. State changes announce in
-          chunks via polite live region.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="important">Host transfer keeps lobbies alive
-          through disconnects; ready resets on
-          settings changes; explicit start</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="crucial">gates
-          give the host control. The pattern
-          works for games, classrooms, and
-          virtual events.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate durable records, optimistic intent, transport events, ephemeral awareness, rendered projection, and telemetry. Every connection, timer, cursor, replay buffer, subscription, and retry queue needs an explicit owner and cleanup path.</p><p>Keep authoritative room snapshot separate from optimistic UI intent and ephemeral presence.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/multiplayer-lobby-ui-recovery.svg" alt="Design a Multiplayer Lobby UI recovery" caption="Recovery flow: classify gaps, retain stable truth, replay safely, and emit evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Polling is simpler; event streams are justified when lobby transitions must feel immediate and consistent.</p><p>Server room version and event sequence are authoritative. Ready intent may project optimistically but reconciles against membership truth. Scale pressure comes from joins and leaves, host disconnect, duplicate events, reconnect gaps, stale invites, and permission abuse. Bound queues, dedupe events, expire ephemeral state, and degrade predictably.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, event sequences, idempotency keys, monotonic watermarks, TTLs, replay cursors, bounded buffers, authorization checks, and cleanup. Test reconnect gaps, duplicates, stale events, offline recovery, privacy settings, and accessibility announcements.</p><p>Measure latency, backlog, reconnect rate, gap recovery, retries, stale drops, TTL expiry, and accessibility regressions without logging sensitive content.</p><h3>Operational implementation: versioned roster and start-game gate</h3><p>Use an authoritative lobby revision for join, leave, ready, role, and host transitions. Presence pings are ephemeral. Starting a match requires a conditional write against the latest roster revision and a deterministic eligibility check.</p><p>Define explicit metrics for accepted events, duplicate drops, stale drops, replay gap size, reconnect duration, queue depth, TTL expiry, degraded-mode entry, authorization denial, and rollback outcome. Redact user content and sensitive identifiers from telemetry. Test duplicate delivery, out-of-order events, disconnect during mutation, hidden tabs, unmount cleanup, multiple tabs, permission removal, burst traffic, and a rollback to the previous policy version.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include treating ephemeral state as durable, trusting arrival order, leaking timers or sockets, missing dedupe, unbounded replay, and hiding degraded connectivity.</p><p>For this topic, replay missed events, refresh snapshot on gaps, migrate host deterministically, reject stale actions, and retain reconnect affordance.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to collaborative products where transport, persistence, and UI projection fail independently. Inject product policy for authorization, retention, fallback, and observability explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep authoritative room snapshot separate from optimistic UI intent and ephemeral presence.</p><h3>What breaks at scale?</h3><p>joins and leaves, host disconnect, duplicate events, reconnect gaps, stale invites, and permission abuse.</p><h3>What consistency applies?</h3><p>Server room version and event sequence are authoritative. Ready intent may project optimistically but reconciles against membership truth.</p><h3>How do you recover?</h3><p>replay missed events, refresh snapshot on gaps, migrate host deterministically, reject stale actions, and retain reconnect affordance.</p><h3>Why this architecture?</h3><p>Polling is simpler; event streams are justified when lobby transitions must feel immediate and consistent.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket" target="_blank" rel="noreferrer">MDN WebSocket</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA APG</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

@@ -1,0 +1,1 @@
+export interface Task{name:string;inputs:string[];env:Record<string,string>;toolchain:string}export function taskKey(t:Task){return[t.name,t.toolchain,...t.inputs.toSorted(),...Object.entries(t.env).toSorted().map(([k,v])=>k+"="+v)].join("|")}export function cacheable(t:Task){return t.inputs.length>0&&!!t.toolchain}

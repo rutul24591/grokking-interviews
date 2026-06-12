@@ -1,89 +1,51 @@
-export type streamingMarkdownRendererSignal = {
-  uploadedBytes: number;
-  checksumMismatch: number;
-  transcodeLagMs: number;
-  retryCount: number;
+export type StreamingMarkdownRendererStage = "empty" | "receiving" | "buffering-block" | "parsing-safe-prefix" | "rendering" | "complete";
+
+export type StreamingMarkdownRendererTransition = {
+  command: string;
+  from: StreamingMarkdownRendererStage;
+  to: StreamingMarkdownRendererStage;
+  revision: number;
 };
 
-export type streamingMarkdownRendererEvent = {
+export type StreamingMarkdownRendererState = {
   id: string;
-  topic: "streaming-markdown-renderer";
-  actorId: string;
-  sequence: number;
-  receivedAtMs: number;
-  expectedVersion: number;
-  currentVersion: number;
-  payloadSize: number;
-  signal: streamingMarkdownRendererSignal;
-};
-
-export type streamingMarkdownRendererDecision = {
-  accepted: boolean;
-  action: "resume-from-checkpoint" | "verify-checksum" | "serve-lower-rendition" | "commit";
-  nextVersion: number;
-  reasons: string[];
+  stage: StreamingMarkdownRendererStage;
+  revision: number;
   audit: string[];
 };
 
-const topicInvariant = "Large file and media operations must be resumable, verified, and safe to retry.";
-
-export function evaluateStreamingMarkdownRendererEvent(event: streamingMarkdownRendererEvent): streamingMarkdownRendererDecision {
-  const reasons: string[] = [];
-
-  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
-  if (event.sequence <= 0) reasons.push("invalid-sequence");
-  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
-  if (event.signal.uploadedBytes > 2_000) reasons.push("uploadedBytes-outside-slo");
-  if (event.signal.transcodeLagMs > 0.2) reasons.push("transcodeLagMs-requires-guardrail");
-
-  let action: streamingMarkdownRendererDecision["action"] = "commit";
-  if (reasons.includes("version-mismatch")) action = "resume-from-checkpoint";
-  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "verify-checksum";
-  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "serve-lower-rendition";
-
+// Never render an incomplete fenced block or unsanitized HTML fragment.
+export function applyStreamingMarkdownRendererTransition(
+  state: StreamingMarkdownRendererState,
+  transition: StreamingMarkdownRendererTransition,
+): StreamingMarkdownRendererState {
+  if (transition.revision <= state.revision) return state;
+  if (transition.from !== state.stage) {
+    throw new Error(`Invalid streaming markdown projection transition: ${state.stage} -> ${transition.to}`);
+  }
   return {
-    accepted: reasons.length === 0,
-    action,
-    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
-    reasons,
-    audit: [
-      "topic:Streaming Markdown Renderer",
-      "subcategory:file-media-content-systems",
-      "entity:media asset",
-      "state:upload or playback session",
-      "operation:file pipeline transition",
-      "invariant:" + topicInvariant,
-      "actor:" + event.actorId,
-      "event:" + event.id,
-    ],
+    ...state,
+    stage: transition.to,
+    revision: transition.revision,
+    audit: [...state.audit, `${transition.revision}:${transition.command}`],
   };
 }
 
-export function runStreamingMarkdownRendererContractScenario() {
-  const base = Date.parse("2026-05-29T09:00:00.000Z");
-  const accepted = evaluateStreamingMarkdownRendererEvent({
-    id: "streaming-markdown-renderer-evt-1",
-    topic: "streaming-markdown-renderer",
-    actorId: "user-42",
-    sequence: 7,
-    receivedAtMs: base,
-    expectedVersion: 12,
-    currentVersion: 12,
-    payloadSize: 18_500,
-    signal: { uploadedBytes: 180, checksumMismatch: 0, transcodeLagMs: 0.01, retryCount: 1 },
+export function runStreamingMarkdownRendererProtocolScenario() {
+  const transitions: StreamingMarkdownRendererTransition[] = [
+  { command: "receive-chunk", from: "empty", to: "receiving", revision: 1 },
+  { command: "buffer-incomplete-block", from: "receiving", to: "buffering-block", revision: 2 },
+  { command: "parse-safe-prefix", from: "buffering-block", to: "parsing-safe-prefix", revision: 3 },
+  { command: "sanitize-html", from: "parsing-safe-prefix", to: "rendering", revision: 4 },
+  { command: "commit-fragment", from: "rendering", to: "complete", revision: 5 },
+  ];
+  return transitions.reduce(applyStreamingMarkdownRendererTransition, {
+    id: "streaming-markdown-renderer-case-17",
+    stage: "empty",
+    revision: 0,
+    audit: [],
   });
-
-  const guarded = evaluateStreamingMarkdownRendererEvent({
-    id: "streaming-markdown-renderer-evt-late",
-    topic: "streaming-markdown-renderer",
-    actorId: "user-42",
-    sequence: 8,
-    receivedAtMs: base + 4_000,
-    expectedVersion: 12,
-    currentVersion: 14,
-    payloadSize: 310_000,
-    signal: { uploadedBytes: 2_700, checksumMismatch: 3, transcodeLagMs: 0.34, retryCount: 2 },
-  });
-
-  return { accepted, guarded };
 }
+
+export const StreamingMarkdownRendererInvariant =
+  "Never render an incomplete fenced block or unsanitized HTML fragment.";

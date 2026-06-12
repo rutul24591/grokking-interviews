@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function DragDropListArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function DragDropListArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Drag-and-Drop List</h1><h2>Definition &amp; Context</h2><p>Design a Drag-and-Drop List is an implementation-heavy interaction design covering gesture activation, keyboard lifting, collision measurement, auto-scroll, transient reorder projection, versioned persistence, and rollback. A principal-level answer must explain state ownership, geometry, browser events, cancellation, accessibility, persistence, scale, and observability.</p><p>Keep committed order separate from projected drop order. Persist validated destinations using stable ids and position keys. Core structures: ordered ids, drag session, source id, projected index, item rectangles, scroll container, auto-scroll velocity, mutation id, and version.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/drag-drop-list-runtime.svg" alt="Design a Drag-and-Drop List runtime" caption="Interaction flow from input through projection, policy, commit, and render." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -98,7 +97,7 @@ export default function DragDropListArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -143,7 +142,7 @@ export default function DragDropListArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -190,14 +189,10 @@ export default function DragDropListArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/drag-drop-list-architecture.svg"
-        alt="Drag &amp; Drop List Architecture"
-        caption="Pointer Events → DragController (computes drop target via item bounding rects) → FLIP animator (smooth sibling shifts) → Optimistic reorder → Persistence callback. Keyboard mode parallels: Space picks up, arrows move, Space drops."
-      />
+      
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <HighlightBlock as="p" tier="crucial">
           The list is built around four parts:
           <strong> Pointer-driven drag controller</strong>{" "}
@@ -328,7 +323,7 @@ export default function DragDropListArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial"><strong>FlipAnimator</strong>{" "}
           applies the animation technique.
           <strong> KeyboardController</strong>{" "}
@@ -340,7 +335,7 @@ export default function DragDropListArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           List order in external store.
           During drag, an ephemeral order
@@ -352,7 +347,7 @@ export default function DragDropListArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Inputs:{" "}
           <code>items</code> (with stable ids),
@@ -368,7 +363,7 @@ export default function DragDropListArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="crucial">Cached bounding rects to avoid
           per-pointer-move layout thrash.</HighlightBlock>
 <HighlightBlock as="p" tier="important"><Highlight tier="important">Pointer move handler under a few ms.
@@ -376,7 +371,7 @@ export default function DragDropListArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">Smooth
           sibling shifts. Auto-scroll feels
           natural. <Highlight tier="important">Cancel-on-Escape</Highlight></HighlightBlock>
@@ -386,7 +381,7 @@ export default function DragDropListArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">Items have
           <code> aria-grabbed</code> (legacy)
           or instructions in tooltips. Drop
@@ -398,7 +393,7 @@ export default function DragDropListArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Server enforces per-item permissions.
           Reorder requests authenticated. <Highlight tier="important">Rate-limited</Highlight>.
@@ -406,7 +401,7 @@ export default function DragDropListArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="crucial">Unit tests for drop-target
           computation given pointer
           position. FLIP animation tests
@@ -418,7 +413,7 @@ export default function DragDropListArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">Rapid drops: queue
           persistence calls; if a later one
           supersedes an earlier, cancel the
@@ -430,7 +425,7 @@ export default function DragDropListArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Generic over item shape. Direction
           <Highlight tier="important">configurable. Handle selector
@@ -441,7 +436,7 @@ export default function DragDropListArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Drag handle label and keyboard mode
           announcements <Highlight tier="important">via i18n. Position
@@ -452,7 +447,7 @@ export default function DragDropListArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Pointer Events vs separate mouse/touch</h3>
         <HighlightBlock as="p" tier="important">
@@ -489,7 +484,7 @@ export default function DragDropListArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Multi-select drag. Cross-list drag
           via shared context (used <Highlight tier="important">by Kanban
@@ -497,99 +492,12 @@ export default function DragDropListArticle() {
           positions. Voice control of
           reorder. AI-suggested ordering.
         </Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. Why custom drag instead of
-          HTML5 drag-and-drop?</strong> HTML5
-          API is awkward and accessibility-
-          limited. Custom Pointer Events
-          unify mouse and touch with full
-          control over visuals and a11y.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How does FLIP work?</strong>{" "}
-          First (record positions), Last
-          (apply change), Invert (compute
-          deltas, apply inverse transforms
-          to make items appear in original
-          positions), Play (animate transforms
-          to zero). GPU-accelerated.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>3. How do you keyboard-
-          drag?</strong> Focus handle, Space
-          to pick up, arrows to move, Space
-          to drop. Live region announces.
-          Parallel state machine to mouse
-          mode.
-        </HighlightBlock>
-
-        <p>
-          <strong>4. How does auto-scroll
-          work?</strong> When pointer is
-          within ~50 px of edge, scroll list
-          with velocity proportional to
-          proximity. RAF-driven.
-        </p>
-
-        <p>
-          <strong>5. How is optimistic update
-          implemented?</strong> Apply new
-          order locally on drop. Persist via
-          callback. On rejection, animate
-          item back to original and surface
-          banner.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>6. How do you handle variable
-          heights?</strong> Cache bounding
-          rects on drag start (update via
-          ResizeObserver if needed). Drop
-          target computation uses cache,
-          avoiding per-pointer-move layout
-          thrash.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>7. How do you handle long
-          lists?</strong> Virtualization-
-          compatible drag: virtualizer keeps
-          list smooth; auto-scroll brings
-          off-screen targets into view; drop
-          calculation uses cached rects of
-          mounted items plus extrapolation
-          for unmounted ones near the
-          target.
-        </HighlightBlock>
-
-        <p>
-          <strong>8. How is touch
-          handled?</strong> Pointer Events
-          unify touch and mouse. Prevent
-          default on touch-start when
-          dragging from a handle to inhibit
-          page scroll.
-        </p>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="important">Cached bounding rects keep
-          pointer-move cheap; FLIP gives
-          smooth sibling shifts; keyboard
-          mode gives</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="crucial">accessibility parity.
-          The result is direct manipulation
-          that feels native on every input
-          method.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Normalize pointer, touch, keyboard, resize, and async events before applying transitions. Separate raw intent, transient projection, committed state, derived geometry, and telemetry. Release pointer capture, listeners, observers, timers, and animation handles idempotently.</p><p>Keep committed order separate from projected drop order. Persist validated destinations using stable ids and position keys.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/drag-drop-list-recovery.svg" alt="Design a Drag-and-Drop List recovery" caption="Recovery flow: cancel safely, retain committed truth, recalculate projection, and restore UI." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Local projection is optimistic. Server version and position acceptance are authoritative. Scale pressure comes from large virtual lists, nested scrolling, touch delays, concurrent reorder, expensive measurement, and permission changes. Bound measurement, batch rendering, and degrade predictably.</p><p>Prefer native semantics where they meet requirements. Custom interaction earns its cost only when product behavior needs explicit gesture, geometry, or workflow policy.</p></section>
+<section><h2>Best practices</h2><p>Use typed sessions, stable ids, pointer capture, keyboard alternatives, reduced-motion policy, clamped geometry, idempotent cleanup, and deterministic tests. Measure latency, dropped frames, cancellation, rollback, and accessibility regressions.</p><h3>Operational implementation: stable-id reorder and rollback</h3><p>Lift a stable item id, measure collision targets in one batch, project order locally, auto-scroll near boundaries, and persist with a list version plus idempotency key. A rejected write restores committed order without losing keyboard focus or announcing a false success.</p><p>Define a typed interaction session with owner, generation, start geometry, latest projection, committed snapshot, cancellation reason, and cleanup handles. Instrument pointer-to-paint latency, dropped frames, measurement cost, projection count, cancellation, rollback, constraint violations, and accessibility fallback usage. Test pointer loss, resize during interaction, keyboard-only flow, reduced motion, hidden tabs, unmount cleanup, stale persistence response, and extreme geometry.</p></section>
+<h3>Principal defense: scale, privacy, and rollback</h3><p>Keep committed domain state separate from transient geometry, pointer samples, animations, and derived guides. Under large collections, index only visible or nearby geometry, batch pointer updates to animation frames, cancel stale measurements, and degrade visual fidelity before interaction correctness. Persistence uses stable ids and versions; a rejected write restores the last committed snapshot and preserves an actionable retry state.</p><p>Even local interactions need abuse and privacy boundaries when they persist or collaborate. Validate dimensions, coordinates, payload sizes, and mutation frequency before accepting expensive work. Do not leak hidden objects, restricted calendar details, or cross-tenant geometry through previews, presence, or telemetry. Observe cancellation reason, long tasks, frame drops, rejected transitions, rollback outcome, and cleanup leaks.</p><section><h2>Common Pitfalls</h2><p>Common failures include mixing raw and committed state, leaking listeners, failing to handle pointer cancellation, ignoring keyboard users, and persisting invalid geometry.</p><p>For this topic, cancel on escape or pointer loss, stop auto-scroll, restore committed order, reject invalid membership, and announce rollback.</p><h3>Collision strategy and persistent ordering</h3><p>For short lists, measure row rectangles at lift time and choose the nearest insertion boundary. For virtualized or frequently resizing lists, maintain a measurement cache keyed by stable id and invalidate it when ResizeObserver reports changes. Auto-scroll velocity should depend on pointer distance from the container edge and stop immediately on cancellation. Keyboard dragging uses the same projected order: lift, move, announce destination, drop, or cancel.</p><p>Persist moves using stable ids and a board or list version. Fractional position keys avoid rewriting every row during most moves, but repeated insertion into one gap eventually needs asynchronous rebalancing. Keep that maintenance path separate from the interactive command. On conflict, fetch the current order, restore a coherent committed projection, and explain that the move could not be applied.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to repeated direct-manipulation workflows where responsive projection and safe cancellation matter as much as durable persistence.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep committed order separate from projected drop order. Persist validated destinations using stable ids and position keys.</p><h3>What breaks at scale?</h3><p>large virtual lists, nested scrolling, touch delays, concurrent reorder, expensive measurement, and permission changes.</p><h3>What consistency applies?</h3><p>Local projection is optimistic. Server version and position acceptance are authoritative.</p><h3>How do you recover?</h3><p>cancel on escape or pointer loss, stop auto-scroll, restore committed order, reject invalid membership, and announce rollback.</p><h3>How do you defend the architecture?</h3><p>I would prefer native behavior until the required geometry, gesture, or workflow policy justifies a custom controller.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events" target="_blank" rel="noreferrer">MDN Pointer Events</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA APG</a></li></ul></section>
+</ArticleLayout>}

@@ -11,7 +11,7 @@ export default function AbTestingPlatformUiArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame Design an A/B Testing Platform UI around system boundary, state ownership, failure handling, scalability, security, and observable recovery. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock>
         <HighlightBlock as="p" tier="important">
           A A/B testing platform UI is used by product managers, data scientists, engineers, growth teams, executives, and experiment reviewers to learn from product changes without confusing correlation with causation or launching risky changes to all users.
         </HighlightBlock>
@@ -24,7 +24,7 @@ export default function AbTestingPlatformUiArticle() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: the design must preserve correctness under latency, concurrency, partial failure, and changing permissions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design an A/B Testing Platform UI, the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock>
         <p>
           The core entities are experiments, variants, audiences, assignments, exposures, primary metrics, guardrail metrics, eligibility rules, analysis jobs, and decisions. Each needs stable identifiers, lifecycle state, owner, version, and audit metadata because experimentation output becomes evidence for product decisions.
         </p>
@@ -78,7 +78,7 @@ export default function AbTestingPlatformUiArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: state model, API contracts, cache policy, async workflow, authorization, rollout, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock>
         <p>
           A strong architecture has an authoring UI, configuration service, runtime evaluation path, exposure stream, event ingestion pipeline, metric computation layer, analysis engine, and decision review surface.
         </p>
@@ -135,7 +135,7 @@ export default function AbTestingPlatformUiArticle() {
       </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock>
         <p>
           Growth systems trade learning speed against statistical and product risk. Making launch too easy creates invalid or harmful tests; making it too rigid slows iteration and encourages bypasses.
         </p>
@@ -189,7 +189,7 @@ export default function AbTestingPlatformUiArticle() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: latency, error rate, fallback rate, conversion, stale-state duration, and rollback success.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock>
         <p>
           Treat exposure logging as a critical data contract with experiment id, variant id, rule version, subject id, timestamp, surface, consent state, and join context.
         </p>
@@ -246,7 +246,7 @@ export default function AbTestingPlatformUiArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: stale state, hidden partial failure, unbounded retries, ownership ambiguity, and missing observability.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock>
         <p>
           The common failure is showing a winner label without proving assignment integrity, exposure quality, guardrail health, and statistical assumptions.
         </p>
@@ -297,7 +297,7 @@ export default function AbTestingPlatformUiArticle() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock>
         <p>
           Homepage, onboarding, pricing, checkout, recommendation, and lifecycle experiments need trustworthy exposure logging, clear metrics, and guardrails so teams can distinguish real improvement from noise.
         </p>
@@ -323,7 +323,7 @@ export default function AbTestingPlatformUiArticle() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock>
         <h3>How would you design this system at scale?</h3>
         <p>
           I would separate authoring, runtime evaluation, exposure logging, metric computation, and decision review. Configuration is versioned and validated before publish. Runtime evaluation is low latency and highly available. Exposure and metric events flow through governed ingestion. Analysis shows statistical confidence, guardrails, freshness, and validity warnings. Decisions and rollouts are audited.

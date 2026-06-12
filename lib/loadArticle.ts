@@ -41,15 +41,15 @@ export async function loadArticle(params: {
   const importPath = getArticleImportPath(params);
 
   try {
-    const module = await import(importPath);
+    const articleModule = await import(importPath);
 
-    if (!module.default) {
+    if (!articleModule.default) {
       return null;
     }
 
     return {
-      metadata: module.metadata as ArticleMetadata,
-      component: module.default,
+      metadata: articleModule.metadata as ArticleMetadata,
+      component: articleModule.default,
     };
   } catch (error) {
     console.warn(`Failed to load article: ${importPath}`, error);
@@ -70,7 +70,8 @@ export function getAllArticlePaths() {
 /**
  * Get article metadata without loading the component
  */
-export function getArticleMetadata(_registryKey: string): ArticleMetadata | null {
+export function getArticleMetadata(registryKey: string): ArticleMetadata | null {
   // Metadata is loaded with the component
+  void registryKey;
   return null;
 }

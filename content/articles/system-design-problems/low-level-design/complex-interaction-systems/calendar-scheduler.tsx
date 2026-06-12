@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function CalendarSchedulerArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function CalendarSchedulerArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Calendar Scheduler</h1><h2>Definition &amp; Context</h2><p>Design a Calendar Scheduler is an implementation-heavy interaction design covering timezone projection, interval layout, recurrence expansion, drag-resize previews, overlap policy, optimistic writes, and rollback. A principal-level answer must explain state ownership, geometry, browser events, cancellation, accessibility, persistence, scale, and observability.</p><p>Persist canonical instants and timezone ids. Keep committed events separate from drag projections and visible-range recurrence expansion. Core structures: event map, interval index, recurrence rules, exception set, visible range, projected mutation, overlap columns, timezone policy, and version journal.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/calendar-scheduler-runtime.svg" alt="Design a Calendar Scheduler runtime" caption="Interaction flow from input through projection, policy, commit, and render." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -90,7 +89,7 @@ export default function CalendarSchedulerArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="important">
@@ -130,7 +129,7 @@ export default function CalendarSchedulerArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -170,14 +169,10 @@ export default function CalendarSchedulerArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/calendar-scheduler-architecture.svg"
-        alt="Calendar / Scheduler Architecture"
-        caption="Event source → Recurring expander (RRULE → instances within view) → View renderer (day/week/month grid) → Drag/resize for events → Time zone-aware display via Temporal/Intl. Optimistic reschedule with rollback."
-      />
+      
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <HighlightBlock as="p" tier="important">
           The system has four parts: <strong>event
           source + recurring expander</strong>,
@@ -283,7 +278,7 @@ export default function CalendarSchedulerArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial"><strong> EventBlock</strong> renders
           one event with drag/resize
           handles. <strong>CollisionLayouter</strong>{" "}
@@ -295,7 +290,7 @@ export default function CalendarSchedulerArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Events in external store (per
           calendar). View state <Highlight tier="important">(current view,
@@ -306,7 +301,7 @@ export default function CalendarSchedulerArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important">
           <Highlight tier="crucial">Event shape:</Highlight>{" "}
           <Highlight tier="important">
@@ -317,7 +312,7 @@ export default function CalendarSchedulerArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Recurring expansion cached. Events
           rendered <Highlight tier="important">only for visible range.
@@ -327,7 +322,7 @@ export default function CalendarSchedulerArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">Familiar GCal-style layouts. Today
           highlighted. Current time line on</HighlightBlock>
 <HighlightBlock as="p" tier="important">day/week views. Drag preview shows
@@ -338,7 +333,7 @@ export default function CalendarSchedulerArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">Time grid as
           <code> role=&quot;grid&quot;</code> for
           day/week (each cell a half-hour</HighlightBlock>
@@ -351,7 +346,7 @@ export default function CalendarSchedulerArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Server enforces event access.
           <Highlight tier="important">Multi-calendar visibility per user.
@@ -361,7 +356,7 @@ export default function CalendarSchedulerArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Unit tests for collision layout,
           recurring expansion, time-zone
@@ -373,7 +368,7 @@ export default function CalendarSchedulerArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">Event ends
           before it starts (data corruption):
           render as zero-duration; surface
@@ -387,7 +382,7 @@ export default function CalendarSchedulerArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Pattern reuses <Highlight tier="important">for any time-grid UI.
           Date adapter</Highlight> swappable. Views
@@ -396,7 +391,7 @@ export default function CalendarSchedulerArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Date and time via
           </Highlight><code> Intl.DateTimeFormat</code>.
@@ -407,7 +402,7 @@ export default function CalendarSchedulerArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Day/week/month vs single view</h3>
         <HighlightBlock as="p" tier="important">
@@ -446,7 +441,7 @@ export default function CalendarSchedulerArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           AI scheduling suggestions. Free/busy
           across <Highlight tier="important">multiple users. Cross-zone
@@ -454,86 +449,12 @@ export default function CalendarSchedulerArticle() {
           detection. Shared calendar real-time
           edits.
         </Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. How are recurring events
-          expanded?</strong> RRULE library
-          expands to concrete instances within
-          the visible range. Cached per
-          (event, range).
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How is collision rendering
-          done?</strong> Group overlapping
-          events; allocate columns within
-          each group; render side by side
-          with proportional width.
-        </HighlightBlock>
-
-        <p>
-          <strong>3. How are time zones
-          handled?</strong> Store ISO with
-          offset; display via{" "}
-          <code>Intl</code> in user&rsquo;s
-          zone. DST-correct via Temporal.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. How does drag-reschedule
-          work?</strong> Pointer drag with
-          optimistic update; ship to server;
-          rollback on failure. Cross-day in
-          week view.
-        </HighlightBlock>
-
-        <p>
-          <strong>5. How does recurring edit
-          work?</strong> User chooses: this
-          instance, this and following, or
-          all. Server applies the chosen
-          scope.
-        </p>
-
-        <p>
-          <strong>6. How is the view URL-
-          synced?</strong> View + date in URL;
-          on mount parse and seed; on
-          navigation push URL. Browser back/
-          forward works.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>7. How is performance
-          maintained?</strong> Visible-range
-          query plus expansion cache. Memoized
-          event blocks. CSS transforms for
-          drag.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>8. How is this
-          accessible?</strong> Grid role on
-          day/week; events focusable; keyboard
-          navigation; locale-aware time
-          announcements.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="important">Temporal handles DST; RRULE library
-          handles recurrence; views match
-          user expectations from</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="crucial">GCal.
-          The result is a familiar,
-          time-zone-correct, accessible
-          scheduling UI.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Normalize pointer, touch, keyboard, resize, and async events before applying transitions. Separate raw intent, transient projection, committed state, derived geometry, and telemetry. Release pointer capture, listeners, observers, timers, and animation handles idempotently.</p><p>Persist canonical instants and timezone ids. Keep committed events separate from drag projections and visible-range recurrence expansion.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/calendar-scheduler-recovery.svg" alt="Design a Calendar Scheduler recovery" caption="Recovery flow: cancel safely, retain committed truth, recalculate projection, and restore UI." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Server versions are authoritative for writes. Visible range expansion is a deterministic projection. Scale pressure comes from dense calendars, DST boundaries, recurring series, multi-resource views, concurrent edits, and drag conflicts. Bound measurement, batch rendering, and degrade predictably.</p><p>Prefer native semantics where they meet requirements. Custom interaction earns its cost only when product behavior needs explicit gesture, geometry, or workflow policy.</p></section>
+<section><h2>Best practices</h2><p>Use typed sessions, stable ids, pointer capture, keyboard alternatives, reduced-motion policy, clamped geometry, idempotent cleanup, and deterministic tests. Measure latency, dropped frames, cancellation, rollback, and accessibility regressions.</p><h3>Operational implementation: timezone-safe interval projection</h3><p>Persist canonical instants with timezone ids, expand recurrence only for the visible range, index overlaps, and keep drag-resize preview separate from the committed event. Conditional writes reject stale edits; rollback restores the server version while preserving a clear conflict explanation.</p><p>Define a typed interaction session with owner, generation, start geometry, latest projection, committed snapshot, cancellation reason, and cleanup handles. Instrument pointer-to-paint latency, dropped frames, measurement cost, projection count, cancellation, rollback, constraint violations, and accessibility fallback usage. Test pointer loss, resize during interaction, keyboard-only flow, reduced motion, hidden tabs, unmount cleanup, stale persistence response, and extreme geometry.</p></section>
+<h3>Principal defense: scale, privacy, and rollback</h3><p>Keep committed domain state separate from transient geometry, pointer samples, animations, and derived guides. Under large collections, index only visible or nearby geometry, batch pointer updates to animation frames, cancel stale measurements, and degrade visual fidelity before interaction correctness. Persistence uses stable ids and versions; a rejected write restores the last committed snapshot and preserves an actionable retry state.</p><p>Even local interactions need abuse and privacy boundaries when they persist or collaborate. Validate dimensions, coordinates, payload sizes, and mutation frequency before accepting expensive work. Do not leak hidden objects, restricted calendar details, or cross-tenant geometry through previews, presence, or telemetry. Observe cancellation reason, long tasks, frame drops, rejected transitions, rollback outcome, and cleanup leaks.</p><section><h2>Common Pitfalls</h2><p>Common failures include mixing raw and committed state, leaking listeners, failing to handle pointer cancellation, ignoring keyboard users, and persisting invalid geometry.</p><p>For this topic, bound recurrence expansion, retain exceptions, rollback rejected drag, refresh conflicts, and explain timezone ambiguity.</p><h3>Interval layout and recurrence limits</h3><p>Expand recurring rules only for the visible range plus a small prefetch margin. Keep the rule and exception set authoritative; rendered occurrences are derived instances with stable composite ids. For overlapping events, sort by start time then duration, allocate the first available column, and compute width from the maximum simultaneous column count in the overlap group. Recompute only affected groups after edits.</p><p>Timezone behavior must be explicit around daylight-saving transitions. Store canonical instants and the intended timezone. When a local wall-clock time is ambiguous or nonexistent, ask for policy or surface the adjustment. Dragging an event across a DST boundary should preserve either elapsed duration or wall-clock semantics according to product requirements, not whichever behavior the date library happens to produce.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to repeated direct-manipulation workflows where responsive projection and safe cancellation matter as much as durable persistence.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Persist canonical instants and timezone ids. Keep committed events separate from drag projections and visible-range recurrence expansion.</p><h3>What breaks at scale?</h3><p>dense calendars, DST boundaries, recurring series, multi-resource views, concurrent edits, and drag conflicts.</p><h3>What consistency applies?</h3><p>Server versions are authoritative for writes. Visible range expansion is a deterministic projection.</p><h3>How do you recover?</h3><p>bound recurrence expansion, retain exceptions, rollback rejected drag, refresh conflicts, and explain timezone ambiguity.</p><h3>How do you defend the architecture?</h3><p>I would prefer native behavior until the required geometry, gesture, or workflow policy justifies a custom controller.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events" target="_blank" rel="noreferrer">MDN Pointer Events</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA APG</a></li></ul></section>
+</ArticleLayout>}

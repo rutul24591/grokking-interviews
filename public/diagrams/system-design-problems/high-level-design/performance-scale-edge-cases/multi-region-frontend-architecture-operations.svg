@@ -1,11 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
-  <title id="title">Multi Region Frontend Architecture Operations: topology map</title>
-  <desc id="desc">Curved topology for performance scale edge cases runtime states.</desc>
-  <rect x="16" y="16" width="928" height="508" rx="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
-  <text x="42" y="58" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="23" font-weight="700">Multi Region Frontend Architecture Operations: topology map</text>
-  <text x="42" y="84" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="13">Curved topology for performance scale edge cases runtime states.</text>
-  <rect x="66" y="122" width="828" height="332" rx="24" fill="#ffffff" stroke="#94a3b8" stroke-width="1.6"/>
-  <path d="M116 380 C180 220, 260 208, 338 236" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/><circle cx="154" cy="356" r="30" fill="#dbeafe" stroke="#2563eb" stroke-width="1.7"/><text x="154" y="361" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">p50</text><path d="M270 310 C300 250, 360 208, 440 288" fill="none" stroke="#16a34a" stroke-width="4" stroke-linecap="round"/><circle cx="306" cy="274" r="38" fill="#dcfce7" stroke="#16a34a" stroke-width="1.7"/><text x="306" y="279" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">p99</text><path d="M424 380 C420 280, 460 208, 542 236" fill="none" stroke="#d97706" stroke-width="4" stroke-linecap="round"/><circle cx="458" cy="356" r="30" fill="#fef3c7" stroke="#d97706" stroke-width="1.7"/><text x="458" y="361" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">burst</text><path d="M578 310 C540 220, 560 208, 644 288" fill="none" stroke="#9333ea" stroke-width="4" stroke-linecap="round"/><circle cx="610" cy="274" r="38" fill="#fae8ff" stroke="#9333ea" stroke-width="1.7"/><text x="610" y="279" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">cache</text><path d="M732 380 C660 250, 660 208, 746 236" fill="none" stroke="#b91c1c" stroke-width="4" stroke-linecap="round"/><circle cx="762" cy="356" r="30" fill="#fee2e2" stroke="#b91c1c" stroke-width="1.7"/><text x="762" y="361" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="10" font-weight="700">shed</text>
-  <rect x="210" y="138" width="128" height="30" rx="15" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/><text x="274" y="158" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">queue</text><rect x="390" y="138" width="128" height="30" rx="15" fill="#fff7ed" stroke="#d97706" stroke-width="1.4"/><text x="454" y="158" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">region</text><rect x="570" y="138" width="128" height="30" rx="15" fill="#fdf2f8" stroke="#9333ea" stroke-width="1.4"/><text x="634" y="158" text-anchor="middle" fill="#0f172a" font-family="Inter, Arial, sans-serif" font-size="11" font-weight="700">budget</text>
-  <path d="M118 456 C270 500, 420 426, 568 468 S760 496, 846 444" fill="none" stroke="#be123c" stroke-width="3" stroke-dasharray="8 8"/><text x="520" y="494" text-anchor="middle" fill="#be123c" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700">state convergence requires explicit observability and fallback routes</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="system-ui, -apple-system, BlinkMacSystemFont, sans-serif" role="img" aria-label="Multi Region Frontend Architecture: degradation and rollback ladder">
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#2563eb"/></marker>
+    <marker id="arrow-teal" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#0f766e"/></marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#c2410c"/></marker>
+    <marker id="arrow-rose" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#be123c"/></marker>
+  </defs>
+  <rect x="18" y="18" width="924" height="524" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="54" y="56" font-size="18" font-weight="700" fill="#172033">Multi Region Frontend Architecture: degradation and rollback ladder</text>
+  <text x="54" y="78" font-size="11.5" fill="#526074">Failure containment is a policy ladder, not an accidental timeout cascade.</text>
+  <rect x="48" y="108" width="864" height="344" rx="9" fill="#fff7ed" stroke="#c2410c" stroke-width="1.1"/>
+  <text x="68" y="131" font-size="12.5" font-weight="700" fill="#c2410c">DEGRADATION LADDER</text><circle cx="104" cy="154" r="22" fill="#ecfdf5" stroke="#0f766e" stroke-width="1.6"/>
+    <text x="104" y="158" text-anchor="middle" font-size="11" font-weight="700" fill="#172033">0</text>
+    <text x="154" y="149" font-size="11" font-weight="700" fill="#172033">healthy</text>
+    <text x="154" y="168" font-size="10.5" fill="#526074">client projection</text>
+    <text x="590" y="158" font-size="10.5" fill="#172033">full fidelity</text><line x1="104" y1="178" x2="104" y2="196" stroke="#c2410c" stroke-width="2.4" marker-end="url(#arrow-orange)"/><circle cx="104" cy="222" r="22" fill="#eff6ff" stroke="#2563eb" stroke-width="1.6"/>
+    <text x="104" y="226" text-anchor="middle" font-size="11" font-weight="700" fill="#172033">1</text>
+    <text x="154" y="217" font-size="11" font-weight="700" fill="#172033">dependency pressure</text>
+    <text x="154" y="236" font-size="10.5" fill="#526074">cache client projection</text>
+    <text x="590" y="226" font-size="10.5" fill="#172033">shed optional work</text><line x1="104" y1="246" x2="104" y2="264" stroke="#c2410c" stroke-width="2.4" marker-end="url(#arrow-orange)"/><circle cx="104" cy="290" r="22" fill="#fff7ed" stroke="#c2410c" stroke-width="1.6"/>
+    <text x="104" y="294" text-anchor="middle" font-size="11" font-weight="700" fill="#172033">2</text>
+    <text x="154" y="285" font-size="11" font-weight="700" fill="#172033">write risk</text>
+    <text x="154" y="304" font-size="10.5" fill="#526074">freeze durable state</text>
+    <text x="590" y="294" font-size="10.5" fill="#172033">serve stable projection</text><line x1="104" y1="314" x2="104" y2="332" stroke="#c2410c" stroke-width="2.4" marker-end="url(#arrow-orange)"/><circle cx="104" cy="358" r="22" fill="#fff1f2" stroke="#be123c" stroke-width="1.6"/>
+    <text x="104" y="362" text-anchor="middle" font-size="11" font-weight="700" fill="#172033">3</text>
+    <text x="154" y="353" font-size="11" font-weight="700" fill="#172033">integrity risk</text>
+    <text x="154" y="372" font-size="10.5" fill="#526074">rollback version</text>
+    <text x="590" y="362" font-size="10.5" fill="#172033">repair then reopen</text><text x="590" y="132" font-size="11" font-weight="700" fill="#c2410c">USER-VISIBLE POLICY</text>
+  <text x="72" y="486" font-size="11" fill="#172033">Every rung has an entry signal, explicit owner, visible behavior, audit event, and exit condition.</text>
 </svg>

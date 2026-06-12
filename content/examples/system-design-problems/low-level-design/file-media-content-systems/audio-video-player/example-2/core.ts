@@ -1,89 +1,51 @@
-export type audioVideoPlayerSignal = {
-  uploadedBytes: number;
-  checksumMismatch: number;
-  transcodeLagMs: number;
-  retryCount: number;
+export type AudioVideoPlayerStage = "idle" | "loading-manifest" | "buffering" | "playing" | "stalled" | "ended";
+
+export type AudioVideoPlayerTransition = {
+  command: string;
+  from: AudioVideoPlayerStage;
+  to: AudioVideoPlayerStage;
+  revision: number;
 };
 
-export type audioVideoPlayerEvent = {
+export type AudioVideoPlayerState = {
   id: string;
-  topic: "audio-video-player";
-  actorId: string;
-  sequence: number;
-  receivedAtMs: number;
-  expectedVersion: number;
-  currentVersion: number;
-  payloadSize: number;
-  signal: audioVideoPlayerSignal;
-};
-
-export type audioVideoPlayerDecision = {
-  accepted: boolean;
-  action: "resume-from-checkpoint" | "verify-checksum" | "serve-lower-rendition" | "commit";
-  nextVersion: number;
-  reasons: string[];
+  stage: AudioVideoPlayerStage;
+  revision: number;
   audit: string[];
 };
 
-const topicInvariant = "Large file and media operations must be resumable, verified, and safe to retry.";
-
-export function evaluateAudioVideoPlayerEvent(event: audioVideoPlayerEvent): audioVideoPlayerDecision {
-  const reasons: string[] = [];
-
-  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
-  if (event.sequence <= 0) reasons.push("invalid-sequence");
-  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
-  if (event.signal.uploadedBytes > 2_000) reasons.push("uploadedBytes-outside-slo");
-  if (event.signal.transcodeLagMs > 0.2) reasons.push("transcodeLagMs-requires-guardrail");
-
-  let action: audioVideoPlayerDecision["action"] = "commit";
-  if (reasons.includes("version-mismatch")) action = "resume-from-checkpoint";
-  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "verify-checksum";
-  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "serve-lower-rendition";
-
+// Never advance the playhead beyond the buffered range.
+export function applyAudioVideoPlayerTransition(
+  state: AudioVideoPlayerState,
+  transition: AudioVideoPlayerTransition,
+): AudioVideoPlayerState {
+  if (transition.revision <= state.revision) return state;
+  if (transition.from !== state.stage) {
+    throw new Error(`Invalid playback session transition: ${state.stage} -> ${transition.to}`);
+  }
   return {
-    accepted: reasons.length === 0,
-    action,
-    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
-    reasons,
-    audit: [
-      "topic:Audio Video Player",
-      "subcategory:file-media-content-systems",
-      "entity:media asset",
-      "state:upload or playback session",
-      "operation:file pipeline transition",
-      "invariant:" + topicInvariant,
-      "actor:" + event.actorId,
-      "event:" + event.id,
-    ],
+    ...state,
+    stage: transition.to,
+    revision: transition.revision,
+    audit: [...state.audit, `${transition.revision}:${transition.command}`],
   };
 }
 
-export function runAudioVideoPlayerContractScenario() {
-  const base = Date.parse("2026-05-29T09:00:00.000Z");
-  const accepted = evaluateAudioVideoPlayerEvent({
-    id: "audio-video-player-evt-1",
-    topic: "audio-video-player",
-    actorId: "user-42",
-    sequence: 7,
-    receivedAtMs: base,
-    expectedVersion: 12,
-    currentVersion: 12,
-    payloadSize: 18_500,
-    signal: { uploadedBytes: 180, checksumMismatch: 0, transcodeLagMs: 0.01, retryCount: 1 },
+export function runAudioVideoPlayerProtocolScenario() {
+  const transitions: AudioVideoPlayerTransition[] = [
+  { command: "load-manifest", from: "idle", to: "loading-manifest", revision: 1 },
+  { command: "append-segment", from: "loading-manifest", to: "buffering", revision: 2 },
+  { command: "start-playback", from: "buffering", to: "playing", revision: 3 },
+  { command: "rebuffer", from: "playing", to: "stalled", revision: 4 },
+  { command: "finish", from: "stalled", to: "ended", revision: 5 },
+  ];
+  return transitions.reduce(applyAudioVideoPlayerTransition, {
+    id: "audio-video-player-case-17",
+    stage: "idle",
+    revision: 0,
+    audit: [],
   });
-
-  const guarded = evaluateAudioVideoPlayerEvent({
-    id: "audio-video-player-evt-late",
-    topic: "audio-video-player",
-    actorId: "user-42",
-    sequence: 8,
-    receivedAtMs: base + 4_000,
-    expectedVersion: 12,
-    currentVersion: 14,
-    payloadSize: 310_000,
-    signal: { uploadedBytes: 2_700, checksumMismatch: 3, transcodeLagMs: 0.34, retryCount: 2 },
-  });
-
-  return { accepted, guarded };
 }
+
+export const AudioVideoPlayerInvariant =
+  "Never advance the playhead beyond the buffered range.";

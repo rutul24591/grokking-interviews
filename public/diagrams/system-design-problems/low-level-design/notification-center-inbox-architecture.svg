@@ -1,112 +1,23 @@
-<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="system-ui, -apple-system, BlinkMacSystemFont, sans-serif" role="img" aria-label="Notification Center Inbox: lifecycle swimlanes">
   <defs>
-    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/></marker>
-    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563eb"/></marker>
-    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/></marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#2563eb"/></marker>
+    <marker id="arrow-teal" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#0f766e"/></marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#c2410c"/></marker>
+    <marker id="arrow-rose" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#be123c"/></marker>
   </defs>
-  <rect width="900" height="520" fill="#f0f4ff"/>
-  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1b4b">Notification Center / Inbox — Architecture</text>
-  <text x="450" y="48" text-anchor="middle" font-size="11" fill="#6b7280">Notification store · Toast queue · Inbox view · Badge &amp; expiry</text>
-  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
-  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
-  <rect x="12" y="76" width="425" height="12" fill="#6d5bd0"/>
-  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">A — NOTIFICATION STORE</text>
-  <rect x="24" y="98" width="190" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
-  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Notification</text>
-  <text x="34" y="133" font-size="9" fill="#374151">id: string (uuid)</text>
-  <text x="34" y="148" font-size="9" fill="#374151">type: info|success|warn|error</text>
-  <text x="34" y="163" font-size="9" fill="#374151">title: string</text>
-  <text x="34" y="178" font-size="9" fill="#374151">body: string (optional)</text>
-  <text x="34" y="193" font-size="9" fill="#374151">read: boolean</text>
-  <text x="34" y="208" font-size="9" fill="#374151">createdAt: timestamp</text>
-  <text x="34" y="223" font-size="9" fill="#374151">expiresAt: timestamp | null</text>
-  <text x="34" y="240" font-size="9" fill="#374151">actions: { label, onClick }[]</text>
-  <rect x="226" y="98" width="197" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
-  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Store Operations</text>
-  <text x="236" y="133" font-size="9" fill="#374151">add(notification): void</text>
-  <text x="236" y="148" font-size="9" fill="#374151">  prepend to notifications[]</text>
-  <text x="236" y="163" font-size="9" fill="#374151">markRead(id | 'all'): void</text>
-  <text x="236" y="178" font-size="9" fill="#374151">dismiss(id): void</text>
-  <text x="236" y="193" font-size="9" fill="#374151">  remove from list</text>
-  <text x="236" y="208" font-size="9" fill="#374151">clear(type?): void</text>
-  <text x="236" y="223" font-size="9" fill="#374151">WS push: add() on message</text>
-  <text x="236" y="240" font-size="9" fill="#374151">  reconnect: exponential backoff</text>
-  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
-  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
-  <rect x="463" y="76" width="425" height="12" fill="#2563eb"/>
-  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">B — TOAST QUEUE</text>
-  <rect x="475" y="98" width="185" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
-  <text x="567" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Toast Lifecycle</text>
-  <text x="485" y="133" font-size="9" fill="#374151">queue: Toast[] (max 5 visible)</text>
-  <text x="485" y="148" font-size="9" fill="#374151">  FIFO: oldest dismissed first</text>
-  <text x="485" y="163" font-size="9" fill="#374151">Auto-dismiss: 4000ms default</text>
-  <text x="485" y="178" font-size="9" fill="#374151">  error: no auto-dismiss</text>
-  <text x="485" y="193" font-size="9" fill="#374151">Pause: hover stops timer</text>
-  <text x="485" y="208" font-size="9" fill="#374151">  resume on mouseleave</text>
-  <text x="485" y="225" font-size="9" fill="#374151">Progress bar: drains over TTL</text>
-  <text x="485" y="240" font-size="9" fill="#374151">Position: top-right fixed stack</text>
-  <rect x="672" y="98" width="202" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
-  <text x="773" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Toast Animation</text>
-  <text x="682" y="133" font-size="9" fill="#374151">Enter: slide in from right</text>
-  <text x="682" y="148" font-size="9" fill="#374151">  translateX(100%→0) 250ms</text>
-  <text x="682" y="163" font-size="9" fill="#374151">Exit: fade + shrink height</text>
-  <text x="682" y="178" font-size="9" fill="#374151">  opacity 1→0 + height→0 200ms</text>
-  <text x="682" y="193" font-size="9" fill="#374151">Stack: FLIP on reorder</text>
-  <text x="682" y="208" font-size="9" fill="#374151">Swipe right: dismiss gesture</text>
-  <text x="682" y="225" font-size="9" fill="#374151">  translateX + opacity fade</text>
-  <text x="682" y="240" font-size="9" fill="#374151">Group: deduplicate same type</text>
-  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
-  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
-  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
-  <rect x="12" y="301" width="425" height="12" fill="#2f9d74"/>
-  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">C — INBOX VIEW</text>
-  <rect x="24" y="323" width="190" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
-  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Inbox Panel</text>
-  <text x="34" y="358" font-size="9" fill="#374151">Popover / drawer: bell trigger</text>
-  <text x="34" y="373" font-size="9" fill="#374151">Tabs: All | Unread | Mentions</text>
-  <text x="34" y="388" font-size="9" fill="#374151">Virtual list: overscan 5 rows</text>
-  <text x="34" y="403" font-size="9" fill="#374151">Load more: IntersectionObserver</text>
-  <text x="34" y="418" font-size="9" fill="#374151">  cursor pagination</text>
-  <text x="34" y="433" font-size="9" fill="#374151">Group by: today / yesterday / older</text>
-  <text x="34" y="448" font-size="9" fill="#374151">Swipe left: mark read (mobile)</text>
-  <rect x="226" y="323" width="197" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
-  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Notification Item</text>
-  <text x="236" y="358" font-size="9" fill="#374151">Unread: bold + blue dot</text>
-  <text x="236" y="373" font-size="9" fill="#374151">Read: regular weight</text>
-  <text x="236" y="388" font-size="9" fill="#374151">Avatar: sender icon or type icon</text>
-  <text x="236" y="403" font-size="9" fill="#374151">Relative time: "2m ago"</text>
-  <text x="236" y="418" font-size="9" fill="#374151">Actions: inline buttons</text>
-  <text x="236" y="433" font-size="9" fill="#374151">Click: markRead + navigate</text>
-  <text x="236" y="448" font-size="9" fill="#374151">Dismiss X: remove from list</text>
-  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
-  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97843"/>
-  <rect x="463" y="301" width="425" height="12" fill="#d97843"/>
-  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">D — BADGE &amp; EXPIRY</text>
-  <rect x="475" y="323" width="185" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
-  <text x="567" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Badge Counter</text>
-  <text x="485" y="358" font-size="9" fill="#374151">unreadCount: derived from store</text>
-  <text x="485" y="373" font-size="9" fill="#374151">Display: cap at 99+</text>
-  <text x="485" y="388" font-size="9" fill="#374151">  badge disappears at 0</text>
-  <text x="485" y="403" font-size="9" fill="#374151">Animation: scale 0.5→1 on new</text>
-  <text x="485" y="418" font-size="9" fill="#374151">document.title: "(3) App name"</text>
-  <text x="485" y="433" font-size="9" fill="#374151">  update on count change</text>
-  <text x="485" y="448" font-size="9" fill="#374151">Favicon badge: canvas overlay</text>
-  <rect x="672" y="323" width="202" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
-  <text x="773" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Expiry &amp; A11y</text>
-  <text x="682" y="358" font-size="9" fill="#374151">TTL check: every 60s interval</text>
-  <text x="682" y="373" font-size="9" fill="#374151">  remove expired notifications</text>
-  <text x="682" y="388" font-size="9" fill="#374151">Persist: localStorage inbox[]</text>
-  <text x="682" y="403" font-size="9" fill="#374151">  read state survives refresh</text>
-  <text x="682" y="418" font-size="9" fill="#374151">aria-live="polite" on toast zone</text>
-  <text x="682" y="433" font-size="9" fill="#374151">  error: aria-live="assertive"</text>
-  <text x="682" y="448" font-size="9" fill="#374151">Bell: aria-label="N unread"</text>
-  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
-  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
-  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
-  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
-  <text x="90" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Toast max: 5 visible</text>
-  <text x="270" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Auto-dismiss: 4000ms</text>
-  <text x="450" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Badge cap: 99+</text>
-  <text x="630" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Group by: today/yesterday/older</text>
-  <text x="810" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Expiry TTL: check every 60s</text>
+  <rect x="18" y="18" width="924" height="524" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="54" y="56" font-size="18" font-weight="700" fill="#172033">Notification Center Inbox: lifecycle swimlanes</text>
+  <text x="54" y="78" font-size="11.5" fill="#526074">State transitions, async effects, guarded commit, cancellation, and cleanup are separated.</text>
+  <rect x="48" y="104" width="864" height="94" rx="9" fill="#eff6ff" stroke="#2563eb" stroke-width="1.1"/>
+  <text x="68" y="127" font-size="12.5" font-weight="700" fill="#2563eb">EVENT LANE</text><rect x="80" y="136" width="160" height="44" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/>
+  <text x="94" y="161" font-size="12" font-weight="700" fill="#172033">user intent</text><rect x="326" y="136" width="160" height="44" rx="8" fill="#ecfdf5" stroke="#0f766e" stroke-width="1.4"/>
+  <text x="340" y="161" font-size="12" font-weight="700" fill="#172033">typed state</text><line x1="240" y1="158" x2="318" y2="158" stroke="#2563eb" stroke-width="2.4" marker-end="url(#arrow-blue)"/><rect x="48" y="214" width="864" height="94" rx="9" fill="#fff7ed" stroke="#c2410c" stroke-width="1.1"/>
+  <text x="68" y="237" font-size="12.5" font-weight="700" fill="#c2410c">EFFECT LANE</text><rect x="228" y="246" width="160" height="44" rx="8" fill="#fff7ed" stroke="#c2410c" stroke-width="1.4"/>
+  <text x="242" y="271" font-size="12" font-weight="700" fill="#172033">derived projection</text><rect x="550" y="246" width="160" height="44" rx="8" fill="#f5f3ff" stroke="#6d28d9" stroke-width="1.4"/>
+  <text x="564" y="271" font-size="12" font-weight="700" fill="#172033">effect boundary</text><line x1="388" y1="268" x2="542" y2="268" stroke="#c2410c" stroke-width="2.4" marker-end="url(#arrow-orange)"/><rect x="48" y="324" width="864" height="118" rx="9" fill="#ecfdf5" stroke="#0f766e" stroke-width="1.1"/>
+  <text x="68" y="347" font-size="12.5" font-weight="700" fill="#0f766e">COMMIT AND CLEANUP LANE</text><rect x="360" y="364" width="160" height="52" rx="8" fill="#fff1f2" stroke="#be123c" stroke-width="1.4"/>
+  <text x="374" y="389" font-size="12" font-weight="700" fill="#172033">commit guard</text><text x="374" y="412" font-size="10.5" fill="#526074">validate current scope</text><rect x="696" y="364" width="160" height="52" rx="8" fill="#ecfdf5" stroke="#0f766e" stroke-width="1.4"/>
+  <text x="710" y="389" font-size="12" font-weight="700" fill="#172033">visible result</text><text x="710" y="412" font-size="10.5" fill="#526074">release resources</text><line x1="520" y1="390" x2="688" y2="390" stroke="#0f766e" stroke-width="2.4" marker-end="url(#arrow-teal)"/><line x1="408" y1="180" x2="294" y2="238" stroke="#2563eb" stroke-width="2.4" marker-end="url(#arrow-blue)"/><line x1="630" y1="290" x2="440" y2="356" stroke="#c2410c" stroke-width="2.4" marker-end="url(#arrow-orange)"/><path d="M776 364 C856 306, 846 164, 494 158" fill="none" stroke="#be123c" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#arrow-rose)"/>
+  <text x="724" y="320" font-size="10.5" font-weight="700" fill="#be123c">cancel / supersede</text>
+  <text x="72" y="482" font-size="11" fill="#172033">Each async boundary carries generation, owner, cancellation, deadline, and trace context.</text>
 </svg>

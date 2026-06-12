@@ -17,14 +17,7 @@ export function Sidebar({ domains }: SidebarProps) {
   const sidebarRef = useRef<HTMLElement>(null);
   const { focusedItemId, setFocusedItemId } = useSidebarContextValue();
 
-  const {
-    expandedDomains,
-    expandedCategories,
-    expandedSubcategories,
-    isMobileOpen,
-    setMobileOpen,
-    selectTopic,
-  } = useSidebarStore();
+  const { isMobileOpen, setMobileOpen } = useSidebarStore();
 
   // Auto-expand based on current path
   useEffect(() => {

@@ -24,7 +24,7 @@ export default function PwaOfflineSyncArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame Design a PWA with Offline Sync around system boundary, state ownership, failure handling, scalability, security, and observable recovery. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock>
         <p>
           A Progressive Web App with offline sync is a browser-delivered application that remains usable when the network is slow, intermittent, captive, or completely unavailable. It uses a service worker to control caching and background work, IndexedDB as the local durable data store, a mutation queue for offline writes, and a synchronization protocol to reconcile local changes with the server when connectivity returns.
         </p>
@@ -40,7 +40,7 @@ export default function PwaOfflineSyncArticle() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: the design must preserve correctness under latency, concurrency, partial failure, and changing permissions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design a PWA with Offline Sync, the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock>
         <p>
           The service worker is a programmable network proxy scoped to the origin. It can precache the app shell, intercept fetches, serve cached responses, update caches in the background, receive push events, and process browser-managed sync events where supported. It does not have direct access to the DOM, so it coordinates with windows through messages, IndexedDB, and browser events.
         </p>
@@ -65,7 +65,7 @@ export default function PwaOfflineSyncArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: state model, API contracts, cache policy, async workflow, authorization, rollout, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock>
         <p>
           The architecture has four planes. The presentation plane renders the UI and subscribes to local data. The local data plane stores entities, mutation queue entries, sync metadata, and user-visible failure state in IndexedDB. The service worker plane owns cache strategy, fetch interception, update lifecycle, push events, and sync triggers. The server plane remains authoritative for validation, authorization, version assignment, conflict detection, and event delivery.
         </p>
@@ -102,7 +102,7 @@ export default function PwaOfflineSyncArticle() {
       </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock>
         <p>
           Cache-first improves perceived availability but risks stale behavior. Network-first improves freshness but makes the app feel slow or broken on weak networks. Stale-while-revalidate gives fast loads with eventual freshness but can surprise users if data changes after the screen appears. Principal-level design means assigning these strategies by business risk, not applying one caching pattern to every request.
         </p>
@@ -127,7 +127,7 @@ export default function PwaOfflineSyncArticle() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: latency, error rate, fallback rate, conversion, stale-state duration, and rollback success.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock>
         <p>
           Start with an offline contract for every product action. Label actions as read-only offline, write-queueable offline, blocked offline, or local-only. This contract should be visible in product requirements and backend API design. It prevents late ambiguity where a designer assumes an action works offline but the backend cannot reconcile it safely.
         </p>
@@ -149,7 +149,7 @@ export default function PwaOfflineSyncArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: stale state, hidden partial failure, unbounded retries, ownership ambiguity, and missing observability.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock>
         <p>
           A common pitfall is calling the app offline-capable because the shell loads offline while real user actions still fail. Interviewers will push past shell caching quickly. The meaningful question is whether the user can read relevant data, create or update records, understand pending state, and trust that their work will eventually be reconciled.
         </p>
@@ -168,7 +168,7 @@ export default function PwaOfflineSyncArticle() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock>
         <p>
           Field-service applications use offline sync when technicians inspect equipment in basements, factories, ships, or remote sites with poor connectivity. Work orders, photos, checklist answers, and signatures can be captured locally, then uploaded when the device reconnects. The design must handle large attachments and make unsent state obvious before the technician leaves the job.
         </p>
@@ -184,7 +184,7 @@ export default function PwaOfflineSyncArticle() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock>
         <h3 className="mt-6 mb-3 text-lg font-semibold">1. What is the core architecture of a PWA with offline sync?</h3>
         <p>
           I would use a service worker for cache control, push events, and sync triggers; IndexedDB as the durable local source of truth; a mutation queue for offline writes; and backend APIs that support idempotency, version checks, and conflict responses. The UI reads from IndexedDB first so it can render offline. Network responses and sync results update IndexedDB, which then updates the UI. The server remains authoritative for validation, permissions, canonical ids, and version assignment.

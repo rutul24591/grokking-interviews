@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 /**
  * Hook to detect when the component has mounted on the client.
@@ -14,11 +14,9 @@ import { useEffect, useState } from "react";
  * return <div>{window.innerWidth}</div>;
  */
 export function useHasMounted(): boolean {
-  const [hasMounted, setHasMounted] = useState(false);
-
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
-
-  return hasMounted;
+  return useSyncExternalStore(
+    () => () => undefined,
+    () => true,
+    () => false,
+  );
 }

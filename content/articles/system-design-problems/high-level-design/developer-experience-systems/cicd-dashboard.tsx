@@ -24,7 +24,7 @@ export default function CicdDashboardArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame Design a CI/CD Dashboard (like GitHub Actions) around system boundary, state ownership, failure handling, scalability, security, and observable recovery. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock>
         <HighlightBlock as="p" tier="important">
           A CI/CD dashboard is the control plane and observability surface for software delivery. It shows pipeline runs, job dependency graphs, live logs, test results, artifacts, deployment approvals, and actions such as cancel, retry, and rerun failed jobs. GitHub Actions, GitLab CI, Buildkite, CircleCI, and Jenkins Blue Ocean are representative systems. For principal interviews, the design must cover event streaming, large log handling, permissioned mutations, audit trails, and how the dashboard remains trustworthy when many teams depend on it for production releases.
         </HighlightBlock>
@@ -34,7 +34,7 @@ export default function CicdDashboardArticle() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: the design must preserve correctness under latency, concurrency, partial failure, and changing permissions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design a CI/CD Dashboard (like GitHub Actions), the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock>
         <p>
           The core data model contains pipeline runs, jobs, steps, log chunks, artifacts, checks, deployment environments, approval gates, and actors. Runs and jobs are state machines. Events such as queued, started, step completed, log appended, artifact uploaded, gate waiting, approved, failed, cancelled, and retried are appended by the CI backend and projected into read models for the UI. This event-first model lets the dashboard recover from reconnects by replaying changes from a known cursor.
         </p>
@@ -53,7 +53,7 @@ export default function CicdDashboardArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: state model, API contracts, cache policy, async workflow, authorization, rollout, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock>
         <p>
           The initial page load reads a paginated run list and the selected run snapshot. The client then subscribes to a server-sent event stream or WebSocket channel keyed by repository and run. Events update the run list, DAG status, gate state, and log cursors. Logs are stored separately as append-only chunks in object storage or a log service, while run metadata is served from a low-latency read model. This separation prevents large log traffic from slowing normal dashboard navigation.
         </p>
@@ -96,7 +96,7 @@ export default function CicdDashboardArticle() {
       </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock>
         <p>
           Server-sent events are simpler for one-way status and log updates, work through most enterprise proxies, and support automatic reconnect with a last-event cursor. WebSockets support bidirectional interaction and custom multiplexing, but they require more lifecycle handling and backpressure design. Polling is easy to operate, but it wastes capacity and increases perceived latency for fast pipelines. A good design often uses normal APIs for snapshots, SSE for status and log tailing, and separate artifact download URLs for large immutable outputs.
         </p>
@@ -118,7 +118,7 @@ export default function CicdDashboardArticle() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: latency, error rate, fallback rate, conversion, stale-state duration, and rollback success.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock>
         <p>
           Keep run state event-driven and make clients cursor-aware. Use virtualized log rendering, pause auto-scroll when users scroll upward, preserve scroll position per job, and expose log search without forcing a full browser download. Model approvals as durable decisions with actor, permission basis, environment, commit range, comment, timestamp, and resulting pipeline transition.
         </p>
@@ -149,7 +149,7 @@ export default function CicdDashboardArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: stale state, hidden partial failure, unbounded retries, ownership ambiguity, and missing observability.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock>
         <p>
           A common pitfall is treating logs as normal UI text. Large logs need streaming, chunking, virtual scrolling, and memory caps. Another pitfall is showing current run state by repeatedly polling broad run summaries; this creates unnecessary load and still misses fast transitions. Teams also often under-design approval gates, forgetting re-authentication, environment-specific permissions, separation of duties, and audit evidence required by regulated organizations.
         </p>
@@ -165,7 +165,7 @@ export default function CicdDashboardArticle() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock>
         <p>
           Developer teams use CI dashboards to debug pull request failures, release managers use them to approve staged deployments, and incident commanders use them to confirm rollback or hotfix progress. Platform teams use aggregate views to find slow pipelines, expensive jobs, flake hotspots, and teams that need help improving build health.
         </p>
@@ -178,7 +178,7 @@ export default function CicdDashboardArticle() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock>
         <h3>How would you stream live logs at scale?</h3>
         <p>
           I would store logs as append-only chunks with monotonically increasing cursors, stream new chunks over SSE or WebSocket, and let clients resume from the last seen cursor. The browser would keep chunks outside hot React state, render visible lines through virtualization, and batch updates. The backend would compress chunks, enforce retention, redact known secrets, and provide static chunk fetch for replay so a reconnect does not require the stream service to replay everything from memory.

@@ -24,7 +24,7 @@ export default function UserOnboardingActivationFlowArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame Design a User Onboarding &amp; Activation Flow at Scale around product-critical path, data ownership, user trust, latency SLOs, and safe degradation. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           User onboarding is the path from account creation to first meaningful product value. Activation is the
           measurable milestone that predicts retention, such as sending a first team message, completing a first
@@ -53,7 +53,7 @@ export default function UserOnboardingActivationFlowArticle() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: the user must see a consistent product state even when derived artifacts, personalization, search, upload, or collaboration subsystems lag behind.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design a User Onboarding &amp; Activation Flow at Scale, the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock>
         <h3 className="mt-6 mb-3 text-lg font-semibold">Activation over Completion</h3>
         <p>
           Step completion is not the same as activation. A user may complete every onboarding form and still never
@@ -81,7 +81,7 @@ export default function UserOnboardingActivationFlowArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: API shape, read/write model, async workflow, permission boundary, cache policy, realtime update strategy, and rollback behavior.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock>
         <ArticleImage
           src="/diagrams/system-design-problems/high-level-design/core-product-systems/user-onboarding-and-activation-flow-at-scale-architecture.svg"
           alt="User onboarding architecture showing registration service, onboarding state service, flow configuration, experiment assignment, activation tracking, personalization, fraud detection, email service, and analytics pipeline"
@@ -143,7 +143,7 @@ export default function UserOnboardingActivationFlowArticle() {
       </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock>
         <p>
           Minimal signup improves conversion but gives the product less personalization context. Heavy upfront profiling
           improves targeting but increases abandonment. Progressive profiling usually wins when the product can deliver
@@ -198,7 +198,7 @@ export default function UserOnboardingActivationFlowArticle() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: activation, completion rate, p95 interaction latency, stale-state duration, conversion lag, error rate, and rollback success.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock>
         <p>
           Make registration idempotent. Use unique account identifiers, email uniqueness where product policy allows,
           OAuth account-linking rules, idempotency keys for retries, and clear duplicate-account behavior. Registration
@@ -263,7 +263,7 @@ export default function UserOnboardingActivationFlowArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: partial data, stale projections, duplicate writes, permission drift, missing audit trail, and UI states that hide backend uncertainty.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock>
         <p>
           A common pitfall is treating onboarding as a static frontend wizard. This prevents channel-specific flows,
           experiment control, cross-device resume, and reliable activation attribution.
@@ -300,7 +300,7 @@ export default function UserOnboardingActivationFlowArticle() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock>
         <p>
           Collaboration products guide users to create a workspace, invite teammates, and send a first message. Their
           activation milestone often involves another person, so onboarding must reduce team setup friction.
@@ -320,7 +320,7 @@ export default function UserOnboardingActivationFlowArticle() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock>
         <h3 className="mt-6 mb-3 text-lg font-semibold">
           How do you design onboarding so product teams can iterate without frontend deployments?
         </h3>

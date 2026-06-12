@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,18 +24,18 @@ export default function MonorepoToolingArchitectureArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h1>Design Monorepo Tooling Architecture</h1>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Design Monorepo Tooling Architecture should be framed as an implementation-level design problem with a clear runtime boundary, not as a visual mock or helper function.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview signal: identify the architecture boundary, ownership model, rollout contract, and organizational blast radius before discussing APIs or code structure.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">The answer should connect user-visible behavior to engineering constraints: correctness, accessibility, latency, failure recovery, testability, and operational ownership.</HighlightBlock>
         <p>
           Design Monorepo Tooling Architecture is an architecture-level low-level design problem about implementing a dependency-aware workspace build system. The design must be concrete enough that platform and product teams can integrate with it safely: public APIs, state model, artifact formats, ownership rules, compatibility contracts, failure isolation, rollout, and observability all belong in the answer.
         </p>
         <p>
           The facade is discoverPackages, calculateAffected, runTask, restoreCache, publishPackages, invalidateCache. Runtime or lifecycle states are idle, planning, running, cacheHit, cacheMiss, failed, published. The governing invariant is: Tooling must make builds reproducible and fast without publishing stale or cross-branch artifacts. The pressure-test case is when a cache key misses an environment input and restores a stale production bundle. A principal-ready answer should explain how local implementation decisions become organization-wide reliability, velocity, and migration outcomes.
         </p>
-        <ArticleImage src="/diagrams/system-design-problems/low-level-design/architecture-system-level-lld/monorepo-tooling-architecture-runtime.svg" alt="Design Monorepo Tooling Architecture runtime architecture" caption="Architecture runtime: consumer intent flows through contract validation, versioned artifacts, rollout controls, and observable delivery." />
+        <ArticleImage src="/diagrams/system-design-problems/low-level-design/architecture-system-level-lld/monorepo-tooling-architecture-runtime.svg" alt="Design Monorepo Tooling Architecture runtime architecture" caption="The workspace graph selects affected tasks and deterministic cache keys reuse immutable artifacts." />
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core invariant: stable public contracts must outlive implementation details, and every extension point must have compatibility, migration, rollback, and observability rules.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design Monorepo Tooling Architecture, the strongest explanation names the state model, the data structures that hold that state, and the events allowed to mutate it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not skip ownership: distinguish product-owned state, platform-owned policy, browser/runtime state, server-authoritative state, and speculative local state.</HighlightBlock>
         <p>
           The first concept is an explicit platform contract. A platform is not just shared code; it is a promise about interfaces, compatibility, support windows, ownership, and operational response. The core structures are workspace graph, task DAG, cache key, artifact store, change set, ownership map, release plan. These structures make changes reviewable and let consuming teams understand what is stable, what is experimental, and what requires migration.
         </p>
@@ -55,10 +56,10 @@ export default function MonorepoToolingArchitectureArticle() {
         <p>
           Escape hatches should be narrow and temporary. Record who requested the exception, why the supported path was insufficient, which consumers use it, and when it should be reviewed. Without that evidence, a platform slowly becomes a collection of permanent one-off behaviors that cannot evolve safely.
         </p>
-      </section>
+<h3>Workspace graph and hermetic task model</h3><p>A monorepo tool computes a workspace dependency graph from package manifests and task configuration. Each task declares inputs, outputs, environment variables, toolchain version, dependency-task edges, and execution policy. A cache key is a content digest of every behavior-changing input. Hidden inputs create false cache hits; broad inputs destroy reuse. Use task sandboxes or post-run verification for high-value build artifacts.</p><p>Affected analysis starts from changed files and walks reverse dependency edges. It is an optimization, not a correctness excuse: periodic full builds and sampling detect graph mistakes. Remote cache entries are immutable, content-addressed, access-controlled, and optionally signed. Separate read and write permissions so untrusted pull requests cannot poison shared cache artifacts.</p>      </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture flow should cover input event, validation, state transition, side effect, commit guard, cleanup, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Key design decisions: API ownership, versioning, runtime boundaries, build-vs-buy boundaries, dependency isolation, rollout gates, and rollback strategy.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A principal-level answer should describe the hard path, not only the happy path: delayed responses, unmounts, retries, stale state, permission changes, and partial degradation.</HighlightBlock>
         <p>
           The implementation has six layers: consumer facade, contract validator, dependency graph, execution engine, artifact or response store, and observability layer. The facade normalizes intent. Validation checks schema, compatibility, ownership, and policy. The graph determines affected work. The engine executes deterministic tasks. The store publishes versioned outputs. Observability records latency, adoption, failures, and rollback evidence.
         </p>
@@ -79,11 +80,11 @@ export default function MonorepoToolingArchitectureArticle() {
         <p>
           Recovery should be practiced before an incident. Roll back a pointer to a previous immutable artifact, disable a remote, restore a known-good cache namespace, or degrade a partial response. Then confirm metrics recover. A rollback process that requires a fresh build, coordinated consumer releases, or manual cache clearing is too fragile for a widely adopted platform.
         </p>
-        <ArticleImage src="/diagrams/system-design-problems/low-level-design/architecture-system-level-lld/monorepo-tooling-architecture-failure.svg" alt="Design Monorepo Tooling Architecture failure isolation and rollout" caption="Failure model: compatibility gaps, stale artifacts, dependency faults, and budget regressions route through canary, rollback, or degradation." />
-      </section>
+        <ArticleImage src="/diagrams/system-design-problems/low-level-design/architecture-system-level-lld/monorepo-tooling-architecture-failure.svg" alt="Design Monorepo Tooling Architecture failure isolation and rollout" caption="A poisoned cache entry is invalidated and rebuilt before cross-toolchain output can publish." />
+<h3>Scaling CI without losing trust</h3><p>Partition work across executors using critical-path estimates and historical duration. Bound fan-out so one large change does not starve the queue. Preserve provenance: source revision, lockfile digest, task version, executor image, cache source, and output digest. Observe hit rate, false-miss causes, critical-path duration, queue time, executor utilization, graph size, flaky tasks, and cache validation failures.</p><p>Defend a monorepo when atomic changes, shared tooling, refactoring leverage, and dependency visibility matter. Defend multiple repositories when access isolation, independent lifecycle, or scale constraints dominate. The tool should make dependency boundaries explicit rather than turn the repository into one implicit application.</p>      </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: choose the design that keeps correctness and recovery explicit while bounding latency, memory, and integration complexity.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized runtime behavior with local component control. Centralization improves consistency and observability, but can become a bottleneck if extension points are not governed.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design Monorepo Tooling Architecture, defend what is intentionally strict, what is configurable, and what should remain outside the abstraction.</HighlightBlock>
         <p>
           Centralization improves consistency and enables cross-product fixes, but it can become a bottleneck. Decentralization lets teams move independently, but duplicates solutions and fragments contracts. The useful middle ground is a stable platform core with documented extension points, contribution governance, and escape hatches that are observable and time-bounded.
         </p>
@@ -99,7 +100,7 @@ export default function MonorepoToolingArchitectureArticle() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make illegal or ambiguous states unrepresentable through explicit state unions, typed events, stable IDs, and guarded transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Test the lifecycle, not just the render output: rapid interaction, stale async settlement, unmount cleanup, keyboard-only use, SSR hydration, degraded capability, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Expose diagnostics that prove the design works in production: transition counts, suppressed stale work, failure reasons, cleanup counts, latency, fallback rate, and user-visible recovery.</HighlightBlock>
         <p>
           Publish immutable artifacts and keep rollback pointers. Track owners and support windows. Require migration guides and codemods for mechanical breaking changes. Add canary rollout and emergency disablement for risky runtime paths. Scope caches by artifact version, tenant, environment, and policy digest.
         </p>
@@ -115,7 +116,7 @@ export default function MonorepoToolingArchitectureArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Main risks to call out: hidden coupling, undocumented escape hatches, incompatible migrations, shared-platform bottlenecks, and rollback paths that require coordinated consumer releases.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A common interview failure is describing the API surface but not the lifecycle guarantees that prevent stale work, leaked resources, inaccessible states, or unsafe commits.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not hide failure behind generic loading and error flags. Name the difference between blocked, cancelled, stale, degraded, retrying, unauthorized, conflicted, and committed states.</HighlightBlock>
         <p>
           Avoid hidden global state, mutable latest artifacts, unversioned contracts, and undocumented escape hatches. Do not let one team bypass validation permanently because a deadline is urgent. Temporary exceptions need owner, reason, expiry, and telemetry.
         </p>
@@ -128,7 +129,7 @@ export default function MonorepoToolingArchitectureArticle() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world use: platform teams, BFFs, design systems, monorepos, internal developer platforms, frontend testing platforms, and shared performance architecture.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the design to operational behavior: how teams roll it out, observe it, debug it, migrate consumers, and roll it back without breaking active users.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">At staff/principal level, explain how this component or runtime reduces repeated product-team mistakes while still allowing legitimate product-specific policy.</HighlightBlock>
         <p>
           Architecture-level LLD appears in large organizations where frontend teams share components, tooling, performance policy, test infrastructure, deployment boundaries, and experience-specific APIs. These platforms reduce repeated work only when their contracts are stable and their integration path is easier than local reinvention.
         </p>
@@ -138,7 +139,7 @@ export default function MonorepoToolingArchitectureArticle() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">When asked to design Design Monorepo Tooling Architecture, lead with the invariant, then walk through state, events, data structures, failure handling, and measurable production signals.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A strong answer includes a concrete edge-case walkthrough where the system receives conflicting or delayed events and still commits the correct final state.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Close by naming complexity and test strategy: runtime cost, memory bounds, cleanup guarantees, accessibility tests, race tests, and observability checks.</HighlightBlock>
         <h3>How would you design the system end to end?</h3>
         <p>I would define the facade, versioned artifact model, dependency graph, validation gates, immutable publish flow, rollout controls, rollback pointer, and metrics. Then I would walk one change from authoring through consumer adoption.</p>
         <h3>Why this architecture over team-local implementations?</h3>

@@ -3,7 +3,6 @@
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -20,11 +19,10 @@ export const metadata: ArticleMetadata = {
   relatedTopics: ["role-based-access-control", "login-session-management", "permission-editor-ui"],
 };
 
-export default function RouteComponentAccessGuardArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
+export default function RouteComponentAccessGuardArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design Route and Component Access Guards</h1><h2>Definition &amp; Context</h2><p>Design Route and Component Access Guards is a security-sensitive low-level design problem covering session bootstrap, permission projection, loading boundary, redirect policy, route protection, component hiding, and server enforcement. A principal-level answer must state the authoritative server boundary, threat model, lifecycle, abuse controls, rollback, privacy, observability, and user-safe degraded behavior.</p><p>Treat frontend guards as UX only. Protected data and mutations must enforce authorization server-side. Core structures: session status, permission projection, route metadata, loading state, redirect target, denial reason, server check, and audit correlation.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/auth-user-systems/route-component-access-guard-runtime.svg" alt="Design Route and Component Access Guards runtime" caption="Security flow from user intent through authoritative validation and audit." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>Problem Clarification</h3>
         <HighlightBlock as="p" tier="important">Modern applications serve diverse user populations with varying capabilities and restrictions. A junior developer might access documentation and contribute code, an admin manages users and infrastructure, and a free-tier user sees only public features. Without structured access control, the app becomes a security nightmare: permissions checks scattered across dozens of components, contradictory rules, and high risk of unauthorized access.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">The core challenge is multi-layered. First, determining whether a user can access a specific route or component requires checking multiple factors: user role, assigned permissions, organizational membership, subscription tier, and sometimes context-specific attributes (can edit only their own documents). Second, permission checks must be fast—millisecond latency matters when components query permissions during render. Third, permissions change dynamically: an admin grants a user "documents.edit" permission, and the UI must reflect this immediately without forcing a logout and re-login. Fourth, frontend permission checks are purely UX optimization and security theater; the backend must always re-verify, otherwise a user can modify local storage or network requests to gain unauthorized access.</HighlightBlock>
         <HighlightBlock as="p" tier="important">Naive approaches fail quickly. Scattered if-statements in components ("if (user.role === 'admin') render feature") lead to inconsistent UX—one route requires admin, another requires editor, logic is duplicated and diverges. Hardcoded permission strings create brittle coupling. Loading permissions once at login creates stale data: if admin revokes access while user is active, the user still sees the feature. Finally, trusting client-side permission checks for API operations is a critical security vulnerability.</HighlightBlock>
@@ -33,7 +31,7 @@ export default function RouteComponentAccessGuardArticle() {
       </section>
 
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
         <ul className="space-y-2">
           <HighlightBlock as="li" tier="important"><strong>Route Guards:</strong> Prevent unauthorized users from accessing protected routes. If a user lacks "documents.read" permission, attempting to navigate to /documents redirects to a 403 Forbidden page or login.</HighlightBlock>
@@ -56,7 +54,7 @@ export default function RouteComponentAccessGuardArticle() {
       </section>
 
       <section>
-        <h2>High-Level Approach</h2>
+        <h3>High-Level Approach</h3>
         <HighlightBlock as="p" tier="important">The guard system follows a three-layer architecture: permission loading, permission checking, and permission maintenance.</HighlightBlock>
         <HighlightBlock as="p" tier="important">Layer 1 (Loading): When a user logs in, fetch their permissions from the backend and store in a global state (Context, Zustand, or Redux). Represent permissions as a Set or flat object for O(1) lookup time. Include role-based permissions (user has role "editor", which grants multiple permissions) and specific permissions (user explicitly has "project-123.admin").</HighlightBlock>
         <HighlightBlock as="p" tier="important">Layer 2 (Checking): Guard components and hooks check permissions before rendering. A ProtectedRoute higher-order component wraps routes and checks if the user has required permission. If denied, redirect to 403 or login. A PermissionGate component wraps content and conditionally renders based on permission. A usePermission hook allows components to check permissions within render. All checks query the permission state, not the server (local, fast).</HighlightBlock>
@@ -65,13 +63,9 @@ export default function RouteComponentAccessGuardArticle() {
       </section>
 
       <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/auth-user-systems/route-component-access-guard.svg"
-          alt="Route guard decision tree, React Router ProtectedRoute implementation, Next.js middleware guard, and component-level access control"
-          caption="Route guard decision tree, React Router ProtectedRoute implementation, Next.js middleware guard, and component-level access control"
-        />
+        
 
-        <h2>Detailed Design</h2>
+        <h3>Detailed Design</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Guard Implementation Patterns</h3>
         <p>Multiple patterns implement access guards, each suited for different use cases. Route guards wrap entire routes and prevent unauthorized navigation. A ProtectedRoute component checks permissions before rendering its content. If unauthorized, it redirects to login or 403 page. This is typically placed in the router configuration or app layout.</p>
@@ -133,7 +127,7 @@ export default function RouteComponentAccessGuardArticle() {
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
+        <h3>Trade-offs and Considerations</h3>
         <HighlightBlock as="p" tier="crucial"><strong>Centralized vs Distributed Guards:</strong> A single permission store simplifies logic but creates a bottleneck—every component queries it. Distributed guards (each feature manages its own checks) are flexible but error-prone (inconsistent rules). Centralized with caching is the practical middle ground: single source of truth, but cached locally in memory.</HighlightBlock>
         <HighlightBlock as="p" tier="important"><strong>Polling vs Event-Based Updates:</strong> Polling is simple (no additional infrastructure) but has latency (permissions change every 5-10 minutes). Event-based is fast (sub-second) but requires persistent connection (WebSocket) and is more complex. Real-world systems often use hybrid: poll as safety net, events as primary. This handles 99% of changes instantly while protecting against event loss.</HighlightBlock>
         <HighlightBlock as="p" tier="important"><strong>Deny vs Allow Fail-Secure:</strong> If permission check fails or permission is unknown, should you allow or deny? Deny is safer (less risk of unauthorized access) but worse UX (app becomes unusable during connectivity issues). Allow is better UX but riskier. The right choice depends on risk tolerance and use case (banking system should fail-deny; mobile app might allow with cached permissions).</HighlightBlock>
@@ -142,7 +136,7 @@ export default function RouteComponentAccessGuardArticle() {
       </section>
 
       <section>
-        <h2>Implementation Patterns</h2>
+        <h3>Implementation Patterns</h3>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Pattern 1: Context-Based Permission Checking</h3>
         <HighlightBlock as="p" tier="important">Create a PermissionContext that provides hasPermission() and checkAccess() functions. PermissionProvider wraps the app and manages the permission state. Components call usePermission() to access the functions. Guards and components check permissions synchronously (local state, fast). Permissions are loaded on app init (login) and refreshed periodically. This pattern is simple and works well for most apps.</HighlightBlock>
 
@@ -154,13 +148,12 @@ export default function RouteComponentAccessGuardArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Pattern 4: Graceful Fallback with Cached Permissions</h3>
         <HighlightBlock as="p" tier="crucial">Always show some UX, even if permission check fails. If permissions can't be fetched, use cached permissions from the previous session. Show a badge indicating "offline mode" so users know data may be stale. This prevents the app from becoming completely unusable during connectivity issues.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Real-world systems like GitHub, Figma, and Linear use context-based permission stores with periodic refresh and WebSocket notifications for real-time updates. For best results, represent permissions as a flat, concrete</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">set (not roles), compute effective permissions server-side, enforce all checks on the backend, refresh permissions periodically with real-time events as primary mechanism, handle stale/missing permissions gracefully, and always log unauthorized access attempts. This architecture ensures permissions are checked consistently, changes are reflected in reasonable time, and security remains enforced even if frontend checks are bypassed.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate user intent, browser-safe projection, server validation, durable security record, audit evidence, and cleanup. Frontend state improves UX but never replaces server enforcement. Tokens, challenges, sessions, and privileged grants need explicit expiry and revocation.</p><p>Treat frontend guards as UX only. Protected data and mutations must enforce authorization server-side.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/auth-user-systems/route-component-access-guard-recovery.svg" alt="Design Route and Component Access Guards threat recovery" caption="Threat recovery: validate, deny safely, preserve authoritative truth, audit, and recover." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Server authorization is authoritative. Client permission projection may be stale and should fail closed for privileged UI. Scale and threat pressure comes from hydration races, stale permissions, deep links, unauthorized prefetch, component flicker, and tenant switches. Fail closed for privilege while keeping error UX actionable.</p></section>
+<section><h2>Best practices</h2><p>Use short-lived scoped grants, secure cookies, CSRF defenses, replay prevention, rotation, versioned writes, server-side authorization, rate limits, redacted logs, and explicit audit events. Test expiry, replay, revocation, retries, multiple tabs, and permission drift.</p></section>
+<h3>Principal defense: authority, consistency, and abuse cost</h3><p>Use server-authoritative consistency for security decisions. Browser state is a revocable projection that can improve responsiveness but cannot grant access, extend expiry, or confirm a privileged transition. Every mutation carries a version, expiry, nonce, or idempotency key as appropriate; stale projections refresh or fail closed. Rollback means revoking the grant, session family, policy version, or pending intent while retaining an audit trail.</p><p>Model abuse and cost together. Rate-limit sensitive attempts by account, device, network, and risk cohort without turning the UI into an enumeration oracle. Bound session inventory, audit retention, challenge issuance, cross-tab broadcasts, and refresh retries. Emit denial reason classes, revocation lag, suspicious reuse, policy version, and correlation ids while avoiding sensitive payloads in telemetry.</p><section><h2>Common Pitfalls</h2><p>Common failures include trusting frontend guards, storing bearer tokens in localStorage, leaking account existence, missing idempotency, weak redirect validation, and incomplete audit evidence.</p><p>For this topic, render safe loading state, validate redirects, avoid unauthorized prefetch, refresh after tenant change, and never rely on hidden buttons.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to user identity and access workflows where convenience must not weaken authoritative server enforcement or incident evidence.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>What is authoritative?</h3><p>Server authorization is authoritative. Client permission projection may be stale and should fail closed for privileged UI.</p><h3>What breaks under abuse?</h3><p>hydration races, stale permissions, deep links, unauthorized prefetch, component flicker, and tenant switches.</p><h3>How do you recover?</h3><p>render safe loading state, validate redirects, avoid unauthorized prefetch, refresh after tenant change, and never rely on hidden buttons.</p><h3>What does the client enforce?</h3><p>The client improves usability and fails closed for privileged views; the server enforces every protected read and mutation.</p><h3>How do you observe incidents?</h3><p>Emit redacted audit records with subject, actor, policy version, reason, outcome, and correlation id.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.rfc-editor.org/rfc/rfc7636" target="_blank" rel="noreferrer">RFC 7636 PKCE</a></li><li><a href="https://www.w3.org/TR/webauthn-3/" target="_blank" rel="noreferrer">WebAuthn Level 3</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies" target="_blank" rel="noreferrer">MDN Cookies</a></li><li><a href="https://owasp.org/www-project-cheat-sheets/" target="_blank" rel="noreferrer">OWASP Cheat Sheets</a></li></ul></section>
+</ArticleLayout>}

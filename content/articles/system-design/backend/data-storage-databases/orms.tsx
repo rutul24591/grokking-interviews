@@ -222,9 +222,9 @@ export default function ArticlePage() {
 
         <p>
           <strong>Batch operations</strong>: ORM row-by-row is slow. Use batch:
-          <code className="inline-code">User.update_all(active: true) /* single UPDATE */</code>
+          <code className="inline-code">User.update_all(active: true) {"/* single UPDATE */"}</code>
           instead of <code className="inline-code">users.each &#123; |u| u.update(active: true)
-          /* N UPDATEs */ &#125;</code>. Benefits: 1 query vs N queries, much faster.
+          {"/* N UPDATEs */"} &#125;</code>. Benefits: 1 query vs N queries, much faster.
         </p>
 
         <h3>When to Use Raw SQL</h3>

@@ -24,7 +24,7 @@ export default function DataExportReportGenerationSystem() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame Design a Data Export / Report Generation System around system boundary, state ownership, failure handling, scalability, security, and observable recovery. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock>
         <p>
           A data export and report-generation system lets users create CSV, Excel, PDF, Parquet, or scheduled reports from filtered product data. It is used for finance reports, customer exports, compliance evidence, analytics extracts, operational snapshots, and scheduled executive reporting.
         </p>
@@ -40,7 +40,7 @@ export default function DataExportReportGenerationSystem() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: the design must preserve correctness under latency, concurrency, partial failure, and changing permissions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design a Data Export / Report Generation System, the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock>
         <p>
           An export request captures report type, filters, selected columns, format, requester, tenant, permission context, and delivery mode. The request is validated immediately, but execution happens in workers. The API returns a job id and status endpoint quickly.
         </p>
@@ -74,7 +74,7 @@ export default function DataExportReportGenerationSystem() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: state model, API contracts, cache policy, async workflow, authorization, rollout, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock>
         <p>
           The architecture has five planes. The request plane validates export intent and creates jobs. The queue plane schedules work and handles retries. The execution plane reads data and renders files. The delivery plane stores files and issues signed URLs or emails. The governance plane enforces permissions, masking, quotas, retention, and audit.
         </p>
@@ -117,7 +117,7 @@ export default function DataExportReportGenerationSystem() {
       </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock>
         <p>
           Direct synchronous download is simple for small exports and should remain available for bounded result sets. It becomes unreliable for large exports because of timeouts, memory pressure, and retry limitations. Async export adds operational complexity but supports large data, progress, retries, and durable delivery.
         </p>
@@ -154,7 +154,7 @@ export default function DataExportReportGenerationSystem() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: latency, error rate, fallback rate, conversion, stale-state duration, and rollback success.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock>
         <p>
           Cap synchronous exports and route larger requests to async jobs. Make the threshold explicit and based on estimated rows, file size, format, and source cost.
         </p>
@@ -188,7 +188,7 @@ export default function DataExportReportGenerationSystem() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: stale state, hidden partial failure, unbounded retries, ownership ambiguity, and missing observability.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock>
         <p>
           A common pitfall is querying the primary database with a long-running export. This can affect normal product traffic. Large exports should use replicas, warehouses, snapshots, or read-optimized stores.
         </p>
@@ -213,7 +213,7 @@ export default function DataExportReportGenerationSystem() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock>
         <p>
           Finance teams export monthly revenue, invoices, payments, and reconciliation reports. These require correctness, repeatability, audit, and clear freshness.
         </p>
@@ -232,7 +232,7 @@ export default function DataExportReportGenerationSystem() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock>
         <h3 className="mt-6 mb-3 text-lg font-semibold">1. How would you design large exports without timing out?</h3>
         <p>
           I would accept the request, validate permissions and size, create a durable job, enqueue it, and let workers stream rows from a read-optimized source into a format renderer. The renderer writes incrementally to object storage. The user tracks progress and downloads through a short-lived signed link when ready.

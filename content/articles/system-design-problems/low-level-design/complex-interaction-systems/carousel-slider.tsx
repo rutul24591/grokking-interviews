@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function CarouselSliderArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function CarouselSliderArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Carousel Slider</h1><h2>Definition &amp; Context</h2><p>Design a Carousel Slider is an implementation-heavy interaction design covering pointer capture, velocity sampling, snap selection, autoplay, pause rules, virtualization, accessibility, and responsive item counts. A principal-level answer must explain state ownership, geometry, browser events, cancellation, accessibility, persistence, scale, and observability.</p><p>Keep committed index separate from transient offset. Autoplay pauses for focus, interaction, hidden tabs, and reduced motion. Core structures: slide registry, committed index, drag offset, velocity samples, autoplay deadline, observer state, virtualization window, and focus index.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/carousel-slider-runtime.svg" alt="Design a Carousel Slider runtime" caption="Interaction flow from input through projection, policy, commit, and render." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -83,7 +82,7 @@ export default function CarouselSliderArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -119,7 +118,7 @@ export default function CarouselSliderArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -159,14 +158,10 @@ export default function CarouselSliderArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/carousel-slider-architecture.svg"
-        alt="Carousel / Slider Architecture"
-        caption="Slides container with scroll-snap → IntersectionObserver lazy-load + Pointer Events for swipe + Autoplay timer (pauses on hover/focus). Indicators (dots) and prev/next buttons drive scroll position. Keyboard arrows navigate."
-      />
+      
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <HighlightBlock as="p" tier="important">
           The carousel is a horizontally-
           scrollable container with{" "}
@@ -248,7 +243,7 @@ export default function CarouselSliderArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial"><strong>Carousel</strong> is the
           container. <strong>SlidesTrack</strong>{" "}
           renders the scrollable</HighlightBlock>
@@ -264,7 +259,7 @@ export default function CarouselSliderArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Active slide index derived <Highlight tier="important">from
           scroll position. Autoplay state
@@ -274,7 +269,7 @@ export default function CarouselSliderArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Inputs:{" "}
           <code>slides</code> (array of
@@ -288,7 +283,7 @@ export default function CarouselSliderArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Native scroll handles momentum.
           <Highlight tier="important">Lazy-load defers off-screen content.
@@ -298,7 +293,7 @@ export default function CarouselSliderArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Smooth swipe. Subtle prev/next
           buttons. Dots for navigation.
@@ -310,7 +305,7 @@ export default function CarouselSliderArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">Dots
           as labeled buttons. Respect{" "}
           <Highlight tier="important"><code>prefers-reduced-motion</code></Highlight>.</HighlightBlock>
@@ -320,7 +315,7 @@ export default function CarouselSliderArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Slide content sanitized.
           External resources via <Highlight tier="important">CSP</Highlight>.
@@ -328,7 +323,7 @@ export default function CarouselSliderArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Swipe and click tests. <Highlight tier="important">Autoplay
           pause behavior. Loop mode boundary</Highlight>
@@ -338,7 +333,7 @@ export default function CarouselSliderArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">Browser
           without scroll-snap: fall back to
           JS-driven smooth scroll. User has
@@ -349,7 +344,7 @@ export default function CarouselSliderArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Generic over slide content.
           <Highlight tier="important">Configurable</Highlight> per use case.
@@ -357,7 +352,7 @@ export default function CarouselSliderArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Button labels via i18n. Indicator
           <Highlight tier="important">aria-labels (&ldquo;Slide 3 of
@@ -367,7 +362,7 @@ export default function CarouselSliderArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Native scroll vs JS-driven</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -397,92 +392,17 @@ export default function CarouselSliderArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           3D effects, <Highlight tier="important">parallax, video slides,
           AR slides, smart</Highlight> adaptive sizing.
         </Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. Why use native
-          scroll-snap?</strong> Browser-optimized,
-          GPU-accelerated, smooth on touch
-          out of the box. JS-driven would
-          rebuild this from scratch.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How does loop work?</strong>{" "}
-          Clone first slide after last and
-          vice versa. When user scrolls to a
-          clone, jump (without animation) to
-          the real corresponding slide.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>3. How does autoplay respect
-          users?</strong> Pause on hover/focus.
-          Stop after manual interaction.
-          Disabled by default under
-          prefers-reduced-motion.
-        </HighlightBlock>
-
-        <p>
-          <strong>4. How is lazy-load
-          implemented?</strong>{" "}
-          IntersectionObserver per slide;
-          content loads when slide is
-          near-viewport.
-        </p>
-
-        <p>
-          <strong>5. How is the active slide
-          tracked?</strong> Derived from scroll
-          position via IntersectionObserver
-          detecting the most-visible slide.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>6. How is accessibility
-          handled?</strong> Region role with
-          carousel description. Slides as
-          list with current announced.
-          Pause/play and indicators
-          accessible. Reduced motion
-          respected.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>7. How does keyboard
-          navigation work?</strong> Arrow
-          keys when carousel has focus. Tab
-          for interactive content within
-          slides.
-        </HighlightBlock>
-
-        <p>
-          <strong>8. How does this differ from
-          an image gallery?</strong> Carousel
-          is a content rotator; image
-          gallery is a viewer with zoom and
-          drill-in. Both can compose if
-          needed.
-        </p>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">Native scroll handles the heavy
-          lifting; we add coordination and
-          accessibility</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">on top. The result
-          is fluid swipe, considerate
-          autoplay, and proper a11y.</Highlight></HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Normalize pointer, touch, keyboard, resize, and async events before applying transitions. Separate raw intent, transient projection, committed state, derived geometry, and telemetry. Release pointer capture, listeners, observers, timers, and animation handles idempotently.</p><p>Keep committed index separate from transient offset. Autoplay pauses for focus, interaction, hidden tabs, and reduced motion.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/carousel-slider-recovery.svg" alt="Design a Carousel Slider recovery" caption="Recovery flow: cancel safely, retain committed truth, recalculate projection, and restore UI." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Selection is local truth. URL and analytics synchronization is asynchronous and deduped by committed index. Scale pressure comes from large media sets, rapid swipes, hidden tabs, responsive counts, lazy failures, and announcement noise. Bound measurement, batch rendering, and degrade predictably.</p><p>Prefer native semantics where they meet requirements. Custom interaction earns its cost only when product behavior needs explicit gesture, geometry, or workflow policy.</p></section>
+<section><h2>Best practices</h2><p>Use typed sessions, stable ids, pointer capture, keyboard alternatives, reduced-motion policy, clamped geometry, idempotent cleanup, and deterministic tests. Measure latency, dropped frames, cancellation, rollback, and accessibility regressions.</p><h3>Operational implementation: frame-budgeted slide projection</h3><p>Keep the committed slide separate from drag offset and velocity samples. Pause autoplay for focus, pointer interaction, hidden tabs, and reduced motion. Virtualize large media collections, reserve dimensions to prevent layout shift, and emit analytics only after a committed slide changes.</p><p>Define a typed interaction session with owner, generation, start geometry, latest projection, committed snapshot, cancellation reason, and cleanup handles. Instrument pointer-to-paint latency, dropped frames, measurement cost, projection count, cancellation, rollback, constraint violations, and accessibility fallback usage. Test pointer loss, resize during interaction, keyboard-only flow, reduced motion, hidden tabs, unmount cleanup, stale persistence response, and extreme geometry.</p></section>
+<h3>Principal defense: scale, privacy, and rollback</h3><p>Keep committed domain state separate from transient geometry, pointer samples, animations, and derived guides. Under large collections, index only visible or nearby geometry, batch pointer updates to animation frames, cancel stale measurements, and degrade visual fidelity before interaction correctness. Persistence uses stable ids and versions; a rejected write restores the last committed snapshot and preserves an actionable retry state.</p><p>Even local interactions need abuse and privacy boundaries when they persist or collaborate. Validate dimensions, coordinates, payload sizes, and mutation frequency before accepting expensive work. Do not leak hidden objects, restricted calendar details, or cross-tenant geometry through previews, presence, or telemetry. Observe cancellation reason, long tasks, frame drops, rejected transitions, rollback outcome, and cleanup leaks.</p><section><h2>Common Pitfalls</h2><p>Common failures include mixing raw and committed state, leaking listeners, failing to handle pointer cancellation, ignoring keyboard users, and persisting invalid geometry.</p><p>For this topic, cancel pointer sessions, pause timers, restore committed slide, render stable fallbacks, and avoid per-frame analytics.</p><h3>Native scroll versus controlled projection</h3><p>Prefer scroll snapping for simple carousels because browser scrolling, touch physics, and accessibility remain native. Add a controlled pointer controller only when the product needs custom velocity rules, looping, or cross-slide effects. With looped presentation, keep a logical slide id distinct from cloned render positions so announcements, analytics, and focus never report clone indexes.</p><p>Virtualization needs a stable window around the active item and reserved media dimensions. Preload only the next likely slide, recover image failures with a fixed-size fallback, and pause work when IntersectionObserver or Page Visibility reports the carousel is offscreen. Buttons need accessible names, focus order must remain predictable, and autoplay should default off when it risks distracting users.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to repeated direct-manipulation workflows where responsive projection and safe cancellation matter as much as durable persistence.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep committed index separate from transient offset. Autoplay pauses for focus, interaction, hidden tabs, and reduced motion.</p><h3>What breaks at scale?</h3><p>large media sets, rapid swipes, hidden tabs, responsive counts, lazy failures, and announcement noise.</p><h3>What consistency applies?</h3><p>Selection is local truth. URL and analytics synchronization is asynchronous and deduped by committed index.</p><h3>How do you recover?</h3><p>cancel pointer sessions, pause timers, restore committed slide, render stable fallbacks, and avoid per-frame analytics.</p><h3>How do you defend the architecture?</h3><p>I would prefer native behavior until the required geometry, gesture, or workflow policy justifies a custom controller.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events" target="_blank" rel="noreferrer">MDN Pointer Events</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA APG</a></li></ul></section>
+</ArticleLayout>}

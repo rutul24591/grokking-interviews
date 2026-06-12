@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function ConflictResolutionUIArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function ConflictResolutionUIArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Conflict Resolution UI</h1><h2>Definition &amp; Context</h2><p>Design a Conflict Resolution UI is an implementation-heavy low-level design problem covering version comparison, local drafts, remote snapshots, field-level diffs, merge choices, rollback, and audit evidence. A principal-level answer must define ordering, ephemeral versus durable state, reconnect behavior, rollback, abuse controls, privacy, cost, and observability.</p><p>Keep base, local, and remote versions immutable while the user resolves a conflict into a new candidate. The core structures are base snapshot, local snapshot, remote snapshot, diff hunks, merge choices, conflict type, resolved candidate, and audit record.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/conflict-resolution-ui-runtime.svg" alt="Design a Conflict Resolution UI runtime" caption="Real-time flow from input through merge policy and UI projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -74,7 +73,7 @@ export default function ConflictResolutionUIArticle() {
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h3>⚙️ Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -101,7 +100,7 @@ export default function ConflictResolutionUIArticle() {
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h3>📊 Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -132,12 +131,8 @@ export default function ConflictResolutionUIArticle() {
       </section>
 
       <section>
-        <h2>🧠 Solution Approach</h2>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/communication-collaboration/conflict-resolution-ui-architecture.svg"
-          alt="Conflict resolution UI architecture showing version vector conflict detection, conflict metadata, field-level diff view, rich text diff, auto-merge rules, manual resolution strategies, resolution flow, and publish"
-          caption="Architecture Overview"
-        />
+        <h3>🧠 Solution Approach</h3>
+        
         <HighlightBlock as="p" tier="important">
           The UI presents two versions side-by- side, computes per-field diffs,
           lets the user choose per-field which version to keep (or merge inline
@@ -188,7 +183,7 @@ export default function ConflictResolutionUIArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial"><strong> MergePreview</strong> renders the resulting merged version.
           <strong> InlineMergeEditor</strong></HighlightBlock>
 <HighlightBlock as="p" tier="important">for long-text fields.
@@ -196,7 +191,7 @@ export default function ConflictResolutionUIArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Two versions, per-field selection (mine/theirs/custom), <Highlight tier="important">merged preview
           in modal-local state. Commits</Highlight> update the parent system on success.
@@ -204,7 +199,7 @@ export default function ConflictResolutionUIArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important">
           <Highlight tier="crucial">Inputs:</Highlight>{" "}
           <code>mine</code>, <code>theirs</code>, optional{" "}
@@ -217,7 +212,7 @@ export default function ConflictResolutionUIArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Diff computation per-field is cheap; text-level diff for long fields
           <Highlight tier="important">uses standard diff algorithms (O(n×m), fine</Highlight> for typical text).
@@ -226,7 +221,7 @@ export default function ConflictResolutionUIArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">Merged preview either inline
           or in a third panel. Commit and Cancel actions</HighlightBlock>
 <HighlightBlock as="p" tier="important"><Highlight tier="important">at the bottom. Clear
@@ -234,7 +229,7 @@ export default function ConflictResolutionUIArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">Each version panel has accessible headings (mine, theirs, base). Per-
           field</HighlightBlock>
 <HighlightBlock as="p" tier="important">controls are radio groups or buttons with labels including the
@@ -244,7 +239,7 @@ export default function ConflictResolutionUIArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Server validates merged payload. <Highlight tier="important">User-entered values for inline merge
           sanitized</Highlight> at boundary. Cross-user authorization enforced.
@@ -252,7 +247,7 @@ export default function ConflictResolutionUIArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Unit tests for diff per data type. Three-way merge auto-resolution
           tests. <Highlight tier="important">Integration tests: open with two versions,</Highlight> select per field,
@@ -261,7 +256,7 @@ export default function ConflictResolutionUIArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">Very large object with
           hundreds of fields: virtualize the field list; surface only changed
           fields by default. Field</HighlightBlock>
@@ -271,7 +266,7 @@ export default function ConflictResolutionUIArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Generic over data type via schema <Highlight tier="important">and field renderers. The pattern
           reuses</Highlight> across drafts, version control, content edits.
@@ -279,7 +274,7 @@ export default function ConflictResolutionUIArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Action labels via i18n. Field names translate via the <Highlight tier="important">schema&rsquo;s
           label keys. RTL via CSS</Highlight> logical properties; side-by-side may flip to
@@ -288,7 +283,7 @@ export default function ConflictResolutionUIArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Side-by-side vs sequential</h3>
         <HighlightBlock as="p" tier="important">
@@ -314,73 +309,16 @@ export default function ConflictResolutionUIArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">AI-suggested resolutions based on intent inference. Visual diff for</HighlightBlock>
 <HighlightBlock as="p" tier="important">media/files. Conflict prevention via better real-time coordination.</HighlightBlock>
 <HighlightBlock as="p" tier="important">Cross-conflict learning (apply same resolution to similar conflicts).</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <p>
-          <strong>1. When does this UI appear?</strong> When the system detects
-          two divergent versions of the same content that cannot be auto-merged.
-          The system surfaces the UI; the user resolves.
-        </p>
-
-        <p>
-          <strong>2. How is granular merge implemented?</strong> Per-field
-          selection. Each changed field has accept-mine/theirs controls. Merged
-          preview updates as selections change.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>3. What is three-way merge?</strong> When a common ancestor is
-          available, diffs against the base are clearer. Auto-resolves clean
-          cases (mine changed A; theirs changed B → both). Non-clean cases
-          prompt.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. How is data loss prevented?</strong> Cancel retains both
-          versions. Commit ships only after explicit user action. Auto-resolve
-          surfaces clearly so users see what was merged automatically.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>5. How is the UI accessible?</strong> Side-by-side panels with
-          headings. Per-field radio groups with labels. Diff highlights paired
-          with text. Keyboard navigation through fields and actions.
-        </HighlightBlock>
-
-        <p>
-          <strong>6. What happens if the server rejects the merge?</strong>{" "}
-          Surface as a new conflict (a third version emerged). User resolves
-          again with the new version in play.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>7. How do you handle very large objects?</strong> Show only
-          changed fields by default; expand to see all. Virtualize the field
-          list if hundreds of fields exist.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>8. Can this be auto-resolved without UI?</strong> CRDTs
-          auto-resolve most conflicts. This UI is for cases where
-          auto-resolution would lose information or cross a semantic boundary
-          the system can&rsquo;t assume.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">Auto-resolve clean cases; prompt for real conflicts; never discard
-          work without</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">user action. The result is conflicts that feel tractable
-          rather than catastrophic.</Highlight></HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate durable records, optimistic intent, transport events, ephemeral awareness, rendered projection, and telemetry. Every connection, timer, cursor, replay buffer, subscription, and retry queue needs an explicit owner and cleanup path.</p><p>Keep base, local, and remote versions immutable while the user resolves a conflict into a new candidate.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/conflict-resolution-ui-recovery.svg" alt="Design a Conflict Resolution UI recovery" caption="Recovery flow: classify gaps, retain stable truth, replay safely, and emit evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Last-write-wins is cheap but destructive; explicit resolution is justified when user intent and data loss matter.</p><p>The server version is authoritative. User resolution creates a new conditional write against the latest accepted version. Scale pressure comes from large diffs, stale bases, repeated conflicts, sensitive data, deleted entities, and partial merges. Bound queues, dedupe events, expire ephemeral state, and degrade predictably.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, event sequences, idempotency keys, monotonic watermarks, TTLs, replay cursors, bounded buffers, authorization checks, and cleanup. Test reconnect gaps, duplicates, stale events, offline recovery, privacy settings, and accessibility announcements.</p><p>Measure latency, backlog, reconnect rate, gap recovery, retries, stale drops, TTL expiry, and accessibility regressions without logging sensitive content.</p><h3>Operational implementation: immutable three-way merge and conditional save</h3><p>Keep base, local, and remote snapshots immutable. Produce field-level choices into a new candidate, validate the candidate, and save conditionally against the latest server version. A second conflict restarts from preserved user choices rather than silently overwriting.</p><p>Define explicit metrics for accepted events, duplicate drops, stale drops, replay gap size, reconnect duration, queue depth, TTL expiry, degraded-mode entry, authorization denial, and rollback outcome. Redact user content and sensitive identifiers from telemetry. Test duplicate delivery, out-of-order events, disconnect during mutation, hidden tabs, unmount cleanup, multiple tabs, permission removal, burst traffic, and a rollback to the previous policy version.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include treating ephemeral state as durable, trusting arrival order, leaking timers or sockets, missing dedupe, unbounded replay, and hiding degraded connectivity.</p><p>For this topic, preserve all versions, explain conflicting fields, validate merged output, retry conditional save, and retain audit evidence.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to collaborative products where transport, persistence, and UI projection fail independently. Inject product policy for authorization, retention, fallback, and observability explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep base, local, and remote versions immutable while the user resolves a conflict into a new candidate.</p><h3>What breaks at scale?</h3><p>large diffs, stale bases, repeated conflicts, sensitive data, deleted entities, and partial merges.</p><h3>What consistency applies?</h3><p>The server version is authoritative. User resolution creates a new conditional write against the latest accepted version.</p><h3>How do you recover?</h3><p>preserve all versions, explain conflicting fields, validate merged output, retry conditional save, and retain audit evidence.</p><h3>Why this architecture?</h3><p>Last-write-wins is cheap but destructive; explicit resolution is justified when user intent and data loss matter.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket" target="_blank" rel="noreferrer">MDN WebSocket</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA APG</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

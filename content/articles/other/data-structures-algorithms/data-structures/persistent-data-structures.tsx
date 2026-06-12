@@ -21,10 +21,10 @@ export const metadata: ArticleMetadata = {
 
 export default function PersistentDataStructuresArticle() {
   return (
-    <ArticleLayout metadata={metadata}>
+    <ArticleLayout metadata={metadata}><HighlightBlock as="p" tier="crucial" className="mb-4">Interview focus: Persistent Data Structures should be explained through a correctness invariant first, then through the implementation technique.</HighlightBlock><HighlightBlock as="p" tier="crucial" className="mb-4">Interview focus: In interviews, the decisive point is why this approach is valid under the stated constraints, not just what API or algorithm is used.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Compare the simple baseline with the optimized or production-ready approach so the trade-off is explicit.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Name the data structure, state machine, pipeline stage, or control plane that owns each decision.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Include the cost model: preprocessing cost, per-operation cost, storage cost, latency impact, and failure recovery cost.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Call out common mistakes because they are often what interviewers use to distinguish memorized answers from reasoned answers.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Tie the concept back to real systems: scale, concurrency, partial failure, security boundaries, and migration pressure.</HighlightBlock>
 
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Interview lens: frame Persistent Data Structures around operation contract, invariants, update cost, query cost, memory layout, and persistence or balancing behavior. This is what turns the article from concept notes into interview-ready reasoning.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           Interview focus: persistent data structures appear in two contexts — competitive programming (offline range kth-smallest using persistent segment tree) and system design (MVCC in databases, undo/redo, Git internals). Know path copying for trees and the O(log n) cost per version, and be able to explain the structural sharing that makes persistence efficient.
         </HighlightBlock>
@@ -75,7 +75,7 @@ export default function PersistentDataStructuresArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core invariant to defend: the data structure must preserve its structural invariant after every supported operation.</HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/data-structures/persistent-data-structures-architecture.svg"
           alt="Persistent Data Structures — path copying, persistent segment tree, fat nodes, and applications"

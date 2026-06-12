@@ -20,7 +20,7 @@ export const metadata: ArticleMetadata = {
 
 export default function NpCompletenessArticle() {
   return (
-    <ArticleLayout metadata={metadata}>
+    <ArticleLayout metadata={metadata}><HighlightBlock as="p" tier="crucial" className="mb-4">Interview focus: NP-Completeness &amp; Computational Complexity should be explained through a correctness invariant first, then through the implementation technique.</HighlightBlock><HighlightBlock as="p" tier="crucial" className="mb-4">Interview focus: In interviews, the decisive point is why this approach is valid under the stated constraints, not just what API or algorithm is used.</HighlightBlock><HighlightBlock as="p" tier="crucial" className="mb-4">Interview focus: The production-quality answer separates source of truth, derived state, failure behavior, and measurable cost.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Compare the simple baseline with the optimized or production-ready approach so the trade-off is explicit.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Name the data structure, state machine, pipeline stage, or control plane that owns each decision.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Include the cost model: preprocessing cost, per-operation cost, storage cost, latency impact, and failure recovery cost.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Call out common mistakes because they are often what interviewers use to distinguish memorized answers from reasoned answers.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Tie the concept back to real systems: scale, concurrency, partial failure, security boundaries, and migration pressure.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Explain the test strategy: normal path, boundary path, adversarial input, regression case, and observability assertion.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: If multiple approaches work, choose based on constraints rather than preference: static vs dynamic, online vs offline, exact vs approximate, safe vs fast.</HighlightBlock>
       <p>
         NP-completeness theory explains why certain problems seem fundamentally hard — no efficient algorithm has
         been found despite decades of effort by the world's best researchers. Understanding this theory lets
@@ -34,7 +34,7 @@ export default function NpCompletenessArticle() {
         caption="Complexity classes, polynomial reductions, classic NP-complete problems, and coping strategies"
       />
 
-      <h2>Complexity Classes</h2>
+      <h2>Complexity Classes</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Interview lens: frame NP-Completeness &amp; Computational Complexity around problem constraints, correctness proof, complexity class, data-structure choice, and degradation strategy. This is what turns the article from concept notes into interview-ready reasoning.</HighlightBlock>
       <p>
         <strong>P</strong> (Polynomial time) is the class of decision problems solvable by a deterministic Turing
         machine in O(n^k) time for some constant k. Examples: sorting, shortest path (Dijkstra/Bellman-Ford),
@@ -64,7 +64,7 @@ export default function NpCompletenessArticle() {
         but neither direction has been proved.
       </HighlightBlock>
 
-      <h2>Polynomial Reductions</h2>
+      <h2>Polynomial Reductions</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core invariant to defend: the chosen algorithm must match the input constraints and expose why it is correct, not only why it passes sample cases.</HighlightBlock>
       <p>
         A polynomial reduction from problem A to problem B (written A ≤ₚ B) is a polynomial-time computable
         function f such that: x ∈ A if and only if f(x) ∈ B. Intuitively, B is "at least as hard" as A —
@@ -93,7 +93,7 @@ export default function NpCompletenessArticle() {
         as SAT, which is at least as hard as every problem in NP.
       </p>
 
-      <h2>Classic NP-Complete Problems</h2>
+      <h2>Classic NP-Complete Problems</h2><HighlightBlock as="p" tier="important" className="mb-4">Decision quality comes from naming the constraint, the chosen technique, the proof boundary, and the cost model before discussing implementation details.</HighlightBlock>
       <p>
         <strong>SAT</strong>: Given a boolean formula, does there exist an assignment of variables that satisfies it?
         3-SAT restricts each clause to exactly 3 literals; 2-SAT (each clause has 2 literals) is solvable in
@@ -129,7 +129,7 @@ export default function NpCompletenessArticle() {
         strongly NP-hard (no poly-time algorithm even when T is bounded polynomially, assuming P≠NP).
       </p>
 
-      <h2>How to Prove NP-Hardness</h2>
+      <h2>How to Prove NP-Hardness</h2><HighlightBlock as="p" tier="important" className="mb-4">Failure modes to call out: choosing a familiar algorithm without proving fit, ignoring worst-case complexity, missing edge cases, and failing to switch to approximation or heuristics when exact solutions are infeasible.</HighlightBlock>
       <p>
         To prove problem X is NP-hard, find a known NP-hard problem Y and construct a polynomial-time reduction
         Y ≤ₚ X. The reduction must satisfy: a YES instance of Y maps to a YES instance of X, and a NO instance

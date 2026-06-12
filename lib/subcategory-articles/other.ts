@@ -718,6 +718,383 @@ export const otherArticles: Record<string, Array<{slug: string; title: string; d
       "description": "Disjoint-set union for online connectivity, MST construction, cycle detection, and equivalence-class problems — near-O(1) per operation with path compression and union by rank."
     }
   ],
+  "other/leetcode/problems": [
+    {
+      "slug": "3sum",
+      "title": "3Sum",
+      "description": "3Sum interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "add-and-search-word",
+      "title": "Add and Search Word",
+      "description": "Add and Search Word interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "alien-dictionary",
+      "title": "Alien Dictionary",
+      "description": "Alien Dictionary interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "best-time-to-buy-and-sell-stock",
+      "title": "Best Time to Buy and Sell Stock",
+      "description": "Best Time to Buy and Sell Stock interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "binary-tree-level-order-traversal",
+      "title": "Binary Tree Level Order Traversal",
+      "description": "Binary Tree Level Order Traversal interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "binary-tree-maximum-path-sum",
+      "title": "Binary Tree Maximum Path Sum",
+      "description": "Binary Tree Maximum Path Sum interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "climbing-stairs",
+      "title": "Climbing Stairs",
+      "description": "Climbing Stairs interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "clone-graph",
+      "title": "Clone Graph",
+      "description": "Clone Graph interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "coin-change",
+      "title": "Coin Change",
+      "description": "Coin Change interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "combination-sum",
+      "title": "Combination Sum",
+      "description": "Combination Sum interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "construct-binary-tree-from-preorder-and-inorder-traversal",
+      "title": "Construct Binary Tree from Preorder and Inorder Traversal",
+      "description": "Construct Binary Tree from Preorder and Inorder Traversal interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "container-with-most-water",
+      "title": "Container With Most Water",
+      "description": "Container With Most Water interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "contains-duplicate",
+      "title": "Contains Duplicate",
+      "description": "Contains Duplicate interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "counting-bits",
+      "title": "Counting Bits",
+      "description": "Counting Bits interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "course-schedule",
+      "title": "Course Schedule",
+      "description": "Course Schedule interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "decode-ways",
+      "title": "Decode Ways",
+      "description": "Decode Ways interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "detect-cycle-in-a-linked-list",
+      "title": "Detect Cycle in a Linked List",
+      "description": "Detect Cycle in a Linked List interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "encode-and-decode-strings",
+      "title": "Encode and Decode Strings",
+      "description": "Encode and Decode Strings interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "find-median-from-data-stream",
+      "title": "Find Median from Data Stream",
+      "description": "Find Median from Data Stream interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "find-minimum-in-rotated-sorted-array",
+      "title": "Find Minimum in Rotated Sorted Array",
+      "description": "Find Minimum in Rotated Sorted Array interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "graph-valid-tree",
+      "title": "Graph Valid Tree",
+      "description": "Graph Valid Tree interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "group-anagrams",
+      "title": "Group Anagrams",
+      "description": "Group Anagrams interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "house-robber-ii",
+      "title": "House Robber II",
+      "description": "House Robber II interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "house-robber",
+      "title": "House Robber",
+      "description": "House Robber interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "implement-trie",
+      "title": "Implement Trie (Prefix Tree)",
+      "description": "Implement Trie (Prefix Tree) interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "insert-interval",
+      "title": "Insert Interval",
+      "description": "Insert Interval interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "invert-flip-binary-tree",
+      "title": "Invert/Flip Binary Tree",
+      "description": "Invert/Flip Binary Tree interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "jump-game",
+      "title": "Jump Game",
+      "description": "Jump Game interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "kth-smallest-element-in-a-bst",
+      "title": "Kth Smallest Element in a BST",
+      "description": "Kth Smallest Element in a BST interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "longest-common-subsequence",
+      "title": "Longest Common Subsequence",
+      "description": "Longest Common Subsequence interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "longest-consecutive-sequence",
+      "title": "Longest Consecutive Sequence",
+      "description": "Longest Consecutive Sequence interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "longest-increasing-subsequence",
+      "title": "Longest Increasing Subsequence",
+      "description": "Longest Increasing Subsequence interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "longest-palindromic-substring",
+      "title": "Longest Palindromic Substring",
+      "description": "Longest Palindromic Substring interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "longest-repeating-character-replacement",
+      "title": "Longest Repeating Character Replacement",
+      "description": "Longest Repeating Character Replacement interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "longest-substring-without-repeating-characters",
+      "title": "Longest Substring Without Repeating Characters",
+      "description": "Longest Substring Without Repeating Characters interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "lowest-common-ancestor-of-bst",
+      "title": "Lowest Common Ancestor of BST",
+      "description": "Lowest Common Ancestor of BST interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "maximum-depth-of-binary-tree",
+      "title": "Maximum Depth of Binary Tree",
+      "description": "Maximum Depth of Binary Tree interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "maximum-product-subarray",
+      "title": "Maximum Product Subarray",
+      "description": "Maximum Product Subarray interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "maximum-subarray",
+      "title": "Maximum Subarray",
+      "description": "Maximum Subarray interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "meeting-rooms-ii",
+      "title": "Meeting Rooms II",
+      "description": "Meeting Rooms II interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "meeting-rooms",
+      "title": "Meeting Rooms",
+      "description": "Meeting Rooms interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "merge-intervals",
+      "title": "Merge Intervals",
+      "description": "Merge Intervals interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "merge-k-sorted-lists",
+      "title": "Merge K Sorted Lists",
+      "description": "Merge K Sorted Lists interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "merge-two-sorted-lists",
+      "title": "Merge Two Sorted Lists",
+      "description": "Merge Two Sorted Lists interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "minimum-window-substring",
+      "title": "Minimum Window Substring",
+      "description": "Minimum Window Substring interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "missing-number",
+      "title": "Missing Number",
+      "description": "Missing Number interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "non-overlapping-intervals",
+      "title": "Non-overlapping Intervals",
+      "description": "Non-overlapping Intervals interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "number-of-1-bits",
+      "title": "Number of 1 Bits",
+      "description": "Number of 1 Bits interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "number-of-connected-components-in-an-undirected-graph",
+      "title": "Number of Connected Components in an Undirected Graph",
+      "description": "Number of Connected Components in an Undirected Graph interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "number-of-islands",
+      "title": "Number of Islands",
+      "description": "Number of Islands interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "pacific-atlantic-water-flow",
+      "title": "Pacific Atlantic Water Flow",
+      "description": "Pacific Atlantic Water Flow interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "palindromic-substrings",
+      "title": "Palindromic Substrings",
+      "description": "Palindromic Substrings interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "product-of-array-except-self",
+      "title": "Product of Array Except Self",
+      "description": "Product of Array Except Self interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "remove-nth-node-from-end-of-list",
+      "title": "Remove Nth Node From End Of List",
+      "description": "Remove Nth Node From End Of List interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "reorder-list",
+      "title": "Reorder List",
+      "description": "Reorder List interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "reverse-a-linked-list",
+      "title": "Reverse a Linked List",
+      "description": "Reverse a Linked List interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "reverse-bits",
+      "title": "Reverse Bits",
+      "description": "Reverse Bits interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "rotate-image",
+      "title": "Rotate Image",
+      "description": "Rotate Image interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "same-tree",
+      "title": "Same Tree",
+      "description": "Same Tree interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "search-in-rotated-sorted-array",
+      "title": "Search in Rotated Sorted Array",
+      "description": "Search in Rotated Sorted Array interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "serialize-and-deserialize-binary-tree",
+      "title": "Serialize and Deserialize Binary Tree",
+      "description": "Serialize and Deserialize Binary Tree interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "set-matrix-zeroes",
+      "title": "Set Matrix Zeroes",
+      "description": "Set Matrix Zeroes interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "spiral-matrix",
+      "title": "Spiral Matrix",
+      "description": "Spiral Matrix interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "subtree-of-another-tree",
+      "title": "Subtree of Another Tree",
+      "description": "Subtree of Another Tree interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "sum-of-two-integers",
+      "title": "Sum of Two Integers",
+      "description": "Sum of Two Integers interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "top-k-frequent-elements",
+      "title": "Top K Frequent Elements",
+      "description": "Top K Frequent Elements interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "two-sum",
+      "title": "Two Sum",
+      "description": "Two Sum interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "unique-paths",
+      "title": "Unique Paths",
+      "description": "Unique Paths interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "valid-anagram",
+      "title": "Valid Anagram",
+      "description": "Valid Anagram interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "valid-palindrome",
+      "title": "Valid Palindrome",
+      "description": "Valid Palindrome interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "valid-parentheses",
+      "title": "Valid Parentheses",
+      "description": "Valid Parentheses interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "validate-binary-search-tree",
+      "title": "Validate Binary Search Tree",
+      "description": "Validate Binary Search Tree interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "word-break-problem",
+      "title": "Word Break Problem",
+      "description": "Word Break Problem interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "word-search-ii",
+      "title": "Word Search II",
+      "description": "Word Search II interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    },
+    {
+      "slug": "word-search",
+      "title": "Word Search",
+      "description": "Word Search interview guide focused on pattern recognition, invariants, trade-offs, edge cases, and staff-level explanation quality."
+    }
+  ],
   "other/ci-cd/continuous-deployment-cd": [
     {
       "slug": "cd-fundamentals-release-pipeline-architecture",

@@ -24,7 +24,7 @@ export default function ArticlePage() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Interview lens: frame Multi-Modal AI — Vision, Audio, and Document Understanding Systems around model behavior, grounding, memory, evaluation, safety boundaries, latency, and cost control. This is what turns the article from concept notes into interview-ready reasoning.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           Interview focus: multi-modal AI in product engineering is not about training multi-modal models — it is about integrating vision, audio, and document APIs into production systems. Interviewers expect you to know the token budget implications of images (tile-based billing), how to build a unified multi-modal RAG index, the practical trade-offs between open-source and commercial APIs for each modality, and how to handle the failure modes specific to each modality (OCR errors, audio diarization failures, image tiling cost overruns).
         </HighlightBlock>
@@ -43,7 +43,7 @@ export default function ArticlePage() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core invariant to defend: AI systems must keep generated output attributable, bounded, observable, and recoverable despite probabilistic behavior.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           Vision language models (VLMs) work by encoding an image into a sequence of tokens using a vision encoder (typically a CLIP-style vision transformer), then concatenating those tokens with the text tokens and passing everything through the language model. The critical engineering fact is that image tokens are billed by the number of tiles: a 512×512 image costs approximately 170 tokens; a 2048×2048 image split into 16 tiles costs approximately 2,700 tokens. Always resize images to the minimum resolution that preserves the needed detail before sending to the API.
         </HighlightBlock>
@@ -73,7 +73,7 @@ export default function ArticlePage() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="important" className="mb-4">Decision quality comes from naming the constraint, the chosen technique, the proof boundary, and the cost model before discussing implementation details.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           Multi-modal document processing follows a fan-out architecture: a single document ingestion event triggers parallel processing pipelines for each detected modality (text, embedded images, tables), with results merged back into a unified set of chunks before embedding and indexing. The key insight is that each page of a document may contain all three modalities — text, images, and tables — and each requires a different extraction path. Parallelizing these paths is essential for acceptable ingestion latency.
         </HighlightBlock>
@@ -126,7 +126,7 @@ export default function ArticlePage() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="important" className="mb-4">Failure modes to call out: hallucination, prompt injection, stale retrieval, unbounded context growth, hidden model cost, and UI that overstates certainty.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           Image token costs accumulating unexpectedly is the most common source of budget overruns in multi-modal systems. A pipeline that processes 10,000 documents per day, each containing 5 pages with 1 image per page, at an average of 500 image tokens per image and $0.01 per 1,000 tokens, costs $2,500 per day in image tokens alone — before any text tokens or other costs. Always implement a cost calculator before deploying a multi-modal pipeline, and add per-request and per-day cost alerts from day one.
         </HighlightBlock>

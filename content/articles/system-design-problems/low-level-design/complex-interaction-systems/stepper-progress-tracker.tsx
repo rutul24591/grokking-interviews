@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function StepperProgressTrackerArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function StepperProgressTrackerArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Stepper Progress Tracker</h1><h2>Definition &amp; Context</h2><p>Design a Stepper Progress Tracker is an implementation-heavy interaction design covering step graph, transition gates, conditional branches, async validation, back policy, URL sync, persistence, and accessibility. A principal-level answer must explain state ownership, geometry, browser events, cancellation, accessibility, persistence, scale, and observability.</p><p>Treat steps as a directed graph. Keep current step, reachable path, completed set, and async validation generation separate. Core structures: step graph, current id, reachable ids, completed set, validation generation, draft version, URL projection, dirty state, and focus target.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/stepper-progress-tracker-runtime.svg" alt="Design a Stepper Progress Tracker runtime" caption="Interaction flow from input through projection, policy, commit, and render." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -85,7 +84,7 @@ export default function StepperProgressTrackerArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -122,7 +121,7 @@ export default function StepperProgressTrackerArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -163,14 +162,10 @@ export default function StepperProgressTrackerArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/stepper-progress-tracker-architecture.svg"
-        alt="Stepper / Progress Tracker Architecture"
-        caption="Step definitions + State source (URL or server-backed) → Stepper renderer (horizontal or vertical) → Visual states (pending / current / complete / error). Backend events update states; click navigation to completed steps; deep-link via URL."
-      />
+      
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <HighlightBlock as="p" tier="important">
           The system has three parts:
           <strong> step model</strong> (declarative
@@ -236,7 +231,7 @@ export default function StepperProgressTrackerArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="important">
           <Highlight tier="crucial"><strong>StepperProvider</strong></Highlight>{" "}
           instantiates state source.
@@ -252,7 +247,7 @@ export default function StepperProgressTrackerArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Step states in external store
           (mirrored from <Highlight tier="important">URL or server).
@@ -263,7 +258,7 @@ export default function StepperProgressTrackerArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important">
           <Highlight tier="crucial">Step definition:</Highlight>{" "}
           <Highlight tier="important">
@@ -274,7 +269,7 @@ export default function StepperProgressTrackerArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Tracker renders <Highlight tier="important">quickly (small
           component). Backend events batched.</Highlight>
@@ -283,7 +278,7 @@ export default function StepperProgressTrackerArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Clear visual hierarchy. Current step
           emphasized. Completed steps
@@ -295,7 +290,7 @@ export default function StepperProgressTrackerArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Use{" "}
           <code>{`<ol>`}</code> for steps with
@@ -309,7 +304,7 @@ export default function StepperProgressTrackerArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Server enforces access. Click-back
           navigation respects{" "}
@@ -318,7 +313,7 @@ export default function StepperProgressTrackerArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Unit tests for state derivation.
           <Highlight tier="important">Integration: navigate forward,
@@ -328,7 +323,7 @@ export default function StepperProgressTrackerArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="important">Branching path changes
           mid-flow: re-render with new path.
           Error in a step: surface clearly</Highlight></HighlightBlock>
@@ -338,7 +333,7 @@ export default function StepperProgressTrackerArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Pattern reuses for <Highlight tier="important">any sequential
           flow: checkout, onboarding, order</Highlight>
@@ -347,7 +342,7 @@ export default function StepperProgressTrackerArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Step labels via i18n. State <Highlight tier="important">words
           (&ldquo;complete&rdquo;,
@@ -358,7 +353,7 @@ export default function StepperProgressTrackerArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>URL vs server-backed state</h3>
         <HighlightBlock as="p" tier="important">
@@ -392,96 +387,19 @@ export default function StepperProgressTrackerArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           ETA per step. Visual celebration on
           <Highlight tier="important">completion. AI-suggested next steps.
           Real-time progress</Highlight> for long-running
           steps with progress bars.
         </Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. How does this differ from
-          the Wizard?</strong> Wizard is
-          single-page with all steps; this
-          stepper is multi-page or async,
-          showing progress across navigation
-          or backend events.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How is state
-          persisted?</strong> URL for
-          client-driven flows; server-backed
-          for async/backend-driven; hybrid
-          for both.
-        </HighlightBlock>
-
-        <p>
-          <strong>3. How are backend events
-          integrated?</strong> Subscribe to
-          relevant events; update step
-          state on arrival; UI re-renders.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. How does click-back
-          navigation work?</strong> Click a
-          completed step navigates via the
-          host router. Tracker updates
-          current to that step; subsequent
-          stays complete to allow forward
-          re-navigation.
-        </HighlightBlock>
-
-        <p>
-          <strong>5. How is branching
-          handled?</strong> Resolver computes
-          next step from state. Tracker
-          shows current path; alternates
-          dimmed or hidden.
-        </p>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>6. How is this
-          accessible?</strong> Ordered list
-          with{" "}
-          <code>aria-current=&quot;step&quot;</code>;
-          state in accessible name; live
-          region announces transitions.
-        </HighlightBlock>
-
-        <p>
-          <strong>7. What happens on deep-link
-          to an unreached step?</strong>{" "}
-          Redirect to earliest incomplete
-          step with a banner explaining.
-          Server validates access.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>8. How does the mobile
-          variant differ?</strong> Compact
-          &ldquo;Step 2 of 5&rdquo; chip
-          replacing the full visual tracker
-          to save space; full tracker
-          available via expand.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">Click-back navigation honors
-          irreversibility. Backend events
-          drive async</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">progress. The pattern
-          works for checkouts, onboarding,
-          and order tracking alike.</Highlight></HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Normalize pointer, touch, keyboard, resize, and async events before applying transitions. Separate raw intent, transient projection, committed state, derived geometry, and telemetry. Release pointer capture, listeners, observers, timers, and animation handles idempotently.</p><p>Treat steps as a directed graph. Keep current step, reachable path, completed set, and async validation generation separate.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/stepper-progress-tracker-recovery.svg" alt="Design a Stepper Progress Tracker recovery" caption="Recovery flow: cancel safely, retain committed truth, recalculate projection, and restore UI." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Navigation is local but gated. Persisted draft version is authoritative for resume. Scale pressure comes from dynamic branches, stale URLs, validation races, resumed drafts, removed steps, and back navigation. Bound measurement, batch rendering, and degrade predictably.</p><p>Prefer native semantics where they meet requirements. Custom interaction earns its cost only when product behavior needs explicit gesture, geometry, or workflow policy.</p></section>
+<section><h2>Best practices</h2><p>Use typed sessions, stable ids, pointer capture, keyboard alternatives, reduced-motion policy, clamped geometry, idempotent cleanup, and deterministic tests. Measure latency, dropped frames, cancellation, rollback, and accessibility regressions.</p><h3>Operational implementation: branch graph and stale-validation rejection</h3><p>Model steps as a directed graph with a reachable path, current id, completed set, draft version, and validation generation. Conditional branches recompute reachability. Ignore stale async validation, redirect stale URLs, preserve drafts, and focus the first actionable error.</p><p>Define a typed interaction session with owner, generation, start geometry, latest projection, committed snapshot, cancellation reason, and cleanup handles. Instrument pointer-to-paint latency, dropped frames, measurement cost, projection count, cancellation, rollback, constraint violations, and accessibility fallback usage. Test pointer loss, resize during interaction, keyboard-only flow, reduced motion, hidden tabs, unmount cleanup, stale persistence response, and extreme geometry.</p></section>
+<h3>Principal defense: scale, privacy, and rollback</h3><p>Keep committed domain state separate from transient geometry, pointer samples, animations, and derived guides. Under large collections, index only visible or nearby geometry, batch pointer updates to animation frames, cancel stale measurements, and degrade visual fidelity before interaction correctness. Persistence uses stable ids and versions; a rejected write restores the last committed snapshot and preserves an actionable retry state.</p><p>Even local interactions need abuse and privacy boundaries when they persist or collaborate. Validate dimensions, coordinates, payload sizes, and mutation frequency before accepting expensive work. Do not leak hidden objects, restricted calendar details, or cross-tenant geometry through previews, presence, or telemetry. Observe cancellation reason, long tasks, frame drops, rejected transitions, rollback outcome, and cleanup leaks.</p><section><h2>Common Pitfalls</h2><p>Common failures include mixing raw and committed state, leaking listeners, failing to handle pointer cancellation, ignoring keyboard users, and persisting invalid geometry.</p><p>For this topic, discard stale validation, redirect stale URLs, recompute reachable paths, preserve drafts, and focus actionable errors.</p><h3>Graph evaluation and draft recovery</h3><p>Keep step definitions versioned and evaluate reachability from the current draft snapshot. A branch change may remove later steps; clear their completion projection only after deciding whether hidden answers remain valid for future branch reversal. Each async validation carries a generation and draft version. Ignore completions for older input and prevent a stale browser URL from bypassing prerequisites.</p><p>Persist drafts independently from navigation. Resume loads the draft version, recomputes the reachable path, chooses the nearest valid current step, and explains any migration caused by a changed flow definition. Use semantic nav markup, aria-current for the active step, actionable error focus, and a summary for users who navigate with assistive technology.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to repeated direct-manipulation workflows where responsive projection and safe cancellation matter as much as durable persistence.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Treat steps as a directed graph. Keep current step, reachable path, completed set, and async validation generation separate.</p><h3>What breaks at scale?</h3><p>dynamic branches, stale URLs, validation races, resumed drafts, removed steps, and back navigation.</p><h3>What consistency applies?</h3><p>Navigation is local but gated. Persisted draft version is authoritative for resume.</p><h3>How do you recover?</h3><p>discard stale validation, redirect stale URLs, recompute reachable paths, preserve drafts, and focus actionable errors.</p><h3>How do you defend the architecture?</h3><p>I would prefer native behavior until the required geometry, gesture, or workflow policy justifies a custom controller.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events" target="_blank" rel="noreferrer">MDN Pointer Events</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA APG</a></li></ul></section>
+</ArticleLayout>}

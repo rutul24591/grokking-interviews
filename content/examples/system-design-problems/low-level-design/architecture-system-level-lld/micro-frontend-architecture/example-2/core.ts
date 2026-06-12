@@ -1,0 +1,2 @@
+export interface RemoteState{name:string;failures:number;disabled:boolean;lastKnownGood:string}export function recordRemoteFailure(state:RemoteState){const failures=state.failures+1;return{...state,failures,disabled:failures>=3}}export function recoverRemote(state:RemoteState){return{...state,version:state.lastKnownGood,disabled:false,failures:0}}
+export function runRemoteRecovery(){const failed=recordRemoteFailure(recordRemoteFailure(recordRemoteFailure({name:"checkout",failures:0,disabled:false,lastKnownGood:"v7"})));return{failed,recovered:recoverRemote(failed)}}

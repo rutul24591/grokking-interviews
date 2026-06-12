@@ -1,89 +1,51 @@
-export type richTextEditorSignal = {
-  uploadedBytes: number;
-  checksumMismatch: number;
-  transcodeLagMs: number;
-  retryCount: number;
+export type RichTextEditorStage = "empty" | "hydrating-schema" | "ready" | "applying-transaction" | "normalizing" | "ready";
+
+export type RichTextEditorTransition = {
+  command: string;
+  from: RichTextEditorStage;
+  to: RichTextEditorStage;
+  revision: number;
 };
 
-export type richTextEditorEvent = {
+export type RichTextEditorState = {
   id: string;
-  topic: "rich-text-editor";
-  actorId: string;
-  sequence: number;
-  receivedAtMs: number;
-  expectedVersion: number;
-  currentVersion: number;
-  payloadSize: number;
-  signal: richTextEditorSignal;
-};
-
-export type richTextEditorDecision = {
-  accepted: boolean;
-  action: "resume-from-checkpoint" | "verify-checksum" | "serve-lower-rendition" | "commit";
-  nextVersion: number;
-  reasons: string[];
+  stage: RichTextEditorStage;
+  revision: number;
   audit: string[];
 };
 
-const topicInvariant = "Large file and media operations must be resumable, verified, and safe to retry.";
-
-export function evaluateRichTextEditorEvent(event: richTextEditorEvent): richTextEditorDecision {
-  const reasons: string[] = [];
-
-  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
-  if (event.sequence <= 0) reasons.push("invalid-sequence");
-  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
-  if (event.signal.uploadedBytes > 2_000) reasons.push("uploadedBytes-outside-slo");
-  if (event.signal.transcodeLagMs > 0.2) reasons.push("transcodeLagMs-requires-guardrail");
-
-  let action: richTextEditorDecision["action"] = "commit";
-  if (reasons.includes("version-mismatch")) action = "resume-from-checkpoint";
-  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "verify-checksum";
-  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "serve-lower-rendition";
-
+// Normalize document structure after every transaction without losing the logical selection bookmark.
+export function applyRichTextEditorTransition(
+  state: RichTextEditorState,
+  transition: RichTextEditorTransition,
+): RichTextEditorState {
+  if (transition.revision <= state.revision) return state;
+  if (transition.from !== state.stage) {
+    throw new Error(`Invalid rich-text transaction log transition: ${state.stage} -> ${transition.to}`);
+  }
   return {
-    accepted: reasons.length === 0,
-    action,
-    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
-    reasons,
-    audit: [
-      "topic:Rich Text Editor",
-      "subcategory:file-media-content-systems",
-      "entity:media asset",
-      "state:upload or playback session",
-      "operation:file pipeline transition",
-      "invariant:" + topicInvariant,
-      "actor:" + event.actorId,
-      "event:" + event.id,
-    ],
+    ...state,
+    stage: transition.to,
+    revision: transition.revision,
+    audit: [...state.audit, `${transition.revision}:${transition.command}`],
   };
 }
 
-export function runRichTextEditorContractScenario() {
-  const base = Date.parse("2026-05-29T09:00:00.000Z");
-  const accepted = evaluateRichTextEditorEvent({
-    id: "rich-text-editor-evt-1",
-    topic: "rich-text-editor",
-    actorId: "user-42",
-    sequence: 7,
-    receivedAtMs: base,
-    expectedVersion: 12,
-    currentVersion: 12,
-    payloadSize: 18_500,
-    signal: { uploadedBytes: 180, checksumMismatch: 0, transcodeLagMs: 0.01, retryCount: 1 },
+export function runRichTextEditorProtocolScenario() {
+  const transitions: RichTextEditorTransition[] = [
+  { command: "hydrate-schema", from: "empty", to: "hydrating-schema", revision: 1 },
+  { command: "parse-document", from: "hydrating-schema", to: "ready", revision: 2 },
+  { command: "apply-transaction", from: "ready", to: "applying-transaction", revision: 3 },
+  { command: "normalize-tree", from: "applying-transaction", to: "normalizing", revision: 4 },
+  { command: "commit-selection", from: "normalizing", to: "ready", revision: 5 },
+  ];
+  return transitions.reduce(applyRichTextEditorTransition, {
+    id: "rich-text-editor-case-17",
+    stage: "empty",
+    revision: 0,
+    audit: [],
   });
-
-  const guarded = evaluateRichTextEditorEvent({
-    id: "rich-text-editor-evt-late",
-    topic: "rich-text-editor",
-    actorId: "user-42",
-    sequence: 8,
-    receivedAtMs: base + 4_000,
-    expectedVersion: 12,
-    currentVersion: 14,
-    payloadSize: 310_000,
-    signal: { uploadedBytes: 2_700, checksumMismatch: 3, transcodeLagMs: 0.34, retryCount: 2 },
-  });
-
-  return { accepted, guarded };
 }
+
+export const RichTextEditorInvariant =
+  "Normalize document structure after every transaction without losing the logical selection bookmark.";

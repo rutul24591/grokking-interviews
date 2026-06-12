@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function RealTimeNotificationDeliverySystemArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function RealTimeNotificationDeliverySystemArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Real-time Notification Delivery System</h1><h2>Definition &amp; Context</h2><p>Design a Real-time Notification Delivery System is an implementation-heavy low-level design problem covering subscription bootstrap, event routing, sequence merge, acknowledgement, reconnect cursor, dedupe, fallback polling, and rate limits. A principal-level answer must define ordering, ephemeral versus durable state, reconnect behavior, rollback, abuse controls, privacy, cost, and observability.</p><p>Keep durable notification records separate from transport delivery attempts and UI projection. The core structures are subscription state, sequence cursor, event ids, ack watermark, reconnect token, dedupe cache, fallback timer, and retry budget.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/real-time-notification-delivery-system-runtime.svg" alt="Design a Real-time Notification Delivery System runtime" caption="Real-time flow from input through merge policy and UI projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -88,7 +87,7 @@ export default function RealTimeNotificationDeliverySystemArticle() {
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h3>⚙️ Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -125,7 +124,7 @@ export default function RealTimeNotificationDeliverySystemArticle() {
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h3>📊 Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -168,12 +167,8 @@ export default function RealTimeNotificationDeliverySystemArticle() {
       </section>
 
       <section>
-        <h2>🧠 Solution Approach</h2>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/communication-collaboration/real-time-notification-delivery-system-architecture.svg"
-          alt="Real-time notification delivery system architecture showing notification event model, routing rules, server fan-out with queue consumer, delivery channels, WebSocket client delivery, push fallback via Service Worker, read tracking, and badge count"
-          caption="Architecture Overview"
-        />
+        <h3>🧠 Solution Approach</h3>
+        
         <HighlightBlock as="p" tier="crucial">
           The system is a <strong>delivery hub</strong>{" "}
           that receives WebSocket events,
@@ -259,7 +254,7 @@ export default function RealTimeNotificationDeliverySystemArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial"><strong> DeduplicationCache</strong>{" "}
           tracks recent ids.
           <strong> SurfaceAdapters</strong> for
@@ -272,7 +267,7 @@ export default function RealTimeNotificationDeliverySystemArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">Hub state: dedup cache, recent events.
           Surface states: toast queue,</HighlightBlock>
 <HighlightBlock as="p" tier="important">badge
@@ -284,7 +279,7 @@ export default function RealTimeNotificationDeliverySystemArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important">
           <Highlight tier="crucial">Event shape:</Highlight>{" "}
           <Highlight tier="important">
@@ -296,7 +291,7 @@ export default function RealTimeNotificationDeliverySystemArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Dedup cache O(1) lookup. Routing rules
           static <Highlight tier="important">after init. Cross-tab broadcast
@@ -306,7 +301,7 @@ export default function RealTimeNotificationDeliverySystemArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial"><Highlight tier="important">No
           duplicate announcements: if a chat
           message shows as a toast and inline</Highlight></HighlightBlock>
@@ -315,7 +310,7 @@ export default function RealTimeNotificationDeliverySystemArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">Each surface follows its own a11y
           rules. Hub coordinates so screen</HighlightBlock>
 <HighlightBlock as="p" tier="important">readers don&rsquo;t hear duplicate
@@ -326,7 +321,7 @@ export default function RealTimeNotificationDeliverySystemArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Authenticated WebSocket. Server-
           <Highlight tier="important">enforced. Content sanitized at
@@ -336,7 +331,7 @@ export default function RealTimeNotificationDeliverySystemArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Unit tests for routing rules and
           dedup. Integration tests <Highlight tier="important">with mock
@@ -348,7 +343,7 @@ export default function RealTimeNotificationDeliverySystemArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">User
           opens inbox in tab A while tab B
           shows a toast: toast dismisses on
@@ -362,7 +357,7 @@ export default function RealTimeNotificationDeliverySystemArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Pattern reuses <Highlight tier="important">across products with
           multiple notification surfaces.</Highlight> Surface
@@ -371,7 +366,7 @@ export default function RealTimeNotificationDeliverySystemArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Notification content typically <Highlight tier="important">pre-
           translated server-side per recipient
@@ -380,7 +375,7 @@ export default function RealTimeNotificationDeliverySystemArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Hub vs per-surface direct</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -410,7 +405,7 @@ export default function RealTimeNotificationDeliverySystemArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           OS-level push integration.
           AI-prioritized surfacing (only <Highlight tier="important">show
@@ -419,89 +414,12 @@ export default function RealTimeNotificationDeliverySystemArticle() {
           consistency. Voice-assistant
           delivery.
         </Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. Why a delivery hub?</strong>{" "}
-          One WebSocket subscription; routing
-          to surfaces; cross-surface consistency.
-          Without the hub, each surface would
-          subscribe independently, drift, and
-          duplicate.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How is dedup handled?</strong>{" "}
-          Cache of recent event ids. Repeat
-          arrivals are no-ops. Cache evicted
-          after a TTL.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>3. How is cross-surface
-          consistency maintained?</strong> Read
-          actions go to the hub, which updates
-          all relevant surfaces (badge,
-          inbox, toast). BroadcastChannel
-          propagates to other tabs.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. How are out-of-order events
-          handled?</strong> Idempotently via
-          state semantics. Read event for an
-          unknown id can preempt the create
-          event; when create arrives, it&rsquo;s
-          inserted as already-read.
-        </HighlightBlock>
-
-        <p>
-          <strong>5. How are user preferences
-          enforced?</strong> Routing consults
-          preferences before dispatching.
-          Muted types skip transient surfaces
-          but appear in inbox.
-        </p>
-
-        <p>
-          <strong>6. How does reconnection
-          work?</strong> WebSocket reconnects;
-          REST fetches missed events; dedup
-          against existing state.
-        </p>
-
-        <p>
-          <strong>7. How is per-type routing
-          configured?</strong> Each notification
-          type declares preferred surfaces in
-          metadata; routing rules consume.
-          Server-side per-product.
-        </p>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>8. How is this
-          accessible?</strong> Surface-specific
-          a11y; hub prevents duplicate
-          announcements when one event hits
-          multiple surfaces.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="important">The hub keeps
-          surfaces consistent; routing routes
-          events to the right places; cross-
-          surface read actions propagate
-          immediately;</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="crucial">out-of-order events
-          handled idempotently. The result is
-          notifications that feel coherent
-          across every surface they appear on.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate durable records, optimistic intent, transport events, ephemeral awareness, rendered projection, and telemetry. Every connection, timer, cursor, replay buffer, subscription, and retry queue needs an explicit owner and cleanup path.</p><p>Keep durable notification records separate from transport delivery attempts and UI projection.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/real-time-notification-delivery-system-recovery.svg" alt="Design a Real-time Notification Delivery System recovery" caption="Recovery flow: classify gaps, retain stable truth, replay safely, and emit evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Polling is simpler; push delivery is justified when freshness matters enough to accept reconnect complexity.</p><p>Server records are durable truth. Delivery is at-least-once; clients dedupe and recover from a sequence cursor. Scale pressure comes from bursts, duplicate events, connection loss, replay gaps, multiple tabs, provider backpressure, and abuse. Bound queues, dedupe events, expire ephemeral state, and degrade predictably.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, event sequences, idempotency keys, monotonic watermarks, TTLs, replay cursors, bounded buffers, authorization checks, and cleanup. Test reconnect gaps, duplicates, stale events, offline recovery, privacy settings, and accessibility announcements.</p><p>Measure latency, backlog, reconnect rate, gap recovery, retries, stale drops, TTL expiry, and accessibility regressions without logging sensitive content.</p><h3>Operational implementation: at-least-once event delivery and cursor replay</h3><p>Assume at-least-once delivery. Dedupe event ids, apply monotonic sequence cursors, detect gaps, reconnect with the last cursor, fall back to polling after bounded retries, and collapse bursty projections without losing durable records.</p><p>Define explicit metrics for accepted events, duplicate drops, stale drops, replay gap size, reconnect duration, queue depth, TTL expiry, degraded-mode entry, authorization denial, and rollback outcome. Redact user content and sensitive identifiers from telemetry. Test duplicate delivery, out-of-order events, disconnect during mutation, hidden tabs, unmount cleanup, multiple tabs, permission removal, burst traffic, and a rollback to the previous policy version.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include treating ephemeral state as durable, trusting arrival order, leaking timers or sockets, missing dedupe, unbounded replay, and hiding degraded connectivity.</p><p>For this topic, dedupe ids, detect gaps, reconnect with cursor, fall back to polling, cap retries, and collapse bursts.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to collaborative products where transport, persistence, and UI projection fail independently. Inject product policy for authorization, retention, fallback, and observability explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep durable notification records separate from transport delivery attempts and UI projection.</p><h3>What breaks at scale?</h3><p>bursts, duplicate events, connection loss, replay gaps, multiple tabs, provider backpressure, and abuse.</p><h3>What consistency applies?</h3><p>Server records are durable truth. Delivery is at-least-once; clients dedupe and recover from a sequence cursor.</p><h3>How do you recover?</h3><p>dedupe ids, detect gaps, reconnect with cursor, fall back to polling, cap retries, and collapse bursts.</p><h3>Why this architecture?</h3><p>Polling is simpler; push delivery is justified when freshness matters enough to accept reconnect complexity.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket" target="_blank" rel="noreferrer">MDN WebSocket</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA APG</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

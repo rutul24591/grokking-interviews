@@ -3,7 +3,6 @@
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -20,11 +19,10 @@ export const metadata: ArticleMetadata = {
   relatedTopics: ["session-timeout-auto-logout", "login-session-management", "route-component-access-guard"],
 };
 
-export default function DeviceSessionManagementUIArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
+export default function DeviceSessionManagementUIArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Device Session Management UI</h1><h2>Definition &amp; Context</h2><p>Design a Device Session Management UI is a security-sensitive low-level design problem covering session inventory, current-device marker, revoke intent, confirmation, optimistic removal, server acknowledgement, and cross-device refresh. A principal-level answer must state the authoritative server boundary, threat model, lifecycle, abuse controls, rollback, privacy, observability, and user-safe degraded behavior.</p><p>Keep device-session records, current session identity, revoke journal, and server refresh separate. Core structures: session map, current id, device metadata, last activity, revoke journal, request generation, confirmation state, and refresh watermark.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/auth-user-systems/device-session-management-ui-runtime.svg" alt="Design a Device Session Management UI runtime" caption="Security flow from user intent through authoritative validation and audit." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>Problem Clarification</h3>
         <p>A user logs in from their iPhone at 9 AM, then opens the app on their Mac at 10 AM. Both devices maintain active sessions (tokens, persistent logins). Unbeknownst to the user, a hacker has compromised their password and is also logged in from an IP in Russia. The user has no visibility: are there other active sessions? Who else has access? If a breach is suspected, can they log out everywhere at once?</p>
         <HighlightBlock as="p" tier="important">Device and session management is critical for security and user peace of mind. A session is a persistent login token (JWT, session cookie) granted when a user logs in. A device is the physical computer/phone that holds a session. A user may have multiple sessions across multiple devices. Without a management UI, users are blind to account access. With it, users can respond to suspicious activity (logout all sessions, change password).</HighlightBlock>
         <HighlightBlock as="p" tier="important">The challenge has several dimensions. First, device identification: how does the backend know which session corresponds to iPhone vs Mac? User agents help (parsing "Mozilla/5.0 (iPhone OS 15...)" tells us iOS), but this is fallible. Better: combine user agent with device fingerprinting (screen size, timezone, browser language) for consistency. Still imperfect: iPhone and iPad have similar user agents. Second, displaying sessions: what information is relevant? Device name, browser, OS, location (inferred from IP), last activity time. Too much is overwhelming; too little is useless.</HighlightBlock>
@@ -35,7 +33,7 @@ export default function DeviceSessionManagementUIArticle() {
       </section>
 
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
         <ul className="space-y-2">
           <li><strong>Display All Active Sessions:</strong> Fetch and display all sessions for the current user. Include session ID, device name/type, OS, browser, approximate location, IP (masked), creation timestamp, and last activity timestamp. Group by recency (active now, today, this week, older).</li>
@@ -58,7 +56,7 @@ export default function DeviceSessionManagementUIArticle() {
       </section>
 
       <section>
-        <h2>High-Level Approach</h2>
+        <h3>High-Level Approach</h3>
         <HighlightBlock as="p" tier="important">The session management system has three components: session tracking, suspicious activity detection, and user interface.</HighlightBlock>
         <HighlightBlock as="p" tier="important">Session tracking runs on the backend. When a user logs in, create a session record: store session token, user agent, IP address, timestamp, device fingerprint. Periodically update last_activity timestamp on each API call (or use lazy update: update only if last update was more than 5 minutes ago, to reduce database writes). On logout (user-initiated or token expiry), mark session as inactive or delete it. Retain inactive sessions for audit purposes (90 days), then delete.</HighlightBlock>
         <HighlightBlock as="p" tier="important">Suspicious activity detection runs server-side or client-side. Server-side is safer (attacker can't disable it). Rules include: (1) new device login (device fingerprint unseen before), (2) unusual location (IP country differs from user's typical countries), (3) rapid multi-location logins (user logged in from US at 10:00, then Russia at 10:02—physically impossible). On detection, either alert the user (send email, push notification) or require user confirmation (send challenge email: "Unusual login detected. Is this you? [Yes] [No]"). If user clicks "No", revoke that session immediately.</HighlightBlock>
@@ -67,13 +65,9 @@ export default function DeviceSessionManagementUIArticle() {
       </section>
 
       <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/auth-user-systems/device-session-management-ui.svg"
-          alt="Device session management UI showing active sessions list, session data model, revocation mechanisms, and anomaly detection"
-          caption="Device session management UI showing active sessions list, session data model, revocation mechanisms, and anomaly detection"
-        />
+        
 
-        <h2>Detailed Design</h2>
+        <h3>Detailed Design</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Session Data Model</h3>
         <p>A session record contains: session_id (unique token or UUID), user_id, user_agent (full string, e.g., "Mozilla/5.0 (iPhone OS 15_0)..."), ip_address, device_fingerprint (hash of screen size, timezone, language, etc.), device_name (custom name if user set it), created_at (timestamp), last_activity_at (updated on each API call), is_current (boolean indicating if this is the requesting session), location (city, country inferred from IP).</p>
@@ -123,7 +117,7 @@ export default function DeviceSessionManagementUIArticle() {
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
+        <h3>Trade-offs and Considerations</h3>
         <HighlightBlock as="p" tier="important"><strong>Accuracy vs Privacy in Location Detection:</strong> Exact location (GPS, house-level precision) violates privacy. City/country is more private but less actionable (user might reasonably travel within country). Balance: show city/country to user, use exact IP internally for anomaly detection rules. This gives user useful context while protecting privacy.</HighlightBlock>
         <HighlightBlock as="p" tier="important"><strong>Strict Suspicious Activity Rules vs User Friction:</strong> Strict rules (new device requires confirmation email, unusual location auto-logouts) prevent breaches but frustrate travelers and international teams. Permissive rules (only alert, don't auto-logout) reduce friction but miss some account takeovers. Better: configurable rules per app, with defaults matching risk tolerance (banking: strict, social media: permissive).</HighlightBlock>
         <HighlightBlock as="p" tier="important"><strong>Device Fingerprinting Reliability:</strong> Fingerprinting (screen size, timezone, language) is imperfect but useful. Better: combine with persistent device ID (iOS/Android can expose device UUID). This is more reliable but less available on web. Hybrid: use fingerprint on web, device UUID on mobile.</HighlightBlock>
@@ -133,7 +127,7 @@ export default function DeviceSessionManagementUIArticle() {
       </section>
 
       <section>
-        <h2>Implementation Patterns</h2>
+        <h3>Implementation Patterns</h3>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Pattern 1: Session List with Real-Time Sync via Polling</h3>
         <HighlightBlock as="p" tier="crucial">Fetch session list on page load. Poll every 30 seconds in background. On logout action, immediately remove the session from UI and trigger manual poll for freshness. This is simple and works well for most apps.</HighlightBlock>
 
@@ -145,13 +139,12 @@ export default function DeviceSessionManagementUIArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Pattern 4: Logout with Confirmation and Delayed Revocation</h3>
         <HighlightBlock as="p" tier="important">Show confirmation dialog: "Logout this device?" On confirm, send logout request. Backend marks session as revoked and broadcasts logout event. Client removes from list immediately (optimistic update). Device being logged out detects 401 on next API call and redirects to login.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Real-world systems (Google, Microsoft, Apple) implement aggressive suspicious activity detection with email confirmation, per-device naming, and one-click logout-all. For best results, use device fingerprinting + IP</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">checks for new device detection, send email confirmation for suspicious logins (user approval is best UX), show city/country location (privacy-preserving), implement logout with user confirmation (prevent accidents), use polling with manual refresh for simplicity, log all logout actions for audit, and provide users with clear security recommendations. Session management is critical for account security and user peace of mind.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate user intent, browser-safe projection, server validation, durable security record, audit evidence, and cleanup. Frontend state improves UX but never replaces server enforcement. Tokens, challenges, sessions, and privileged grants need explicit expiry and revocation.</p><p>Keep device-session records, current session identity, revoke journal, and server refresh separate.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/auth-user-systems/device-session-management-ui-recovery.svg" alt="Design a Device Session Management UI threat recovery" caption="Threat recovery: validate, deny safely, preserve authoritative truth, audit, and recover." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>The server session registry is authoritative. UI may project revoke optimistically but refreshes registry after acknowledgement. Scale and threat pressure comes from many devices, stale activity, current-session revoke, duplicate actions, and compromised accounts. Fail closed for privilege while keeping error UX actionable.</p></section>
+<section><h2>Best practices</h2><p>Use short-lived scoped grants, secure cookies, CSRF defenses, replay prevention, rotation, versioned writes, server-side authorization, rate limits, redacted logs, and explicit audit events. Test expiry, replay, revocation, retries, multiple tabs, and permission drift.</p></section>
+<h3>Principal defense: authority, consistency, and abuse cost</h3><p>Use server-authoritative consistency for security decisions. Browser state is a revocable projection that can improve responsiveness but cannot grant access, extend expiry, or confirm a privileged transition. Every mutation carries a version, expiry, nonce, or idempotency key as appropriate; stale projections refresh or fail closed. Rollback means revoking the grant, session family, policy version, or pending intent while retaining an audit trail.</p><p>Model abuse and cost together. Rate-limit sensitive attempts by account, device, network, and risk cohort without turning the UI into an enumeration oracle. Bound session inventory, audit retention, challenge issuance, cross-tab broadcasts, and refresh retries. Emit denial reason classes, revocation lag, suspicious reuse, policy version, and correlation ids while avoiding sensitive payloads in telemetry.</p><section><h2>Common Pitfalls</h2><p>Common failures include trusting frontend guards, storing bearer tokens in localStorage, leaking account existence, missing idempotency, weak redirect validation, and incomplete audit evidence.</p><p>For this topic, confirm destructive revoke, protect current session policy, retry idempotently, refresh list, and expose security evidence.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to user identity and access workflows where convenience must not weaken authoritative server enforcement or incident evidence.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>What is authoritative?</h3><p>The server session registry is authoritative. UI may project revoke optimistically but refreshes registry after acknowledgement.</p><h3>What breaks under abuse?</h3><p>many devices, stale activity, current-session revoke, duplicate actions, and compromised accounts.</p><h3>How do you recover?</h3><p>confirm destructive revoke, protect current session policy, retry idempotently, refresh list, and expose security evidence.</p><h3>What does the client enforce?</h3><p>The client improves usability and fails closed for privileged views; the server enforces every protected read and mutation.</p><h3>How do you observe incidents?</h3><p>Emit redacted audit records with subject, actor, policy version, reason, outcome, and correlation id.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.rfc-editor.org/rfc/rfc7636" target="_blank" rel="noreferrer">RFC 7636 PKCE</a></li><li><a href="https://www.w3.org/TR/webauthn-3/" target="_blank" rel="noreferrer">WebAuthn Level 3</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies" target="_blank" rel="noreferrer">MDN Cookies</a></li><li><a href="https://owasp.org/www-project-cheat-sheets/" target="_blank" rel="noreferrer">OWASP Cheat Sheets</a></li></ul></section>
+</ArticleLayout>}

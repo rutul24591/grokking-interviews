@@ -19,10 +19,9 @@ export const metadata: ArticleMetadata = {
   tags: ["mfa", "totp", "webauthn", "passkeys", "2fa", "authentication", "lld"],
 };
 
-export default function MfaWebauthnArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <p>
+export default function MfaWebauthnArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design MFA and WebAuthn</h1><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame Multi-Factor Authentication — TOTP, WebAuthn &amp; Passkeys around identity UX, token/session safety, recovery flows, permission modeling, and abuse resistance. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock><p>Design MFA and WebAuthn is a security-sensitive low-level design problem covering factor enrollment, challenge issuance, authenticator ceremony, TOTP fallback, recovery codes, step-up auth, replay defense, and device management. A principal-level answer must state the authoritative server boundary, threat model, lifecycle, abuse controls, rollback, privacy, observability, and user-safe degraded behavior.</p><p>Keep server-issued challenge, allowed credentials, factor policy, ceremony state, and verified grant separate. Challenges are single-use and short-lived. Core structures: challenge id, challenge bytes, RP id, allowed credential ids, ceremony state, factor registry, recovery-code inventory, step-up grant, and audit event.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/auth-user-systems/mfa-webauthn-runtime.svg" alt="Design MFA and WebAuthn runtime" caption="Security flow from user intent through authoritative validation and audit." /></section>
+<section><h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: client UI can guide auth flows but server-side policy remains the authority for identity, session, and permission decisions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Multi-Factor Authentication — TOTP, WebAuthn &amp; Passkeys, the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock><p>The retained deep dive below captures the topic-specific mechanics.</p><p>
         Multi-factor authentication (MFA) reduces account takeover risk by requiring a second proof of identity
         beyond a password. At FAANG scale, MFA systems handle billions of authentications, support multiple
         factor types (TOTP, WebAuthn, SMS, push), and must balance security with usability. Implementing MFA
@@ -30,13 +29,9 @@ export default function MfaWebauthnArticle() {
         when factors are unavailable.
       </p>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/auth-user-systems/mfa-webauthn.svg"
-        alt="MFA WebAuthn Passkeys architecture diagram"
-        caption="TOTP setup and verification, WebAuthn registration and authentication, MFA state machine, and fallback chains"
-      />
+      
 
-      <h2>TOTP — Time-Based One-Time Passwords</h2>
+      <h3>TOTP — Time-Based One-Time Passwords</h3>
       <p>
         TOTP (RFC 6238) generates 6-digit codes using a shared secret and the current time. It is the most
         widely deployed MFA factor because it works offline and requires only an authenticator app (Google
@@ -76,7 +71,7 @@ export default function MfaWebauthnArticle() {
         to 5 attempts per 10 minutes to prevent brute-force of the 10^6 code space.
       </HighlightBlock>
 
-      <h2>Recovery Codes</h2>
+      <h3>Recovery Codes</h3>
       <p>
         Recovery codes are one-time-use codes that allow account access if the primary MFA factor is lost.
         Generate 10 codes, each 16 characters from a URL-safe alphabet (base32 or alphanumeric). Display
@@ -93,7 +88,7 @@ export default function MfaWebauthnArticle() {
         Prompt the user to regenerate recovery codes and reconfigure MFA after recovery code use.
       </p>
 
-      <h2>WebAuthn — Hardware Keys and Device Authenticators</h2>
+      <h3>WebAuthn — Hardware Keys and Device Authenticators</h3>
       <p>
         WebAuthn (Web Authentication API, W3C standard) enables phishing-proof authentication using
         public-key cryptography. The private key never leaves the authenticator device, and credentials
@@ -133,7 +128,7 @@ export default function MfaWebauthnArticle() {
         cryptographically bound to the legitimate origin.
       </HighlightBlock>
 
-      <h2>Passkeys — Synced WebAuthn Credentials</h2>
+      <h3>Passkeys — Synced WebAuthn Credentials</h3>
       <p>
         Passkeys are WebAuthn credentials synchronized across devices via cloud storage (iCloud Keychain
         for Apple, Google Password Manager for Android/Chrome). Unlike hardware keys that are device-bound,
@@ -159,7 +154,7 @@ export default function MfaWebauthnArticle() {
         session is authenticated. No app installation required.
       </p>
 
-      <h2>MFA State Machine and UX Flows</h2>
+      <h3>MFA State Machine and UX Flows</h3>
       <p>
         MFA involves multiple states that must be managed carefully to avoid security gaps or poor UX.
       </p>
@@ -195,7 +190,7 @@ export default function MfaWebauthnArticle() {
         Distinguish between attempts from recognized devices (lower risk) and new devices (higher risk).
       </p>
 
-      <h2>SMS OTP and Push-Based MFA</h2>
+      <h3>SMS OTP and Push-Based MFA</h3>
       <p>
         <strong>SMS OTP.</strong> Generate a 6-digit code, store a bcrypt hash server-side with a 10-minute
         TTL. Send via SMS gateway (Twilio, AWS SNS). SMS is the weakest MFA factor — vulnerable to SIM swap
@@ -210,7 +205,7 @@ export default function MfaWebauthnArticle() {
         polling or WebSocket mechanism on the web client to detect approval without requiring a page refresh.
       </p>
 
-      <h2>MFA Enrollment and Management UI</h2>
+      <h3>MFA Enrollment and Management UI</h3>
       <p>
         The MFA management page allows users to add, remove, and view their registered factors. Key design
         decisions:
@@ -234,104 +229,12 @@ export default function MfaWebauthnArticle() {
         <strong>Admin override.</strong> Allow admins to reset a user's MFA if they are locked out.
         Require admin MFA verification plus a supervisor approval workflow for sensitive accounts. Log all
         admin MFA resets with reason codes. Send the affected user an email notification.
-      </p>
-
-      <h2>Interview Questions</h2>
-
-      <h3>Q1: How does TOTP work cryptographically, and why is clock skew tolerance needed?</h3>
-      <p>
-        TOTP = HOTP(secret, T) where T = floor(unix_timestamp / 30). HOTP uses HMAC-SHA1(secret, T as
-        8-byte big-endian integer). The result is 20 bytes; truncate by taking 4 bytes at an offset
-        determined by the last nibble of the HMAC, then take that 32-bit value mod 10^6 for 6 digits.
-        The shared secret is established during setup via QR code.
-      </p>
-      <p>
-        Clock skew: user devices and servers may have clocks offset by up to 30–60 seconds. If the server
-        uses T=current and the user's device clock is 35 seconds behind, the user's app shows the previous
-        window's code. Accepting T-1 through T+1 tolerates ±30 seconds of drift. Track the last validated
-        T per user to prevent replay of the same code within its valid window.
-      </p>
-
-      <h3>Q2: Why is WebAuthn phishing-proof when TOTP is not?</h3>
-      <p>
-        WebAuthn credentials are cryptographically bound to the relying party ID (your domain). When the
-        browser calls credentials.get(), it includes the current origin in clientDataJSON and asks the
-        authenticator to sign it. The server verifies the origin in the signed clientDataJSON matches the
-        expected domain. A phishing site at evil.com cannot produce a valid signature for app.example.com
-        — the signed origin would be evil.com, which the server rejects.
-      </p>
-      <p>
-        TOTP codes are reusable secrets independent of origin. A phishing site can collect a valid TOTP code
-        and replay it at the real site within the 30-second window. Real-time phishing (the attacker proxies
-        the login in real-time) defeats TOTP completely. WebAuthn defeats real-time phishing because the
-        authenticator verifies the origin before signing.
-      </p>
-
-      <h3>Q3: How would you implement a "remember this device" feature securely?</h3>
-      <p>
-        On successful MFA: generate a cryptographically random 256-bit device token. Store it in an httpOnly,
-        Secure, SameSite=Strict cookie with a 30-day Max-Age. Server-side, store SHA256(token) in a
-        device_tokens table with: user_id, token_hash, user_agent, ip_subnet (/24), device_name,
-        created_at, last_used_at, expires_at.
-      </p>
-      <p>
-        On subsequent login: after password verification, check if a device token cookie exists. Look up
-        the token_hash. Verify user_id matches the authenticating user, not expired, and IP subnet is within
-        the same /24 as registration (acceptable drift). If valid, skip MFA and update last_used_at.
-        Invalidate all device tokens on password change, explicit "sign out everywhere," or suspicious
-        activity detection. Show the user a list of trusted devices in their security settings with the
-        ability to revoke individual ones.
-      </p>
-
-      <h3>Q4: What happens when a user loses both their TOTP device and recovery codes?</h3>
-      <p>
-        This is an account recovery scenario requiring identity verification without any registered factors.
-        The recovery process should be deliberately slow and high-friction to prevent social engineering:
-      </p>
-      <p>
-        (1) User initiates account recovery — enter email address. (2) Server sends a recovery link to the
-        registered email (proves email access). (3) User clicks link — taken to identity verification step.
-        (4) Depending on account sensitivity: low-risk accounts → answer security questions or verify
-        recent activity (last purchase, last login city). High-risk accounts → require government ID
-        verification (manual review or third-party ID verification service like Persona or Jumio).
-        (5) After identity verification, disable all existing MFA factors and notify user via all registered
-        channels. (6) Force MFA re-enrollment on next login. Log the recovery event with all verification
-        details for audit purposes. Never allow phone-based recovery (SIM swap risk).
-      </p>
-
-      <h3>Q5: Design the MFA system for a banking app with step-up auth for large transactions.</h3>
-      <p>
-        Base authentication: username + password → TOTP or WebAuthn → session established (assurance level 2).
-        For transactions under $500: session assurance level 2 sufficient. For transactions $500–$5000:
-        step-up required if last full authentication was &gt;15 minutes ago — challenge TOTP or WebAuthn.
-        Issue a step-up token (short TTL JWT) signed server-side, attached to the transaction request.
-        For transactions &gt;$5000: always require step-up regardless of recency, plus a confirmation push
-        notification to the mobile app showing full transaction details.
-      </p>
-      <p>
-        Implement as middleware: transaction handler checks session amr (Authentication Methods References)
-        claim and auth_time. If assurance level insufficient, return HTTP 403 with a
-        <code>WWW-Authenticate: StepUp scope="transaction-auth"</code> header. The client interprets this
-        and initiates a step-up challenge. After step-up completion, the server issues a short-lived
-        transaction-scoped token attached to the pending transaction ID. The transaction handler accepts
-        only this token for the specific transaction. Token is single-use — replaying it fails.
-      </p>
-
-      <h3>Q6: How would you detect and respond to a compromised MFA factor?</h3>
-      <p>
-        Detection signals: (1) signCount mismatch in WebAuthn — indicates a cloned authenticator. (2) TOTP
-        codes used from multiple geographic locations within an impossible travel window. (3) Multiple failed
-        MFA attempts followed by successful use of a different factor. (4) Recovery code used when primary
-        factor was recently active. (5) User reports their phone stolen.
-      </p>
-      <p>
-        Response: immediately invalidate all active sessions for the user. Revoke the compromised factor
-        (WebAuthn credential or TOTP secret). Send security alert email with login history and a link to
-        review recent account activity. Force full re-authentication including MFA re-enrollment. For
-        high-value accounts, trigger a manual review queue. For WebAuthn compromise, invalidate all
-        credentials (not just the cloned one) since the compromise may be broader. Issue a new recovery
-        code set. Log the entire incident with timing, IPs, and methods for security audit.
-      </p>
-    </ArticleLayout>
-  );
-}
+      </p></section>
+<section><h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: token storage, MFA challenge state, redirect handling, session timeout, impersonation audit, and permission-cache invalidation.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock><p>Separate user intent, browser-safe projection, server validation, durable security record, audit evidence, and cleanup. Frontend state improves UX but never replaces server enforcement. Tokens, challenges, sessions, and privileged grants need explicit expiry and revocation.</p><p>Keep server-issued challenge, allowed credentials, factor policy, ceremony state, and verified grant separate. Challenges are single-use and short-lived.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/auth-user-systems/mfa-webauthn-recovery.svg" alt="Design MFA and WebAuthn threat recovery" caption="Threat recovery: validate, deny safely, preserve authoritative truth, audit, and recover." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock><p>The server challenge and verification result are authoritative. Browser ceremony output is untrusted until origin, RP id, challenge, signature, counter policy, and expiry pass. Scale and threat pressure comes from replay, phishing, cloned OTP attempts, lost devices, browser cancellation, clock skew, and recovery abuse. Fail closed for privilege while keeping error UX actionable.</p></section>
+<section><h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: login completion, MFA failure, revocation latency, session timeout accuracy, and permission denial rate.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock><p>Use short-lived scoped grants, secure cookies, CSRF defenses, replay prevention, rotation, versioned writes, server-side authorization, rate limits, redacted logs, and explicit audit events. Test expiry, replay, revocation, retries, multiple tabs, and permission drift.</p></section>
+<h3>Principal defense: authority, consistency, and abuse cost</h3><p>Use server-authoritative consistency for security decisions. Browser state is a revocable projection that can improve responsiveness but cannot grant access, extend expiry, or confirm a privileged transition. Every mutation carries a version, expiry, nonce, or idempotency key as appropriate; stale projections refresh or fail closed. Rollback means revoking the grant, session family, policy version, or pending intent while retaining an audit trail.</p><p>Model abuse and cost together. Rate-limit sensitive attempts by account, device, network, and risk cohort without turning the UI into an enumeration oracle. Bound session inventory, audit retention, challenge issuance, cross-tab broadcasts, and refresh retries. Emit denial reason classes, revocation lag, suspicious reuse, policy version, and correlation ids while avoiding sensitive payloads in telemetry.</p><h3>Trade-off under interview pressure</h3><p>The security trade-off is deliberate friction versus attack resistance. Add confirmation, step-up, short expiry, or approval only where risk warrants it, and keep server enforcement authoritative even when the browser projection feels slower. A principal answer explains which UX cost buys which abuse reduction.</p><section><h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: token leakage, stale auth state, broken recovery, confused deputy access, and invisible session revocation.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock><p>Common failures include trusting frontend guards, storing bearer tokens in localStorage, leaking account existence, missing idempotency, weak redirect validation, and incomplete audit evidence.</p><p>For this topic, expire and consume challenges, enforce origin and RP id, rate-limit fallback, hash recovery codes, preserve cancellation UX, and audit factor changes.</p></section>
+<section><h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock><p>This design applies to user identity and access workflows where convenience must not weaken authoritative server enforcement or incident evidence.</p></section>
+<section><h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock><h3>What is authoritative?</h3><p>The server challenge and verification result are authoritative. Browser ceremony output is untrusted until origin, RP id, challenge, signature, counter policy, and expiry pass.</p><h3>What breaks under abuse?</h3><p>replay, phishing, cloned OTP attempts, lost devices, browser cancellation, clock skew, and recovery abuse.</p><h3>How do you recover?</h3><p>expire and consume challenges, enforce origin and RP id, rate-limit fallback, hash recovery codes, preserve cancellation UX, and audit factor changes.</p><h3>What does the client enforce?</h3><p>The client improves usability and fails closed for privileged views; the server enforces every protected read and mutation.</p><h3>How do you observe incidents?</h3><p>Emit redacted audit records with subject, actor, policy version, reason, outcome, and correlation id.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.rfc-editor.org/rfc/rfc7636" target="_blank" rel="noreferrer">RFC 7636 PKCE</a></li><li><a href="https://www.w3.org/TR/webauthn-3/" target="_blank" rel="noreferrer">WebAuthn Level 3</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies" target="_blank" rel="noreferrer">MDN Cookies</a></li><li><a href="https://owasp.org/www-project-cheat-sheets/" target="_blank" rel="noreferrer">OWASP Cheat Sheets</a></li></ul></section>
+</ArticleLayout>}

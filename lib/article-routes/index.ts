@@ -2,8 +2,9 @@ import { systemDesignConceptsRoutes } from "./system-design-concepts";
 import { requirementsRoutes } from "./requirements";
 import { systemDesignProblemsRoutes } from "./system-design-problems";
 import { otherRoutes } from "./other";
+import type { ArticleModule } from "./types";
 
-export const articleRoutes: Record<string, () => Promise<any>> = {
+export const articleRoutes: Record<string, () => Promise<ArticleModule>> = {
   ...systemDesignConceptsRoutes,
   ...requirementsRoutes,
   ...systemDesignProblemsRoutes,
@@ -37,10 +38,14 @@ export async function loadArticle(domain: string, category: string, subcategory:
   }
 
   try {
-    const module = await loadModule();
+    const articleModule = await loadModule();
+    if (!articleModule.default) {
+      return null;
+    }
+
     return {
-      metadata: module.metadata,
-      component: module.default,
+      metadata: articleModule.metadata,
+      component: articleModule.default,
     };
   } catch {
     return null;

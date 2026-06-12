@@ -1,89 +1,51 @@
-export type imageGalleryLightboxSignal = {
-  uploadedBytes: number;
-  checksumMismatch: number;
-  transcodeLagMs: number;
-  retryCount: number;
+export type ImageGalleryLightboxStage = "closed" | "opening" | "loading-active" | "prefetching-neighbors" | "ready" | "closed";
+
+export type ImageGalleryLightboxTransition = {
+  command: string;
+  from: ImageGalleryLightboxStage;
+  to: ImageGalleryLightboxStage;
+  revision: number;
 };
 
-export type imageGalleryLightboxEvent = {
+export type ImageGalleryLightboxState = {
   id: string;
-  topic: "image-gallery-lightbox";
-  actorId: string;
-  sequence: number;
-  receivedAtMs: number;
-  expectedVersion: number;
-  currentVersion: number;
-  payloadSize: number;
-  signal: imageGalleryLightboxSignal;
-};
-
-export type imageGalleryLightboxDecision = {
-  accepted: boolean;
-  action: "resume-from-checkpoint" | "verify-checksum" | "serve-lower-rendition" | "commit";
-  nextVersion: number;
-  reasons: string[];
+  stage: ImageGalleryLightboxStage;
+  revision: number;
   audit: string[];
 };
 
-const topicInvariant = "Large file and media operations must be resumable, verified, and safe to retry.";
-
-export function evaluateImageGalleryLightboxEvent(event: imageGalleryLightboxEvent): imageGalleryLightboxDecision {
-  const reasons: string[] = [];
-
-  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
-  if (event.sequence <= 0) reasons.push("invalid-sequence");
-  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
-  if (event.signal.uploadedBytes > 2_000) reasons.push("uploadedBytes-outside-slo");
-  if (event.signal.transcodeLagMs > 0.2) reasons.push("transcodeLagMs-requires-guardrail");
-
-  let action: imageGalleryLightboxDecision["action"] = "commit";
-  if (reasons.includes("version-mismatch")) action = "resume-from-checkpoint";
-  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "verify-checksum";
-  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "serve-lower-rendition";
-
+// Keep navigation index stable while late image decodes are ignored by request generation.
+export function applyImageGalleryLightboxTransition(
+  state: ImageGalleryLightboxState,
+  transition: ImageGalleryLightboxTransition,
+): ImageGalleryLightboxState {
+  if (transition.revision <= state.revision) return state;
+  if (transition.from !== state.stage) {
+    throw new Error(`Invalid lightbox projection transition: ${state.stage} -> ${transition.to}`);
+  }
   return {
-    accepted: reasons.length === 0,
-    action,
-    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
-    reasons,
-    audit: [
-      "topic:Image Gallery Lightbox",
-      "subcategory:file-media-content-systems",
-      "entity:media asset",
-      "state:upload or playback session",
-      "operation:file pipeline transition",
-      "invariant:" + topicInvariant,
-      "actor:" + event.actorId,
-      "event:" + event.id,
-    ],
+    ...state,
+    stage: transition.to,
+    revision: transition.revision,
+    audit: [...state.audit, `${transition.revision}:${transition.command}`],
   };
 }
 
-export function runImageGalleryLightboxContractScenario() {
-  const base = Date.parse("2026-05-29T09:00:00.000Z");
-  const accepted = evaluateImageGalleryLightboxEvent({
-    id: "image-gallery-lightbox-evt-1",
-    topic: "image-gallery-lightbox",
-    actorId: "user-42",
-    sequence: 7,
-    receivedAtMs: base,
-    expectedVersion: 12,
-    currentVersion: 12,
-    payloadSize: 18_500,
-    signal: { uploadedBytes: 180, checksumMismatch: 0, transcodeLagMs: 0.01, retryCount: 1 },
+export function runImageGalleryLightboxProtocolScenario() {
+  const transitions: ImageGalleryLightboxTransition[] = [
+  { command: "open-index", from: "closed", to: "opening", revision: 1 },
+  { command: "load-active", from: "opening", to: "loading-active", revision: 2 },
+  { command: "prefetch-neighbors", from: "loading-active", to: "prefetching-neighbors", revision: 3 },
+  { command: "navigate", from: "prefetching-neighbors", to: "ready", revision: 4 },
+  { command: "close", from: "ready", to: "closed", revision: 5 },
+  ];
+  return transitions.reduce(applyImageGalleryLightboxTransition, {
+    id: "image-gallery-lightbox-case-17",
+    stage: "closed",
+    revision: 0,
+    audit: [],
   });
-
-  const guarded = evaluateImageGalleryLightboxEvent({
-    id: "image-gallery-lightbox-evt-late",
-    topic: "image-gallery-lightbox",
-    actorId: "user-42",
-    sequence: 8,
-    receivedAtMs: base + 4_000,
-    expectedVersion: 12,
-    currentVersion: 14,
-    payloadSize: 310_000,
-    signal: { uploadedBytes: 2_700, checksumMismatch: 3, transcodeLagMs: 0.34, retryCount: 2 },
-  });
-
-  return { accepted, guarded };
 }
+
+export const ImageGalleryLightboxInvariant =
+  "Keep navigation index stable while late image decodes are ignored by request generation.";

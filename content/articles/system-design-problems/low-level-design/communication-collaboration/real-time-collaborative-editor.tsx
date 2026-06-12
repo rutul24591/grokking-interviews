@@ -26,11 +26,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function RealTimeCollaborativeEditorArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function RealTimeCollaborativeEditorArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Real-time Collaborative Editor</h1><h2>Definition &amp; Context</h2><p>Design a Real-time Collaborative Editor is an implementation-heavy low-level design problem covering document operations, local transactions, CRDT or OT merge, awareness, offline queue, snapshots, undo, and reconnect. A principal-level answer must define ordering, ephemeral versus durable state, reconnect behavior, rollback, abuse controls, privacy, cost, and observability.</p><p>Keep durable document operations separate from ephemeral awareness and local render projection. The core structures are document version, operation log, local queue, snapshot, CRDT state or OT transform, selection bookmark, awareness TTL, and reconnect cursor.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/real-time-collaborative-editor-runtime.svg" alt="Design a Real-time Collaborative Editor runtime" caption="Real-time flow from input through merge policy and UI projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -100,7 +99,7 @@ export default function RealTimeCollaborativeEditorArticle() {
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h3>⚙️ Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -138,7 +137,7 @@ export default function RealTimeCollaborativeEditorArticle() {
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h3>📊 Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -185,12 +184,8 @@ export default function RealTimeCollaborativeEditorArticle() {
       </section>
 
       <section>
-        <h2>🧠 Solution Approach</h2>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/communication-collaboration/real-time-collaborative-editor-architecture.svg"
-          alt="Real-time collaborative editor architecture showing Yjs CRDT document types, provider sync, binary delta update flow, network layer with reconnect, CRDT convergence properties, editor bindings, awareness protocol, and undo manager"
-          caption="Architecture Overview"
-        />
+        <h3>🧠 Solution Approach</h3>
+        
         <HighlightBlock as="p" tier="important">
           The editor uses a CRDT library (Yjs in
           our recommendation) as the underlying
@@ -305,7 +300,7 @@ export default function RealTimeCollaborativeEditorArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial">
           <strong>PresenceList</strong> renders active users.{" "}
           <strong>ConnectionStatus</strong> renders status indicator.
@@ -318,7 +313,7 @@ export default function RealTimeCollaborativeEditorArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">CRDT document is the source of truth
           for content. The base editor binds</HighlightBlock>
 <HighlightBlock as="p" tier="important">to
@@ -331,7 +326,7 @@ export default function RealTimeCollaborativeEditorArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           CRDT operations: opaque to consumers;
           handled by the library. Sync messages:
@@ -343,7 +338,7 @@ export default function RealTimeCollaborativeEditorArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           CRDT operations are small and fast.
           Updates batch <Highlight tier="important">within frames.
@@ -354,7 +349,7 @@ export default function RealTimeCollaborativeEditorArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">Presence list visible.
           <Highlight tier="important">Status indicator</Highlight>{" "}
           subtle but informative.</HighlightBlock>
@@ -363,7 +358,7 @@ export default function RealTimeCollaborativeEditorArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Remote edits announce in chunks (not
           per keystroke) via <Highlight tier="important">polite live region.
@@ -374,7 +369,7 @@ export default function RealTimeCollaborativeEditorArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Authenticated WebSocket. Server-enforced
           permissions. CRDT operations <Highlight tier="important">validated
@@ -385,7 +380,7 @@ export default function RealTimeCollaborativeEditorArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="crucial">Unit tests via the CRDT library&rsquo;s
           tests. Integration tests with multiple
           simulated clients: concurrent edits
@@ -397,7 +392,7 @@ export default function RealTimeCollaborativeEditorArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">Concurrent rename of the same field:
           CRDT picks deterministically; one
           name wins; users see consistently.
@@ -409,7 +404,7 @@ export default function RealTimeCollaborativeEditorArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           The collab wrapper around base editor
           + CRDT works for any <Highlight tier="important">editor that has
@@ -421,7 +416,7 @@ export default function RealTimeCollaborativeEditorArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           UI strings via i18n. Document content
           is <Highlight tier="important">the user&rsquo;s. Cursor labels
@@ -431,7 +426,7 @@ export default function RealTimeCollaborativeEditorArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>CRDT vs OT</h3>
         <HighlightBlock as="p" tier="important">
@@ -479,7 +474,7 @@ export default function RealTimeCollaborativeEditorArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">End-to-end encryption with CRDT
           on encrypted state. P2P sync as an</HighlightBlock>
 <HighlightBlock as="p" tier="important">optimization. Smart conflict
@@ -488,96 +483,12 @@ export default function RealTimeCollaborativeEditorArticle() {
 <HighlightBlock as="p" tier="important">AI-suggested merges.
           Cross-document linking with live
           updates.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. CRDT vs OT?</strong> CRDTs are
-          conflict-free by construction and easier
-          to reason about in distributed settings.
-          OT is bandwidth-efficient but requires
-          central server. For new systems, CRDTs
-          are usually the right choice.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How does offline-first
-          work?</strong> Edits queue locally in
-          the CRDT. IndexedDB persists the local
-          state. On reconnect, sync resumes;
-          CRDT ensures convergence regardless of
-          how long offline.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>3. How are live cursors handled?</strong>{" "}
-          The CRDT library&rsquo;s awareness
-          channel broadcasts cursor positions
-          (ephemeral, not in document state).
-          Editor renders remote cursors with
-          user color and label.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. How does the base editor
-          integrate?</strong> Editor framework
-          (ProseMirror, Lexical) has a CRDT
-          binding (e.g. y-prosemirror) that
-          translates between editor operations
-          and CRDT operations. The editor
-          stays unaware of collaboration.
-        </HighlightBlock>
-
-        <p>
-          <strong>5. How are conflicts resolved?</strong>{" "}
-          Mostly automatic via CRDT convergence.
-          Different ordering of operations
-          produces the same state. Semantic
-          conflicts (different phrasing) pick
-          one deterministically; UI may surface
-          alternates for review.
-        </p>
-
-        <p>
-          <strong>6. How do you scale to many
-          collaborators?</strong> CRDT operations
-          are small. Server multiplexes via
-          WebSocket. For very large groups,
-          partition into rooms with per-room
-          servers. Awareness state is ephemeral
-          and doesn&rsquo;t bloat the document.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>7. How is permission
-          enforcement handled?</strong> Server-side.
-          Client UI reflects permissions
-          (read-only editor for viewers). Server
-          rejects edits from unauthorized users;
-          UI shows banner.
-        </HighlightBlock>
-
-        <p>
-          <strong>8. How does version history
-          work?</strong> Server snapshots
-          periodically. Users browse versions
-          and restore. Restoration is itself an
-          edit operation that converges across
-          clients via CRDT.
-        </p>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">Convergence is automatic;
-          <Highlight tier="important">offline is first-class</Highlight>; presence rides
-          alongside.</HighlightBlock>
-<HighlightBlock as="p" tier="important">The pattern reuses for
-          whiteboards, spreadsheets, and design
-          tools.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate durable records, optimistic intent, transport events, ephemeral awareness, rendered projection, and telemetry. Every connection, timer, cursor, replay buffer, subscription, and retry queue needs an explicit owner and cleanup path.</p><p>Keep durable document operations separate from ephemeral awareness and local render projection.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/real-time-collaborative-editor-recovery.svg" alt="Design a Real-time Collaborative Editor recovery" caption="Recovery flow: classify gaps, retain stable truth, replay safely, and emit evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Server locking is simple but blocks collaboration; CRDT or OT complexity is justified for concurrent editing.</p><p>Merged document state is authoritative under the selected algorithm. Awareness is lossy TTL state and never enters document history. Scale pressure comes from concurrent edits, offline work, large logs, reconnect replay, undo semantics, schema migration, and malicious operations. Bound queues, dedupe events, expire ephemeral state, and degrade predictably.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, event sequences, idempotency keys, monotonic watermarks, TTLs, replay cursors, bounded buffers, authorization checks, and cleanup. Test reconnect gaps, duplicates, stale events, offline recovery, privacy settings, and accessibility announcements.</p><p>Measure latency, backlog, reconnect rate, gap recovery, retries, stale drops, TTL expiry, and accessibility regressions without logging sensitive content.</p><h3>Operational implementation: document operations, offline queue, and compaction</h3><p>Apply validated operations against a document clock, isolate awareness from durable content, queue offline edits, replay missing operations before local flush, compact snapshots, and reject malicious or schema-incompatible operations.</p><p>Define explicit metrics for accepted events, duplicate drops, stale drops, replay gap size, reconnect duration, queue depth, TTL expiry, degraded-mode entry, authorization denial, and rollback outcome. Redact user content and sensitive identifiers from telemetry. Test duplicate delivery, out-of-order events, disconnect during mutation, hidden tabs, unmount cleanup, multiple tabs, permission removal, burst traffic, and a rollback to the previous policy version.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include treating ephemeral state as durable, trusting arrival order, leaking timers or sockets, missing dedupe, unbounded replay, and hiding degraded connectivity.</p><p>For this topic, validate operations, snapshot compactly, replay missing ops, preserve offline queue, isolate awareness, and bound history.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to collaborative products where transport, persistence, and UI projection fail independently. Inject product policy for authorization, retention, fallback, and observability explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep durable document operations separate from ephemeral awareness and local render projection.</p><h3>What breaks at scale?</h3><p>concurrent edits, offline work, large logs, reconnect replay, undo semantics, schema migration, and malicious operations.</p><h3>What consistency applies?</h3><p>Merged document state is authoritative under the selected algorithm. Awareness is lossy TTL state and never enters document history.</p><h3>How do you recover?</h3><p>validate operations, snapshot compactly, replay missing ops, preserve offline queue, isolate awareness, and bound history.</p><h3>Why this architecture?</h3><p>Server locking is simple but blocks collaboration; CRDT or OT complexity is justified for concurrent editing.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket" target="_blank" rel="noreferrer">MDN WebSocket</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA APG</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

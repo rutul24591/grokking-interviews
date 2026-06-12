@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function BottomSheetDrawerArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function BottomSheetDrawerArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Bottom Sheet Drawer</h1><h2>Definition &amp; Context</h2><p>Design a Bottom Sheet Drawer is an implementation-heavy interaction design covering gesture capture, drag projection, snap points, velocity decisions, focus management, scroll arbitration, keyboard dismissal, and reduced motion. A principal-level answer must explain state ownership, geometry, browser events, cancellation, accessibility, persistence, scale, and observability.</p><p>Keep committed snap state separate from drag offset and velocity samples. Nested scroll consumes movement before drawer translation. Core structures: snap points, drag session, velocity window, scroll boundary, committed state, focus return, inert scope, animation policy, and cleanup handles.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/bottom-sheet-drawer-runtime.svg" alt="Design a Bottom Sheet Drawer runtime" caption="Interaction flow from input through projection, policy, commit, and render." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -88,7 +87,7 @@ export default function BottomSheetDrawerArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -123,7 +122,7 @@ export default function BottomSheetDrawerArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -162,7 +161,7 @@ export default function BottomSheetDrawerArticle() {
       </section>
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <HighlightBlock as="p" tier="important">
           The sheet is a positioned element
           translated by a CSS transform. Snap
@@ -229,14 +228,10 @@ export default function BottomSheetDrawerArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/bottom-sheet-drawer-architecture.svg"
-        alt="Bottom sheet drawer architecture showing snap states (Hidden, Peek 25%, Half 50%, Full 90%), drag handler logic with pointer events, snap point decision algorithm, and backdrop accessibility"
-        caption="Bottom sheet: snap states with translateY values, drag handler pointer event logic, velocity-based snap decisions, and accessibility with focus trap"
-      />
+      
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial"><strong>SheetProvider</strong>{" "}
           (optional, for stacked sheets).
           <strong> Sheet</strong> renders the
@@ -251,7 +246,7 @@ export default function BottomSheetDrawerArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Open state, current snap state,
           <Highlight tier="important">drag state in component state.
@@ -260,7 +255,7 @@ export default function BottomSheetDrawerArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Inputs:{" "}
           <code>open</code>,
@@ -277,7 +272,7 @@ export default function BottomSheetDrawerArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           CSS transforms are GPU-accelerated.
           <Highlight tier="important">Pointer move handler minimal.
@@ -286,7 +281,7 @@ export default function BottomSheetDrawerArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Visible drag handle at top. Smooth
           <Highlight tier="important">snap with physics. Backdrop fades.
@@ -296,7 +291,7 @@ export default function BottomSheetDrawerArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="important">
           <Highlight tier="crucial">Dialog role</Highlight> with{" "}
           <Highlight tier="important">
@@ -310,7 +305,7 @@ export default function BottomSheetDrawerArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Content sanitized <Highlight tier="important">at render. No
           security surface beyond</Highlight> modal
@@ -319,7 +314,7 @@ export default function BottomSheetDrawerArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Drag and snap tests. <Highlight tier="important">Scroll handoff
           tests. Focus trap tests.</Highlight> Reduced
@@ -328,7 +323,7 @@ export default function BottomSheetDrawerArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">Modal sheet on small
           viewport: full-height by default.
           Fast flick during</HighlightBlock>
@@ -338,7 +333,7 @@ export default function BottomSheetDrawerArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Generic; works for <Highlight tier="important">action sheets,
           detail panels, filters,
@@ -347,7 +342,7 @@ export default function BottomSheetDrawerArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           UI strings <Highlight tier="important">via i18n. Drawer variant
           (left/right) flips</Highlight> with RTL.
@@ -355,7 +350,7 @@ export default function BottomSheetDrawerArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Snap points vs continuous</h3>
         <HighlightBlock as="p" tier="important">
@@ -388,103 +383,19 @@ export default function BottomSheetDrawerArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Multi-sheet stacking. Custom
           animations per <Highlight tier="important">use case. Voice
           control of snap.</Highlight> Adaptive snaps
           based on content size.
         </Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. What is scroll
-          handoff?</strong> When the sheet
-          contains scrollable content,
-          dragging within the content
-          scrolls until the content reaches
-          its top edge; then further drag-
-          down moves the sheet itself. CSS
-          overscroll-behavior plus position
-          tracking implement this.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How are snaps
-          computed?</strong> On release,
-          combine position and velocity. Fast
-          flick: nearest snap in flick
-          direction. Slow release: nearest
-          snap by position.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>3. How is focus
-          trapped?</strong> When modal, focus
-          moves into sheet on open; trap
-          inside; restore on close. Same as
-          modal pattern.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. How does dismiss
-          work?</strong> Drag below lowest
-          snap, backdrop tap, or Escape.
-          Animate off-screen, unmount,
-          restore focus.
-        </HighlightBlock>
-
-        <p>
-          <strong>5. How is reduced motion
-          respected?</strong>{" "}
-          prefers-reduced-motion replaces
-          animations with instant
-          transitions. CSS handles via
-          media query.
-        </p>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>6. How is accessibility
-          handled?</strong> Dialog role with
-          appropriate aria-modal. Focus
-          trap when modal. Escape closes.
-          Snap buttons as keyboard
-          alternative.
-        </HighlightBlock>
-
-        <p>
-          <strong>7. How does this differ
-          from a Modal?</strong> Bottom sheet
-          is mobile-native, draggable,
-          multiple snaps. Modal is full-
-          screen-overlay, click-only,
-          single state.
-        </p>
-
-        <p>
-          <strong>8. How are stacked sheets
-          handled?</strong> Sheet provider
-          tracks the stack. Each pushes
-          on top with its own backdrop.
-          Dismiss pops one at a time.
-          Escape dismisses topmost.
-        </p>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">CSS transforms
-          drive the smooth movement; CSS
-          overscroll-behavior handles the
-          scroll</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">handoff; standard modal
-          patterns cover focus and
-          dismiss. Native-feeling on
-          mobile.</Highlight></HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Normalize pointer, touch, keyboard, resize, and async events before applying transitions. Separate raw intent, transient projection, committed state, derived geometry, and telemetry. Release pointer capture, listeners, observers, timers, and animation handles idempotently.</p><p>Keep committed snap state separate from drag offset and velocity samples. Nested scroll consumes movement before drawer translation.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/bottom-sheet-drawer-recovery.svg" alt="Design a Bottom Sheet Drawer recovery" caption="Recovery flow: cancel safely, retain committed truth, recalculate projection, and restore UI." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Drawer state is local interaction truth. Persist only durable preference if product policy requires it. Scale pressure comes from nested scroll, pointer cancellation, rapid gestures, mobile viewport changes, focus traps, and reduced-motion users. Bound measurement, batch rendering, and degrade predictably.</p><p>Prefer native semantics where they meet requirements. Custom interaction earns its cost only when product behavior needs explicit gesture, geometry, or workflow policy.</p></section>
+<section><h2>Best practices</h2><p>Use typed sessions, stable ids, pointer capture, keyboard alternatives, reduced-motion policy, clamped geometry, idempotent cleanup, and deterministic tests. Measure latency, dropped frames, cancellation, rollback, and accessibility regressions.</p><h3>Operational implementation: snap-point projection and scroll arbitration</h3><p>Measure snap points after viewport changes, keep nested scroll consumption ahead of sheet translation, choose the destination from distance plus release velocity, and restore the committed snap point after pointer cancellation. Focus trapping, inert background content, scroll locking, and reduced-motion animation belong to the same controller.</p><p>Define a typed interaction session with owner, generation, start geometry, latest projection, committed snapshot, cancellation reason, and cleanup handles. Instrument pointer-to-paint latency, dropped frames, measurement cost, projection count, cancellation, rollback, constraint violations, and accessibility fallback usage. Test pointer loss, resize during interaction, keyboard-only flow, reduced motion, hidden tabs, unmount cleanup, stale persistence response, and extreme geometry.</p></section>
+<h3>Principal defense: scale, privacy, and rollback</h3><p>Keep committed domain state separate from transient geometry, pointer samples, animations, and derived guides. Under large collections, index only visible or nearby geometry, batch pointer updates to animation frames, cancel stale measurements, and degrade visual fidelity before interaction correctness. Persistence uses stable ids and versions; a rejected write restores the last committed snapshot and preserves an actionable retry state.</p><p>Even local interactions need abuse and privacy boundaries when they persist or collaborate. Validate dimensions, coordinates, payload sizes, and mutation frequency before accepting expensive work. Do not leak hidden objects, restricted calendar details, or cross-tenant geometry through previews, presence, or telemetry. Observe cancellation reason, long tasks, frame drops, rejected transitions, rollback outcome, and cleanup leaks.</p><section><h2>Common Pitfalls</h2><p>Common failures include mixing raw and committed state, leaking listeners, failing to handle pointer cancellation, ignoring keyboard users, and persisting invalid geometry.</p><p>For this topic, release capture, clamp projection, choose snap by velocity and distance, restore focus, unlock scroll, and cancel animation safely.</p><h3>Geometry policy and browser integration</h3><p>Represent snap points as resolved pixel offsets derived from viewport height, safe-area insets, content minimums, and product-defined stops. Recompute them through ResizeObserver and visual viewport changes, then map the committed semantic stop such as collapsed, half, or expanded onto the new geometry. During a gesture, consume upward or downward movement in the nested scroll container until it reaches a boundary; only the remaining delta translates the sheet. This avoids the common mobile failure where a scrollable sheet fights its own content.</p><p>Prefer transform-based projection during drag because it avoids layout work. Commit the semantic snap state after release and animate from the projected transform. For modal sheets, move focus into the sheet, make the background inert, return focus on close, and expose an Escape path. Under reduced motion, jump or shorten motion without removing the visible state transition.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to repeated direct-manipulation workflows where responsive projection and safe cancellation matter as much as durable persistence.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep committed snap state separate from drag offset and velocity samples. Nested scroll consumes movement before drawer translation.</p><h3>What breaks at scale?</h3><p>nested scroll, pointer cancellation, rapid gestures, mobile viewport changes, focus traps, and reduced-motion users.</p><h3>What consistency applies?</h3><p>Drawer state is local interaction truth. Persist only durable preference if product policy requires it.</p><h3>How do you recover?</h3><p>release capture, clamp projection, choose snap by velocity and distance, restore focus, unlock scroll, and cancel animation safely.</p><h3>How do you defend the architecture?</h3><p>I would prefer native behavior until the required geometry, gesture, or workflow policy justifies a custom controller.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events" target="_blank" rel="noreferrer">MDN Pointer Events</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA APG</a></li></ul></section>
+</ArticleLayout>}

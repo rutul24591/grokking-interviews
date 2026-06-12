@@ -23,7 +23,7 @@ export default function FileSharingPermissionSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame Design a File Sharing &amp; Permission System around system boundary, state ownership, failure handling, scalability, security, and observable recovery. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock>
         <HighlightBlock as="p" tier="important">
           A file sharing and permission system is a core storage product surface used by file owners, collaborators, enterprise admins, external guests, identity teams, security analysts, compliance reviewers, support teams, and API clients to decide who can view, comment, edit, share, download, or administer each file and folder with low latency while supporting inheritance, revocation, link sharing, audit, and enterprise policy. At principal level this is not a static folder table with an object-store bucket. The design must explain durability, metadata consistency, access control, user-visible recovery, background processing, abuse handling, cost, and incident behavior.
         </HighlightBlock>
@@ -42,7 +42,7 @@ export default function FileSharingPermissionSystemArticle() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: the design must preserve correctness under latency, concurrency, partial failure, and changing permissions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design a File Sharing &amp; Permission System, the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock>
         <p>
           The first concept is separation of blob data from metadata. Object storage is optimized for large immutable bytes and high durability. Metadata stores are optimized for listing, lookup, ownership, parent relationships, policy, and transactions. Coupling them too tightly makes uploads slow and makes metadata repairs dangerous.
         </p>
@@ -73,7 +73,7 @@ export default function FileSharingPermissionSystemArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: state model, API contracts, cache policy, async workflow, authorization, rollout, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock>
         <p>
           A practical architecture contains sharing UI, permission API, ACL store, folder ancestry index, identity and group service, policy engine, link-token service, decision cache, audit log, DLP scanner, and admin review dashboard. The client-facing product should remain responsive while expensive file operations move through durable background pipelines. The control plane owns metadata and policy, while the data plane moves bytes through object storage and CDN wherever possible.
         </p>
@@ -122,7 +122,7 @@ export default function FileSharingPermissionSystemArticle() {
       </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           The central trade-off is fast access decisions versus immediate revocation and exact inheritance semantics. A principal-ready answer should show which paths need strong correctness, which paths can be asynchronous, and how users are protected when derived state lags behind source-of-truth metadata.
         </HighlightBlock>
@@ -153,7 +153,7 @@ export default function FileSharingPermissionSystemArticle() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: latency, error rate, fallback rate, conversion, stale-state duration, and rollback success.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock>
         <p>
           Make source-of-truth ownership clear. Metadata, objects, search documents, thumbnails, audit records, and client caches should each have an owner and reconciliation strategy. Without ownership, repair work during incidents becomes guesswork.
         </p>
@@ -187,7 +187,7 @@ export default function FileSharingPermissionSystemArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: stale state, hidden partial failure, unbounded retries, ownership ambiguity, and missing observability.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock>
         <p>
           A common pitfall is treating a file sharing and permission system as a simple UI over object storage. That misses stale allow cache after revoke, group membership drift, broken inheritance after folder move, public link oversharing, guest account confusion, DLP bypass, audit gaps, permission explosion, and ambiguous effective access. The production system is mostly about safely coordinating metadata, policy, derived data, and recovery.
         </p>
@@ -215,7 +215,7 @@ export default function FileSharingPermissionSystemArticle() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock>
         <p>
           Real-world use cases for a file sharing and permission system include team folder collaboration, external client sharing, public read-only links, domain-restricted documents, legal hold review, administrator access review, mass revoke after employee departure, and DLP quarantine for sensitive exports. Each case has a different balance of latency, durability, policy, and user explanation requirements.
         </p>
@@ -237,7 +237,7 @@ export default function FileSharingPermissionSystemArticle() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock>
         <h3>1. How would you design the high-level architecture for a file sharing and permission system?</h3>
         <p>
           I would separate clients, control-plane metadata, blob transfer, background processing, and derived read models. Clients interact with APIs for metadata and operation state, but large bytes move directly to object storage or CDN through scoped signed URLs. Metadata services own folder, version, permission, quota, and lifecycle invariants. Background workers process scans, previews, indexing, retention, and cleanup from durable events. Observability and audit are first-class because storage systems need repair and evidence. This structure keeps foreground UX fast while preserving correctness where it matters.

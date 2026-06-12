@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,18 +24,18 @@ export default function MicroFrontendArchitectureArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h1>Design Micro-frontend Architecture</h1>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Design Micro-frontend Architecture should be framed as an implementation-level design problem with a clear runtime boundary, not as a visual mock or helper function.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview signal: identify the architecture boundary, ownership model, rollout contract, and organizational blast radius before discussing APIs or code structure.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">The answer should connect user-visible behavior to engineering constraints: correctness, accessibility, latency, failure recovery, testability, and operational ownership.</HighlightBlock>
         <p>
           Design Micro-frontend Architecture is an architecture-level low-level design problem about implementing a independently deployed frontend composition runtime. The design must be concrete enough that platform and product teams can integrate with it safely: public APIs, state model, artifact formats, ownership rules, compatibility contracts, failure isolation, rollout, and observability all belong in the answer.
         </p>
         <p>
           The facade is registerRemote, resolveRoute, loadModule, isolateFailure, shareContract, rollbackRemote. Runtime or lifecycle states are bootstrapping, loading, ready, degraded, isolated, rolledBack. The governing invariant is: Independent deployment must not allow one remote to break navigation, shared state, or the host shell. The pressure-test case is when a remote deploy ships an incompatible shared dependency and fails only for one tenant cohort. A principal-ready answer should explain how local implementation decisions become organization-wide reliability, velocity, and migration outcomes.
         </p>
-        <ArticleImage src="/diagrams/system-design-problems/low-level-design/architecture-system-level-lld/micro-frontend-architecture-runtime.svg" alt="Design Micro-frontend Architecture runtime architecture" caption="Architecture runtime: consumer intent flows through contract validation, versioned artifacts, rollout controls, and observable delivery." />
+        <ArticleImage src="/diagrams/system-design-problems/low-level-design/architecture-system-level-lld/micro-frontend-architecture-runtime.svg" alt="Design Micro-frontend Architecture runtime architecture" caption="The host shell loads independently deployed remotes through versioned manifests and explicit shared contracts." />
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core invariant: stable public contracts must outlive implementation details, and every extension point must have compatibility, migration, rollback, and observability rules.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design Micro-frontend Architecture, the strongest explanation names the state model, the data structures that hold that state, and the events allowed to mutate it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not skip ownership: distinguish product-owned state, platform-owned policy, browser/runtime state, server-authoritative state, and speculative local state.</HighlightBlock>
         <p>
           The first concept is an explicit platform contract. A platform is not just shared code; it is a promise about interfaces, compatibility, support windows, ownership, and operational response. The core structures are remote manifest, route ownership map, shared dependency policy, contract version, error boundary registry, rollout snapshot. These structures make changes reviewable and let consuming teams understand what is stable, what is experimental, and what requires migration.
         </p>
@@ -55,10 +56,10 @@ export default function MicroFrontendArchitectureArticle() {
         <p>
           Escape hatches should be narrow and temporary. Record who requested the exception, why the supported path was insufficient, which consumers use it, and when it should be reviewed. Without that evidence, a platform slowly becomes a collection of permanent one-off behaviors that cannot evolve safely.
         </p>
-      </section>
+<h3>Composition boundary and runtime contract</h3><p>Choose composition deliberately: build-time packages for strong integration and simple runtime behavior; server-side fragment composition for independently deployed HTML; runtime module federation or import maps when independent browser delivery is truly required. Every remote exposes a manifest with version, entry URL, integrity metadata, compatible shell range, route ownership, capability flags, and rollback target. The shell owns navigation, identity context, global error containment, and shared UX policy.</p><p>Do not share mutable global state casually. Pass a narrow versioned context and use events or service interfaces for cross-boundary actions. Shared dependencies require compatibility rules: singleton frameworks reduce duplicate bytes but make upgrades coupled; isolated dependencies preserve autonomy but increase bundle and memory cost. Measure before choosing.</p>      </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture flow should cover input event, validation, state transition, side effect, commit guard, cleanup, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Key design decisions: API ownership, versioning, runtime boundaries, build-vs-buy boundaries, dependency isolation, rollout gates, and rollback strategy.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A principal-level answer should describe the hard path, not only the happy path: delayed responses, unmounts, retries, stale state, permission changes, and partial degradation.</HighlightBlock>
         <p>
           The implementation has six layers: consumer facade, contract validator, dependency graph, execution engine, artifact or response store, and observability layer. The facade normalizes intent. Validation checks schema, compatibility, ownership, and policy. The graph determines affected work. The engine executes deterministic tasks. The store publishes versioned outputs. Observability records latency, adoption, failures, and rollback evidence.
         </p>
@@ -79,11 +80,11 @@ export default function MicroFrontendArchitectureArticle() {
         <p>
           Recovery should be practiced before an incident. Roll back a pointer to a previous immutable artifact, disable a remote, restore a known-good cache namespace, or degrade a partial response. Then confirm metrics recover. A rollback process that requires a fresh build, coordinated consumer releases, or manual cache clearing is too fragile for a widely adopted platform.
         </p>
-        <ArticleImage src="/diagrams/system-design-problems/low-level-design/architecture-system-level-lld/micro-frontend-architecture-failure.svg" alt="Design Micro-frontend Architecture failure isolation and rollout" caption="Failure model: compatibility gaps, stale artifacts, dependency faults, and budget regressions route through canary, rollback, or degradation." />
-      </section>
+        <ArticleImage src="/diagrams/system-design-problems/low-level-design/architecture-system-level-lld/micro-frontend-architecture-failure.svg" alt="Design Micro-frontend Architecture failure isolation and rollout" caption="A broken checkout remote fails inside its scoped shell boundary while navigation remains usable." />
+<h3>Failure containment and deployment safety</h3><p>Remote loading must have timeout, integrity validation where applicable, error boundary, fallback UI, telemetry, and emergency disablement. Resolve immutable remote versions through a canary-controlled manifest rather than fetching “latest”. Cache manifests briefly and keep a last-known-good version for recovery. Test shell-remote version skew, remote timeout, chunk 404 after deploy, shared-dependency mismatch, route handoff, SSR hydration, and rollback.</p><p>Defend micro-frontends only when organizational deployment autonomy outweighs runtime complexity. If one team owns the product or coordinated releases are acceptable, a modular monolith is usually simpler and more reliable.</p>      </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: choose the design that keeps correctness and recovery explicit while bounding latency, memory, and integration complexity.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized runtime behavior with local component control. Centralization improves consistency and observability, but can become a bottleneck if extension points are not governed.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design Micro-frontend Architecture, defend what is intentionally strict, what is configurable, and what should remain outside the abstraction.</HighlightBlock>
         <p>
           Centralization improves consistency and enables cross-product fixes, but it can become a bottleneck. Decentralization lets teams move independently, but duplicates solutions and fragments contracts. The useful middle ground is a stable platform core with documented extension points, contribution governance, and escape hatches that are observable and time-bounded.
         </p>
@@ -99,7 +100,7 @@ export default function MicroFrontendArchitectureArticle() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make illegal or ambiguous states unrepresentable through explicit state unions, typed events, stable IDs, and guarded transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Test the lifecycle, not just the render output: rapid interaction, stale async settlement, unmount cleanup, keyboard-only use, SSR hydration, degraded capability, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Expose diagnostics that prove the design works in production: transition counts, suppressed stale work, failure reasons, cleanup counts, latency, fallback rate, and user-visible recovery.</HighlightBlock>
         <p>
           Publish immutable artifacts and keep rollback pointers. Track owners and support windows. Require migration guides and codemods for mechanical breaking changes. Add canary rollout and emergency disablement for risky runtime paths. Scope caches by artifact version, tenant, environment, and policy digest.
         </p>
@@ -115,7 +116,7 @@ export default function MicroFrontendArchitectureArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Main risks to call out: hidden coupling, undocumented escape hatches, incompatible migrations, shared-platform bottlenecks, and rollback paths that require coordinated consumer releases.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A common interview failure is describing the API surface but not the lifecycle guarantees that prevent stale work, leaked resources, inaccessible states, or unsafe commits.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not hide failure behind generic loading and error flags. Name the difference between blocked, cancelled, stale, degraded, retrying, unauthorized, conflicted, and committed states.</HighlightBlock>
         <p>
           Avoid hidden global state, mutable latest artifacts, unversioned contracts, and undocumented escape hatches. Do not let one team bypass validation permanently because a deadline is urgent. Temporary exceptions need owner, reason, expiry, and telemetry.
         </p>
@@ -128,7 +129,7 @@ export default function MicroFrontendArchitectureArticle() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world use: platform teams, BFFs, design systems, monorepos, internal developer platforms, frontend testing platforms, and shared performance architecture.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the design to operational behavior: how teams roll it out, observe it, debug it, migrate consumers, and roll it back without breaking active users.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">At staff/principal level, explain how this component or runtime reduces repeated product-team mistakes while still allowing legitimate product-specific policy.</HighlightBlock>
         <p>
           Architecture-level LLD appears in large organizations where frontend teams share components, tooling, performance policy, test infrastructure, deployment boundaries, and experience-specific APIs. These platforms reduce repeated work only when their contracts are stable and their integration path is easier than local reinvention.
         </p>
@@ -138,7 +139,7 @@ export default function MicroFrontendArchitectureArticle() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">When asked to design Design Micro-frontend Architecture, lead with the invariant, then walk through state, events, data structures, failure handling, and measurable production signals.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A strong answer includes a concrete edge-case walkthrough where the system receives conflicting or delayed events and still commits the correct final state.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Close by naming complexity and test strategy: runtime cost, memory bounds, cleanup guarantees, accessibility tests, race tests, and observability checks.</HighlightBlock>
         <h3>How would you design the system end to end?</h3>
         <p>I would define the facade, versioned artifact model, dependency graph, validation gates, immutable publish flow, rollout controls, rollback pointer, and metrics. Then I would walk one change from authoring through consumer adoption.</p>
         <h3>Why this architecture over team-local implementations?</h3>

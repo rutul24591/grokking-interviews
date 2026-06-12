@@ -20,11 +20,10 @@ export const metadata: ArticleMetadata = {
   relatedTopics: ["carousel-slider", "pan-zoom-minimap", "drag-drop-list", "resizable-split-pane"],
 };
 
-export default function GestureSystemArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
+export default function GestureSystemArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Gesture System</h1><h2>Definition &amp; Context</h2><p>Design a Gesture System is an implementation-heavy interaction design covering pointer normalization, gesture recognition, arbitration, thresholds, multi-touch transforms, cancellation, accessibility alternatives, and cleanup. A principal-level answer must explain state ownership, geometry, browser events, cancellation, accessibility, persistence, scale, and observability.</p><p>Normalize pointer events into sessions before recognizing tap, drag, pinch, rotate, or long press. Arbitration must be explicit. Core structures: pointer map, gesture session, threshold policy, recognizer states, ownership lock, transform origin, velocity samples, and cancel reason.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/gesture-system-runtime.svg" alt="Design a Gesture System runtime" caption="Interaction flow from input through projection, policy, commit, and render." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>Problem Clarification</h3>
         <HighlightBlock as="p" tier="important">A user opens a map app on their phone and wants to zoom in. They place two fingers on the map, moving them apart (pinch gesture). Simultaneously, another user swipes left on a carousel to move to the next image. A third user long-presses on an item to open a context menu. These interactions—swipe, pinch, long-press—are "gestures": high-level user intents recognized from low-level touch events.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">Building gesture support is deceptively complex. At the lowest level, the browser fires raw touch events: touchstart, touchmove, touchend, each containing the coordinates of every active finger. To recognize a "pinch" gesture, the app must track two simultaneous touches, measure the distance between them, compute whether that distance is increasing or decreasing, and determine if the rate of change exceeds a threshold (fast pinch) or is slow (slow pinch zoom). Raw event handling is error-prone: off-by-one errors in touch tracking, incorrect distance calculations, and false positive gesture detections (user intended to pan, system recognized pinch).</HighlightBlock>
         <HighlightBlock as="p" tier="important">Challenges include: (1) accurately recognizing gestures (distinguish swipe from pan by velocity), (2) handling multiple simultaneous touches (two-finger rotations while panning), (3) managing state transitions (gesture began → moved → ended → cancelled), (4) providing responsive feedback (visual feedback as gesture progresses), (5) enabling gesture cancellation (user changes mind mid-gesture), and (6) desktop compatibility (map app works on desktop with mouse, on mobile with touch).</HighlightBlock>
@@ -33,7 +32,7 @@ export default function GestureSystemArticle() {
       </section>
 
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
         <ul className="space-y-2">
           <HighlightBlock as="li" tier="important"><strong>Swipe Detection:</strong> Recognize fast single-finger movement as swipe left/right/up/down. Require a velocity threshold (for example above 0.5 px/ms) and minimum distance (for example 30 pixels). Distinguish from pan (slower movement). Report swipe direction and velocity to handler.</HighlightBlock>
@@ -56,7 +55,7 @@ export default function GestureSystemArticle() {
       </section>
 
       <section>
-        <h2>High-Level Approach</h2>
+        <h3>High-Level Approach</h3>
         <HighlightBlock as="p" tier="important">A gesture system has three layers: touch tracking, gesture recognition, and gesture handling.</HighlightBlock>
         <HighlightBlock as="p" tier="important">Layer 1 (Tracking): Subscribe to touchstart, touchmove, touchend events. For each touch event, record the position, timestamp, and touch ID. Maintain a history of positions for each touch (last 10-20 positions) to enable velocity calculation. Update touch state: started, moving, ended. Handle multi-touch by keying touches by ID.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">Layer 2 (Recognition): Analyze touch histories to classify into gesture types. For swipe: check if movement was fast (velocity above a threshold) and distance above a minimum. For pinch: check if two touches exist and distance is changing. For rotate: check if angle is changing. For long-press: check if touch is stationary for 500ms. Emit gesture events (swipeLeft, swipeRight, pinch, rotate, longPress, etc.) when a gesture is recognized.</HighlightBlock>
@@ -65,12 +64,8 @@ export default function GestureSystemArticle() {
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/gesture-system-architecture.svg"
-          alt="Gesture system architecture showing gesture types (tap, long press, swipe, pinch), 5-step recognition pipeline from raw pointer events to custom event emission, conflict resolution arbitration, velocity and momentum calculation, and accessibility requirements"
-          caption="Gesture recognition pipeline: normalize input → track state → classify gesture → emit custom event, with conflict resolution and velocity-based momentum"
-        />
+        <h3>Detailed Design</h3>
+        
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Touch Tracking and State Management</h3>
         <p>The foundation of gesture recognition is accurate touch tracking. When a touch event fires (touchstart, touchmove, touchend), the system records the touch point data: clientX, clientY, identifier (unique per touch), and timestamp. The identifier is critical for multi-touch: when user places two fingers, touchstart fires twice (once per finger), each with a unique identifier. Subsequent move events include the identifier, so the system can track which finger moved.</p>
@@ -112,7 +107,7 @@ export default function GestureSystemArticle() {
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
+        <h3>Trade-offs and Considerations</h3>
         <HighlightBlock as="p" tier="important"><strong>Library vs Custom Implementation:</strong> Gesture libraries (Hammer.js, Pointer Events polyfills) provide battle-tested recognizers and handle edge cases. Custom implementation gives full control and smaller bundle size. For simple apps, use library. For apps with specific gesture needs (unique three-finger gestures), custom is better.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial"><strong>Latency vs Accuracy:</strong> Strict recognition (high thresholds, delay to disambiguate) is accurate but high latency (user perceives lag). Loose recognition (low thresholds, quick emission) is low latency but high false positive rate. Balance: use 50-100ms disambiguation delay, reasonable thresholds (0.5 px/ms for swipe, 30px minimum distance).</HighlightBlock>
         <HighlightBlock as="p" tier="important"><strong>Passive Listeners vs Control:</strong> Passive listeners (passive: true) prevent preventDefault() in handler, but enable browser optimizations (smooth scroll). If your gesture handler prevents default (e.g., override scroll), you can't use passive. Compromise: use passive for non-preventing handlers, passive: false only for handlers that call preventDefault().</HighlightBlock>
@@ -121,7 +116,7 @@ export default function GestureSystemArticle() {
       </section>
 
       <section>
-        <h2>Implementation Patterns</h2>
+        <h3>Implementation Patterns</h3>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Pattern 1: Simple Swipe Carousel</h3>
         <HighlightBlock as="p" tier="crucial">Register swipe handler on carousel container. On swipeLeft, advance to next slide. On swipeRight, go to previous slide. Use CSS transitions for smooth slide movement. Include touch tracking to show visual feedback mid-swipe.</HighlightBlock>
 
@@ -136,11 +131,16 @@ export default function GestureSystemArticle() {
       </section>
 
       <section>
-        <h2>Summary</h2>
+        <h3>Summary</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">long-press), use passive event listeners (enable smooth scroll), implement disambiguation delays (50-100ms), provide visual feedback during</Highlight></HighlightBlock>
 <HighlightBlock as="p" tier="important">gesture (highlight, scale preview), include undo/cancel mechanisms (user changes mind), and thoroughly test edge cases (two-finger vs</HighlightBlock>
 <HighlightBlock as="p" tier="important">three-finger, rapid vs slow gestures, interrupted touches). Gesture systems significantly improve mobile UX by enabling natural, physical interactions.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Normalize pointer, touch, keyboard, resize, and async events before applying transitions. Separate raw intent, transient projection, committed state, derived geometry, and telemetry. Release pointer capture, listeners, observers, timers, and animation handles idempotently.</p><p>Normalize pointer events into sessions before recognizing tap, drag, pinch, rotate, or long press. Arbitration must be explicit.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/gesture-system-recovery.svg" alt="Design a Gesture System recovery" caption="Recovery flow: cancel safely, retain committed truth, recalculate projection, and restore UI." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Gesture state is local and ephemeral. Durable mutations happen only after recognized commit events. Scale pressure comes from multi-touch churn, nested recognizers, browser scrolling, pointer loss, zoom, and accessibility alternatives. Bound measurement, batch rendering, and degrade predictably.</p><p>Prefer native semantics where they meet requirements. Custom interaction earns its cost only when product behavior needs explicit gesture, geometry, or workflow policy.</p></section>
+<section><h2>Best practices</h2><p>Use typed sessions, stable ids, pointer capture, keyboard alternatives, reduced-motion policy, clamped geometry, idempotent cleanup, and deterministic tests. Measure latency, dropped frames, cancellation, rollback, and accessibility regressions.</p><h3>Operational implementation: pointer-session recognition and arbitration</h3><p>Normalize pointer events into sessions with pointer ids, start position, samples, capture owner, and cancellation. Recognizers arbitrate tap, long-press, pan, pinch, and rotate using thresholds and precedence. Cleanup is idempotent on pointerup, pointercancel, blur, and unmount.</p><p>Define a typed interaction session with owner, generation, start geometry, latest projection, committed snapshot, cancellation reason, and cleanup handles. Instrument pointer-to-paint latency, dropped frames, measurement cost, projection count, cancellation, rollback, constraint violations, and accessibility fallback usage. Test pointer loss, resize during interaction, keyboard-only flow, reduced motion, hidden tabs, unmount cleanup, stale persistence response, and extreme geometry.</p></section>
+<h3>Principal defense: scale, privacy, and rollback</h3><p>Keep committed domain state separate from transient geometry, pointer samples, animations, and derived guides. Under large collections, index only visible or nearby geometry, batch pointer updates to animation frames, cancel stale measurements, and degrade visual fidelity before interaction correctness. Persistence uses stable ids and versions; a rejected write restores the last committed snapshot and preserves an actionable retry state.</p><p>Even local interactions need abuse and privacy boundaries when they persist or collaborate. Validate dimensions, coordinates, payload sizes, and mutation frequency before accepting expensive work. Do not leak hidden objects, restricted calendar details, or cross-tenant geometry through previews, presence, or telemetry. Observe cancellation reason, long tasks, frame drops, rejected transitions, rollback outcome, and cleanup leaks.</p><section><h2>Common Pitfalls</h2><p>Common failures include mixing raw and committed state, leaking listeners, failing to handle pointer cancellation, ignoring keyboard users, and persisting invalid geometry.</p><p>For this topic, cancel competing recognizers, release capture, preserve browser scroll where intended, expose keyboard alternatives, and emit reason codes.</p><h3>Recognizer precedence and cancellation</h3><p>A recognizer should not emit competing commands from the same pointer stream. Delay tap confirmation until the movement and long-press thresholds are resolved. Promote a session to pan after crossing distance tolerance. Promote a two-pointer session to pinch or rotate only when the configured threshold is crossed, then cancel lower-priority recognizers. Pointer capture keeps the owner stable when the pointer leaves the element.</p><p>Touch-action CSS is part of the implementation contract. Allow native scrolling where the product does not need custom handling and suppress only the gestures the controller owns. Collect coalesced samples when drawing quality needs them, but render at frame cadence. Test pointercancel from browser scrolling, a second pointer joining mid-session, lost capture, right-to-left directions, keyboard alternatives, and assistive technology paths.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to repeated direct-manipulation workflows where responsive projection and safe cancellation matter as much as durable persistence.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Normalize pointer events into sessions before recognizing tap, drag, pinch, rotate, or long press. Arbitration must be explicit.</p><h3>What breaks at scale?</h3><p>multi-touch churn, nested recognizers, browser scrolling, pointer loss, zoom, and accessibility alternatives.</p><h3>What consistency applies?</h3><p>Gesture state is local and ephemeral. Durable mutations happen only after recognized commit events.</p><h3>How do you recover?</h3><p>cancel competing recognizers, release capture, preserve browser scroll where intended, expose keyboard alternatives, and emit reason codes.</p><h3>How do you defend the architecture?</h3><p>I would prefer native behavior until the required geometry, gesture, or workflow policy justifies a custom controller.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events" target="_blank" rel="noreferrer">MDN Pointer Events</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA APG</a></li></ul></section>
+</ArticleLayout>}

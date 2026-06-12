@@ -31,11 +31,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function PanZoomMinimapArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
+export default function PanZoomMinimapArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Pan Zoom Minimap</h1><h2>Definition &amp; Context</h2><p>Design a Pan Zoom Minimap is an implementation-heavy interaction design covering world-to-screen transforms, pointer-centered zoom, panning, viewport clamping, minimap projection, click navigation, and resize recovery. A principal-level answer must explain state ownership, geometry, browser events, cancellation, accessibility, persistence, scale, and observability.</p><p>Keep world coordinates authoritative. Main viewport and minimap are projections of one transform and content bounds. Core structures: world bounds, viewport size, scale, translation, pointer anchor, minimap scale, minimap viewport rectangle, and resize policy.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/pan-zoom-minimap-runtime.svg" alt="Design a Pan Zoom Minimap runtime" caption="Interaction flow from input through projection, policy, commit, and render." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>Problem Clarification</h3>
         <HighlightBlock as="p" tier="crucial">
           Large canvases (maps, diagrams, images) difficult to navigate. Users need to zoom in for detail and pan to explore. Key challenges: smooth zoom and pan interactions, minimap for global overview, and maintaining performance at large scales. Naive approach: full redraw on each zoom (slow). Better: efficient rendering with viewport tracking and minimap synchronization.
         </HighlightBlock>
@@ -52,7 +51,7 @@ export default function PanZoomMinimapArticle() {
       </section>
 
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
         <ul className="space-y-2">
           <li>
@@ -105,14 +104,14 @@ export default function PanZoomMinimapArticle() {
       </section>
 
       <section>
-        <h2>High-Level Approach</h2>
+        <h3>High-Level Approach</h3>
         <HighlightBlock as="p" tier="crucial">Track viewport (position, zoom level). On mouse/touch events,</HighlightBlock>
 <HighlightBlock as="p" tier="important">update viewport. Render only visible region (canvas clipping).</HighlightBlock>
 <HighlightBlock as="p" tier="important">Minimap shows full canvas at reduced scale. Viewport rect shows current view on minimap. Update minimap on viewport change.</HighlightBlock>
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
+        <h3>Detailed Design</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Viewport Model</h3>
         <p>Tracking view state.</p>
@@ -176,11 +175,7 @@ export default function PanZoomMinimapArticle() {
         <HighlightBlock as="p" tier="crucial">
           <strong>Zoom-Around-Cursor Technique:</strong> The most critical aspect of zoom interaction is maintaining the point under the cursor. Calculate the canvas coordinate at the cursor before zooming, apply the zoom level change, then adjust the viewport position so that same canvas point remains under the cursor. This creates intuitive zoom behavior where the user "zooms in on" the point they're hovering over. Without this, zoom appears to jump around, creating disorientation. The formula: before zoom, compute canvasPoint = (cursorScreenPos - viewportPos) / currentZoom. After zoom, calculate newViewportX = canvasPoint * newZoom - cursorScreenPos to restore the same canvas point under the cursor position.
         </HighlightBlock>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/viewport-zoom-transformation.svg"
-          alt="Zoom-around-cursor transformation showing how viewport adjusts to keep the cursor pointing at the same canvas position before and after zoom"
-          caption="Zoom-around-cursor formula: cursor remains on same canvas point before and after zoom by adjusting viewport position"
-        />
+        
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Minimap Rendering</h3>
         <p>Showing canvas overview.</p>
@@ -304,7 +299,7 @@ export default function PanZoomMinimapArticle() {
       </section>
 
       <section>
-        <h2>Implementation Considerations</h2>
+        <h3>Implementation Considerations</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Canvas Library</h3>
         <HighlightBlock as="p" tier="important">
@@ -323,7 +318,7 @@ export default function PanZoomMinimapArticle() {
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
+        <h3>Trade-offs and Considerations</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Minimap Size vs Detail</h3>
         <HighlightBlock as="p" tier="important">
@@ -342,10 +337,15 @@ export default function PanZoomMinimapArticle() {
       </section>
 
       <section>
-        <h2>Summary</h2>
+        <h3>Summary</h3>
         <HighlightBlock as="p" tier="crucial">Real-world systems use transform-based animation for GPU acceleration, viewport clipping to</HighlightBlock>
 <HighlightBlock as="p" tier="important"><Highlight tier="important">avoid rendering off-screen content, and minimap updates synchronized with viewport changes.</Highlight></HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Normalize pointer, touch, keyboard, resize, and async events before applying transitions. Separate raw intent, transient projection, committed state, derived geometry, and telemetry. Release pointer capture, listeners, observers, timers, and animation handles idempotently.</p><p>Keep world coordinates authoritative. Main viewport and minimap are projections of one transform and content bounds.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/pan-zoom-minimap-recovery.svg" alt="Design a Pan Zoom Minimap recovery" caption="Recovery flow: cancel safely, retain committed truth, recalculate projection, and restore UI." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Transform state is local. Persist only intentional workspace preference and clamp on restore. Scale pressure comes from huge canvases, extreme zoom, resize, floating-point drift, touch gestures, and minimap clicks outside bounds. Bound measurement, batch rendering, and degrade predictably.</p><p>Prefer native semantics where they meet requirements. Custom interaction earns its cost only when product behavior needs explicit gesture, geometry, or workflow policy.</p></section>
+<section><h2>Best practices</h2><p>Use typed sessions, stable ids, pointer capture, keyboard alternatives, reduced-motion policy, clamped geometry, idempotent cleanup, and deterministic tests. Measure latency, dropped frames, cancellation, rollback, and accessibility regressions.</p><h3>Operational implementation: world-screen transforms and minimap projection</h3><p>Keep world coordinates independent from viewport transform. Convert pointer anchors through inverse transforms, clamp zoom and pan, derive the minimap viewport rectangle, cull invisible objects, and treat the minimap as a projection rather than a second source of scene truth.</p><p>Define a typed interaction session with owner, generation, start geometry, latest projection, committed snapshot, cancellation reason, and cleanup handles. Instrument pointer-to-paint latency, dropped frames, measurement cost, projection count, cancellation, rollback, constraint violations, and accessibility fallback usage. Test pointer loss, resize during interaction, keyboard-only flow, reduced motion, hidden tabs, unmount cleanup, stale persistence response, and extreme geometry.</p></section>
+<h3>Principal defense: scale, privacy, and rollback</h3><p>Keep committed domain state separate from transient geometry, pointer samples, animations, and derived guides. Under large collections, index only visible or nearby geometry, batch pointer updates to animation frames, cancel stale measurements, and degrade visual fidelity before interaction correctness. Persistence uses stable ids and versions; a rejected write restores the last committed snapshot and preserves an actionable retry state.</p><p>Even local interactions need abuse and privacy boundaries when they persist or collaborate. Validate dimensions, coordinates, payload sizes, and mutation frequency before accepting expensive work. Do not leak hidden objects, restricted calendar details, or cross-tenant geometry through previews, presence, or telemetry. Observe cancellation reason, long tasks, frame drops, rejected transitions, rollback outcome, and cleanup leaks.</p><section><h2>Common Pitfalls</h2><p>Common failures include mixing raw and committed state, leaking listeners, failing to handle pointer cancellation, ignoring keyboard users, and persisting invalid geometry.</p><p>For this topic, clamp scale and translation, preserve pointer anchor during zoom, recalculate minimap rectangle, recover after resize, and expose keyboard controls.</p><h3>Transform math and minimap synchronization</h3><p>Represent the viewport as translation plus scale and expose screenToWorld and worldToScreen as the only coordinate conversion functions. Zoom around the pointer by converting the pointer to world space before scale changes, then solving the new translation so that world point remains under the pointer. Clamp scale and world bounds after each transition. This prevents drift from accumulating through ad hoc coordinate math.</p><p>The minimap derives a viewport rectangle from the visible world bounds and the minimap scale. Dragging that rectangle updates the main translation through the same transform API. Render large scenes through culling and level-of-detail rules; the minimap may use simplified shapes or a cached raster layer. Provide keyboard zoom controls, reset-to-fit, and a textual location fallback for users who cannot operate direct manipulation.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to repeated direct-manipulation workflows where responsive projection and safe cancellation matter as much as durable persistence.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep world coordinates authoritative. Main viewport and minimap are projections of one transform and content bounds.</p><h3>What breaks at scale?</h3><p>huge canvases, extreme zoom, resize, floating-point drift, touch gestures, and minimap clicks outside bounds.</p><h3>What consistency applies?</h3><p>Transform state is local. Persist only intentional workspace preference and clamp on restore.</p><h3>How do you recover?</h3><p>clamp scale and translation, preserve pointer anchor during zoom, recalculate minimap rectangle, recover after resize, and expose keyboard controls.</p><h3>How do you defend the architecture?</h3><p>I would prefer native behavior until the required geometry, gesture, or workflow policy justifies a custom controller.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events" target="_blank" rel="noreferrer">MDN Pointer Events</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA APG</a></li></ul></section>
+</ArticleLayout>}

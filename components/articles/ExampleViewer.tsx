@@ -9,7 +9,7 @@ type ExampleViewerProps = {
 };
 
 export function ExampleViewer({ example }: ExampleViewerProps) {
-  const files = example?.files ?? [];
+  const files = useMemo(() => example?.files ?? [], [example?.files]);
   const { visibleFiles, explanation } = useMemo(() => {
     const explanationFile = files.find((file) => {
       const lower = file.name.toLowerCase();

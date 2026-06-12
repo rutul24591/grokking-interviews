@@ -402,7 +402,7 @@ export default function ErrorReportingArticle() {
         <ul className="list-disc space-y-2 pl-6">
           <HighlightBlock as="li" tier="crucial">
             <strong>Exposing source maps publicly.</strong> Serving source maps alongside your production JavaScript
-            (either via the <code>//# sourceMappingURL</code> comment pointing to a public URL or by deploying .map files
+            (either via the <code>{"//# sourceMappingURL"}</code> comment pointing to a public URL or by deploying .map files
             to your CDN) exposes your entire original source code to anyone who opens developer tools. This includes
             business logic, API endpoint paths, internal comments, and potentially hardcoded configuration values.
             Always remove or neutralize the sourceMappingURL comment in production builds and upload source maps only to
@@ -554,7 +554,7 @@ export default function ErrorReportingArticle() {
               The correct approach is a three-step process: first, generate source maps during the build but do not
               deploy them to your public CDN or web server; second, upload them to your error reporting service using
               the CLI or build plugin during CI/CD, tagged with the release identifier; third, strip or neutralize the{" "}
-              <code>//# sourceMappingURL</code> comment from production JavaScript files so browsers do not attempt to
+              <code>{"//# sourceMappingURL"}</code> comment from production JavaScript files so browsers do not attempt to
               fetch source maps from your server.
             </p>
             <p>

@@ -69,7 +69,9 @@ function isMergeCandidate(artifact: ArtifactRecord) {
   return MERGEABLE_TYPES.has(artifact.type) && artifact.status === "accepted" && Boolean(artifact.proposedTargetPath);
 }
 
-export default {
+const mergeManager = {
   planMerge,
   mergeAcceptedArtifacts,
 };
+
+export default mergeManager;

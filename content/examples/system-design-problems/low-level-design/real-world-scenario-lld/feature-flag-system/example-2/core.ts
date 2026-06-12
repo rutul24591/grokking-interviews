@@ -1,31 +1,3 @@
-export interface FeatureFlagSystemMutation{id:string;
-scope:string;
-baseVersion:number;
-payloadSize:number;
-authorized:boolean;
-idempotencyKey:string;
-}
-export interface FeatureFlagSystemDecision{accepted:boolean;
-action:"commit"|"refresh"|"block"|"dedupe"|"review";
-reasons:string[];
-nextVersion:number;
-}
-export class FeatureFlagSystemPolicy{private seen=new Set<string>();
-constructor(private version:number){}evaluate(m:FeatureFlagSystemMutation):FeatureFlagSystemDecision{const reasons:string[]=[];
-if(!m.authorized)reasons.push("unauthorized");
-if(m.baseVersion!==this.version)reasons.push("version-mismatch");
-if(m.payloadSize>256000)reasons.push("payload-too-large");
-if(this.seen.has(m.idempotencyKey))return{accepted:true,action:"dedupe",reasons:["duplicate-idempotency-key"],nextVersion:this.version};
-if(reasons.includes("unauthorized"))return{accepted:false,action:"block",reasons,nextVersion:this.version};
-if(reasons.includes("version-mismatch"))return{accepted:false,action:"review",reasons,nextVersion:this.version};
-if(reasons.length)return{accepted:false,action:"block",reasons,nextVersion:this.version};
-this.seen.add(m.idempotencyKey);
-this.version+=1;
-return{accepted:true,action:"commit",reasons,nextVersion:this.version};
-}}
-export function runFeatureFlagSystemPolicy(){const p=new FeatureFlagSystemPolicy(7);
-const accepted=p.evaluate({id:"1",scope:"tenant-a",baseVersion:7,payloadSize:1024,authorized:true,idempotencyKey:"k1"});
-const conflict=p.evaluate({id:"2",scope:"tenant-a",baseVersion:4,payloadSize:1024,authorized:true,idempotencyKey:"k2"});
-const duplicate=p.evaluate({id:"3",scope:"tenant-a",baseVersion:8,payloadSize:1024,authorized:true,idempotencyKey:"k1"});
-return{accepted,conflict,duplicate};
-}
+export interface Mutation{id:string;entity:"flag-evaluation";baseVersion:number;nextVersion:number;scope:string;idempotencyKey:string;payloadSize:number;authorized:boolean}export interface State{version:number;seen:Set<string>;accepted:string[]}
+export function applyMutation(state:State,m:Mutation){if(state.seen.has(m.idempotencyKey))return{state,accepted:true,reason:"dedupe"};if(!m.authorized)return{state,accepted:false,reason:"unauthorized"};if(m.baseVersion!==state.version)return{state,accepted:false,reason:"version-conflict"};if(m.payloadSize>256_000)return{state,accepted:false,reason:"payload-budget"};const seen=new Set(state.seen);seen.add(m.idempotencyKey);return{state:{version:m.nextVersion,seen,accepted:[...state.accepted,m.id]},accepted:true,reason:"commit"}}
+export function runMutationScenario(){let state:State={version:4,seen:new Set(),accepted:[]};const first=applyMutation(state,{id:"feature-flag-system-1",entity:"flag-evaluation",baseVersion:4,nextVersion:5,scope:"tenant-a",idempotencyKey:"k1",payloadSize:2048,authorized:true});state=first.state;return{first,duplicate:applyMutation(state,{id:"feature-flag-system-retry",entity:"flag-evaluation",baseVersion:5,nextVersion:6,scope:"tenant-a",idempotencyKey:"k1",payloadSize:2048,authorized:true}),conflict:applyMutation(state,{id:"feature-flag-system-stale",entity:"flag-evaluation",baseVersion:3,nextVersion:4,scope:"tenant-a",idempotencyKey:"k2",payloadSize:1024,authorized:true}),detail:"Evaluate flags from an immutable policy snapshot using actor attributes, tenant, environment, and stable bucketing. Return value, variant, rule id, and policy version for debugging. Fail closed for kill switches and security policy, use documented defaults for optional UX flags, and expire stale snapshots deliberately."}}

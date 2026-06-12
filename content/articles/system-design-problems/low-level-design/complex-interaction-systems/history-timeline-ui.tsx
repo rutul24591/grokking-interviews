@@ -20,11 +20,10 @@ export const metadata: ArticleMetadata = {
   relatedTopics: ["activity-feed-system", "version-history-system", "stepper-progress-tracker"],
 };
 
-export default function HistoryTimelineUIArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
+export default function HistoryTimelineUIArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a History Timeline UI</h1><h2>Definition &amp; Context</h2><p>Design a History Timeline UI is an implementation-heavy interaction design covering event normalization, grouping, pagination, selection, compare mode, restore intent, version gates, and accessibility. A principal-level answer must explain state ownership, geometry, browser events, cancellation, accessibility, persistence, scale, and observability.</p><p>Keep immutable history records separate from current selection, comparison pair, and restore candidate. Core structures: event map, ordered ids, cursor ledger, group keys, selected id, compare ids, restore candidate, permission flags, and request generation.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/history-timeline-ui-runtime.svg" alt="Design a History Timeline UI runtime" caption="Interaction flow from input through projection, policy, commit, and render." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>Problem Clarification</h3>
         <HighlightBlock as="p" tier="crucial">Applications need to show event sequences chronologically (git commits, document changes, activity logs). Key challenges: organizing events clearly, handling different timescales, and supporting filtering/search. Naive approach: simple list (unorganized). Better: visual timeline with grouping, filtering, and details.
         </HighlightBlock>
         <HighlightBlock as="p" tier="important"><strong>Assumptions:</strong></HighlightBlock>
@@ -37,7 +36,7 @@ export default function HistoryTimelineUIArticle() {
       </section>
 
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
         <ul className="space-y-2">
           <HighlightBlock as="li" tier="important"><strong>Timeline Display:</strong> Chronological event visualization.</HighlightBlock>
@@ -58,18 +57,14 @@ export default function HistoryTimelineUIArticle() {
       </section>
 
       <section>
-        <h2>High-Level Approach</h2>
+        <h3>High-Level Approach</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Fetch events ordered by timestamp. Group by time interval <Highlight tier="important">(day/hour). Render grouped timeline. On scroll,</Highlight> lazy-load more events. Virtualize for performance. Support filtering and search.
         </Highlight></HighlightBlock>
       </section>
 
       <section>
-        <h2>Detailed Design</h2>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/history-timeline-architecture.svg"
-          alt="History Timeline UI architecture showing timeline layout with grouped events, data architecture with flat events array and grouped map, cursor pagination, filter system, and virtualization"
-          caption="History Timeline: timeline layout with date groups, flat-to-grouped data transformation, cursor pagination, and virtualization for large event sets"
-        />
+        <h3>Detailed Design</h3>
+        
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Timeline Structure</h3>
         <p>Organizing events.</p>
@@ -145,7 +140,7 @@ export default function HistoryTimelineUIArticle() {
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
+        <h3>Trade-offs and Considerations</h3>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Vertical vs Horizontal</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Vertical: natural scrolling, mobile-friendly. Horizontal: shows time progression, less common.</Highlight></HighlightBlock>
 
@@ -154,11 +149,16 @@ export default function HistoryTimelineUIArticle() {
       </section>
 
       <section>
-        <h2>Summary</h2>
+        <h3>Summary</h3>
         <HighlightBlock as="p" tier="crucial">Timeline UIs visualize event sequences chronologically. Essential aspects include timeline structure with grouping, time intervals (today, week, month), event details on</HighlightBlock>
 <HighlightBlock as="p" tier="important">expansion, filtering by type/user/date, search capability, virtualization for performance, visual styling with icons and connectors, and zoom for different timescales.</HighlightBlock>
 <HighlightBlock as="p" tier="important">Real-world systems use virtualized lists for scale, smooth animations, and color-coded event types.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Normalize pointer, touch, keyboard, resize, and async events before applying transitions. Separate raw intent, transient projection, committed state, derived geometry, and telemetry. Release pointer capture, listeners, observers, timers, and animation handles idempotently.</p><p>Keep immutable history records separate from current selection, comparison pair, and restore candidate.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/history-timeline-ui-recovery.svg" alt="Design a History Timeline UI recovery" caption="Recovery flow: cancel safely, retain committed truth, recalculate projection, and restore UI." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>History is append-only server truth. Restore creates a new version rather than mutating history. Scale pressure comes from long histories, duplicate events, stale cursors, large diffs, restricted records, and concurrent restores. Bound measurement, batch rendering, and degrade predictably.</p><p>Prefer native semantics where they meet requirements. Custom interaction earns its cost only when product behavior needs explicit gesture, geometry, or workflow policy.</p></section>
+<section><h2>Best practices</h2><p>Use typed sessions, stable ids, pointer capture, keyboard alternatives, reduced-motion policy, clamped geometry, idempotent cleanup, and deterministic tests. Measure latency, dropped frames, cancellation, rollback, and accessibility regressions.</p><h3>Operational implementation: immutable history projection and restore</h3><p>Store immutable revisions and a mutable selected revision id. Virtualize long timelines, group entries without losing stable ids, preview without mutating the current document, and restore through a conditional operation that creates a new revision rather than deleting later history.</p><p>Define a typed interaction session with owner, generation, start geometry, latest projection, committed snapshot, cancellation reason, and cleanup handles. Instrument pointer-to-paint latency, dropped frames, measurement cost, projection count, cancellation, rollback, constraint violations, and accessibility fallback usage. Test pointer loss, resize during interaction, keyboard-only flow, reduced motion, hidden tabs, unmount cleanup, stale persistence response, and extreme geometry.</p></section>
+<h3>Principal defense: scale, privacy, and rollback</h3><p>Keep committed domain state separate from transient geometry, pointer samples, animations, and derived guides. Under large collections, index only visible or nearby geometry, batch pointer updates to animation frames, cancel stale measurements, and degrade visual fidelity before interaction correctness. Persistence uses stable ids and versions; a rejected write restores the last committed snapshot and preserves an actionable retry state.</p><p>Even local interactions need abuse and privacy boundaries when they persist or collaborate. Validate dimensions, coordinates, payload sizes, and mutation frequency before accepting expensive work. Do not leak hidden objects, restricted calendar details, or cross-tenant geometry through previews, presence, or telemetry. Observe cancellation reason, long tasks, frame drops, rejected transitions, rollback outcome, and cleanup leaks.</p><section><h2>Common Pitfalls</h2><p>Common failures include mixing raw and committed state, leaking listeners, failing to handle pointer cancellation, ignoring keyboard users, and persisting invalid geometry.</p><p>For this topic, dedupe records, page cursors, preserve selection, validate restore permissions, confirm destructive intent, and refresh after restore.</p><h3>Revision graph and restore semantics</h3><p>Model revisions as immutable nodes with id, parent ids, author, timestamp, summary, source version, and optional checkpoint metadata. The visible timeline is a projection that may group autosaves, collapse noisy events, and virtualize old history. Preview selects a historical node without mutating the working document. Restore creates a new revision whose source points to the selected node so audit history remains intact.</p><p>Large timelines need cursor pagination and anchor preservation. New revisions can arrive while the user inspects older history; show a non-disruptive update affordance rather than jumping the viewport. Protect sensitive revision content with the same authorization as the current document, apply retention policy to snapshots and diffs, and expose restore failure as a conditional-write conflict rather than dropping the user's current work.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to repeated direct-manipulation workflows where responsive projection and safe cancellation matter as much as durable persistence.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep immutable history records separate from current selection, comparison pair, and restore candidate.</p><h3>What breaks at scale?</h3><p>long histories, duplicate events, stale cursors, large diffs, restricted records, and concurrent restores.</p><h3>What consistency applies?</h3><p>History is append-only server truth. Restore creates a new version rather than mutating history.</p><h3>How do you recover?</h3><p>dedupe records, page cursors, preserve selection, validate restore permissions, confirm destructive intent, and refresh after restore.</p><h3>How do you defend the architecture?</h3><p>I would prefer native behavior until the required geometry, gesture, or workflow policy justifies a custom controller.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events" target="_blank" rel="noreferrer">MDN Pointer Events</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA APG</a></li></ul></section>
+</ArticleLayout>}

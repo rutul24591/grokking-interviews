@@ -381,7 +381,7 @@
           "slug": "leetcode",
           "subcategories": [
             { "name": "Patterns", "slug": "patterns" },
-            { "name": "Problems", "slug": "problems", "comingSoon": true }
+            { "name": "Problems", "slug": "problems" }
           ]
         },
         {

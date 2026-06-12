@@ -23,7 +23,7 @@ export default function RbacDashboardArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame Design an RBAC Dashboard around system boundary, state ownership, failure handling, scalability, security, and observable recovery. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock>
         <HighlightBlock as="p" tier="important">
           A role and permission administration console is an enterprise SaaS system for tenant admins, security teams, compliance reviewers, support admins, and product operators. It is not just a CRUD surface. It has to support tenant isolation, permissioned collaboration, auditability, lifecycle governance, reliable exports, and operational recovery when integrations or background jobs fail.
         </HighlightBlock>
@@ -36,7 +36,7 @@ export default function RbacDashboardArticle() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: the design must preserve correctness under latency, concurrency, partial failure, and changing permissions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design an RBAC Dashboard, the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock>
         <p>
           The core entities are users, groups, roles, permissions, resource scopes, policies, assignments, access reviews, break-glass grants, and audit events. These entities need stable identifiers, tenant scope, ownership, lifecycle state, and audit metadata. A design that stores only the current UI shape will fail when customers ask for history, export, access review, or rollback.
         </p>
@@ -73,7 +73,7 @@ export default function RbacDashboardArticle() {
         </p>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: state model, API contracts, cache policy, async workflow, authorization, rollout, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock>
         <p>
           A strong architecture uses a thin interactive client, a domain API, a policy service, a write store, an event stream, projected read models, search or analytics stores, and a governance plane. The client should not assemble authority from scattered endpoints; it should receive server-validated state and clear action eligibility.
         </p>
@@ -122,7 +122,7 @@ export default function RbacDashboardArticle() {
         </p>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock>
         <p>
           RBAC dashboards trade admin flexibility against blast radius. Fine-grained permissions improve control but create cognitive load and evaluation cost; coarse roles are simpler but overgrant access.
         </p>
@@ -159,7 +159,7 @@ export default function RbacDashboardArticle() {
         </p>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: latency, error rate, fallback rate, conversion, stale-state duration, and rollback success.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock>
         <p>
           Design every stored object with tenant id, owner, lifecycle state, created-by, updated-by, and audit correlation. These fields look mundane but they power support, compliance, migration, and incident response.
         </p>
@@ -193,7 +193,7 @@ export default function RbacDashboardArticle() {
         </p>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: stale state, hidden partial failure, unbounded retries, ownership ambiguity, and missing observability.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock>
         <p>
           The worst failure is letting the UI display stale effective access. Admins need to understand direct grants, inherited grants, group grants, resource scopes, and pending policy changes before they approve access.
         </p>
@@ -218,7 +218,7 @@ export default function RbacDashboardArticle() {
         </p>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock>
         <p>
           Enterprise admin setup requires trustworthy historical state, clear ownership, and exportable evidence. The design should preserve who changed what and which policy or version was active at the time.
         </p>
@@ -240,7 +240,7 @@ export default function RbacDashboardArticle() {
         </p>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock>
         <h3>How would you model role and permission administration console for enterprise scale?</h3>
         <p>
           I would start with tenant-scoped domain entities, versioned configuration, explicit ownership, and audit metadata. Writes go through a domain API and policy service, then emit events for projections, search, notifications, audit, and exports. The transactional store remains the source of truth, while read models optimize dashboards and investigation paths. I would avoid putting business authority in the client because exports, background jobs, and integrations must enforce the same policy.

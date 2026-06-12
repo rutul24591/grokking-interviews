@@ -205,7 +205,9 @@ function createEvaluation(
   };
 }
 
-export default {
+const evaluator = {
   evaluateTaskOutputs,
   evaluateArtifact,
 };
+
+export default evaluator;

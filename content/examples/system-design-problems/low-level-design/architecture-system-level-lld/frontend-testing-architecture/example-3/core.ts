@@ -1,0 +1,2 @@
+export interface TestJob{id:string;durationMs:number}export function shard(jobs:TestJob[],count:number){const shards=Array.from({length:count},()=>({total:0,jobs:[] as string[]}));for(const job of [...jobs].sort((a,b)=>b.durationMs-a.durationMs)){const target=shards.toSorted((a,b)=>a.total-b.total)[0];target.jobs.push(job.id);target.total+=job.durationMs}return shards}
+export function runShardScenario(){return shard([{id:"checkout",durationMs:9000},{id:"search",durationMs:6500},{id:"profile",durationMs:2500},{id:"settings",durationMs:1800}],2)}

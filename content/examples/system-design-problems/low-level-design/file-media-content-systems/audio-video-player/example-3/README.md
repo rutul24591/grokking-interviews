@@ -1,4 +1,3 @@
-# A/V Player — Example 3
+# AudioVideoPlayer: recovery scenario
 
-Edge-case checklist for media players.
-
+This example models the failure case where buffer-ahead dropped below the rebuffer threshold. The recovery plan is explicit: pause decoding, fetch the next bitrate-compatible segment, then resume from the committed playhead.

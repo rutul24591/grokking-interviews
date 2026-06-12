@@ -1,1 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img"><rect width="1200" height="720" fill="#fff7ed"/><text x="64" y="72" font-family="Arial" font-size="30" font-weight="700" fill="#0f172a">Design a File Explorer UI scale and recovery</text><path d="M132 360 L340 176 L590 360 L842 176 L1068 360 L842 548 L590 360 L340 548 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="4"/><path d="M340 176 C470 74 720 74 842 176 M340 548 C474 650 718 650 842 548" fill="none" stroke="#2563eb" stroke-width="4" stroke-dasharray="12 10"/><circle cx="132" cy="360" r="72" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/><circle cx="340" cy="176" r="72" fill="#fef3c7" stroke="#ca8a04" stroke-width="3"/><circle cx="590" cy="360" r="92" fill="#ecfeff" stroke="#0891b2" stroke-width="4"/><circle cx="842" cy="176" r="72" fill="#fee2e2" stroke="#dc2626" stroke-width="3"/><circle cx="1068" cy="360" r="72" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/><circle cx="842" cy="548" r="72" fill="#ede9fe" stroke="#7c3aed" stroke-width="3"/><circle cx="340" cy="548" r="72" fill="#fce7f3" stroke="#db2777" stroke-width="3"/><text x="86" y="354" font-family="Arial" font-size="18" font-weight="700" fill="#1e3a8a">Load</text><text x="74" y="382" font-family="Arial" font-size="14" fill="#334155">high volume</text><text x="292" y="170" font-family="Arial" font-size="18" font-weight="700" fill="#854d0e">Pressure</text><text x="282" y="198" font-family="Arial" font-size="14" fill="#334155">budget limit</text><text x="530" y="354" font-family="Arial" font-size="18" font-weight="700" fill="#164e63">Policy gate</text><text x="530" y="382" font-family="Arial" font-size="14" fill="#334155">bound + validate</text><text x="798" y="170" font-family="Arial" font-size="18" font-weight="700" fill="#991b1b">Failure</text><text x="788" y="198" font-family="Arial" font-size="14" fill="#334155">stale / reject</text><text x="1018" y="354" font-family="Arial" font-size="18" font-weight="700" fill="#14532d">Fallback</text><text x="1012" y="382" font-family="Arial" font-size="14" fill="#334155">stable state</text><text x="794" y="542" font-family="Arial" font-size="18" font-weight="700" fill="#5b21b6">Observe</text><text x="786" y="570" font-family="Arial" font-size="14" fill="#334155">reason codes</text><text x="286" y="542" font-family="Arial" font-size="18" font-weight="700" fill="#9d174d">Reconcile</text><text x="278" y="570" font-family="Arial" font-size="14" fill="#334155">restore truth</text><rect x="92" y="630" width="1014" height="54" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/><text x="118" y="663" font-family="Arial" font-size="14" fill="#334155">retain stable ids, reject recursive moves, rollback failed rename, refresh affected branches after conflict, preserve focus, and keep unloaded branches lazy</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="system-ui, -apple-system, BlinkMacSystemFont, sans-serif" role="img" aria-label="File Explorer UI: recovery matrix">
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#2563eb"/></marker>
+    <marker id="arrow-teal" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#0f766e"/></marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#c2410c"/></marker>
+    <marker id="arrow-rose" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#be123c"/></marker>
+  </defs>
+  <rect x="18" y="18" width="924" height="524" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="54" y="56" font-size="18" font-weight="700" fill="#172033">File Explorer UI: recovery matrix</text>
+  <text x="54" y="78" font-size="11.5" fill="#526074">Every abnormal completion maps to a guard, deterministic action, and observable evidence.</text>
+  <rect x="48" y="106" width="864" height="344" rx="9" fill="#fff1f2" stroke="#be123c" stroke-width="1.1"/>
+  <text x="68" y="129" font-size="12.5" font-weight="700" fill="#be123c">FAILURE DECISION MATRIX</text><text x="76" y="154" font-size="11" font-weight="700" fill="#be123c">SIGNAL</text>
+  <text x="312" y="154" font-size="11" font-weight="700" fill="#c2410c">GUARD</text>
+  <text x="530" y="154" font-size="11" font-weight="700" fill="#0f766e">ACTION</text>
+  <text x="744" y="154" font-size="11" font-weight="700" fill="#6d28d9">EVIDENCE</text><rect x="70" y="184" width="820" height="42" rx="7" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="88" y="210" font-size="10.5" fill="#172033">late completion</text>
+    <text x="312" y="210" font-size="10.5" fill="#172033">generation stale</text>
+    <text x="530" y="210" font-size="10.5" font-weight="700" fill="#0f766e">ignore result</text>
+    <text x="744" y="210" font-size="10.5" fill="#526074">stale age</text><rect x="70" y="240" width="820" height="42" rx="7" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="88" y="266" font-size="10.5" fill="#172033">timeout / denial</text>
+    <text x="312" y="266" font-size="10.5" fill="#172033">retry budget</text>
+    <text x="530" y="266" font-size="10.5" font-weight="700" fill="#0f766e">retry or degrade</text>
+    <text x="744" y="266" font-size="10.5" fill="#526074">attempt + reason</text><rect x="70" y="296" width="820" height="42" rx="7" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="88" y="322" font-size="10.5" fill="#172033">invalid scope</text>
+    <text x="312" y="322" font-size="10.5" fill="#172033">owner mismatch</text>
+    <text x="530" y="322" font-size="10.5" font-weight="700" fill="#0f766e">rollback stable</text>
+    <text x="744" y="322" font-size="10.5" fill="#526074">scope + trace</text><rect x="70" y="352" width="820" height="42" rx="7" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="88" y="378" font-size="10.5" fill="#172033">unmount / cancel</text>
+    <text x="312" y="378" font-size="10.5" fill="#172033">liveness false</text>
+    <text x="530" y="378" font-size="10.5" font-weight="700" fill="#0f766e">release effects</text>
+    <text x="744" y="378" font-size="10.5" fill="#526074">cleanup proof</text><text x="72" y="486" font-size="11" fill="#172033">Stable target: commit guard. Recovery must preserve committed truth and explain visible fallback.</text>
+</svg>

@@ -3,7 +3,6 @@
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
 import { HighlightBlock } from "@/components/articles/HighlightBlock";
-import { Highlight } from "@/components/articles/Highlight";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -20,11 +19,10 @@ export const metadata: ArticleMetadata = {
   relatedTopics: ["login-session-management", "token-refresh-system", "device-session-management-ui"],
 };
 
-export default function SessionTimeoutAutoLogoutArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
+export default function SessionTimeoutAutoLogoutArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design Session Timeout and Auto Logout</h1><h2>Definition &amp; Context</h2><p>Design Session Timeout and Auto Logout is a security-sensitive low-level design problem covering idle tracking, server expiry, warning modal, activity renewal, multi-tab coordination, step-up policy, and logout cleanup. A principal-level answer must state the authoritative server boundary, threat model, lifecycle, abuse controls, rollback, privacy, observability, and user-safe degraded behavior.</p><p>Keep server expiry authoritative and treat local idle timers as warning UX. Coordinate tabs without extending sessions accidentally. Core structures: server expiry, local idle deadline, warning state, activity timestamp, renewal request, tab channel, lock state, and logout reason.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/auth-user-systems/session-timeout-auto-logout-runtime.svg" alt="Design Session Timeout and Auto Logout runtime" caption="Security flow from user intent through authoritative validation and audit." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>Problem Clarification</h3>
         <HighlightBlock as="p" tier="important">A user logs into a banking app on a public computer, checks their balance, then leaves without logging out. An hour later, another person sits at the computer and can access the user's account (session is still active). This is a security risk. Sessions should expire after inactivity to protect accounts abandoned on shared devices.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">The challenge is balancing security and UX. Hard timeout (logout immediately after 15 minutes of inactivity) is secure but frustrating: user fills out a form for 20 minutes (without clicking), then submits and is logged out—work lost, frustrating. Soft timeout (warn user, ask to extend) is better: user sees "Your session expires in 1 minute" and clicks "Stay logged in", extending the session for another 15 minutes. Work is preserved.</HighlightBlock>
         <HighlightBlock as="p" tier="important">Additional challenges: detecting inactivity accurately (what counts as activity? page visibility hidden means user likely away, but don't count status bar hover), handling multiple browser tabs (should inactivity in tab A timeout tab B?), draft preservation (auto-save user's work before logout so they don't lose input), and returning to original URL after re-login ("I was editing /posts/123, log me back there after I re-login").</HighlightBlock>
@@ -33,7 +31,7 @@ export default function SessionTimeoutAutoLogoutArticle() {
       </section>
 
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
         <ul className="space-y-2">
           <HighlightBlock as="li" tier="crucial"><strong>Inactivity-Based Timeout:</strong> Log out automatically after N minutes of user inactivity (default 15 minutes, configurable per app). Inactivity is defined as no user action: clicks, keyboard input, scrolling, or touch. Page visibility (tab minimized) counts as inactivity even if user is away.</HighlightBlock>
@@ -56,7 +54,7 @@ export default function SessionTimeoutAutoLogoutArticle() {
       </section>
 
       <section>
-        <h2>High-Level Approach</h2>
+        <h3>High-Level Approach</h3>
         <HighlightBlock as="p" tier="important">The session timeout system has three phases: activity tracking, warning, and logout.</HighlightBlock>
         <HighlightBlock as="p" tier="important">Phase 1 (Tracking): On app load, initialize inactivity timer (e.g., 15 minutes). Register activity listeners (click, keydown, scroll). On any activity, reset timer. Use Page Visibility API: pause tracking when tab hidden (user away). Run timer on background, fire callback when timeout approaches (e.g., 1 minute remaining).</HighlightBlock>
         <HighlightBlock as="p" tier="important">Phase 2 (Warning): When timeout approaches, show modal: "Session expiring in 1 minute. Stay logged in?" Display countdown. Buttons: "Stay Logged In" (extend session), "Log Out Now" (logout early). On "Stay Logged In", call backend to extend session, reset timer, dismiss modal. On "Log Out Now", proceed to logout.</HighlightBlock>
@@ -65,13 +63,9 @@ export default function SessionTimeoutAutoLogoutArticle() {
       </section>
 
       <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/auth-user-systems/session-timeout-auto-logout.svg"
-          alt="Session timeout system with activity detection, cross-tab sync, timeout state machine, and countdown warning dialog"
-          caption="Session timeout system with activity detection, cross-tab sync, timeout state machine, and countdown warning dialog"
-        />
+        
 
-        <h2>Detailed Design</h2>
+        <h3>Detailed Design</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Activity Tracking and Detection</h3>
         <HighlightBlock as="p" tier="important">Activity tracking listens for user input events: mousedown, keydown, touchstart, scroll, wheel. Register passive listeners for scroll/wheel (enable scroll optimization). Debounce events to 50-100ms (multiple events in 50ms = single activity). On activity, reset inactivity counter to full duration (15 minutes). Use Page Visibility API: when document.hidden becomes true (tab minimized), pause tracking and timer (user away from app). When tab becomes visible again, resume. Don't count logout actions as activity (user is intentionally exiting).</HighlightBlock>
@@ -104,7 +98,7 @@ export default function SessionTimeoutAutoLogoutArticle() {
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
+        <h3>Trade-offs and Considerations</h3>
         <HighlightBlock as="p" tier="crucial"><strong>Security vs User Friction:</strong> Strict timeout (5 minutes) is secure but forces frequent re-logins (annoying for legitimate users). Relaxed timeout (30 minutes) reduces friction but increases exposure. Compromise: configurable per app, with warning + extension (user controls decision). For banking: short timeout (5-10min). For social media: longer timeout (30min+).</HighlightBlock>
         <HighlightBlock as="p" tier="important"><strong>Client vs Server Enforcement:</strong> Client-side timeout is bypassable (disable JavaScript, keep token). Server-side enforcement is secure but requires every request to be validated (latency). Use both: client timeout for UX, server validation for security. Trust server as source of truth.</HighlightBlock>
         <HighlightBlock as="p" tier="important"><strong>Draft Auto-Save Overhead:</strong> Auto-saving every 30 seconds adds latency and server load. Alternative: manual "Save Draft" button (less UX-friendly). Compromise: auto-save periodically and on form blur (reduce frequency).</HighlightBlock>
@@ -112,7 +106,7 @@ export default function SessionTimeoutAutoLogoutArticle() {
       </section>
 
       <section>
-        <h2>Implementation Patterns</h2>
+        <h3>Implementation Patterns</h3>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Pattern 1: Simple Inactivity Timeout with Warning</h3>
         <HighlightBlock as="p" tier="important">Register activity listeners. Initialize timer on app load. On inactivity, show warning modal (countdown). On "Stay Logged In", extend session. On timer expiry, logout.</HighlightBlock>
 
@@ -124,13 +118,12 @@ export default function SessionTimeoutAutoLogoutArticle() {
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Pattern 4: Cross-Tab Logout Broadcast</h3>
         <HighlightBlock as="p" tier="crucial">On logout in any tab, write a “logout event” marker to shared browser storage. Other tabs subscribe to the browser storage-change notification and, when they see that marker update, they clear local auth state and redirect to login. This provides near-instant cross-tab consistency without polling.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="important"><Highlight tier="crucial">Real-world systems (Google, Microsoft, banking apps) implement all three phases: activity tracking → warning → logout. For best results, make timeouts configurable per app (banking: strict, social: relaxed), provide</Highlight></HighlightBlock>
-<HighlightBlock as="p" tier="important">pre-logout warning with visual countdown, allow session extension, auto-save user work before logout, preserve return URL for seamless re-entry, implement server-side verification (don't trust client), log all logout events for audit, and handle edge cases (multi-tab, offline, network errors). Session timeouts significantly improve security without requiring constant re-login if implemented with user-friendly warnings and extension mechanisms.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate user intent, browser-safe projection, server validation, durable security record, audit evidence, and cleanup. Frontend state improves UX but never replaces server enforcement. Tokens, challenges, sessions, and privileged grants need explicit expiry and revocation.</p><p>Keep server expiry authoritative and treat local idle timers as warning UX. Coordinate tabs without extending sessions accidentally.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/auth-user-systems/session-timeout-auto-logout-recovery.svg" alt="Design Session Timeout and Auto Logout threat recovery" caption="Threat recovery: validate, deny safely, preserve authoritative truth, audit, and recover." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Server expiry is authoritative. Client timers provide bounded early warning and must reconcile after wake or reconnect. Scale and threat pressure comes from background tabs, clock skew, multiple tabs, network loss, shared devices, and sensitive unsaved work. Fail closed for privilege while keeping error UX actionable.</p></section>
+<section><h2>Best practices</h2><p>Use short-lived scoped grants, secure cookies, CSRF defenses, replay prevention, rotation, versioned writes, server-side authorization, rate limits, redacted logs, and explicit audit events. Test expiry, replay, revocation, retries, multiple tabs, and permission drift.</p></section>
+<h3>Principal defense: authority, consistency, and abuse cost</h3><p>Use server-authoritative consistency for security decisions. Browser state is a revocable projection that can improve responsiveness but cannot grant access, extend expiry, or confirm a privileged transition. Every mutation carries a version, expiry, nonce, or idempotency key as appropriate; stale projections refresh or fail closed. Rollback means revoking the grant, session family, policy version, or pending intent while retaining an audit trail.</p><p>Model abuse and cost together. Rate-limit sensitive attempts by account, device, network, and risk cohort without turning the UI into an enumeration oracle. Bound session inventory, audit retention, challenge issuance, cross-tab broadcasts, and refresh retries. Emit denial reason classes, revocation lag, suspicious reuse, policy version, and correlation ids while avoiding sensitive payloads in telemetry.</p><section><h2>Common Pitfalls</h2><p>Common failures include trusting frontend guards, storing bearer tokens in localStorage, leaking account existence, missing idempotency, weak redirect validation, and incomplete audit evidence.</p><p>For this topic, warn before expiry, preserve safe drafts, broadcast logout, refresh server time, avoid hidden-tab drift, and require reauth.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to user identity and access workflows where convenience must not weaken authoritative server enforcement or incident evidence.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>What is authoritative?</h3><p>Server expiry is authoritative. Client timers provide bounded early warning and must reconcile after wake or reconnect.</p><h3>What breaks under abuse?</h3><p>background tabs, clock skew, multiple tabs, network loss, shared devices, and sensitive unsaved work.</p><h3>How do you recover?</h3><p>warn before expiry, preserve safe drafts, broadcast logout, refresh server time, avoid hidden-tab drift, and require reauth.</p><h3>What does the client enforce?</h3><p>The client improves usability and fails closed for privileged views; the server enforces every protected read and mutation.</p><h3>How do you observe incidents?</h3><p>Emit redacted audit records with subject, actor, policy version, reason, outcome, and correlation id.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.rfc-editor.org/rfc/rfc7636" target="_blank" rel="noreferrer">RFC 7636 PKCE</a></li><li><a href="https://www.w3.org/TR/webauthn-3/" target="_blank" rel="noreferrer">WebAuthn Level 3</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies" target="_blank" rel="noreferrer">MDN Cookies</a></li><li><a href="https://owasp.org/www-project-cheat-sheets/" target="_blank" rel="noreferrer">OWASP Cheat Sheets</a></li></ul></section>
+</ArticleLayout>}

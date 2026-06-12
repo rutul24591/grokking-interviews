@@ -1,112 +1,27 @@
-<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="system-ui, -apple-system, BlinkMacSystemFont, sans-serif" role="img" aria-label="Audio Video Player: reducer ownership map">
   <defs>
-    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/></marker>
-    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563eb"/></marker>
-    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/></marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#2563eb"/></marker>
+    <marker id="arrow-teal" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#0f766e"/></marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#c2410c"/></marker>
+    <marker id="arrow-rose" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#be123c"/></marker>
   </defs>
-  <rect width="900" height="520" fill="#f0f4ff"/>
-  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1b4b">Audio / Video Player — Architecture</text>
-  <text x="450" y="48" text-anchor="middle" font-size="11" fill="#6b7280">Media state · HLS adaptive · Seek &amp; buffer · Controls &amp; A11y</text>
-  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
-  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
-  <rect x="12" y="76" width="425" height="12" fill="#6d5bd0"/>
-  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">A — MEDIA STATE MODEL</text>
-  <rect x="24" y="98" width="190" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
-  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">PlayerState</text>
-  <text x="34" y="133" font-size="9" fill="#374151">status: idle|loading|playing</text>
-  <text x="34" y="148" font-size="9" fill="#374151">  |paused|ended|error</text>
-  <text x="34" y="163" font-size="9" fill="#374151">currentTime: number (seconds)</text>
-  <text x="34" y="178" font-size="9" fill="#374151">duration: number (seconds)</text>
-  <text x="34" y="193" font-size="9" fill="#374151">volume: number (0–1)</text>
-  <text x="34" y="208" font-size="9" fill="#374151">muted: boolean</text>
-  <text x="34" y="223" font-size="9" fill="#374151">playbackRate: 0.25|0.5|1|1.5|2</text>
-  <text x="34" y="240" font-size="9" fill="#374151">buffered: TimeRanges</text>
-  <rect x="226" y="98" width="197" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
-  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">Event Bindings</text>
-  <text x="236" y="133" font-size="9" fill="#374151">loadedmetadata: set duration</text>
-  <text x="236" y="148" font-size="9" fill="#374151">timeupdate: sync currentTime</text>
-  <text x="236" y="163" font-size="9" fill="#374151">  throttle: rAF (not every event)</text>
-  <text x="236" y="178" font-size="9" fill="#374151">waiting: show buffer spinner</text>
-  <text x="236" y="193" font-size="9" fill="#374151">canplay: hide spinner</text>
-  <text x="236" y="208" font-size="9" fill="#374151">error: surface MediaError.code</text>
-  <text x="236" y="223" font-size="9" fill="#374151">  1=ABORTED 2=NETWORK 3=DECODE</text>
-  <text x="236" y="240" font-size="9" fill="#374151">ended: autoplay next or loop</text>
-  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
-  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
-  <rect x="463" y="76" width="425" height="12" fill="#2563eb"/>
-  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">B — HLS &amp; ADAPTIVE BITRATE</text>
-  <rect x="475" y="98" width="185" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
-  <text x="567" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">HLS.js Integration</text>
-  <text x="485" y="133" font-size="9" fill="#374151">Hls.isSupported() check first</text>
-  <text x="485" y="148" font-size="9" fill="#374151">  attach(videoEl) → loadSource(url)</text>
-  <text x="485" y="163" font-size="9" fill="#374151">Native HLS: Safari MSE</text>
-  <text x="485" y="178" font-size="9" fill="#374151">  video.src = .m3u8 directly</text>
-  <text x="485" y="193" font-size="9" fill="#374151">Quality levels: LEVEL_SWITCHED event</text>
-  <text x="485" y="208" font-size="9" fill="#374151">  expose as resolution selector UI</text>
-  <text x="485" y="225" font-size="9" fill="#374151">hls.currentLevel: -1 = auto ABR</text>
-  <text x="485" y="240" font-size="9" fill="#374151">hls.destroy() on unmount</text>
-  <rect x="672" y="98" width="202" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
-  <text x="773" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Buffer Strategy</text>
-  <text x="682" y="133" font-size="9" fill="#374151">bufferAhead: 30s default</text>
-  <text x="682" y="148" font-size="9" fill="#374151">bufferBehind: 10s (trim old)</text>
-  <text x="682" y="163" font-size="9" fill="#374151">Buffer bar: TimeRanges → %</text>
-  <text x="682" y="178" font-size="9" fill="#374151">  grey fill behind progress bar</text>
-  <text x="682" y="193" font-size="9" fill="#374151">Stall: waiting &gt; 3s → drop quality</text>
-  <text x="682" y="208" font-size="9" fill="#374151">Retry: 3 attempts on error</text>
-  <text x="682" y="225" font-size="9" fill="#374151">  exponential backoff 1s 2s 4s</text>
-  <text x="682" y="240" font-size="9" fill="#374151">Low bandwidth: switch to 360p</text>
-  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
-  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
-  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
-  <rect x="12" y="301" width="425" height="12" fill="#2f9d74"/>
-  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">C — SEEK &amp; BUFFER UI</text>
-  <rect x="24" y="323" width="190" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
-  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Seek Bar</text>
-  <text x="34" y="358" font-size="9" fill="#374151">role="slider" range input overlay</text>
-  <text x="34" y="373" font-size="9" fill="#374151">aria-valuenow: formatted time</text>
-  <text x="34" y="388" font-size="9" fill="#374151">Hover thumbnail: seek preview</text>
-  <text x="34" y="403" font-size="9" fill="#374151">  canvas snapshot at hover time</text>
-  <text x="34" y="418" font-size="9" fill="#374151">  1 frame per 5s of video</text>
-  <text x="34" y="433" font-size="9" fill="#374151">Chapter markers: rect overlays</text>
-  <text x="34" y="448" font-size="9" fill="#374151">Buffered: grey fill behind progress</text>
-  <rect x="226" y="323" width="197" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
-  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Seek Logic</text>
-  <text x="236" y="358" font-size="9" fill="#374151">input event: drag preview update</text>
-  <text x="236" y="373" font-size="9" fill="#374151">change event: commit seek</text>
-  <text x="236" y="388" font-size="9" fill="#374151">  video.currentTime = value</text>
-  <text x="236" y="403" font-size="9" fill="#374151">Keyboard ← →: ±5 seconds</text>
-  <text x="236" y="418" font-size="9" fill="#374151">Shift+← →: ±10 seconds</text>
-  <text x="236" y="433" font-size="9" fill="#374151">J K L: ±10s, pause, +10s (YT)</text>
-  <text x="236" y="448" font-size="9" fill="#374151">Throttle drag: 50ms update</text>
-  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
-  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97843"/>
-  <rect x="463" y="301" width="425" height="12" fill="#d97843"/>
-  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">D — CONTROLS &amp; ACCESSIBILITY</text>
-  <rect x="475" y="323" width="185" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
-  <text x="567" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Custom Controls</text>
-  <text x="485" y="358" font-size="9" fill="#374151">Hide native controls: no controls</text>
-  <text x="485" y="373" font-size="9" fill="#374151">Controls bar: fade after 3s idle</text>
-  <text x="485" y="388" font-size="9" fill="#374151">  always visible on pause</text>
-  <text x="485" y="403" font-size="9" fill="#374151">Volume: slider + mute toggle</text>
-  <text x="485" y="418" font-size="9" fill="#374151">PiP: requestPictureInPicture()</text>
-  <text x="485" y="433" font-size="9" fill="#374151">Fullscreen: requestFullscreen()</text>
-  <text x="485" y="448" font-size="9" fill="#374151">Quality: hls.levels selector UI</text>
-  <rect x="672" y="323" width="202" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
-  <text x="773" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">A11y &amp; Captions</text>
-  <text x="682" y="358" font-size="9" fill="#374151">aria-label="Video player"</text>
-  <text x="682" y="373" font-size="9" fill="#374151">Captions: WebVTT track element</text>
-  <text x="682" y="388" font-size="9" fill="#374151">  kind="subtitles|captions"</text>
-  <text x="682" y="403" font-size="9" fill="#374151">  srclang, label per track</text>
-  <text x="682" y="418" font-size="9" fill="#374151">Keyboard: Space=play m=mute</text>
-  <text x="682" y="433" font-size="9" fill="#374151">  f=fullscreen c=captions 0-9=seek</text>
-  <text x="682" y="448" font-size="9" fill="#374151">Focus trap in fullscreen mode</text>
-  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
-  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
-  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
-  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
-  <text x="90" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Buffer ahead: 30s default</text>
-  <text x="270" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Quality levels: HLS ABR auto</text>
-  <text x="450" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Seek preview: 1 frame per 5s</text>
-  <text x="630" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Captions: WebVTT track element</text>
-  <text x="810" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Keyboard: Space m f c ← →</text>
+  <rect x="18" y="18" width="924" height="524" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="54" y="56" font-size="18" font-weight="700" fill="#172033">Audio Video Player: reducer ownership map</text>
+  <text x="54" y="78" font-size="11.5" fill="#526074">Events, transient projection, effects, commit guards, visible state, and cleanup have distinct owners.</text>
+  <rect x="48" y="106" width="864" height="330" rx="9" fill="#ecfdf5" stroke="#0f766e" stroke-width="1.1"/>
+  <text x="68" y="129" font-size="12.5" font-weight="700" fill="#0f766e">STATE GRAPH AND EFFECT OWNERSHIP</text><circle cx="480" cy="266" r="62" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="480" y="263" text-anchor="middle" font-size="12" font-weight="700" fill="#172033">typed state</text>
+  <text x="480" y="284" text-anchor="middle" font-size="10" fill="#526074">owned reducer state</text><line x1="480" y1="266" x2="176" y2="170" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <circle cx="176" cy="170" r="44" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="176" y="174" text-anchor="middle" font-size="10.5" font-weight="700" fill="#172033">user intent</text><line x1="480" y1="266" x2="480" y2="152" stroke="#c2410c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+    <circle cx="480" cy="152" r="44" fill="#fff7ed" stroke="#c2410c" stroke-width="1.5"/>
+    <text x="480" y="156" text-anchor="middle" font-size="10.5" font-weight="700" fill="#172033">derived projec...</text><line x1="480" y1="266" x2="784" y2="170" stroke="#6d28d9" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <circle cx="784" cy="170" r="44" fill="#f5f3ff" stroke="#6d28d9" stroke-width="1.5"/>
+    <text x="784" y="174" text-anchor="middle" font-size="10.5" font-weight="700" fill="#172033">effect boundary</text><line x1="480" y1="266" x2="176" y2="366" stroke="#be123c" stroke-width="2" marker-end="url(#arrow-rose)"/>
+    <circle cx="176" cy="366" r="44" fill="#fff1f2" stroke="#be123c" stroke-width="1.5"/>
+    <text x="176" y="370" text-anchor="middle" font-size="10.5" font-weight="700" fill="#172033">commit guard</text><line x1="480" y1="266" x2="480" y2="386" stroke="#0f766e" stroke-width="2" marker-end="url(#arrow-teal)"/>
+    <circle cx="480" cy="386" r="44" fill="#ecfdf5" stroke="#0f766e" stroke-width="1.5"/>
+    <text x="480" y="390" text-anchor="middle" font-size="10.5" font-weight="700" fill="#172033">visible result</text><line x1="480" y1="266" x2="784" y2="366" stroke="#c2410c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+    <circle cx="784" cy="366" r="44" fill="#fff7ed" stroke="#c2410c" stroke-width="1.5"/>
+    <text x="784" y="370" text-anchor="middle" font-size="10.5" font-weight="700" fill="#172033">cleanup</text><text x="72" y="474" font-size="11" fill="#172033">Invariant: transient nodes may disappear at any time; committed state changes only through an accepted transition.</text>
 </svg>

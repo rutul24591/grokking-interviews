@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* eslint-disable no-console */
 /**
  * Quick audit utility: counts highlight tiers per <h2> section for TSX articles.
  *

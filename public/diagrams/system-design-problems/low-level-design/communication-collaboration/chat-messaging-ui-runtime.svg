@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="system-ui, -apple-system, BlinkMacSystemFont, sans-serif" role="img" aria-label="Chat Messaging UI: reducer ownership map">
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#2563eb"/></marker>
+    <marker id="arrow-teal" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#0f766e"/></marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#c2410c"/></marker>
+    <marker id="arrow-rose" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#be123c"/></marker>
+  </defs>
+  <rect x="18" y="18" width="924" height="524" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="54" y="56" font-size="18" font-weight="700" fill="#172033">Chat Messaging UI: reducer ownership map</text>
+  <text x="54" y="78" font-size="11.5" fill="#526074">Events, transient projection, effects, commit guards, visible state, and cleanup have distinct owners.</text>
+  <rect x="48" y="106" width="864" height="330" rx="9" fill="#ecfdf5" stroke="#0f766e" stroke-width="1.1"/>
+  <text x="68" y="129" font-size="12.5" font-weight="700" fill="#0f766e">STATE GRAPH AND EFFECT OWNERSHIP</text><circle cx="480" cy="266" r="62" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="480" y="263" text-anchor="middle" font-size="12" font-weight="700" fill="#172033">optimistic state</text>
+  <text x="480" y="284" text-anchor="middle" font-size="10" fill="#526074">owned reducer state</text><line x1="480" y1="266" x2="176" y2="170" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <circle cx="176" cy="170" r="44" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="176" y="174" text-anchor="middle" font-size="10.5" font-weight="700" fill="#172033">local event</text><line x1="480" y1="266" x2="480" y2="152" stroke="#c2410c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+    <circle cx="480" cy="152" r="44" fill="#fff7ed" stroke="#c2410c" stroke-width="1.5"/>
+    <text x="480" y="156" text-anchor="middle" font-size="10.5" font-weight="700" fill="#172033">realtime chann...</text><line x1="480" y1="266" x2="784" y2="170" stroke="#6d28d9" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <circle cx="784" cy="170" r="44" fill="#f5f3ff" stroke="#6d28d9" stroke-width="1.5"/>
+    <text x="784" y="174" text-anchor="middle" font-size="10.5" font-weight="700" fill="#172033">ordered log</text><line x1="480" y1="266" x2="176" y2="366" stroke="#be123c" stroke-width="2" marker-end="url(#arrow-rose)"/>
+    <circle cx="176" cy="366" r="44" fill="#fff1f2" stroke="#be123c" stroke-width="1.5"/>
+    <text x="176" y="370" text-anchor="middle" font-size="10.5" font-weight="700" fill="#172033">reconcile redu...</text><line x1="480" y1="266" x2="480" y2="386" stroke="#0f766e" stroke-width="2" marker-end="url(#arrow-teal)"/>
+    <circle cx="480" cy="386" r="44" fill="#ecfdf5" stroke="#0f766e" stroke-width="1.5"/>
+    <text x="480" y="390" text-anchor="middle" font-size="10.5" font-weight="700" fill="#172033">visible status</text><line x1="480" y1="266" x2="784" y2="366" stroke="#c2410c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+    <circle cx="784" cy="366" r="44" fill="#fff7ed" stroke="#c2410c" stroke-width="1.5"/>
+    <text x="784" y="370" text-anchor="middle" font-size="10.5" font-weight="700" fill="#172033">cleanup</text><text x="72" y="474" font-size="11" fill="#172033">Invariant: transient nodes may disappear at any time; committed state changes only through an accepted transition.</text>
+</svg>

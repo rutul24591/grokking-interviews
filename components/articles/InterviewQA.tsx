@@ -111,7 +111,7 @@ export function InterviewQA({ questions }: InterviewQAProps) {
           <li className="flex items-start gap-2">
             <span className="mt-1 text-accent">✓</span>
             <span>
-              Discuss trade-offs explicitly - there's rarely one "right" answer
+              Discuss trade-offs explicitly - there&apos;s rarely one &quot;right&quot; answer
             </span>
           </li>
           <li className="flex items-start gap-2">

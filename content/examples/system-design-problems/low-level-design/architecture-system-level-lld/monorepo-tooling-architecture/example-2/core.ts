@@ -1,0 +1,3 @@
+export type Graph=Record<string,string[]>;export function affected(graph:Graph,changed:Set<string>){const out=new Set(changed);let moved=true;while(moved){moved=false;for(const [pkg,deps] of Object.entries(graph))if(!out.has(pkg)&&deps.some(d=>out.has(d))){out.add(pkg);moved=true}}return[...out]}
+export function runAffectedScenario(){return affected({ui:["tokens"],checkout:["ui","payments"],admin:["ui"],payments:[]},new Set(["tokens"]))}
+export function compareChangeBlastRadius(){const graph={tokens:[],ui:["tokens"],checkout:["ui","payments"],admin:["ui"],payments:[]};return{sharedTokenChange:affected(graph,new Set(["tokens"])),paymentOnlyChange:affected(graph,new Set(["payments"]))}}

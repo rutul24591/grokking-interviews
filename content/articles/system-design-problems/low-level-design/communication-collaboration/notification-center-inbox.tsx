@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function NotificationCenterInboxArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function NotificationCenterInboxArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Notification Center Inbox</h1><h2>Definition &amp; Context</h2><p>Design a Notification Center Inbox is an implementation-heavy low-level design problem covering baseline fetch, socket merge, grouping, unread watermark, pagination, mark-read mutation, cross-tab sync, and retention. A principal-level answer must define ordering, ephemeral versus durable state, reconnect behavior, rollback, abuse controls, privacy, cost, and observability.</p><p>Normalize notifications by id and derive unread state from durable acknowledgement rather than visual rendering. The core structures are notification map, ordered ids, cursor ledger, unread watermark, group keys, socket buffer, mutation journal, tab channel, and retention policy.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/notification-center-inbox-runtime.svg" alt="Design a Notification Center Inbox runtime" caption="Real-time flow from input through merge policy and UI projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -90,7 +89,7 @@ export default function NotificationCenterInboxArticle() {
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h3>⚙️ Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -130,7 +129,7 @@ export default function NotificationCenterInboxArticle() {
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h3>📊 Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -172,14 +171,10 @@ export default function NotificationCenterInboxArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/notification-center-inbox-architecture.svg"
-        alt="Notification Center / Inbox Architecture"
-        caption="WebSocket + REST adapter → Notification store (ordered, grouped) → Bell badge (unread count) + Inbox panel (virtualized list) → Per-notification renderer with optimistic mark-read. BroadcastChannel for cross-tab consistency."
-      />
+      
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <HighlightBlock as="p" tier="crucial">
           The notification center has four parts:
           <strong> notification source adapter</strong>{" "}
@@ -291,7 +286,7 @@ export default function NotificationCenterInboxArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial"><strong> NotificationItem</strong>{" "}
           renders one notification.
           <strong> FilterTabs</strong> renders
@@ -302,7 +297,7 @@ export default function NotificationCenterInboxArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Notification list, unread counts, filter
           state in external store. WebSocket
@@ -314,7 +309,7 @@ export default function NotificationCenterInboxArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important">
           <Highlight tier="crucial">Notification shape:</Highlight>{" "}
           <Highlight tier="important">
@@ -327,7 +322,7 @@ export default function NotificationCenterInboxArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Virtualization for long lists.
           Memoized notification items. <Highlight tier="important">Optimistic
@@ -338,7 +333,7 @@ export default function NotificationCenterInboxArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">Clicking navigates to context.{" "}
           <Highlight tier="important">Mark-all-read action</Highlight>{" "}
           visible. Empty</HighlightBlock>
@@ -348,7 +343,7 @@ export default function NotificationCenterInboxArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">Bell icon labeled with current count
           (&ldquo;Notifications, 5 unread&rdquo;).</HighlightBlock>
 <HighlightBlock as="p" tier="important">Inbox is a dialog/menu with focus trap
@@ -360,7 +355,7 @@ export default function NotificationCenterInboxArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Server enforces ownership. Notification
           content rendered <Highlight tier="important">as text; rich content
@@ -370,7 +365,7 @@ export default function NotificationCenterInboxArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="crucial">Unit tests for store (dedup, grouping,
           mark-read). Cross-tab consistency</HighlightBlock>
 <HighlightBlock as="p" tier="important">tests.
@@ -382,7 +377,7 @@ export default function NotificationCenterInboxArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">Notification target deleted (the
           comment was deleted): clicking shows
           a graceful fallback. Browser without
@@ -394,7 +389,7 @@ export default function NotificationCenterInboxArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Generic over notification type. Renderers
           per <Highlight tier="important">type. Source adapter pluggable.
@@ -404,7 +399,7 @@ export default function NotificationCenterInboxArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Notification content typically pre-
           translated server-side per <Highlight tier="important">recipient
@@ -415,7 +410,7 @@ export default function NotificationCenterInboxArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Auto-mark vs explicit click</h3>
         <HighlightBlock as="p" tier="important">
@@ -453,7 +448,7 @@ export default function NotificationCenterInboxArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">AI-prioritized notifications (most
           important first). Smart digest mode</HighlightBlock>
 <HighlightBlock as="p" tier="important">(batch low-priority into one
@@ -461,90 +456,12 @@ export default function NotificationCenterInboxArticle() {
 <HighlightBlock as="p" tier="important">via
           push. Snooze with reminders. Custom
           filters and pinning.</HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. How is the badge count
-          accurate in real time?</strong>{" "}
-          WebSocket delivers new notifications;
-          store updates; badge derives from
-          unread count. BroadcastChannel
-          synchronizes across tabs.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How does mark-as-read
-          work?</strong> Optimistic store update;
-          badge updates immediately; server
-          confirms in background. Failure rolls
-          back.
-        </HighlightBlock>
-
-        <p>
-          <strong>3. How is grouping
-          implemented?</strong> Client-side: same-
-          type notifications targeting the same
-          object within a time window collapse.
-          The grouped view derives from the raw
-          list.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. How is cross-tab consistency
-          maintained?</strong> BroadcastChannel
-          broadcasts state changes (new, read,
-          deleted). Tabs update their stores in
-          response.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>5. How does infinite scroll
-          work?</strong> Cursor-based pagination
-          on REST. Trigger fetches near the
-          bottom of the inbox. Integrates with
-          Cursor-based Pagination UI patterns.
-        </HighlightBlock>
-
-        <p>
-          <strong>6. How do you handle very high
-          unread counts?</strong> Display cap (99+)
-          on badge. Real number in the store.
-          Mark-all-read is a single action that
-          sets all to read in one server call.
-        </p>
-
-        <p>
-          <strong>7. How is auto-mark-on-view
-          implemented?</strong>{" "}
-          IntersectionObserver on each
-          notification when the inbox is open;
-          after a short delay, mark read.
-          Configurable per product.
-        </p>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>8. How is this accessible?</strong>{" "}
-          Bell icon labeled with count. Inbox
-          is a dialog/menu with focus
-          management. Notifications are
-          focusable items. Mark-read announces.
-          Filters are real tabs.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="important">Auto-mark-on-view
-          handles the common case; explicit
-          mark-read covers the</HighlightBlock>
-<HighlightBlock as="p" tier="crucial">actionable ones.
-          The result is timely, accurate,
-          <Highlight tier="important">accessible</Highlight>{" "}
-          notifications.</HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate durable records, optimistic intent, transport events, ephemeral awareness, rendered projection, and telemetry. Every connection, timer, cursor, replay buffer, subscription, and retry queue needs an explicit owner and cleanup path.</p><p>Normalize notifications by id and derive unread state from durable acknowledgement rather than visual rendering.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/notification-center-inbox-recovery.svg" alt="Design a Notification Center Inbox recovery" caption="Recovery flow: classify gaps, retain stable truth, replay safely, and emit evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Polling is operationally simpler; sockets are justified for urgent notification workflows.</p><p>Server watermark is authoritative for reads. Socket events merge idempotently and local actions reconcile after acknowledgement. Scale pressure comes from bursts, duplicate delivery, reconnect gaps, cross-tab actions, partial writes, and retention windows. Bound queues, dedupe events, expire ephemeral state, and degrade predictably.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, event sequences, idempotency keys, monotonic watermarks, TTLs, replay cursors, bounded buffers, authorization checks, and cleanup. Test reconnect gaps, duplicates, stale events, offline recovery, privacy settings, and accessibility announcements.</p><p>Measure latency, backlog, reconnect rate, gap recovery, retries, stale drops, TTL expiry, and accessibility regressions without logging sensitive content.</p><h3>Operational implementation: normalized inbox records and unread watermark</h3><p>Keep durable notification records separate from UI tabs and unread projection. Merge pages and live events by id, apply monotonic read state, use a server watermark for mark-all-read, collapse duplicate campaigns, and retain a cursor for recovery.</p><p>Define explicit metrics for accepted events, duplicate drops, stale drops, replay gap size, reconnect duration, queue depth, TTL expiry, degraded-mode entry, authorization denial, and rollback outcome. Redact user content and sensitive identifiers from telemetry. Test duplicate delivery, out-of-order events, disconnect during mutation, hidden tabs, unmount cleanup, multiple tabs, permission removal, burst traffic, and a rollback to the previous policy version.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include treating ephemeral state as durable, trusting arrival order, leaking timers or sockets, missing dedupe, unbounded replay, and hiding degraded connectivity.</p><p>For this topic, buffer during fetch, dedupe events, retry idempotent reads, recompute counts, recover cursors, and broadcast tab updates.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to collaborative products where transport, persistence, and UI projection fail independently. Inject product policy for authorization, retention, fallback, and observability explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Normalize notifications by id and derive unread state from durable acknowledgement rather than visual rendering.</p><h3>What breaks at scale?</h3><p>bursts, duplicate delivery, reconnect gaps, cross-tab actions, partial writes, and retention windows.</p><h3>What consistency applies?</h3><p>Server watermark is authoritative for reads. Socket events merge idempotently and local actions reconcile after acknowledgement.</p><h3>How do you recover?</h3><p>buffer during fetch, dedupe events, retry idempotent reads, recompute counts, recover cursors, and broadcast tab updates.</p><h3>Why this architecture?</h3><p>Polling is operationally simpler; sockets are justified for urgent notification workflows.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket" target="_blank" rel="noreferrer">MDN WebSocket</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA APG</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

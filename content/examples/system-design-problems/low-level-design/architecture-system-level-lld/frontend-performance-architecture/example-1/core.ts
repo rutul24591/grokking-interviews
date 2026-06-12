@@ -1,0 +1,1 @@
+export interface RouteBudget{jsKb:number;lcpMs:number;inpMs:number;cls:number}export function checkBudget(actual:RouteBudget,budget:RouteBudget){const breaches:string[]=[];for(const k of Object.keys(budget) as (keyof RouteBudget)[])if(actual[k]>budget[k])breaches.push(k+":"+actual[k]+">"+budget[k]);return{pass:breaches.length===0,breaches}}

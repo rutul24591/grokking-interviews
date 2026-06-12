@@ -1,112 +1,27 @@
-<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="system-ui, -apple-system, BlinkMacSystemFont, sans-serif" role="img" aria-label="Multi Select Tag Input: implementation runtime">
   <defs>
-    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#6d5bd0"/></marker>
-    <marker id="arr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2563eb"/></marker>
-    <marker id="arr3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#2f9d74"/></marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#2563eb"/></marker>
+    <marker id="arrow-teal" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#0f766e"/></marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#c2410c"/></marker>
+    <marker id="arrow-rose" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#be123c"/></marker>
   </defs>
-  <rect width="900" height="520" fill="#f0f4ff"/>
-  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e1b4b">Multi-Select Tag Input — Architecture</text>
-  <text x="450" y="48" text-anchor="middle" font-size="11" fill="#6b7280">Tag state · Async suggestions · Keyboard nav · Dedup &amp; limits</text>
-  <rect x="12" y="60" width="425" height="210" rx="8" fill="#edeaf5" stroke="#6d5bd0" stroke-width="1.5"/>
-  <rect x="12" y="60" width="425" height="28" rx="8" fill="#6d5bd0"/>
-  <rect x="12" y="76" width="425" height="12" fill="#6d5bd0"/>
-  <text x="224" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">A — TAG STATE MODEL</text>
-  <rect x="24" y="98" width="190" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
-  <text x="119" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">TagInputState</text>
-  <text x="34" y="133" font-size="9" fill="#374151">tags: TagItem[] selected</text>
-  <text x="34" y="148" font-size="9" fill="#374151">  { id, label, color?, meta? }</text>
-  <text x="34" y="163" font-size="9" fill="#374151">inputValue: string (query)</text>
-  <text x="34" y="178" font-size="9" fill="#374151">isOpen: dropdown visible</text>
-  <text x="34" y="193" font-size="9" fill="#374151">activeIndex: suggestion cursor</text>
-  <text x="34" y="208" font-size="9" fill="#374151">isLoading: async fetch flag</text>
-  <text x="34" y="223" font-size="9" fill="#374151">suggestions: TagItem[]</text>
-  <text x="34" y="240" font-size="9" fill="#374151">focusedTag: keyboard focus</text>
-  <rect x="226" y="98" width="197" height="160" rx="6" fill="#fff" stroke="#c4b5f4" stroke-width="1"/>
-  <text x="324" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#6d5bd0">TagInputProps</text>
-  <text x="236" y="133" font-size="9" fill="#374151">value: TagItem[] (controlled)</text>
-  <text x="236" y="148" font-size="9" fill="#374151">onChange(tags): void</text>
-  <text x="236" y="163" font-size="9" fill="#374151">maxTags: number (default 10)</text>
-  <text x="236" y="178" font-size="9" fill="#374151">allowCustom: boolean</text>
-  <text x="236" y="193" font-size="9" fill="#374151">  create tag not in suggestions</text>
-  <text x="236" y="208" font-size="9" fill="#374151">delimiter: ,|Enter|Space</text>
-  <text x="236" y="223" font-size="9" fill="#374151">  paste: split on delimiter</text>
-  <text x="236" y="240" font-size="9" fill="#374151">filterSelected: hide from list</text>
-  <rect x="463" y="60" width="425" height="210" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
-  <rect x="463" y="60" width="425" height="28" rx="8" fill="#2563eb"/>
-  <rect x="463" y="76" width="425" height="12" fill="#2563eb"/>
-  <text x="675" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">B — ASYNC SUGGESTIONS</text>
-  <rect x="475" y="98" width="185" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
-  <text x="567" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Fetch Pipeline</text>
-  <text x="485" y="133" font-size="9" fill="#374151">onSearch(query): Promise&lt;[]&gt;</text>
-  <text x="485" y="148" font-size="9" fill="#374151">debounce: 300ms after keystroke</text>
-  <text x="485" y="163" font-size="9" fill="#374151">minChars: 2 before first fetch</text>
-  <text x="485" y="178" font-size="9" fill="#374151">AbortController: cancel stale</text>
-  <text x="485" y="193" font-size="9" fill="#374151">Cache: 60s per query string</text>
-  <text x="485" y="208" font-size="9" fill="#374151">Error: show "no results" msg</text>
-  <text x="485" y="225" font-size="9" fill="#374151">  retry on next keystroke</text>
-  <text x="485" y="240" font-size="9" fill="#374151">maxSuggestions: 10 in dropdown</text>
-  <rect x="672" y="98" width="202" height="160" rx="6" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
-  <text x="773" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#2563eb">Fuzzy Matching</text>
-  <text x="682" y="133" font-size="9" fill="#374151">Client filter: fuzzy score</text>
-  <text x="682" y="148" font-size="9" fill="#374151">  Fuse.js: threshold 0.4</text>
-  <text x="682" y="163" font-size="9" fill="#374151">Highlight: matched chars bold</text>
-  <text x="682" y="178" font-size="9" fill="#374151">Sort: score desc, then alpha</text>
-  <text x="682" y="193" font-size="9" fill="#374151">Static mode: filter local list</text>
-  <text x="682" y="208" font-size="9" fill="#374151">  no debounce needed</text>
-  <text x="682" y="225" font-size="9" fill="#374151">Group: optgroup by category</text>
-  <text x="682" y="240" font-size="9" fill="#374151">  sticky group headers</text>
-  <line x1="437" y1="155" x2="461" y2="155" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
-  <rect x="12" y="285" width="425" height="185" rx="8" fill="#d1fae5" stroke="#2f9d74" stroke-width="1.5"/>
-  <rect x="12" y="285" width="425" height="28" rx="8" fill="#2f9d74"/>
-  <rect x="12" y="301" width="425" height="12" fill="#2f9d74"/>
-  <text x="224" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">C — KEYBOARD NAV</text>
-  <rect x="24" y="323" width="190" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
-  <text x="119" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Input Keyboard</text>
-  <text x="34" y="358" font-size="9" fill="#374151">↓: open dropdown / next item</text>
-  <text x="34" y="373" font-size="9" fill="#374151">↑: previous suggestion</text>
-  <text x="34" y="388" font-size="9" fill="#374151">Enter: select activeIndex item</text>
-  <text x="34" y="403" font-size="9" fill="#374151">Escape: close dropdown</text>
-  <text x="34" y="418" font-size="9" fill="#374151">Backspace (empty): delete last</text>
-  <text x="34" y="433" font-size="9" fill="#374151">  tag (move to focusedTag)</text>
-  <text x="34" y="448" font-size="9" fill="#374151">Comma: add current input text</text>
-  <rect x="226" y="323" width="197" height="135" rx="6" fill="#fff" stroke="#6ee7b7" stroke-width="1"/>
-  <text x="324" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f9d74">Tag Keyboard</text>
-  <text x="236" y="358" font-size="9" fill="#374151">← →: move focus between tags</text>
-  <text x="236" y="373" font-size="9" fill="#374151">Delete / Backspace: remove tag</text>
-  <text x="236" y="388" font-size="9" fill="#374151">  focus moves to prev tag</text>
-  <text x="236" y="403" font-size="9" fill="#374151">Tab: move to next tag / input</text>
-  <text x="236" y="418" font-size="9" fill="#374151">End: jump to input field</text>
-  <text x="236" y="433" font-size="9" fill="#374151">Each tag: tabIndex=-1</text>
-  <text x="236" y="448" font-size="9" fill="#374151">  programmatic focus() only</text>
-  <rect x="463" y="285" width="425" height="185" rx="8" fill="#fef3c7" stroke="#d97843" stroke-width="1.5"/>
-  <rect x="463" y="285" width="425" height="28" rx="8" fill="#d97843"/>
-  <rect x="463" y="301" width="425" height="12" fill="#d97843"/>
-  <text x="675" y="304" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">D — DEDUP, LIMITS &amp; A11Y</text>
-  <rect x="475" y="323" width="185" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
-  <text x="567" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Dedup &amp; Limits</text>
-  <text x="485" y="358" font-size="9" fill="#374151">Dedup: check id before add</text>
-  <text x="485" y="373" font-size="9" fill="#374151">  shake animation if duplicate</text>
-  <text x="485" y="388" font-size="9" fill="#374151">maxTags: disable input at limit</text>
-  <text x="485" y="403" font-size="9" fill="#374151">  "Max 10 tags" helper text</text>
-  <text x="485" y="418" font-size="9" fill="#374151">Custom tag: validate fn prop</text>
-  <text x="485" y="433" font-size="9" fill="#374151">  return error string or null</text>
-  <text x="485" y="448" font-size="9" fill="#374151">Paste: split + validate each</text>
-  <rect x="672" y="323" width="202" height="135" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1"/>
-  <text x="773" y="341" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97843">Accessibility</text>
-  <text x="682" y="358" font-size="9" fill="#374151">role="combobox" on input</text>
-  <text x="682" y="373" font-size="9" fill="#374151">  aria-expanded, aria-haspopup</text>
-  <text x="682" y="388" font-size="9" fill="#374151">role="listbox" on dropdown</text>
-  <text x="682" y="403" font-size="9" fill="#374151">  aria-activedescendant</text>
-  <text x="682" y="418" font-size="9" fill="#374151">Tags: role="option" aria-selected</text>
-  <text x="682" y="433" font-size="9" fill="#374151">  aria-label: "Remove {label}"</text>
-  <text x="682" y="448" font-size="9" fill="#374151">aria-live: announce add/remove</text>
-  <line x1="675" y1="270" x2="675" y2="283" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr2)"/>
-  <line x1="224" y1="270" x2="224" y2="283" stroke="#6d5bd0" stroke-width="1.5" marker-end="url(#arr)"/>
-  <line x1="437" y1="375" x2="461" y2="375" stroke="#2f9d74" stroke-width="1.5" marker-end="url(#arr3)"/>
-  <rect x="0" y="483" width="900" height="37" fill="#1a1822"/>
-  <text x="90" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Fetch debounce: 300ms</text>
-  <text x="270" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Max tags: 10 default</text>
-  <text x="450" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Fuzzy score threshold: 0.4</text>
-  <text x="630" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Custom tag: validate fn</text>
-  <text x="810" y="506" text-anchor="middle" font-size="10" fill="#a0aec0">Paste: split on delimiter</text>
+  <rect x="18" y="18" width="924" height="524" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="54" y="56" font-size="18" font-weight="700" fill="#172033">Multi Select Tag Input: implementation runtime</text>
+  <text x="54" y="78" font-size="11.5" fill="#526074">Concrete reducer state, effect boundaries, commit guards, and cleanup ownership.</text>
+  <rect x="48" y="106" width="864" height="126" rx="9" fill="#eff6ff" stroke="#2563eb" stroke-width="1.1"/>
+  <text x="68" y="129" font-size="12.5" font-weight="700" fill="#2563eb">TYPED EVENT PIPELINE</text><rect x="76" y="154" width="112" height="56" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/>
+  <text x="90" y="179" font-size="12" font-weight="700" fill="#172033">user intent</text><line x1="188" y1="182" x2="206" y2="182" stroke="#2563eb" stroke-width="2.4" marker-end="url(#arrow-blue)"/><rect x="214" y="154" width="112" height="56" rx="8" fill="#ecfdf5" stroke="#0f766e" stroke-width="1.4"/>
+  <text x="228" y="179" font-size="12" font-weight="700" fill="#172033">typed state</text><line x1="326" y1="182" x2="344" y2="182" stroke="#0f766e" stroke-width="2.4" marker-end="url(#arrow-teal)"/><rect x="352" y="154" width="112" height="56" rx="8" fill="#fff7ed" stroke="#c2410c" stroke-width="1.4"/>
+  <text x="366" y="179" font-size="12" font-weight="700" fill="#172033">derived projection</text><line x1="464" y1="182" x2="482" y2="182" stroke="#2563eb" stroke-width="2.4" marker-end="url(#arrow-blue)"/><rect x="490" y="154" width="112" height="56" rx="8" fill="#f5f3ff" stroke="#6d28d9" stroke-width="1.4"/>
+  <text x="504" y="179" font-size="12" font-weight="700" fill="#172033">effect boundary</text><line x1="602" y1="182" x2="620" y2="182" stroke="#0f766e" stroke-width="2.4" marker-end="url(#arrow-teal)"/><rect x="628" y="154" width="112" height="56" rx="8" fill="#fff1f2" stroke="#be123c" stroke-width="1.4"/>
+  <text x="642" y="179" font-size="12" font-weight="700" fill="#172033">commit guard</text><line x1="740" y1="182" x2="758" y2="182" stroke="#2563eb" stroke-width="2.4" marker-end="url(#arrow-blue)"/><rect x="766" y="154" width="112" height="56" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/>
+  <text x="780" y="179" font-size="12" font-weight="700" fill="#172033">visible result</text><rect x="48" y="254" width="864" height="118" rx="9" fill="#ecfdf5" stroke="#0f766e" stroke-width="1.1"/>
+  <text x="68" y="277" font-size="12.5" font-weight="700" fill="#0f766e">STATE OWNERSHIP</text><rect x="84" y="298" width="180" height="54" rx="8" fill="#ecfdf5" stroke="#0f766e" stroke-width="1.4"/>
+  <text x="98" y="323" font-size="12" font-weight="700" fill="#172033">authoritative state</text><text x="98" y="346" font-size="10.5" fill="#526074">typed state</text><rect x="304" y="298" width="180" height="54" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/>
+  <text x="318" y="323" font-size="12" font-weight="700" fill="#172033">transient projection</text><text x="318" y="346" font-size="10.5" fill="#526074">derived projection</text><rect x="524" y="298" width="180" height="54" rx="8" fill="#fff7ed" stroke="#c2410c" stroke-width="1.4"/>
+  <text x="538" y="323" font-size="12" font-weight="700" fill="#172033">effect lifetime</text><text x="538" y="346" font-size="10.5" fill="#526074">effect boundary</text><rect x="744" y="298" width="130" height="54" rx="8" fill="#fff1f2" stroke="#be123c" stroke-width="1.4"/>
+  <text x="758" y="323" font-size="12" font-weight="700" fill="#172033">cleanup</text><text x="758" y="346" font-size="10.5" fill="#526074">abort / release</text><rect x="48" y="394" width="864" height="106" rx="9" fill="#fff7ed" stroke="#c2410c" stroke-width="1.1"/>
+  <text x="68" y="417" font-size="12.5" font-weight="700" fill="#c2410c">IMPLEMENTATION INVARIANTS</text><text x="76" y="435" font-size="11" fill="#172033">Accept a result only when its generation, ownership scope, and current state still match.</text>
+  <text x="76" y="458" font-size="11" fill="#172033">Release timers, listeners, observers, workers, requests, pointer capture, and cache references idempotently.</text>
+  <text x="76" y="481" font-size="11" fill="#172033">Emit bounded telemetry for latency, stale suppression, retries, rollback, and user-visible fallback.</text>
 </svg>

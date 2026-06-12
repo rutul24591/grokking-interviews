@@ -33,11 +33,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function RBACArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
+export default function RBACArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design Role-based Access Control</h1><h2>Definition &amp; Context</h2><p>Design Role-based Access Control is a security-sensitive low-level design problem covering role definitions, permission assignment, inheritance policy, effective-access evaluation, caching, invalidation, and UI projection. A principal-level answer must state the authoritative server boundary, threat model, lifecycle, abuse controls, rollback, privacy, observability, and user-safe degraded behavior.</p><p>Keep policy definitions server-side. Frontend guards are usability projections only and never security boundaries. Core structures: role catalog, permission set, subject-role bindings, inheritance graph, effective cache, policy version, invalidation event, and audit record.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/auth-user-systems/role-based-access-control-runtime.svg" alt="Design Role-based Access Control runtime" caption="Security flow from user intent through authoritative validation and audit." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>Problem Clarification</h3>
         <HighlightBlock as="p" tier="important">
           Authentication verifies identity: "who are you?". Authorization determines access rights: "what can you do?". Role-Based Access Control (RBAC) is the standard approach: assign users roles (admin, editor, viewer), define permissions per role (create, read, update, delete), and enforce permissions on every request. Consider a real scenario: a user logs in as "editor". The app checks their role, fetches permissions (can create posts, edit own posts, can't delete posts). When user clicks "delete post", the app checks: user has "delete_post" permission? No—request rejected with 403 Forbidden.
         </HighlightBlock>
@@ -53,7 +52,7 @@ export default function RBACArticle() {
       </section>
 
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
         <h3 className="mt-6 mb-3 text-lg font-semibold">Functional Requirements</h3>
         <ul className="space-y-2">
           <li>
@@ -106,7 +105,7 @@ export default function RBACArticle() {
       </section>
 
       <section>
-        <h2>High-Level Approach</h2>
+        <h3>High-Level Approach</h3>
         <HighlightBlock as="p" tier="important">
           RBAC system has two phases: authorization setup (define roles, assign permissions) and enforcement (check permissions at request time).
         </HighlightBlock>
@@ -125,13 +124,9 @@ export default function RBACArticle() {
       </section>
 
       <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/auth-user-systems/role-based-access-control.svg"
-          alt="RBAC system with role hierarchy, permission matrix across roles and resources, and UI enforcement patterns including component guards and route protection"
-          caption="RBAC system with role hierarchy, permission matrix across roles and resources, and UI enforcement patterns including component guards and route protection"
-        />
+        
 
-        <h2>Detailed Design</h2>
+        <h3>Detailed Design</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Data Model and Schema Design</h3>
         <p>
@@ -266,7 +261,7 @@ export default function RBACArticle() {
       </section>
 
       <section>
-        <h2>Implementation Considerations</h2>
+        <h3>Implementation Considerations</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">JWT vs Session-Based Roles</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -289,7 +284,7 @@ export default function RBACArticle() {
       </section>
 
       <section>
-        <h2>Advanced Production Patterns</h2>
+        <h3>Advanced Production Patterns</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Attribute-Based Access Control (ABAC)</h3>
         <HighlightBlock as="p" tier="important">
@@ -345,7 +340,7 @@ export default function RBACArticle() {
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
+        <h3>Trade-offs and Considerations</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">RBAC vs ABAC (Attribute-Based Access Control)</h3>
         <HighlightBlock as="p" tier="important">
@@ -361,20 +356,12 @@ export default function RBACArticle() {
         <HighlightBlock as="p" tier="important">
           Centralized service (Okta, AWS IAM): all apps query central service for permission checks. Simpler operationally (one source of truth), good for multi-app systems. Con: single point of failure (if Okta down, all apps deny access). Distributed: each app manages its own roles/permissions. Resilient (no central dependency), but operationally complex (permissions out of sync). Most apps: distributed (accept operational burden for resilience).
         </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">
-          Role-Based Access Control (RBAC) is fundamental to authorization systems. For staff/principal engineers, critical architectural components: (1) Role hierarchy enabling permission inheritance (admin ⊃ editor ⊃ viewer) with precomputed permission caching to avoid recursive traversal. (2) Permission caching with TTL (5-10 minutes) and event-driven invalidation for eventual consistency. (3) Privilege escalation prevention via separation of duties (only other admins can promote to admin). (4) Multi-role support merging permissions across roles (union, not intersection). (5) Audit logging of all role changes (who, what, when) for compliance and forensics.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          At scale (1M users), permission checks are high-volume—permission lookup must be &lt;1ms (fast path via cache). Cache hits should be &gt;99% (TTL-based, event-driven invalidation). Database queries only on cache misses (graceful degradation). Redis cluster required for distributed caching with multi-region replication for consistency across regions.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          RBAC is simple and scales, but limited expressiveness (can't represent "edit only your own posts"). For fine-grained control, use ABAC (attribute-based) or hybrid (RBAC baseline + policies for specifics). Testing must cover: role hierarchies (all inherited permissions present), cache invalidation (role change visible within TTL), multi-role merging (union of permissions correct), privilege escalation prevention (user can't self-promote), role assignment edge cases (concurrent assignments). Real-world systems often combine RBAC (coarse permissions for access tiers) with attribute policies (fine-grained resource control). Integration with session management (roles in token), authentication (login fetches roles), and audit systems critical.
-        </HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate user intent, browser-safe projection, server validation, durable security record, audit evidence, and cleanup. Frontend state improves UX but never replaces server enforcement. Tokens, challenges, sessions, and privileged grants need explicit expiry and revocation.</p><p>Keep policy definitions server-side. Frontend guards are usability projections only and never security boundaries.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/auth-user-systems/role-based-access-control-recovery.svg" alt="Design Role-based Access Control threat recovery" caption="Threat recovery: validate, deny safely, preserve authoritative truth, audit, and recover." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Server policy version and evaluation are authoritative. Cached decisions need bounded TTL or explicit invalidation. Scale and threat pressure comes from role explosion, stale cache, cyclic inheritance, tenant isolation, permission drift, and emergency revocation. Fail closed for privilege while keeping error UX actionable.</p></section>
+<section><h2>Best practices</h2><p>Use short-lived scoped grants, secure cookies, CSRF defenses, replay prevention, rotation, versioned writes, server-side authorization, rate limits, redacted logs, and explicit audit events. Test expiry, replay, revocation, retries, multiple tabs, and permission drift.</p></section>
+<h3>Principal defense: authority, consistency, and abuse cost</h3><p>Use server-authoritative consistency for security decisions. Browser state is a revocable projection that can improve responsiveness but cannot grant access, extend expiry, or confirm a privileged transition. Every mutation carries a version, expiry, nonce, or idempotency key as appropriate; stale projections refresh or fail closed. Rollback means revoking the grant, session family, policy version, or pending intent while retaining an audit trail.</p><p>Model abuse and cost together. Rate-limit sensitive attempts by account, device, network, and risk cohort without turning the UI into an enumeration oracle. Bound session inventory, audit retention, challenge issuance, cross-tab broadcasts, and refresh retries. Emit denial reason classes, revocation lag, suspicious reuse, policy version, and correlation ids while avoiding sensitive payloads in telemetry.</p><section><h2>Common Pitfalls</h2><p>Common failures include trusting frontend guards, storing bearer tokens in localStorage, leaking account existence, missing idempotency, weak redirect validation, and incomplete audit evidence.</p><p>For this topic, reject cycles, scope tenants, invalidate caches, audit changes, provide emergency revocation, and keep UI guards advisory.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to user identity and access workflows where convenience must not weaken authoritative server enforcement or incident evidence.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>What is authoritative?</h3><p>Server policy version and evaluation are authoritative. Cached decisions need bounded TTL or explicit invalidation.</p><h3>What breaks under abuse?</h3><p>role explosion, stale cache, cyclic inheritance, tenant isolation, permission drift, and emergency revocation.</p><h3>How do you recover?</h3><p>reject cycles, scope tenants, invalidate caches, audit changes, provide emergency revocation, and keep UI guards advisory.</p><h3>What does the client enforce?</h3><p>The client improves usability and fails closed for privileged views; the server enforces every protected read and mutation.</p><h3>How do you observe incidents?</h3><p>Emit redacted audit records with subject, actor, policy version, reason, outcome, and correlation id.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.rfc-editor.org/rfc/rfc7636" target="_blank" rel="noreferrer">RFC 7636 PKCE</a></li><li><a href="https://www.w3.org/TR/webauthn-3/" target="_blank" rel="noreferrer">WebAuthn Level 3</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies" target="_blank" rel="noreferrer">MDN Cookies</a></li><li><a href="https://owasp.org/www-project-cheat-sheets/" target="_blank" rel="noreferrer">OWASP Cheat Sheets</a></li></ul></section>
+</ArticleLayout>}

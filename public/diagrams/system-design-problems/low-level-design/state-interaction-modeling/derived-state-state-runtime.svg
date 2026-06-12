@@ -1,53 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
-  <title id="title">Derived State runtime model</title>
-  <desc id="desc">A state runtime with API calls, guarded transitions, effect runner, snapshots, subscribers, and observability.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="system-ui, -apple-system, BlinkMacSystemFont, sans-serif" role="img" aria-label="Derived State: implementation runtime">
   <defs>
-    <marker id="arrow-derived-state" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L9,3 z" fill="#2563eb"/>
-    </marker>
-    <filter id="shadow-derived-state" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.18"/>
-    </filter>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#2563eb"/></marker>
+    <marker id="arrow-teal" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#0f766e"/></marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#c2410c"/></marker>
+    <marker id="arrow-rose" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#be123c"/></marker>
   </defs>
-  <rect width="1200" height="720" rx="28" fill="#f8fafc"/>
-  <rect x="38" y="34" width="1124" height="652" rx="24" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
-  <text x="72" y="86" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700" fill="#0f172a">Derived State: guarded state runtime</text>
-  <text x="72" y="120" font-family="Inter, Arial, sans-serif" font-size="16" fill="#475569">Implementation view: API intent becomes a validated transition before effects or UI observers run.</text>
-  <g filter="url(#shadow-derived-state)">
-    <path d="M78 182 C150 120, 260 136, 322 200 C380 260, 338 356, 240 366 C130 378, 48 308, 78 182" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
-    <text x="128" y="218" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700" fill="#1e3a8a">Callers</text>
-    <text x="104" y="250" font-family="Inter, Arial, sans-serif" font-size="15" fill="#1e40af">components</text>
-    <text x="104" y="274" font-family="Inter, Arial, sans-serif" font-size="15" fill="#1e40af">hooks</text>
-    <text x="104" y="298" font-family="Inter, Arial, sans-serif" font-size="15" fill="#1e40af">debug tools</text>
-  </g>
-  <path d="M330 258 L452 258" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow-derived-state)"/>
-  <g filter="url(#shadow-derived-state)">
-    <rect x="456" y="166" width="286" height="184" rx="18" fill="#ecfeff" stroke="#0891b2" stroke-width="3"/>
-    <text x="486" y="210" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700" fill="#164e63">Transition engine</text>
-    <text x="486" y="244" font-family="Inter, Arial, sans-serif" font-size="15" fill="#155e75">clean -&gt; dirty -&gt; recomputing</text>
-    <text x="486" y="274" font-family="Inter, Arial, sans-serif" font-size="15" fill="#155e75">guard table + version check</text>
-    <text x="486" y="304" font-family="Inter, Arial, sans-serif" font-size="15" fill="#155e75">reject impossible transitions</text>
-  </g>
-  <path d="M742 258 C805 258, 808 168, 872 168" stroke="#2563eb" stroke-width="4" fill="none" marker-end="url(#arrow-derived-state)"/>
-  <g filter="url(#shadow-derived-state)">
-    <rect x="874" y="120" width="236" height="126" rx="18" fill="#fef3c7" stroke="#d97706" stroke-width="3"/>
-    <text x="906" y="162" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="700" fill="#78350f">Effect runner</text>
-    <text x="906" y="195" font-family="Inter, Arial, sans-serif" font-size="15" fill="#92400e">I/O, timers, storage</text>
-    <text x="906" y="219" font-family="Inter, Arial, sans-serif" font-size="15" fill="#92400e">abort + settlement guard</text>
-  </g>
-  <path d="M742 304 C812 330, 812 438, 890 452" stroke="#2563eb" stroke-width="4" fill="none" marker-end="url(#arrow-derived-state)"/>
-  <g filter="url(#shadow-derived-state)">
-    <rect x="880" y="392" width="246" height="146" rx="18" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/>
-    <text x="912" y="434" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="700" fill="#14532d">Snapshots</text>
-    <text x="912" y="468" font-family="Inter, Arial, sans-serif" font-size="15" fill="#166534">selector notifications</text>
-    <text x="912" y="492" font-family="Inter, Arial, sans-serif" font-size="15" fill="#166534">readonly versions</text>
-    <text x="912" y="516" font-family="Inter, Arial, sans-serif" font-size="15" fill="#166534">metrics + debug trace</text>
-  </g>
-  <path d="M992 246 C1002 304, 1002 334, 992 392" stroke="#64748b" stroke-width="3" stroke-dasharray="8 8" fill="none"/>
-  <g>
-    <rect x="154" y="478" width="626" height="86" rx="18" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
-    <text x="184" y="512" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="700" fill="#0f172a">Internal structures</text>
-    <text x="184" y="542" font-family="Inter, Arial, sans-serif" font-size="15" fill="#334155">dependency graph, reverse index, memo table, equality cache, invalidation queue, cycle detector</text>
-  </g>
-  <path d="M458 350 C410 414, 330 446, 222 478" stroke="#2563eb" stroke-width="3" stroke-dasharray="10 8" fill="none" marker-end="url(#arrow-derived-state)"/>
+  <rect x="18" y="18" width="924" height="524" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="54" y="56" font-size="18" font-weight="700" fill="#172033">Derived State: implementation runtime</text>
+  <text x="54" y="78" font-size="11.5" fill="#526074">Concrete reducer state, effect boundaries, commit guards, and cleanup ownership.</text>
+  <rect x="48" y="106" width="864" height="126" rx="9" fill="#eff6ff" stroke="#2563eb" stroke-width="1.1"/>
+  <text x="68" y="129" font-size="12.5" font-weight="700" fill="#2563eb">TYPED EVENT PIPELINE</text><rect x="76" y="154" width="112" height="56" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/>
+  <text x="90" y="179" font-size="12" font-weight="700" fill="#172033">event</text><line x1="188" y1="182" x2="206" y2="182" stroke="#2563eb" stroke-width="2.4" marker-end="url(#arrow-blue)"/><rect x="214" y="154" width="112" height="56" rx="8" fill="#ecfdf5" stroke="#0f766e" stroke-width="1.4"/>
+  <text x="228" y="179" font-size="12" font-weight="700" fill="#172033">transition reducer</text><line x1="326" y1="182" x2="344" y2="182" stroke="#0f766e" stroke-width="2.4" marker-end="url(#arrow-teal)"/><rect x="352" y="154" width="112" height="56" rx="8" fill="#fff7ed" stroke="#c2410c" stroke-width="1.4"/>
+  <text x="366" y="179" font-size="12" font-weight="700" fill="#172033">authoritative state</text><line x1="464" y1="182" x2="482" y2="182" stroke="#2563eb" stroke-width="2.4" marker-end="url(#arrow-blue)"/><rect x="490" y="154" width="112" height="56" rx="8" fill="#f5f3ff" stroke="#6d28d9" stroke-width="1.4"/>
+  <text x="504" y="179" font-size="12" font-weight="700" fill="#172033">derived projection</text><line x1="602" y1="182" x2="620" y2="182" stroke="#0f766e" stroke-width="2.4" marker-end="url(#arrow-teal)"/><rect x="628" y="154" width="112" height="56" rx="8" fill="#fff1f2" stroke="#be123c" stroke-width="1.4"/>
+  <text x="642" y="179" font-size="12" font-weight="700" fill="#172033">effect queue</text><line x1="740" y1="182" x2="758" y2="182" stroke="#2563eb" stroke-width="2.4" marker-end="url(#arrow-blue)"/><rect x="766" y="154" width="112" height="56" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/>
+  <text x="780" y="179" font-size="12" font-weight="700" fill="#172033">debug trace</text><rect x="48" y="254" width="864" height="118" rx="9" fill="#ecfdf5" stroke="#0f766e" stroke-width="1.1"/>
+  <text x="68" y="277" font-size="12.5" font-weight="700" fill="#0f766e">STATE OWNERSHIP</text><rect x="84" y="298" width="180" height="54" rx="8" fill="#ecfdf5" stroke="#0f766e" stroke-width="1.4"/>
+  <text x="98" y="323" font-size="12" font-weight="700" fill="#172033">authoritative state</text><text x="98" y="346" font-size="10.5" fill="#526074">transition reducer</text><rect x="304" y="298" width="180" height="54" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.4"/>
+  <text x="318" y="323" font-size="12" font-weight="700" fill="#172033">transient projection</text><text x="318" y="346" font-size="10.5" fill="#526074">authoritative state</text><rect x="524" y="298" width="180" height="54" rx="8" fill="#fff7ed" stroke="#c2410c" stroke-width="1.4"/>
+  <text x="538" y="323" font-size="12" font-weight="700" fill="#172033">effect lifetime</text><text x="538" y="346" font-size="10.5" fill="#526074">derived projection</text><rect x="744" y="298" width="130" height="54" rx="8" fill="#fff1f2" stroke="#be123c" stroke-width="1.4"/>
+  <text x="758" y="323" font-size="12" font-weight="700" fill="#172033">cleanup</text><text x="758" y="346" font-size="10.5" fill="#526074">abort / release</text><rect x="48" y="394" width="864" height="106" rx="9" fill="#fff7ed" stroke="#c2410c" stroke-width="1.1"/>
+  <text x="68" y="417" font-size="12.5" font-weight="700" fill="#c2410c">IMPLEMENTATION INVARIANTS</text><text x="76" y="435" font-size="11" fill="#172033">Accept a result only when its generation, ownership scope, and current state still match.</text>
+  <text x="76" y="458" font-size="11" fill="#172033">Release timers, listeners, observers, workers, requests, pointer capture, and cache references idempotently.</text>
+  <text x="76" y="481" font-size="11" fill="#172033">Emit bounded telemetry for latency, stale suppression, retries, rollback, and user-visible fallback.</text>
 </svg>

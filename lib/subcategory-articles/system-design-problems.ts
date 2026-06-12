@@ -11,18 +11,18 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
   "system-design-problems/high-level-design/ads-monetization-systems": [
     {
       "slug": "ads-analytics-dashboard",
-      "title": "Design an Ads Analytics Dashboard (like Google Ads Manager)",
-      "description": "Architecture for an ads analytics dashboard: impression and click beacon deduplication via Redis SETNX 60-second window, Kafka event stream partitioned by campaignId, Flink 1-minute tumbling window aggregation into ClickHouse columnar store, pre-aggregated hourly and daily rollup tables for sub-second dashboard queries, Redis 60-second cache for live last-hour data, multi-dimensional breakdowns by creative and geo and device, anomaly detection for CTR spikes and budget exhaustion alerts via webhook, and Redis INCRBYFLOAT budget pacing with hourly throttle-rate controller."
+      "title": "Design an Ads Analytics Dashboard",
+      "description": "Principal-level design for ads analytics covering event ingestion, attribution, aggregation freshness, spend accuracy, privacy thresholds, fraud filtering, drilldowns, and reconciliation."
     },
     {
       "slug": "ads-delivery-targeting-ui",
-      "title": "Design an Ads Delivery & Targeting UI (like Google Ads / Facebook Ads)",
-      "description": "Architecture for a real-time bidding ads delivery system: publisher ad slot request with userId and page context, user segment resolution from Redis under 2ms, OpenRTB bid request broadcast to 50 DSPs in parallel with 80ms hard deadline, second-price Vickrey auction with eCPM = bid × pCTR ranking, winning creative served via CDN in isolated iframe sandbox, impression and click beacons published to Kafka asynchronously, frequency capping with Redis INCR per user per day, click deduplication in 60-second window, conversion pixel for downstream purchase attribution, and invalid traffic (IVT) detection before billing."
+      "title": "Design an Ads Delivery & Targeting UI",
+      "description": "Principal-level design for ads delivery and targeting covering campaign setup, audience targeting, auction inputs, pacing, privacy, policy review, frequency caps, attribution, and operational safeguards."
     },
     {
       "slug": "creator-monetization-dashboard",
-      "title": "Design a Creator Monetization Dashboard (like YouTube Studio / Substack)",
-      "description": "Architecture for a creator monetization dashboard: double-entry immutable ledger recording ad revenue, subscriptions, tips, affiliate commissions, and merchandise cuts per creator per content piece, daily batch job closing previous day books with RPM calculation, real-time balance from ledger SUM query cached in Redis 5 minutes, multi-revenue-stream breakdown UI, tax form gating (W-9/W-8BEN) before first payout, idempotent Stripe transfer with payoutId idempotency key, webhook-driven ledger debit on payout confirmation, threshold and minimum balance enforcement, and hold mechanics for fraud review and disputed transactions."
+      "title": "Design a Creator Monetization Dashboard",
+      "description": "Principal-level design for creator monetization covering earnings, revenue share, eligibility, payouts, fraud, tax compliance, sponsorships, explainability, and dispute workflows."
     }
   ],
   "system-design-problems/high-level-design/ai-modern-systems": [
@@ -143,697 +143,697 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
     {
       "slug": "hybrid-app-webview-native-bridge",
       "title": "Design a Hybrid App (WebView + Native Bridge)",
-      "description": "Architecture for a hybrid mobile app combining WebView and native code: JavaScript-to-native bridge design (message passing vs. injected APIs), native capability exposure (camera, biometrics, push notifications, Bluetooth), WebView sandboxing and security (content security policy, navigation whitelisting), performance optimization for WebView rendering (hardware acceleration, avoiding bridge bottlenecks), deep link routing between native screens and WebView pages, feature flag system for native vs. web screen routing, and over-the-air updates for WebView content without app store review."
+      "description": "Principal-level design of a hybrid mobile app using a native shell, WebView runtime, JavaScript-to-native bridge, secure capability exposure, OTA web bundle updates, deep links, feature flags, and production observability."
     },
     {
       "slug": "pwa-offline-sync",
       "title": "Design a PWA with Offline Sync",
-      "description": "Architecture for a Progressive Web App with offline sync: service worker lifecycle (install, activate, fetch interception), cache strategies (cache-first, network-first, stale-while-revalidate) per resource type, IndexedDB mutation queue for offline writes with Background Sync API replay, conflict resolution for concurrent edits (last-write-wins, server-authoritative merge), push notification delivery via Web Push API, app manifest for installability, and update notification UI for new service worker versions."
+      "description": "Principal-level design of a Progressive Web App with service workers, offline reads and writes, IndexedDB local source of truth, mutation replay, conflict resolution, Web Push, installability, and service worker update governance."
     },
     {
       "slug": "responsive-cross-device-architecture",
       "title": "Design a Responsive Cross-Device Frontend Architecture",
-      "description": "Architecture for a responsive cross-device frontend: fluid grid systems with CSS custom properties, container queries for component-level breakpoints, adaptive image delivery with srcset and art direction, device capability detection for progressive enhancement, touch vs pointer event normalization, viewport-relative typography with clamp(), responsive navigation patterns (hamburger to full nav), and performance budgets per device tier with resource hints for network-adaptive loading."
+      "description": "Principal-level design of a responsive frontend architecture across phones, tablets, desktops, foldables, and low-end devices using design tokens, container queries, adaptive media, input normalization, accessibility, and performance budgets."
     },
     {
       "slug": "web-react-native-shared-system",
       "title": "Design a Web + React Native Shared System",
-      "description": "Architecture for a web and React Native code-sharing system: monorepo structure with shared business logic, API clients, and state management; platform-specific component implementations via .native.tsx and .web.tsx file extensions; design token system shared across platforms; navigation architecture differences (React Navigation vs React Router); shared form validation and error handling; deep link handling; push notification integration; and CI/CD pipeline for simultaneous web and mobile deployments."
+      "description": "Principal-level design of a shared Web and React Native system using monorepo boundaries, platform-specific UI implementations, shared domain logic, design tokens, storage adapters, navigation separation, release governance, and CI/CD."
     }
   ],
   "system-design-problems/high-level-design/data-heavy-systems": [
     {
       "slug": "alerting-anomaly-detection-dashboard",
       "title": "Design an Alerting & Anomaly Detection Dashboard",
-      "description": "Architecture for an alerting and anomaly detection dashboard: multi-condition alert rule builder (threshold, rate-of-change, absence), anomaly detection algorithms (Z-score, seasonal ARIMA, isolation forest), alert lifecycle management (firing, acknowledged, resolved), PagerDuty/Slack notification routing, alert grouping and deduplication, on-call schedule integration, runbook linking, alert replay for historical validation, and noise reduction via alert suppression windows."
+      "description": "Principal-level design of an alerting and anomaly detection dashboard with rule evaluation, anomaly baselines, state machines, grouping, inhibition, routing, on-call workflows, replay, and noise reduction."
     },
     {
       "slug": "bi-dashboard",
       "title": "Design a BI Dashboard (Tableau-like)",
-      "description": "Architecture for a Tableau-like BI dashboard: drag-and-drop chart builder, multi-source data connector (SQL, REST, CSV), column profiling, live and cached query execution, dashboard canvas with responsive grid layout, cross-filter interactions between charts, parameterized filters, scheduled data refresh, PDF/image export, row-level security per viewer, and shared dashboard links with permission-gated access."
+      "description": "Principal-level design of a Tableau-like BI dashboard with chart building, query generation, live and extract execution, cross-filtering, row-level security, caching, sharing, exports, and dashboard governance."
     },
     {
       "slug": "large-dataset-exploration-ui",
       "title": "Design a Large Dataset Exploration UI (Millions of Rows)",
-      "description": "Architecture for a large dataset exploration UI handling millions of rows: server-side pagination with keyset cursors, virtual grid rendering, column statistics and profiling, inline filter builder with predicate pushdown, column pinning and reordering, row grouping and aggregation, cell-level sparklines, export with server-side streaming, and query plan visualization for slow query diagnosis."
+      "description": "Principal-level design of a large dataset exploration UI with two-dimensional virtualization, keyset pagination, predicate pushdown, profiling, grouping, export jobs, query governance, and production-scale operability."
     },
     {
       "slug": "log-monitoring-ui",
       "title": "Design a Log Monitoring UI (Datadog/Kibana-like)",
-      "description": "Architecture for a log monitoring UI like Datadog or Kibana: real-time log tail via WebSocket, full-text search with Lucene query syntax, field extraction and structured log parsing, log level distribution histogram over time, saved searches and alert thresholds, context expansion (show N lines before/after a log entry), faceted sidebar (level, service, host, trace ID), log correlation with traces and metrics, and virtual scroll for millions of log entries."
+      "description": "Principal-level design of a Datadog/Kibana-like log monitoring UI with indexed search, faceting, histograms, virtualized log lists, live tail, context expansion, trace correlation, query governance, and incident workflows."
     },
     {
       "slug": "realtime-analytics-10k-datapoints",
       "title": "Design Real-Time Analytics with 10k+ Data Points",
-      "description": "Architecture for real-time analytics dashboards handling 10,000+ data points per second: WebSocket streaming ingestion, server-side downsampling (LTTB algorithm), canvas-based rendering with requestAnimationFrame double-buffering, windowed aggregation (1s/5s/1min buckets), backpressure and delta compression, pausable charts with historical rewind, metric cardinality explosion prevention, and adaptive sampling based on viewport pixel density."
+      "description": "Principal-level design of real-time analytics dashboards handling high-volume metrics with streaming gateways, downsampling, canvas rendering, backpressure, aggregation, rewind, and production operability."
     },
     {
       "slug": "time-series-visualization",
       "title": "Design a Time-Series Visualization System",
-      "description": "Architecture for a time-series visualization system: multi-resolution storage (raw + pre-aggregated rollups), adaptive query routing to the appropriate resolution, synchronized multi-panel layouts with shared time cursor, annotation overlays for deployments and incidents, comparison mode (current vs prior period), query language (PromQL/InfluxQL) editor with auto-complete, alert threshold lines on charts, and export to PNG/CSV."
+      "description": "Principal-level design of a Grafana-like time-series visualization system with multi-resolution rollups, adaptive query routing, synchronized panels, annotations, comparison mode, query editor, and production safeguards."
     }
   ],
   "system-design-problems/high-level-design/data-import-export-systems": [
     {
       "slug": "bulk-data-import-system",
       "title": "Design a Bulk Data Import System (CSV/Excel Uploads)",
-      "description": "End-to-end design of a production-grade bulk import pipeline: presigned S3 uploads, async worker validation, streaming batch ingestion, idempotency, error reporting, and retry semantics for millions of rows."
+      "description": "Principal-level design of a production bulk import pipeline with presigned uploads, async validation, streaming ingestion, idempotency, checkpoints, error reports, and tenant-safe progress tracking."
     },
     {
       "slug": "data-export-report-generation-system",
       "title": "Design a Data Export / Report Generation System",
-      "description": "Staff-level design of an async data export pipeline: cursor-paginated reads from OLAP/replicas, S3 multipart streaming render (CSV/Excel/PDF/Parquet), presigned download URLs, scheduled report cron, and delivery semantics."
+      "description": "Principal-level design of an async export and report-generation pipeline with governed requests, cursor reads, streaming renderers, object storage delivery, scheduled jobs, and audit controls."
     },
     {
       "slug": "etl-pipeline-monitoring-ui",
       "title": "Design an ETL Pipeline Monitoring UI",
-      "description": "End-to-end design of an ETL observability platform: pipeline DAG execution, Prometheus metrics emission, data quality scoring, SLA breach alerting, Grafana dashboards, PagerDuty routing, and checkpoint-based retry for reliable data pipelines."
+      "description": "Principal-level design of an ETL observability UI with pipeline DAGs, run timelines, metrics, data quality checks, SLA monitoring, checkpoint retry, lineage, logs, and operator workflows."
     }
   ],
   "system-design-problems/high-level-design/developer-experience-systems": [
     {
       "slug": "api-playground",
       "title": "Design an API Playground (like Postman)",
-      "description": "Architecture for an API playground like Postman or Insomnia: request builder with URL, method, headers, and body editors; environment variables with secret masking; response viewer with syntax-highlighted JSON/XML, status code display, timing breakdown, and raw response toggle; request history and collection organization; authentication presets (Bearer token, OAuth 2.0, API key, Basic auth); code snippet generation for multiple languages; team workspaces with shared collections; and browser-based request proxying to bypass CORS restrictions."
+      "description": "Principal-level architecture for a browser API playground covering request execution, local-first collections, environment secrets, CORS proxying, response inspection, team sync, governance, and secure extensibility."
     },
     {
       "slug": "cicd-dashboard",
       "title": "Design a CI/CD Dashboard (like GitHub Actions)",
-      "description": "Architecture for a CI/CD dashboard like GitHub Actions: pipeline run list with real-time status streaming via SSE, live log tail with ANSI color rendering and virtual scroll, DAG visualization of job dependencies, artifact download links, flaky test detection with historical pass-rate charts, branch and PR-scoped pipeline views, re-run and cancel actions with optimistic UI, deployment approval gates with audit log, and notification routing for pipeline failures."
+      "description": "Principal-level architecture for CI/CD dashboards covering run state, live logs, DAG visualization, artifacts, approvals, flaky test intelligence, auditability, and operational scale."
     },
     {
       "slug": "developer-documentation-system",
       "title": "Design a Developer Documentation System (like Notion/Docusaurus)",
-      "description": "Architecture for a developer documentation system: markdown/MDX authoring with live preview, versioned documentation tied to software releases, full-text search with code snippet indexing, API reference auto-generation from OpenAPI/AsyncAPI specs, interactive code playground embeds with executable examples, feedback and contribution workflows (edit on GitHub), table of contents with scroll-spy, and documentation health metrics (broken links, stale pages, missing examples)."
+      "description": "Principal-level design for developer documentation covering content build pipelines, versioning, API reference generation, search, interactive examples, health metrics, and trust."
     },
     {
       "slug": "frontend-testing-architecture",
       "title": "Design a Frontend Testing Architecture",
-      "description": "End-to-end architecture for frontend testing at scale: testing pyramid strategy, component and integration testing with RTL and MSW, visual regression, Playwright E2E with POM, contract testing, performance budgets in CI, coverage governance, and flake management."
+      "description": "Principal-level frontend testing architecture covering test strategy, CI pipelines, contract testing, visual regression, flake governance, performance budgets, coverage policy, and team ownership."
     },
     {
       "slug": "package-registry-ui",
       "title": "Design a Package Registry UI (like npm)",
-      "description": "Architecture for a package registry UI like npm or PyPI: package search with typosquatting detection and relevance ranking, package detail page with version selector and changelog diff, dependency tree visualization with vulnerability overlay from OSV/CVE data, weekly download trend sparklines, bundle size impact estimator using bundlephobia-style analysis, package deprecation and security advisory banners, publisher trust indicators (verified publisher, provenance attestation), and unpublish/deprecate controls for package owners."
+      "description": "Principal-level design for package registry experiences covering search, package detail pages, dependency intelligence, vulnerability surfacing, provenance, ownership controls, and ecosystem safety."
     }
   ],
   "system-design-problems/high-level-design/ecommerce-marketplace": [
     {
       "slug": "amazon-flipkart-frontend",
-      "title": "Design Amazon / Flipkart Frontend",
-      "description": "Architecture for a large-scale e-commerce frontend: page composition strategy (SSR homepage, ISR category pages, CSR cart/checkout), micro-frontend module federation, product catalog CDN caching with real-time stock invalidation, performance optimization (LCP, INP, CLS), A/B experimentation layer, personalized recommendations, and multi-region edge delivery."
+      "title": "Design an Amazon/Flipkart-like Frontend",
+      "description": "Principal-level ecommerce and marketplace system design covering catalog, inventory, pricing, checkout, subscriptions, returns, fraud, reconciliation, and operational recovery."
     },
     {
       "slug": "cart-checkout-concurrency",
-      "title": "Design Cart + Checkout at Scale with Concurrency",
-      "description": "Architecture for cart and checkout at scale: cart service with optimistic locking for concurrent updates, inventory reservation with Redis atomic operations, price snapshot at checkout, idempotent payment processing, saga pattern for distributed checkout transaction, flash sale concurrency handling, checkout session state machine, and rollback on payment failure."
+      "title": "Design Cart and Checkout Concurrency",
+      "description": "Principal-level ecommerce and marketplace system design covering catalog, inventory, pricing, checkout, subscriptions, returns, fraud, reconciliation, and operational recovery."
     },
     {
       "slug": "dynamic-pricing-ui",
-      "title": "Design a Dynamic Pricing System UI",
-      "description": "Architecture for a dynamic pricing system UI: real-time price feeds via WebSocket, price history sparklines, urgency signals (demand indicators, limited stock), flash sale countdown timers, personalized price display, A/B price experiment tracking, price staleness detection, competitor price comparison widgets, and client-side price update diffing to minimize re-renders."
+      "title": "Design a Dynamic Pricing UI",
+      "description": "Principal-level ecommerce and marketplace system design covering catalog, inventory, pricing, checkout, subscriptions, returns, fraud, reconciliation, and operational recovery."
     },
     {
       "slug": "inventory-aware-ui",
-      "title": "Design an Inventory-Aware UI (Real-Time Stock Updates)",
-      "description": "Architecture for an inventory-aware UI: real-time stock level push via SSE/WebSocket, product listing stock badge updates, variant-level stock (size/color availability), out-of-stock handling (disable add-to-cart, back-in-stock notifications), pre-order UI for coming-soon products, warehouse-level availability for multi-warehouse fulfillment, and stock reservation during checkout with TTL."
+      "title": "Design an Inventory-aware UI",
+      "description": "Principal-level ecommerce and marketplace system design covering catalog, inventory, pricing, checkout, subscriptions, returns, fraud, reconciliation, and operational recovery."
     },
     {
       "slug": "order-tracking-returns-system",
-      "title": "Design an Order Tracking & Returns System",
-      "description": "Architecture for an order tracking and returns system: real-time shipment tracking with carrier webhook ingestion, order status state machine, push notification pipeline for status changes, returns initiation and label generation, return status tracking, refund workflow with idempotent payment credits, exception handling for lost/damaged shipments, and multi-carrier normalization."
+      "title": "Design an Order Tracking and Returns System",
+      "description": "Principal-level ecommerce and marketplace system design covering catalog, inventory, pricing, checkout, subscriptions, returns, fraud, reconciliation, and operational recovery."
     },
     {
       "slug": "product-listing-recommendation-ui",
-      "title": "Design Product Listing + Recommendation System UI",
-      "description": "Architecture for a product listing and recommendation UI: search-backed faceted filtering with Elasticsearch, real-time stock badge updates, sponsored product injection, collaborative filtering recommendation engine, two-stage retrieval-ranking pipeline, above-the-fold LCP optimization, infinite scroll with cursor pagination, and A/B tested recommendation placements."
+      "title": "Design a Product Listing and Recommendation UI",
+      "description": "Principal-level ecommerce and marketplace system design covering catalog, inventory, pricing, checkout, subscriptions, returns, fraud, reconciliation, and operational recovery."
     },
     {
       "slug": "subscription-billing-frontend",
       "title": "Design a Subscription Billing Frontend",
-      "description": "Architecture for a subscription billing frontend: plan selection UI with feature comparison, trial-to-paid conversion flow, payment method management with PCI DSS compliance, subscription state machine (active/paused/cancelled/past_due), proration calculation for plan upgrades, dunning management for failed payments, invoice history, usage-based billing meter UI, and webhook-driven UI state sync."
+      "description": "Principal-level ecommerce and marketplace system design covering catalog, inventory, pricing, checkout, subscriptions, returns, fraud, reconciliation, and operational recovery."
     }
   ],
   "system-design-problems/high-level-design/emerging-future-systems": [
     {
       "slug": "ar-vr-interface-system",
       "title": "Design an AR/VR Interface System",
-      "description": "Architecture for an AR/VR interface system: WebXR session lifecycle management, 3D scene graph with frame-rate-locked render loop (90Hz target), hand tracking and gaze-based interaction models, spatial audio positioning, 6DoF tracking and world anchors for persistent AR content, foveated rendering for GPU budget management, progressive asset loading with LOD (level of detail) switching, passthrough camera integration, and comfort guidelines for preventing motion sickness."
+      "description": "Principal-level emerging system design covering capability detection, confidence, safety, fallback, privacy, rollback, cost, and observability."
     },
     {
       "slug": "on-device-ai-inference-ui",
       "title": "Design an On-Device AI Inference UI",
-      "description": "Architecture for an on-device AI inference UI: model loading and caching strategy (ONNX/TensorFlow.js, IndexedDB model storage, progressive chunk loading), WebGPU vs. WebAssembly execution backends, quantization tradeoffs (INT8/FP16 vs. FP32), streaming token generation with ReadableStream for LLM output, model selection UI (capability vs. size tradeoff), inference progress and cancellation, privacy-by-default architecture (no data leaves the device), memory pressure management (model eviction, tensor cleanup), and graceful degradation to cloud API when on-device inference is too slow."
+      "description": "Principal-level emerging system design covering capability detection, confidence, safety, fallback, privacy, rollback, cost, and observability."
     },
     {
       "slug": "voice-based-ui-system",
       "title": "Design a Voice-Based UI System",
-      "description": "Architecture for a voice-based UI system: wake word detection running on-device for privacy (Porcupine/Picovoice), streaming speech-to-text pipeline (WebSpeech API vs. Whisper streaming API), intent classification and slot filling for command parsing, text-to-speech response with prosody and SSML markup, conversation state machine for multi-turn dialogue, voice activity detection (VAD) with noise cancellation, voice persona management, accessibility compliance for deaf/hard-of-hearing users, and latency budget breakdown for sub-500ms response time."
+      "description": "Principal-level emerging system design covering capability detection, confidence, safety, fallback, privacy, rollback, cost, and observability."
     },
     {
       "slug": "web3-wallet-frontend",
-      "title": "Design a Web3 Wallet Frontend (like MetaMask)",
-      "description": "Architecture for a Web3 wallet frontend: HD wallet key derivation (BIP-39 mnemonic, BIP-44 derivation path), secure key storage in browser extension secure storage, transaction signing flow with EIP-712 typed data display, gas estimation and fee priority selection, dApp connection management (EIP-1193 provider injection), multi-chain support with network switching, token balance aggregation with real-time price feeds, phishing site detection, transaction history from block explorer APIs, and hardware wallet integration via WebHID."
+      "title": "Design a Web3 Wallet Frontend",
+      "description": "Principal-level emerging system design covering capability detection, confidence, safety, fallback, privacy, rollback, cost, and observability."
     }
   ],
   "system-design-problems/high-level-design/enterprise-saas-systems": [
     {
       "slug": "admin-audit-logs",
       "title": "Design an Admin Audit Logs & Activity Tracking UI",
-      "description": "Architecture for an admin audit log and activity tracking system: immutable append-only event log, structured event schema with actor/action/resource/diff, real-time activity feed via SSE, search and filter across millions of events, compliance export (SOC 2, GDPR), tamper-evident log integrity via hash chaining, alerting on suspicious activity patterns, retention policies with archival, per-resource activity history, and admin impersonation tracking."
+      "description": "Principal-level design for immutable enterprise audit logs, activity tracking, compliance export, tamper evidence, search, retention, and admin investigations."
     },
     {
       "slug": "crm-dashboard",
-      "title": "Design a CRM Dashboard (Salesforce-like)",
-      "description": "Architecture for a CRM dashboard: contact and account record pages with inline editing, pipeline kanban board with drag-and-drop stage updates, activity timeline with multi-entity feed, global search with entity-type filtering, report builder with saved views, real-time collaboration indicators (who else is viewing this record), bulk record operations, custom field definitions, role-based field visibility, and webhook-driven sync with external tools."
+      "title": "Design a CRM Dashboard",
+      "description": "Principal-level design for CRM dashboards covering pipeline state, account activity, role-based visibility, collaboration, freshness, forecasting, and enterprise scale."
     },
     {
       "slug": "form-builder-system",
-      "title": "Design a Form Builder System (Typeform-like)",
-      "description": "Architecture for a form builder system: drag-and-drop field types (text, select, file upload, signature, date), conditional logic (show/hide fields based on prior answers), multi-step form navigation with progress tracking, form submission pipeline with validation and deduplication, real-time response analytics, public form embedding via iframe and SDK, file upload to S3 with virus scanning, and spam prevention (honeypot, CAPTCHA, rate limiting)."
+      "title": "Design a Form Builder System",
+      "description": "Principal-level design for dynamic enterprise form builders covering schema versioning, conditional logic, validation, submissions, workflow triggers, permissions, and analytics."
     },
     {
       "slug": "project-management-tool",
-      "title": "Design a Project Management Tool (Jira/Asana)",
-      "description": "Architecture for a project management tool: issue tracker with hierarchical tasks (epic > story > task > subtask), multiple view modes (board, list, timeline/Gantt), real-time collaborative editing of issue descriptions, sprint planning with capacity tracking, drag-and-drop prioritization, assignee workload visualization, dependency tracking with cycle detection, @mention and comment threading, webhook integrations for CI/CD status, and offline-capable task updates."
+      "title": "Design a Project Management Tool",
+      "description": "Principal-level design for project management systems covering tasks, boards, dependencies, permissions, collaboration, activity history, notifications, and enterprise reporting."
     },
     {
       "slug": "rbac-dashboard",
-      "title": "Design a Multi-Role RBAC Dashboard System",
-      "description": "Architecture for a multi-role RBAC (Role-Based Access Control) dashboard: role and permission management UI, hierarchical role inheritance, resource-level permission grants, UI rendering conditioned on permissions (route guards, component-level visibility), permission evaluation at the API gateway, just-in-time permission checking, permission change propagation to connected sessions, audit log of permission changes, and organization-level permission overrides for enterprise tenants."
+      "title": "Design an RBAC Dashboard",
+      "description": "Principal-level design for RBAC administration covering roles, permissions, policy evaluation, access reviews, auditability, least privilege, and enterprise safety."
     },
     {
       "slug": "reporting-analytics-dashboard",
       "title": "Design a Reporting & Analytics Dashboard",
-      "description": "Architecture for a reporting and analytics dashboard: report builder with drag-and-drop dimension and metric selection, SQL query generation from visual query builder, result caching with cache invalidation on data refresh, chart rendering (line, bar, pie, table, funnel) with Recharts or D3, scheduled report delivery via email/Slack, dashboard layout with widget grid, real-time metrics with WebSocket push, query timeout handling, multi-tenant data isolation, and export to CSV/PDF."
+      "description": "Principal-level design for enterprise reporting dashboards covering semantic metrics, governed queries, caching, scheduled reports, exports, freshness, and access control."
     },
     {
       "slug": "workflow-automation-system",
-      "title": "Design a Workflow Automation System (Zapier-like)",
-      "description": "Architecture for a workflow automation system: visual workflow builder with trigger and action nodes, condition branching and loops, connector integrations (webhooks, OAuth, REST APIs), execution engine with retry and backoff, real-time execution logs, workflow versioning and rollback, rate limiting per connector, error handling with dead letter queues, and multi-step data transformation with a mapping UI."
+      "title": "Design a Workflow Automation System",
+      "description": "Principal-level design for workflow automation covering triggers, rules, durable execution, retries, approvals, idempotency, observability, and tenant isolation."
     }
   ],
   "system-design-problems/high-level-design/error-handling-reliability-systems": [
     {
       "slug": "global-error-handling-fallback-ui",
       "title": "Design a Global Error Handling & Fallback UI System",
-      "description": "Architecture for a production-grade global error handling system: React Error Boundaries with hierarchical scope, error classification (network / chunk-load / render / permission), stale-cache and skeleton fallbacks, Sentry enrichment with session replay and build SHA, stack-fingerprint deduplication, exponential backoff retry, chunk-load hard reload, localStorage draft recovery, and spike-based PagerDuty alerting."
+      "description": "Principal-level design for frontend error boundaries, fallback surfaces, error classification, telemetry, privacy-safe reporting, degraded modes, and recovery."
     },
     {
       "slug": "incident-debugging-dashboard",
-      "title": "Design an Incident / Debugging Dashboard for Users",
-      "description": "Architecture for a production incident and debugging dashboard: multi-signal ingestion (errors, metrics, logs) via Kafka, error grouping by stack fingerprint, correlation with deployments and feature flags via traceId, static and ML anomaly alerting with 3-sigma detection, session replay drill-down, distributed trace waterfall, PagerDuty routing, status page publishing, and auto-drafted postmortem on resolution."
+      "title": "Design an Incident Debugging Dashboard",
+      "description": "Principal-level design for an incident debugging dashboard covering signal correlation, timelines, logs, metrics, traces, deploys, ownership, and post-incident evidence."
     },
     {
       "slug": "retry-failure-recovery-ux",
-      "title": "Design a Retry & Failure Recovery UX",
-      "description": "Architecture for a production retry and failure recovery system: exponential backoff with full jitter, idempotency keys per mutation, client-side circuit breaker (closed / open / half-open), IndexedDB offline queue with Service Worker replay, optimistic UI rollback, countdown retry UI, degraded-mode banners, and automatic session restoration on reconnect."
+      "title": "Design Retry, Failure & Recovery UX",
+      "description": "Principal-level design for retry and recovery UX covering retry safety, idempotency, offline queues, partial failure, user trust, backoff, and operational visibility."
     }
   ],
   "system-design-problems/high-level-design/experimentation-growth-systems": [
     {
       "slug": "ab-testing-platform-ui",
       "title": "Design an A/B Testing Platform UI",
-      "description": "Architecture for an A/B testing platform UI: experiment creation with hypothesis and metric selection, deterministic user bucketing via hashed user ID, assignment service with consistent allocation, real-time result dashboard with statistical significance calculation, sample ratio mismatch detection, guardrail metric alerting, segment analysis (by country, device, cohort), experiment lifecycle management (draft, running, paused, concluded), and mutual exclusion groups to prevent experiment interference."
+      "description": "Principal-level design for A/B testing platform UI covering trustworthy assignment, exposure logging, metrics, guardrails, privacy, rollout safety, and decision governance."
     },
     {
       "slug": "feature-rollout-experimentation-system",
       "title": "Design a Feature Rollout & Experimentation System",
-      "description": "Architecture for a feature rollout and experimentation system: feature flag evaluation at the edge with user targeting rules, percentage-based progressive rollouts with automatic rollback on error rate spike, kill switch for instant feature shutdown, SDK design for zero-latency flag reads, flag configuration storage and propagation, override rules for internal testing, audit log for flag changes, and integration with deployment pipelines for flag-gated releases."
+      "description": "Principal-level design for feature rollout and experimentation system covering trustworthy assignment, exposure logging, metrics, guardrails, privacy, rollout safety, and decision governance."
     },
     {
       "slug": "user-funnel-analytics-dashboard",
       "title": "Design a User Funnel Analytics Dashboard",
-      "description": "Architecture for a user funnel analytics dashboard: event ingestion pipeline with client-side beacon batching and server-side enrichment, funnel definition engine with ordered step matching and re-entry rules, conversion rate computation with time-to-convert distribution, drop-off attribution by segment (browser, country, acquisition channel), cohort analysis (day-0 to day-30 retention), session replay integration for drop-off investigation, real-time vs. batch metric freshness tradeoffs, and funnel alert system for conversion rate regression detection."
+      "description": "Principal-level design for user funnel analytics dashboard covering trustworthy assignment, exposure logging, metrics, guardrails, privacy, rollout safety, and decision governance."
     }
   ],
   "system-design-problems/high-level-design/feature-configuration-admin-systems": [
     {
       "slug": "dynamic-config-management-ui",
-      "title": "Design a Dynamic Config Management UI (like Consul / LaunchDarkly Config)",
-      "description": "Architecture for a dynamic configuration management system: namespaced key-value store with type-enforced schemas and environment-scoped values, immutable versioned rows with diff tracking and one-click rollback, approval workflow for production changes, Redis pub/sub fan-out pushing config deltas to all subscribed service pods via SSE within 500ms, polling fallback every 30 seconds with version watermark, service-side local in-memory cache with 5-minute TTL as circuit-breaker, and immutable audit log recording who changed what value in which environment from which IP address."
+      "title": "Design a Dynamic Config Management UI",
+      "description": "Principal-level design for dynamic configuration management covering schema governance, approval workflow, versioned publishing, propagation, service cache safety, rollback, audit, and operational ownership."
     },
     {
       "slug": "kill-switch-emergency-control-panel",
-      "title": "Design a Kill-Switch / Emergency Control Panel",
-      "description": "Architecture for a kill-switch and emergency control panel: MFA-gated activation with optional second-approver for critical switches, Redis SET with TTL for sub-5ms state write, Redis pub/sub fan-out propagating switch state to all service pods within 500ms, service-level 5-second safety-net polling as fallback, graceful degradation responses (stale cache / 503 / maintenance page) on active switch, automatic TTL expiry to prevent indefinite lockout, immutable append-only audit log with PagerDuty alert on every activation, scope targeting (all traffic / specific region / specific user segment), and heartbeat dashboard confirming acknowledgment percentage across pods."
+      "title": "Design a Kill-Switch Emergency Control Panel",
+      "description": "Principal-level design for emergency kill switches covering scoped activation, authorization, propagation, graceful degradation, TTLs, acknowledgments, incident integration, rollback, and auditability."
     },
     {
       "slug": "remote-app-configuration-system",
-      "title": "Design a Remote App Configuration System (like Firebase Remote Config)",
-      "description": "Architecture for a Firebase Remote Config-like system: client SDK sends user context (userId, appVersion, platform, country) to server-side targeting engine that evaluates priority-ordered rules and returns a resolved config map, CDN-served global defaults with ETag 304 short-circuit for non-targeted payloads under 5ms, on-device rule caching for offline evaluation, stale-while-revalidate SDK fetch pattern, Redis-cached rule sets with 60-second TTL, config publish triggers Redis pub/sub and CDN purge, and A/B experiment assignment embedded in the config evaluation response."
+      "title": "Design a Remote App Configuration System",
+      "description": "Principal-level design for remote app configuration covering app-version compatibility, targeting, signed bundles, CDN delivery, client caching, offline behavior, rollout governance, observability, and rollback."
     }
   ],
   "system-design-problems/high-level-design/file-storage-cloud-drive-systems": [
     {
       "slug": "cloud-storage-ui",
-      "title": "Design a Cloud Storage UI (like Google Drive)",
-      "description": "Architecture for a Google Drive-like cloud storage system: client-side chunked upload (5MB parts) with SHA-256 deduplication via server-side copy, S3 multipart upload with resumable state, virus scanning and thumbnail generation as async Kafka consumers, adjacency-list folder tree with materialised path for subtree queries, cursor-paginated file listing, CDN-served presigned download URLs with 15-minute TTL, quota enforcement with storage accounting, full-text and metadata search via Elasticsearch, and real-time sync across devices via WebSocket delta events."
+      "title": "Design a Cloud Storage UI",
+      "description": "Principal-level design for a cloud storage UI covering resumable uploads, object storage, metadata consistency, sync, search, quota, previews, security scanning, and operational recovery."
     },
     {
       "slug": "file-sharing-permission-system",
-      "title": "Design a File Sharing & Permission System (like Google Drive ACL)",
-      "description": "Architecture for a file sharing and permission system: per-resource ACL rows (resourceId, principalId, role) with role hierarchy owner > editor > commenter > viewer, folder permission inheritance propagated to children with explicit child overrides, 128-bit random share link tokens with scope/expiry/password and view-count limits, ancestor-walk access check with Redis 60s cache per (userId, fileId), revoke with immediate Redis invalidation, immutable append-only access audit log, and DLP scanning for sensitive data in shared links."
+      "title": "Design a File Sharing & Permission System",
+      "description": "Principal-level design for file sharing and permissions covering ACLs, inheritance, link security, group expansion, revocation, audit, DLP, cache invalidation, and enterprise governance."
     },
     {
       "slug": "file-version-history-restore",
-      "title": "Design a File Version History & Restore System (like Google Drive / Dropbox)",
-      "description": "Architecture for a file version history and restore system: version row per save (versionId, fileId, s3Key, deltaKey, size, createdAt), bsdiff binary delta for text/docs vs full copy for binary files >50% changed, delta chain with max depth 100 before a new full snapshot, version list timeline with author and size delta, non-destructive restore via delta chain reconstruction uploaded as a new version, retention policy (free: 30 versions/30 days, paid: unlimited), nightly GC with 7-day grace period, and 30-day soft-delete trash with one-click restore."
+      "title": "Design a File Version History & Restore System",
+      "description": "Principal-level design for file version history and restore covering immutable versions, delta chains, snapshot strategy, retention, garbage collection, non-destructive restore, integrity checks, and compliance holds."
     }
   ],
   "system-design-problems/high-level-design/knowledge-content-systems": [
     {
       "slug": "learning-platform-course-progress",
-      "title": "Design a Learning Platform (Course + Progress Tracking)",
-      "description": "Architecture for an online learning platform: course content delivery with video streaming (adaptive bitrate HLS), progress tracking with per-lesson completion events and resume playback, interactive exercises with automated grading, certificate issuance on course completion, learning path recommendations, cohort-based discussion forums, offline download with DRM-protected content, instructor dashboard with student engagement analytics, and spaced repetition review system for retention."
+      "title": "Design a Learning Platform Course Progress System",
+      "description": "Principal-level knowledge and content system design covering lifecycle, indexing, ranking, moderation, trust, progress, rollback, and observability."
     },
     {
       "slug": "medium-like-article-platform",
       "title": "Design a Medium-like Article Platform",
-      "description": "Architecture for a Medium-like article publishing platform: rich text editor with autosave and collaborative drafts, publish pipeline with SEO metadata generation and canonical URL management, content delivery with ISR for published articles, reading progress tracking and highlight/annotation system, recommendation engine for personalized feeds, clap/reaction system with eventual consistency, paywall and member-only content gating, author analytics dashboard, and comment threading with moderation queue."
+      "description": "Principal-level knowledge and content system design covering lifecycle, indexing, ranking, moderation, trust, progress, rollback, and observability."
     },
     {
       "slug": "qa-system-stackoverflow",
-      "title": "Design a Q&A System (StackOverflow-like)",
-      "description": "Architecture for a StackOverflow-like Q&A platform: question posting with tag taxonomy and duplicate detection, Markdown editor with live preview and code syntax highlighting, voting system with reputation score propagation, answer ranking algorithm (accepted answer priority, vote score, recency), full-text search with tag filtering and semantic similarity, notification system for question activity, moderation tools (flag, close, delete), badge award engine, and audit log for content edits."
+      "title": "Design a Q&A System like StackOverflow",
+      "description": "Principal-level knowledge and content system design covering lifecycle, indexing, ranking, moderation, trust, progress, rollback, and observability."
     }
   ],
   "system-design-problems/high-level-design/maps-location-intelligence": [
     {
       "slug": "location-based-recommendation-system",
       "title": "Design a Location-Based Recommendation System",
-      "description": "Architecture for a location-based recommendation system: Redis GEORADIUS fetching up to 200 candidate places within 5km in under 5ms, S2 cell level-14 spatial index sharded by city geohash prefix, multi-signal ranking (proximity 40%, rating 30%, personal affinity 20%, popularity 10%), user affinity profile built from visit history and cuisine preferences cached in Redis 10-minute TTL, real-time feedback loop via Kafka visit events updating affinity scores near-real-time, open-now filtering using RRULE-based business hours, and session-aware deduplication to exclude recently visited places."
+      "description": "Principal-level design for location-based recommendations covering candidate generation, geospatial filtering, ranking, context, privacy, fairness, feedback loops, freshness, and experimentation."
     },
     {
       "slug": "maps-exploration-ui",
-      "title": "Design a Maps Exploration UI (like Google Maps)",
-      "description": "Architecture for a Google Maps-like exploration UI: Mapbox Vector Tile (MVT) format rendered client-side with WebGL, z/x/y tile addressing with 30-day CDN cache for base tiles and 30-second TTL for traffic overlays, tile server rendering from OpenStreetMap vector data on CDN miss, PostGIS GIST index with KNN for proximity search, prefix-trie autocomplete under 20ms p50, place detail cards with real-time busyness data, GPS probe aggregation into per-road-segment speed tiles refreshed every 30 seconds, and S2 geometry library for spatial indexing."
+      "title": "Design a Maps Exploration UI",
+      "description": "Principal-level design for a Google Maps-like exploration UI covering tile delivery, viewport search, geospatial indexing, POI freshness, personalization, offline behavior, privacy, and operational resilience."
     },
     {
       "slug": "route-optimization-ui",
-      "title": "Design a Route Optimization UI (like Google Maps Navigation)",
-      "description": "Architecture for a Google Maps navigation system: road graph with 100M nodes and 1B edges partitioned by H3 hexagon, Contraction Hierarchies (CH) precomputed shortcuts enabling bidirectional Dijkstra in under 200ms at city scale, GPS probe ingestion via Kafka with 30-second Flink aggregation into per-segment speed classifications, ML ETA model predicting arrival with p50/p90 confidence bounds using time-of-day and incident signals, live navigation with position matching every 5 seconds and off-route re-trigger at 50m deviation, and SSE-pushed reroutes on traffic incidents."
+      "title": "Design a Route Optimization UI",
+      "description": "Principal-level design for route optimization covering graph modeling, ETA, constraints, traffic updates, multi-stop optimization, fallback algorithms, explainability, and fleet-scale operations."
     }
   ],
   "system-design-problems/high-level-design/media-rich-content-systems": [
     {
       "slug": "canvas-webgl-design-tool",
-      "title": "Design a Canvas/WebGL-Based Design Tool",
-      "description": "Architecture for a browser-based vector design tool (Figma-style): WebGL render loop with geometry batching and Bezier tessellation, infinite canvas with camera transform and viewport culling (R-tree), scene graph (Document → Frame → Group → Node), Bezier pen tool with cubic curve math, CRDT collaboration (Y.js) with awareness-based remote cursors, component/instance system, and SVG/PNG/PDF export."
+      "title": "Design a Canvas/WebGL Design Tool",
+      "description": "Principal-level media-rich system design covering scene graph editing, GPU rendering, asset loading, undo history, collaboration, memory pressure, and export."
     },
     {
       "slug": "content-creation-studio",
-      "title": "Design a Content Creation Studio (Image/Video Editing)",
-      "description": "Architecture for a browser-based content creation studio: Canvas 2D / WebGL rendering engine with dirty-flag compositor, non-destructive layer system with blend modes, Command-pattern undo/redo (50 steps), tool pipeline (brush/pen/select/text/crop), image adjustments as adjustment layers, video timeline editor with WebCodecs, client-side PNG/WebP export, and server-side FFmpeg video render with SSE progress."
+      "title": "Design a Content Creation Studio",
+      "description": "Principal-level media-rich system design covering draft lifecycle, asset management, collaborative review, rendering, publishing, policy checks, and rollback."
     },
     {
       "slug": "live-streaming-platform-ui",
       "title": "Design a Live Streaming Platform UI",
-      "description": "Architecture for a live streaming platform UI: RTMP/WebRTC ingest, Low-Latency HLS (LL-HLS) with 200ms partial segments and blocking playlist reload, ABR quality selection, chat overlay with Redis pub/sub fan-out to 100k viewers, virtual list chat rendering, viewer count via HyperLogLog, floating emoji reactions, broadcaster dashboard with real-time health signals, DVR time-shifted playback, and multi-CDN failover."
+      "description": "Principal-level media-rich system design covering low-latency playback, chat fanout, creator controls, moderation, stream health, and regional failover."
     },
     {
       "slug": "media-upload-processing-pipeline",
-      "title": "Design a Media Upload + Processing UI Pipeline",
-      "description": "Architecture for a media upload and processing pipeline: multipart S3 upload with resumability, client-side validation, per-type processing jobs (image resize/WebP/blurhash, video transcode/HLS, document text extraction/search indexing), SSE progress tracking, and CDN delivery."
+      "title": "Design a Media Upload Processing Pipeline",
+      "description": "Principal-level media-rich system design covering resumable upload, virus scanning, transcoding, metadata extraction, moderation, CDN publication, and retries."
     },
     {
       "slug": "pdf-viewer-annotation-system",
-      "title": "Design a PDF Viewer + Annotation System",
-      "description": "Architecture for a browser-based PDF viewer with collaborative annotation: PDF.js rendering pipeline, page virtualization with IntersectionObserver, SVG annotation overlay (highlight/comment/ink/shape/stamp), optimistic annotation mutations with WebSocket broadcast, coordinate transform between PDF user-space and screen-space, and text layer for copy/search."
+      "title": "Design a PDF Viewer Annotation System",
+      "description": "Principal-level media-rich system design covering page tiling, text extraction, annotation anchoring, offline notes, permissions, redaction, and search."
     },
     {
       "slug": "rich-text-editor",
-      "title": "Design a Rich Text Editor (Google Docs / Notion Style)",
-      "description": "Architecture for a collaborative rich text editor: immutable document model with ProseMirror, Operational Transform for concurrent edits, plugin system for slash commands and @mentions, auto-save with IndexedDB draft, and real-time presence with remote cursors."
+      "title": "Design a Rich Text Editor",
+      "description": "Principal-level media-rich system design covering document schema, selection model, plugin sandboxing, collaborative edits, autosave, paste handling, and export."
     },
     {
       "slug": "short-video-editing-system",
-      "title": "Design a Short-Video Editing System",
-      "description": "Architecture for a browser-based short-video editor: WebCodecs VideoDecoder/VideoEncoder for frame-accurate decode and in-browser H.264 export, timeline editor with clip trim/split/reorder, effects pipeline (WebGL LUT filters, Canvas text/sticker overlays), beat-sync cuts via Web Audio BPM detection, requestVideoFrameCallback preview loop, metadata-only undo stack, and multi-platform social export (TikTok, Instagram, YouTube Shorts)."
+      "title": "Design a Short Video Editing System",
+      "description": "Principal-level media-rich system design covering clip timeline state, effects preview, audio sync, export jobs, draft persistence, and device limits."
     },
     {
       "slug": "video-player-system",
-      "title": "Design a Video Player System (Adaptive Streaming, DRM)",
-      "description": "Architecture for a video player system: encoding pipeline with multi-rendition transcoding, HLS/DASH segmentation, AES-128 encryption, Widevine/FairPlay DRM, adaptive bitrate (ABR) logic with BOLA, buffer management, and QoE metrics."
+      "title": "Design a Video Player System",
+      "description": "Principal-level media-rich system design covering manifest loading, adaptive bitrate, DRM, buffering, subtitle rendering, QoE beacons, and fallback playback."
     }
   ],
   "system-design-problems/high-level-design/messaging-communication": [
     {
       "slug": "email-client-frontend",
-      "title": "Design Email Client (Gmail-like)",
-      "description": "Architecture for a Gmail-like email client frontend: IMAP/JMAP synchronization with delta sync, virtual scroll for inbox with thousands of messages, rich text compose with autosave drafts to IndexedDB, thread grouping and label management, full-text search with Elasticsearch query syntax, attachment upload with resumable multipart, undo-send with 5-second cancel window, spam filtering feedback loop, keyboard shortcut system, and offline inbox access via service worker."
+      "title": "Design an Email Client Frontend",
+      "description": "Principal-level messaging and communication system design covering delivery semantics, ordering, read state, fanout, offline sync, privacy, abuse, and observability."
     },
     {
       "slug": "multi-channel-communication-hub",
       "title": "Design a Multi-Channel Communication Hub",
-      "description": "Architecture for a multi-channel communication hub like Intercom or Zendesk: unified inbox aggregating messages from email, live chat, WhatsApp, SMS, and social media; channel adapter pattern for normalizing heterogeneous message formats; agent assignment and round-robin routing; conversation state machine (open, pending, resolved, snoozed); real-time agent presence with typing relay; collision detection when multiple agents view the same conversation; SLA timer tracking per conversation; and canned response search with keyboard shortcuts."
+      "description": "Principal-level messaging and communication system design covering delivery semantics, ordering, read state, fanout, offline sync, privacy, abuse, and observability."
     },
     {
       "slug": "notification-inbox-system",
       "title": "Design a Notification Inbox System",
-      "description": "Architecture for a notification inbox like GitHub notifications or Linear: real-time notification delivery via WebSocket push, notification grouping and deduplication (same actor, same object within 5 minutes), mark-as-read cursor with optimistic update, notification type routing (mention, assignment, comment, system), notification preferences per type and channel, badge count across browser tabs via BroadcastChannel API, notification snooze and mute, and infinite scroll notification list with virtual rendering."
+      "description": "Principal-level messaging and communication system design covering delivery semantics, ordering, read state, fanout, offline sync, privacy, abuse, and observability."
     },
     {
       "slug": "threaded-messaging-system",
       "title": "Design a Threaded Messaging System",
-      "description": "Architecture for a threaded messaging system like Slack threads or Discourse: parent message with reply thread, nested reply rendering with indent levels, unread reply counts per thread, thread participant tracking, cross-thread quoting and deep-linking, infinite scroll within thread reply list, real-time reply arrival via WebSocket, thread subscription and notification management, and thread search with context highlighting."
+      "description": "Principal-level messaging and communication system design covering delivery semantics, ordering, read state, fanout, offline sync, privacy, abuse, and observability."
     },
     {
       "slug": "whatsapp-slack-frontend",
-      "title": "Design WhatsApp Web / Slack Frontend",
-      "description": "Architecture for a real-time chat frontend like WhatsApp Web or Slack: WebSocket connection management with exponential backoff reconnection, message ordering via Lamport timestamps and sequence numbers, optimistic message sending with local IDs, read receipt and delivery status tracking, channel and DM sidebar with unread counts, message search with Elasticsearch, file upload with resumable multipart, end-to-end encryption key management, presence and typing indicators, and offline queue replay on reconnection."
+      "title": "Design a WhatsApp/Slack-like Frontend",
+      "description": "Principal-level messaging and communication system design covering delivery semantics, ordering, read state, fanout, offline sync, privacy, abuse, and observability."
     }
   ],
   "system-design-problems/high-level-design/notification-delivery-platform": [
     {
       "slug": "notification-preferences-system",
-      "title": "Design a User Notification Preferences System",
-      "description": "Architecture for a notification preferences system: per-category per-channel preference matrix, quiet hours with timezone enforcement, frequency capping with Redis INCR counters and daily digest fallback, optimistic UI updates with ETag conflict detection, RFC 8058 one-click unsubscribe with signed JWT tokens, CAN-SPAM/GDPR suppression list management, legal channel immutability (transactional cannot be opted out), and Kafka event-driven cache invalidation across all notification service instances."
+      "title": "Design a Notification Preferences System",
+      "description": "Principal-level notification delivery platform design covering preferences, consent, priority, channel routing, idempotency, provider failures, privacy, receipts, and observability."
     },
     {
       "slug": "priority-notification-delivery-ui",
-      "title": "Design a Priority-Based Notification Delivery UI",
-      "description": "Architecture for priority-based notification delivery: four SLA lanes (critical <5s bypassing preferences, high <15s, normal <60s, bulk <4hr batched), Kafka priority topic partitioning with consumer group weight allocation, parallel multi-channel send for critical events (push + SMS simultaneously), bulk rate limiting (1K emails/min per domain), SLA breach detection with PagerDuty escalation, dead-letter queue management, Kafka consumer lag monitoring, and delivery rate dashboards per lane."
+      "title": "Design a Priority Notification Delivery UI",
+      "description": "Principal-level notification delivery platform design covering preferences, consent, priority, channel routing, idempotency, provider failures, privacy, receipts, and observability."
     },
     {
       "slug": "unified-notification-platform",
-      "title": "Design a Unified Notification Platform (Push + Email + SMS + In-app)",
-      "description": "Architecture for a multi-channel notification platform: event ingestion via Kafka with deduplication, per-user preference and opt-out enforcement, Handlebars template rendering per channel, fan-out to dedicated channel workers (FCM/APNs push, Amazon SES email, Twilio SMS, in-app SSE), exponential backoff retry with fallback chain, provider webhook tracking for open/click analytics, Redis unread badge counter, and real-time delivery status dashboard."
+      "title": "Design a Unified Notification Platform",
+      "description": "Principal-level notification delivery platform design covering preferences, consent, priority, channel routing, idempotency, provider failures, privacy, receipts, and observability."
     }
   ],
   "system-design-problems/high-level-design/other": [
     {
       "slug": "customer-support-dashboard",
-      "title": "Design a Customer Support Dashboard (Zendesk-like)",
-      "description": "Architecture for a Zendesk-like customer support dashboard: ticket ingestion from multiple channels (email, chat, web form, API), ticket routing and assignment engine, SLA tracking with escalation, agent workspace UI, real-time collaboration on tickets, canned responses, knowledge base integration, reporting and analytics, and multi-tier support queue management."
+      "title": "Design a Customer Support Dashboard",
+      "description": "Principal-level operational product system design covering permissions, workflow state, analytics correctness, privacy, auditability, and support recovery."
     },
     {
       "slug": "device-session-management-system",
-      "title": "Design a Device / Session Management System",
-      "description": "Architecture for a device and session management system: device fingerprinting and registration, session token lifecycle (issuance, refresh, revocation), multi-device session listing and remote logout, concurrent session limits, suspicious login detection, trusted device workflows, session persistence strategies, and GDPR-compliant session data handling."
+      "title": "Design a Device Session Management System",
+      "description": "Principal-level operational product system design covering permissions, workflow state, analytics correctness, privacy, auditability, and support recovery."
     },
     {
       "slug": "feature-usage-analytics-dashboard",
       "title": "Design a Feature Usage Analytics Dashboard",
-      "description": "Architecture for a product analytics / feature usage dashboard: client-side event SDK with batching and sampling, server-side event ingestion pipeline, funnel analysis, retention cohort computation, A/B experiment metric tracking, session replay event storage, feature flag usage correlation, privacy-safe anonymization, and real-time and batch analytics serving."
+      "description": "Principal-level operational product system design covering permissions, workflow state, analytics correctness, privacy, auditability, and support recovery."
     },
     {
       "slug": "survey-form-analytics-system",
-      "title": "Design a Survey / Form Analytics System",
-      "description": "Architecture for a survey and form analytics system: form builder with conditional logic, response ingestion pipeline, real-time aggregation, completion funnel analytics, drop-off detection, partial response recovery, response export, spam/bot filtering, and multi-tenant access control."
+      "title": "Design a Survey Form and Analytics System",
+      "description": "Principal-level operational product system design covering permissions, workflow state, analytics correctness, privacy, auditability, and support recovery."
     }
   ],
   "system-design-problems/high-level-design/payments-fintech-systems": [
     {
       "slug": "fraud-detection-risk-alert-ui",
-      "title": "Design a Fraud Detection / Risk Alert UI",
-      "description": "Architecture for a payment fraud detection and risk alert system: real-time transaction scoring pipeline (rule engine + ML model, sub-100ms decision), velocity checks (card/device/IP rate limiting), device fingerprinting and behavioral biometrics, step-up authentication for high-risk transactions (OTP, biometric), analyst review queue with case management, model feature engineering (transaction graph, merchant category, time-of-day patterns), feedback loop for false positive reduction, risk score explanation for declined transactions, and chargeback prediction to proactively flag disputes."
+      "title": "Design a Fraud Detection and Risk Alert UI",
+      "description": "Principal-level payments and fintech system design covering idempotency, ledger correctness, reconciliation, provider failures, fraud, privacy, compliance, and operations."
     },
     {
       "slug": "payment-gateway-integration-ui",
-      "title": "Design a Payment Gateway Integration UI (like Stripe Checkout)",
-      "description": "Architecture for a payment gateway integration UI: PCI-DSS compliant iframe-based card capture with Stripe Elements, payment intent lifecycle (created → processing → succeeded/failed), 3D Secure authentication flow, idempotency keys for safe retries, webhook handling for async payment events, retry logic with exponential backoff, saved payment method management, multi-currency display and conversion, partial capture and refund flows, and checkout abandonment recovery."
+      "title": "Design a Payment Gateway Integration UI",
+      "description": "Principal-level payments and fintech system design covering idempotency, ledger correctness, reconciliation, provider failures, fraud, privacy, compliance, and operations."
     },
     {
       "slug": "transaction-history-reconciliation-ui",
-      "title": "Design a Transaction History & Reconciliation UI",
-      "description": "Architecture for a transaction history and reconciliation UI: paginated transaction ledger with cursor-based pagination, multi-dimensional filtering (date range, status, category, amount range), real-time transaction streaming via SSE for live balance updates, statement export in CSV/PDF with async generation, bank statement reconciliation (match merchant records against bank settlement files), discrepancy detection and alert system, dispute management workflow, running balance computation, and audit trail for all financial record modifications."
+      "title": "Design a Transaction History and Reconciliation UI",
+      "description": "Principal-level payments and fintech system design covering idempotency, ledger correctness, reconciliation, provider failures, fraud, privacy, compliance, and operations."
     },
     {
       "slug": "upi-wallet-payment-flow",
-      "title": "Design a UPI / Wallet Payment Flow (India-Specific Scale)",
-      "description": "Architecture for a UPI and digital wallet payment flow at India-scale: UPI collect flow vs. UPI intent flow, VPA (Virtual Payment Address) resolution and validation, UPI PIN entry via a PCI-compliant SDK, NPCI switch integration and response handling, wallet top-up via net banking and UPI, wallet balance management with distributed ledger, P2P and P2M payment flows, payment link generation and deep link handling, failure recovery and refund automation, and scale considerations for 300M daily transactions."
+      "title": "Design a UPI/Wallet Payment Flow",
+      "description": "Principal-level payments and fintech system design covering idempotency, ledger correctness, reconciliation, provider failures, fraud, privacy, compliance, and operations."
     }
   ],
   "system-design-problems/high-level-design/performance-scale-edge-cases": [
     {
       "slug": "core-web-vitals-production-optimization",
-      "title": "Core Web Vitals: LCP, INP, CLS — Production Optimization",
-      "description": "Production-grade approach to measuring, diagnosing, and fixing Largest Contentful Paint, Interaction to Next Paint, and Cumulative Layout Shift — including RUM instrumentation, lab/field data correlation, and CI enforcement."
+      "title": "Design Core Web Vitals Production Optimization",
+      "description": "Principal-level Core Web Vitals system design covering field measurement, ownership, budgets, rollout guardrails, regression detection, and product trade-offs."
     },
     {
       "slug": "frontend-1m-concurrent-users",
-      "title": "Design Frontend for 1M+ Concurrent Users",
-      "description": "Architecture for a frontend system serving 1 million+ concurrent users: global CDN with edge caching, static asset immutable caching, SSR request coalescing, WebSocket connection fan-out via pub/sub, connection pooling, API gateway rate limiting, stale-while-revalidate cache headers, database read replica routing, client-side delta updates, and graceful load shedding."
+      "title": "Design a Frontend for 1M Concurrent Users",
+      "description": "Principal-level design for 1M concurrent frontend users covering CDN strategy, API protection, client concurrency, traffic shaping, incident modes, and cost governance."
     },
     {
       "slug": "graceful-degradation-system",
       "title": "Design a Graceful Degradation System",
-      "description": "Architecture for a frontend that degrades gracefully under partial failures: circuit breakers per service dependency, feature flags for runtime feature removal, priority-tiered UI components (critical vs. enhanced vs. non-essential), fallback content strategies (cached data, skeleton screens, static placeholders), progressive enhancement baseline, error boundary isolation per feature zone, health-check-driven degradation mode toggle, and user-facing degradation notices with expected recovery time."
+      "description": "Principal-level graceful degradation architecture covering capability tiers, dependency failure, feature shedding, fallbacks, user messaging, and operational control."
     },
     {
       "slug": "high-latency-network-optimized-ui",
-      "title": "Design a High-Latency Network Optimized UI",
-      "description": "Architecture for a UI optimized for high-latency networks (300–600ms RTT): optimistic UI for all user mutations, request coalescing to batch multiple calls into one, prefetching next-likely resources on idle, delta updates over full response payloads, connection keep-alive and HTTP/2 multiplexing, adaptive polling intervals via exponential backoff, speculative rendering of likely next pages, and perceived performance techniques (skeleton screens, progress indicators, instant local state updates)."
+      "title": "Design a UI Optimized for High-Latency Networks",
+      "description": "Principal-level UI architecture for high-latency networks covering request shaping, perceived performance, prefetching, batching, optimistic UX, timeout policy, and observability."
     },
     {
       "slug": "low-end-device-frontend",
-      "title": "Design Frontend for Low-End Devices (India Scale)",
-      "description": "Architecture for a frontend optimized for low-end Android devices on 2G/3G networks: aggressive bundle splitting and lazy loading, WebP image serving with JPEG fallback, skeleton screens over spinners, server-side rendering to reduce JS parse time, adaptive serving based on Network Information API, critical CSS inlining, resource hints (preconnect/prefetch), lite mode detection, and feature detection over user-agent sniffing."
+      "title": "Design a Frontend for Low-End Devices",
+      "description": "Principal-level frontend architecture for low-end devices covering CPU, memory, GPU, bundle budgets, adaptive rendering, caching, and failure containment."
     },
     {
       "slug": "multi-region-frontend-architecture",
       "title": "Design a Multi-Region Frontend Architecture",
-      "description": "Architecture for a globally distributed frontend: GeoDNS routing users to the nearest region, anycast CDN edge nodes serving static assets, active-active multi-region API deployment with read replicas, data residency compliance (EU GDPR, India data localization), region failover with DNS TTL tuning, split-horizon DNS for internal vs external routing, session affinity via region-stamped JWT, and edge computing for latency-sensitive personalization."
+      "description": "Principal-level multi-region frontend architecture covering DNS, CDN, edge routing, regional BFFs, data residency, failover, consistency, and observability."
     },
     {
       "slug": "offline-first-poor-network",
-      "title": "Design Offline-First System (Poor Network)",
-      "description": "Architecture for an offline-first web application that functions on poor or absent network connections: IndexedDB as the local source of truth, a service worker handling all fetch interception with cache-first and stale-while-revalidate strategies, a sync queue for write operations, conflict resolution via last-write-wins or CRDT merge, background sync via the Background Sync API, optimistic UI updates with rollback, and progressive enhancement fallbacks for unsupported browsers."
+      "title": "Design an Offline-First UI for Poor Networks",
+      "description": "Principal-level offline-first design covering local-first reads, queued writes, conflict resolution, sync protocol, privacy, retry policy, and user trust."
     },
     {
       "slug": "progressive-hydration-system",
       "title": "Design a Progressive Hydration System",
-      "description": "Architecture for progressive hydration: SSR-rendered HTML is sent immediately for fast FCP, then JavaScript hydrates components incrementally by priority — above-the-fold critical components first (synchronous hydration on main thread), interactive components on interaction (event-triggered hydration), non-critical components on idle (requestIdleCallback hydration), and below-fold components when visible (IntersectionObserver hydration). Eliminates the monolithic TTI cliff of full-bundle hydration."
+      "description": "Principal-level design for progressive hydration covering server rendering, island prioritization, streaming, interaction replay, scheduling, partial failure, and observability."
     }
   ],
   "system-design-problems/high-level-design/personalization-systems": [
     {
       "slug": "recommendation-tuning-system",
       "title": "Design a Recommendation Tuning System",
-      "description": "Architecture for a recommendation tuning system: online/offline model evaluation pipelines, multi-armed bandit exploration strategies, A/B and interleaved testing frameworks, feature importance dashboards, operator-facing tuning controls (business rules, boost/bury, diversity knobs), model versioning with shadow deployment, feedback loop closure, and guardrails against runaway optimization."
+      "description": "Principal-level design for recommendation tuning covering candidate pools, ranking knobs, offline evaluation, online experiments, guardrails, debugging, diversity, and rollback."
     },
     {
       "slug": "user-personalization-engine-ui",
       "title": "Design a User Personalization Engine UI",
-      "description": "Architecture for a user personalization engine UI: behavioral signal ingestion via Kafka, online/offline feature store (Redis + S3), two-stage ranking (ANN retrieval + LightGBM scoring), A/B experiment assignment, cold-start onboarding flow, UI injection points (feed/hero/sidebar), explainability tooltips, inline feedback controls, preference dashboard, and filter-bubble diversity guardrails."
+      "description": "Principal-level design for a user personalization engine UI covering profile signals, feature stores, ranking, consent, explanations, experimentation, guardrails, and operational controls."
     },
     {
       "slug": "user-preference-learning-system",
       "title": "Design a User Preference Learning System",
-      "description": "Architecture for a user preference learning system: explicit signal collection (ratings, topic picks, preference toggles), implicit signal inference (dwell time, scroll depth, save/share patterns), preference model representation (interest vectors, topic affinity graphs, recency-weighted decay), cold start strategies, preference conflict resolution, GDPR compliance (right to erasure, preference export), and real-time vs. batch preference update pipelines."
+      "description": "Principal-level design for learning user preferences from explicit and implicit feedback covering event quality, profile updates, consent, cold start, decay, conflict resolution, and explainability."
     }
   ],
   "system-design-problems/high-level-design/platform-sdk-infra-systems": [
     {
       "slug": "embeddable-analytics-sdk",
       "title": "Design an Embeddable Analytics SDK",
-      "description": "Architecture for a client-side analytics SDK: event collection, batching, privacy compliance, delivery guarantees, and performance impact on host pages."
+      "description": "Principal-level platform, SDK, and infrastructure system design covering versioned contracts, isolation, rollout, extensibility, observability, rollback, and governance."
     },
     {
       "slug": "feature-flag-management-system-ui",
       "title": "Design a Feature Flag Management System UI",
-      "description": "Architecture for a feature flag management system: flag lifecycle, targeting rules, percentage rollouts, flag evaluation SDK, audit logging, and stale flag cleanup."
+      "description": "Principal-level platform, SDK, and infrastructure system design covering versioned contracts, isolation, rollout, extensibility, observability, rollback, and governance."
     },
     {
       "slug": "frontend-architecture-for-an-internal-developer-platform",
-      "title": "Design a Frontend Architecture for an Internal Developer Platform",
-      "description": "Architecture for an internal developer platform frontend: service catalog, self-service provisioning, deployment pipeline visibility, scaffolding, and plugin extensibility."
+      "title": "Design Frontend Architecture for an Internal Developer Platform",
+      "description": "Principal-level platform, SDK, and infrastructure system design covering versioned contracts, isolation, rollout, extensibility, observability, rollback, and governance."
     },
     {
       "slug": "frontend-for-a-no-code-low-code-builder",
-      "title": "Design a Frontend for a No-Code / Low-Code Builder",
-      "description": "Architecture for a no-code / low-code builder: canvas rendering, drag-and-drop, component schema, live preview, formula engine, and extensibility for custom code."
+      "title": "Design a Frontend for a No-code/Low-code Builder",
+      "description": "Principal-level platform, SDK, and infrastructure system design covering versioned contracts, isolation, rollout, extensibility, observability, rollback, and governance."
     },
     {
       "slug": "frontend-hosting-platform-dashboard-like-vercel",
-      "title": "Design a Frontend Hosting Platform Dashboard (Like Vercel)",
-      "description": "Architecture for a hosting platform dashboard: deployment pipeline visualization, preview environments, rollback, domain management, analytics, and team collaboration."
+      "title": "Design a Frontend Hosting Platform Dashboard like Vercel",
+      "description": "Principal-level platform, SDK, and infrastructure system design covering versioned contracts, isolation, rollout, extensibility, observability, rollback, and governance."
     },
     {
       "slug": "frontend-observability-dashboard-rum-like-datadog",
-      "title": "Design a Frontend Observability Dashboard (RUM Like Datadog)",
-      "description": "Architecture for a real user monitoring dashboard: metric collection, session replay, Core Web Vitals, error tracking, sampling strategy, and privacy-safe data collection."
+      "title": "Design a Frontend Observability Dashboard like Datadog RUM",
+      "description": "Principal-level platform, SDK, and infrastructure system design covering versioned contracts, isolation, rollout, extensibility, observability, rollback, and governance."
     },
     {
       "slug": "frontend-sdk-for-third-party-developers",
-      "title": "Design a Frontend SDK for Third-Party Developers",
-      "description": "Architecture for a developer-facing frontend SDK: API design, versioning, iframe isolation, authentication delegation, bundle strategy, and developer experience."
+      "title": "Design a Frontend SDK for Third-party Developers",
+      "description": "Principal-level platform, SDK, and infrastructure system design covering versioned contracts, isolation, rollout, extensibility, observability, rollback, and governance."
     },
     {
       "slug": "multi-app-monorepo-management-dashboard",
-      "title": "Design a Multi-App Monorepo Management Dashboard",
-      "description": "Architecture for a monorepo management dashboard: workspace graph, affected change detection, pipeline orchestration, release coordination, and cross-team dependency visibility."
+      "title": "Design a Multi-app Monorepo Management Dashboard",
+      "description": "Principal-level platform, SDK, and infrastructure system design covering versioned contracts, isolation, rollout, extensibility, observability, rollback, and governance."
     },
     {
       "slug": "multi-brand-design-system",
-      "title": "Design a Multi-Brand Design System",
-      "description": "Architecture for a multi-brand design system: token layering, theme generation, brand-specific overrides, component versioning, and cross-team governance at scale."
+      "title": "Design a Multi-brand Design System",
+      "description": "Principal-level platform, SDK, and infrastructure system design covering versioned contracts, isolation, rollout, extensibility, observability, rollback, and governance."
     },
     {
       "slug": "multi-tenant-saas-admin-dashboard",
-      "title": "Design a Multi-Tenant SaaS Admin Dashboard",
-      "description": "Architecture for a multi-tenant admin dashboard: tenant isolation, RBAC, bulk operations, audit logging, impersonation, and cross-tenant analytics at scale."
+      "title": "Design a Multi-tenant SaaS Admin Dashboard",
+      "description": "Principal-level platform, SDK, and infrastructure system design covering versioned contracts, isolation, rollout, extensibility, observability, rollback, and governance."
     },
     {
       "slug": "plugin-extension-marketplace-ui",
-      "title": "Design a Plugin / Extension Marketplace UI",
-      "description": "Architecture for a plugin marketplace: plugin registry, trust and permissions model, installation workflow, sandboxed execution, versioning, and developer portal."
+      "title": "Design a Plugin and Extension Marketplace UI",
+      "description": "Principal-level platform, SDK, and infrastructure system design covering versioned contracts, isolation, rollout, extensibility, observability, rollback, and governance."
     }
   ],
   "system-design-problems/high-level-design/realtime-collaboration-systems": [
     {
       "slug": "collaborative-editor",
-      "title": "Design a Collaborative Editor (Google Docs / Notion Style)",
-      "description": "Architecture for a real-time collaborative text editor: OT versus CRDT, cursor synchronization, conflict-free merging, offline support, and performance at scale."
+      "title": "Design a Collaborative Editor",
+      "description": "Principal-level realtime collaboration system design covering shared state, ordering, CRDT/OT trade-offs, presence, conflict resolution, offline replay, fanout, abuse, and observability."
     },
     {
       "slug": "cursor-sharing-system",
-      "title": "Design a Cursor-Sharing System (Figma-Like)",
-      "description": "Architecture for real-time cursor sharing: high-frequency position broadcasting, interpolation, viewport transformation, identity display, and scaling to hundreds of simultaneous collaborators."
+      "title": "Design a Cursor Sharing System",
+      "description": "Principal-level realtime collaboration system design covering shared state, ordering, CRDT/OT trade-offs, presence, conflict resolution, offline replay, fanout, abuse, and observability."
     },
     {
       "slug": "embedded-chat-system",
       "title": "Design an Embedded Chat System",
-      "description": "Architecture for an in-product chat system: message delivery, read receipts, threading, search, moderation, and scalable WebSocket fan-out."
+      "description": "Principal-level realtime collaboration system design covering shared state, ordering, CRDT/OT trade-offs, presence, conflict resolution, offline replay, fanout, abuse, and observability."
     },
     {
       "slug": "live-commenting-annotation-system",
-      "title": "Design a Live Commenting / Annotation System",
-      "description": "Architecture for inline comments and annotations on documents and media: anchor stability, real-time sync, thread resolution, and scale to millions of annotations."
+      "title": "Design a Live Commenting and Annotation System",
+      "description": "Principal-level realtime collaboration system design covering shared state, ordering, CRDT/OT trade-offs, presence, conflict resolution, offline replay, fanout, abuse, and observability."
     },
     {
       "slug": "offline-realtime-sync-reconciliation-system",
-      "title": "Design an Offline + Realtime Sync Reconciliation System",
-      "description": "Architecture for offline-first sync: local operation queues, change logs with logical timestamps, conflict detection and resolution, reconnect protocols, and sync status UX."
+      "title": "Design Offline Realtime Sync and Reconciliation",
+      "description": "Principal-level realtime collaboration system design covering shared state, ordering, CRDT/OT trade-offs, presence, conflict resolution, offline replay, fanout, abuse, and observability."
     },
     {
       "slug": "presence-system",
-      "title": "Design a Presence System (Online/Offline, Typing Indicators)",
-      "description": "Architecture for a real-time presence system: heartbeat-based online/offline detection, typing indicators, last-seen timestamps, privacy controls, and scalability to millions of users."
+      "title": "Design a Presence System",
+      "description": "Principal-level realtime collaboration system design covering shared state, ordering, CRDT/OT trade-offs, presence, conflict resolution, offline replay, fanout, abuse, and observability."
     },
     {
       "slug": "real-time-collaborative-whiteboard",
-      "title": "Design a Real-Time Collaborative Whiteboard (Miro/Figma Style)",
-      "description": "Architecture for a multiplayer infinite canvas: CRDT-based conflict resolution, operational transform, WebSocket delivery, viewport culling, and performance at scale."
+      "title": "Design a Real-time Collaborative Whiteboard",
+      "description": "Principal-level realtime collaboration system design covering shared state, ordering, CRDT/OT trade-offs, presence, conflict resolution, offline replay, fanout, abuse, and observability."
     },
     {
       "slug": "real-time-multiplayer-game-lobby-and-matchmaking-ui",
-      "title": "Design a Real-Time Multiplayer Game Lobby & Matchmaking UI",
-      "description": "Architecture for a game lobby and matchmaking system: skill-based matching, lobby state machine, WebSocket sync, anti-cheat, and queue management at scale."
+      "title": "Design a Real-time Multiplayer Game Lobby and Matchmaking UI",
+      "description": "Principal-level realtime collaboration system design covering shared state, ordering, CRDT/OT trade-offs, presence, conflict resolution, offline replay, fanout, abuse, and observability."
     },
     {
       "slug": "video-conferencing-frontend",
-      "title": "Design a Video Conferencing Frontend (Zoom/Google Meet Style)",
-      "description": "Architecture for a browser-based video conferencing client: WebRTC mesh vs SFU, media negotiation, adaptive quality, layout management, and resilience under poor network conditions."
+      "title": "Design a Video Conferencing Frontend",
+      "description": "Principal-level realtime collaboration system design covering shared state, ordering, CRDT/OT trade-offs, presence, conflict resolution, offline replay, fanout, abuse, and observability."
     }
   ],
   "system-design-problems/high-level-design/scheduling-calendar-systems": [
     {
       "slug": "google-calendar-system",
-      "title": "Design a Calendar System (like Google Calendar)",
-      "description": "Architecture for a Google Calendar-like system: event data model with RRULE recurrence stored once and expanded on query, EXDATE exception handling for single-occurrence edits, iCalendar .ics format for interoperability, CalDAV sync with server-side syncToken for delta updates, timezone-aware storage and rendering, shared calendar ACL with viewer/editor/owner roles, reminder pipeline with timezone-correct alarm delivery, conflict detection for overlapping events, and real-time push via WebSocket for collaborative editing."
+      "title": "Design a Google Calendar-like System",
+      "description": "Principal-level scheduling and calendar system design covering availability, recurrence, time zones, resource holds, conflict detection, reminders, external sync, privacy, and observability."
     },
     {
       "slug": "meeting-scheduling-system",
-      "title": "Design a Meeting Scheduling System (like Calendly)",
-      "description": "Architecture for a Calendly-like meeting scheduling system: event type configuration with working hours RRULE and buffer rules, real-time free/busy aggregation from Google and Outlook calendar APIs, Redis SETNX slot locking to prevent double-booking during form fill, atomic booking commit with idempotency on reservation token, Google Calendar event creation with conferencing data for Meet/Zoom link, signed JWT reschedule/cancel links requiring no login, round-robin host assignment for team scheduling, and timezone-aware availability display for global guests."
+      "title": "Design a Meeting Scheduling System",
+      "description": "Principal-level scheduling and calendar system design covering availability, recurrence, time zones, resource holds, conflict detection, reminders, external sync, privacy, and observability."
     },
     {
       "slug": "resource-booking-system",
-      "title": "Design a Resource Booking System (Rooms, Desks, Slots)",
-      "description": "Architecture for a resource booking system: interval overlap query to find available rooms and desks, SELECT FOR UPDATE atomic booking with unique constraint to prevent double-booking races, QR/NFC check-in with no-show auto-release at start+15min, Redis sorted set waitlist with 10-minute claim window, recurring maintenance block scheduling, capacity and amenity filtering, admin override and force-release, SSE real-time availability updates, and booking analytics for utilization reporting."
+      "title": "Design a Resource Booking System",
+      "description": "Principal-level scheduling and calendar system design covering availability, recurrence, time zones, resource holds, conflict detection, reminders, external sync, privacy, and observability."
     }
   ],
   "system-design-problems/high-level-design/search-discovery-systems": [
     {
       "slug": "faceted-search-large-datasets",
       "title": "Design Faceted Search for Large Datasets",
-      "description": "Architecture for a faceted search system for large datasets: facet panel design (checkboxes, range sliders, date pickers, hierarchical facets), facet count computation and caching, URL-driven filter state for shareability, client-side versus server-side facet application, Elasticsearch aggregations for facet counts, real-time facet count updates on selection, result ranking with applied facets, pagination reset on filter change, and breadcrumb-style applied filter chips."
+      "description": "Principal-level search and discovery system design covering query understanding, indexing, retrieval, ranking, facets, personalization, experimentation, abuse, privacy, and observability."
     },
     {
       "slug": "google-like-search-frontend",
       "title": "Design a Google-like Search Frontend",
-      "description": "Architecture for a Google-like search frontend: search box with instant autocomplete (debounced, keyboard navigable), query tokenization and spell correction display, SERP layout with organic results, rich snippets (Knowledge Panel, featured snippets, sitelinks), pagination versus infinite scroll, result ranking signals surfaced in UI, image search grid, news carousel, People Also Ask accordion, search refinement filters, and zero-result handling."
+      "description": "Principal-level search and discovery system design covering query understanding, indexing, retrieval, ranking, facets, personalization, experimentation, abuse, privacy, and observability."
     },
     {
       "slug": "search-analytics-dashboard",
       "title": "Design a Search Analytics Dashboard",
-      "description": "Architecture for a search analytics dashboard: query volume trends, zero-result rate monitoring, top queries and trending queries, click-through rate by position, search session funnel (query → click → conversion), query clustering for topic analysis, no-click search rate (featured snippet saturation), failed search detection, search exit rate by query category, and real-time anomaly alerting for search quality degradation."
+      "description": "Principal-level search and discovery system design covering query understanding, indexing, retrieval, ranking, facets, personalization, experimentation, abuse, privacy, and observability."
     },
     {
       "slug": "search-ranking-experimentation-ui",
       "title": "Design a Search Ranking Experimentation UI",
-      "description": "Architecture for a search ranking experimentation UI: A/B test configuration for ranking models, side-by-side SERP comparison of control vs. treatment, relevance judgement collection (query-document ratings from human evaluators), metrics dashboard (nDCG, MRR, click-through rate), interleaving experiments for implicit feedback, feature importance visualization, holdout group management, statistical significance computation, and rollout controls for ranking model changes."
+      "description": "Principal-level search and discovery system design covering query understanding, indexing, retrieval, ranking, facets, personalization, experimentation, abuse, privacy, and observability."
     },
     {
       "slug": "semantic-search-ui",
-      "title": "Design a Semantic Search UI (AI-Powered)",
-      "description": "Architecture for an AI-powered semantic search UI: query embedding generation, vector similarity search with approximate nearest neighbors, hybrid search (keyword + vector blend), result explanations showing why each result matched, query expansion and reformulation suggestions, conversational search with follow-up questions, semantic snippet highlighting, confidence scores and result diversity, streaming search results, and fallback to keyword search for precision queries."
+      "title": "Design a Semantic Search UI",
+      "description": "Principal-level search and discovery system design covering query understanding, indexing, retrieval, ranking, facets, personalization, experimentation, abuse, privacy, and observability."
     },
     {
       "slug": "youtube-search-recommendation-ui",
-      "title": "Design YouTube Search + Recommendation UI",
-      "description": "Architecture for a YouTube-like search and recommendation UI: search results page with video cards (thumbnail, duration badge, view count, channel avatar), recommendation sidebar on watch page, next-video autoplay with countdown, homepage feed personalization, search filter chips (upload date, duration, type, features, sort), thumbnail hover-to-preview, channel subscription signal integration into recommendations, trending/explore tab, and watch history influence on ranking."
+      "title": "Design a YouTube Search and Recommendation UI",
+      "description": "Principal-level search and discovery system design covering query understanding, indexing, retrieval, ranking, facets, personalization, experimentation, abuse, privacy, and observability."
     }
   ],
   "system-design-problems/high-level-design/security-auth-privacy-systems": [
     {
       "slug": "account-security-dashboard",
-      "title": "Design an Account Security Dashboard (Sessions, Devices)",
-      "description": "Architecture for an account security dashboard: active session listing with device fingerprint, IP geolocation, and last-active timestamp; session revocation with real-time WebSocket push to invalidate the revoked session; device trust management with remembered and untrusted device lists; login history with anomaly highlighting (new location, unusual time); two-factor authentication enrollment and backup codes; password change with breach check via HaveIBeenPwned k-anonymity API; security event timeline; and account recovery options management."
+      "title": "Design an Account Security Dashboard",
+      "description": "Principal-level security, authentication, authorization, and privacy system design covering trust boundaries, policy consistency, abuse resistance, auditability, rollback, and observability."
     },
     {
       "slug": "authentication-system",
-      "title": "Design an Authentication System (OAuth, SSO, MFA Flows)",
-      "description": "Architecture for a complete authentication system frontend: OAuth 2.0 authorization code flow with PKCE, SSO with SAML and OIDC, multi-factor authentication (TOTP, WebAuthn, SMS OTP), session management with refresh token rotation, silent token refresh via hidden iframe, login form with credential autofill and passkey support, brute-force protection UI, account recovery flows, and cross-domain SSO session propagation."
+      "title": "Design an Authentication System",
+      "description": "Principal-level security, authentication, authorization, and privacy system design covering trust boundaries, policy consistency, abuse resistance, auditability, rollback, and observability."
     },
     {
       "slug": "permission-access-control-ui",
-      "title": "Design a Permission & Access Control System UI",
-      "description": "Architecture for a permission and access control system UI: role-based access control (RBAC) with role inheritance, resource-level permission matrix, UI-level permission enforcement (hide vs. disable), permission evaluation at the edge using JWT claims, real-time permission propagation when roles change, attribute-based access control (ABAC) for context-aware permissions, team and workspace membership management, and audit log for permission changes."
+      "title": "Design a Permission and Access Control UI",
+      "description": "Principal-level security, authentication, authorization, and privacy system design covering trust boundaries, policy consistency, abuse resistance, auditability, rollback, and observability."
     },
     {
       "slug": "privacy-consent-management",
-      "title": "Design a Privacy & Consent Management System",
-      "description": "Architecture for a GDPR/CCPA-compliant privacy and consent management system: cookie consent banner with granular category toggles (necessary, analytics, marketing, personalization), consent version tracking and re-prompting on policy updates, consent storage in a tamper-proof audit log, data subject rights UI (access, deletion, portability requests), privacy preference center, consent propagation to third-party tags via a tag manager integration, cookie scanning and categorization, and Do Not Sell / Do Not Track signal handling."
+      "title": "Design Privacy and Consent Management",
+      "description": "Principal-level security, authentication, authorization, and privacy system design covering trust boundaries, policy consistency, abuse resistance, auditability, rollback, and observability."
     },
     {
       "slug": "secure-token-session-handling",
-      "title": "Design a Secure Token & Session Handling System",
-      "description": "Architecture for a secure token and session handling system: token storage strategies (in-memory access token vs. HttpOnly cookie vs. localStorage tradeoffs), JWT anatomy and signature validation, CSRF protection via the double-submit cookie pattern and SameSite cookie attribute, XSS-resistant token storage, refresh token rotation with family revocation for replay attack prevention, session fixation prevention on privilege escalation, silent refresh via hidden iframe or service worker, token binding to device fingerprint, and logout that invalidates all layers of the token chain."
+      "title": "Design Secure Token and Session Handling",
+      "description": "Principal-level security, authentication, authorization, and privacy system design covering trust boundaries, policy consistency, abuse resistance, auditability, rollback, and observability."
     }
   ],
   "system-design-problems/high-level-design/social-engagement": [
     {
       "slug": "content-moderation-reporting-ui",
-      "title": "Design a Content Moderation & Reporting UI",
-      "description": "Architecture for a content moderation and reporting UI: user-facing report flow (multi-step reason selection, context capture), moderator review queue with priority scoring, appeal flow for removed content, automated pre-moderation pipeline with confidence thresholds, shadow-ban and soft-delete patterns, content strike system with escalation, moderator dashboard with batch operations, real-time queue depth monitoring, and audit trail for all moderation decisions."
+      "title": "Design a Content Moderation and Reporting UI",
+      "description": "Principal-level social engagement system design covering graph projections, ranking, privacy, moderation, virality, abuse controls, and operational recovery."
     },
     {
       "slug": "infinite-scrolling-feed",
-      "title": "Design an Infinite Scrolling Feed with Ranking",
-      "description": "Architecture for an infinite scrolling feed with content ranking: cursor-based pagination with ranking score stability, virtual list windowing for DOM memory management, feed cache warm-up on login, real-time new-post injection without layout shift, pull-to-refresh with debounce, rank-based cursor design to prevent drift on re-rank, skeleton loading states, scroll position restoration on back-navigation, and content deduplication across pagination boundaries."
+      "title": "Design an Infinite Scrolling Feed",
+      "description": "Principal-level social engagement system design covering graph projections, ranking, privacy, moderation, virality, abuse controls, and operational recovery."
     },
     {
       "slug": "instagram-twitter-frontend",
-      "title": "Design Instagram / Twitter Frontend",
-      "description": "Architecture for a social media frontend: feed rendering strategy (ISR + client hydration), media upload pipeline with presigned S3 URLs, infinite scroll with cursor-based pagination, story/reel playback with HLS adaptive streaming, real-time like/comment counts via WebSocket, optimistic UI for interactions, CDN image delivery with responsive srcsets, and client-side engagement tracking."
+      "title": "Design an Instagram/Twitter Frontend",
+      "description": "Principal-level social engagement system design covering graph projections, ranking, privacy, moderation, virality, abuse controls, and operational recovery."
     },
     {
       "slug": "notification-system-ui",
-      "title": "Design a Notification System UI (Multi-Channel)",
-      "description": "Architecture for a multi-channel notification system UI: notification inbox with read/unread state, real-time badge count via SSE, push notification registration with Web Push API, email notification preference management, digest scheduling, deduplication and grouping (N likes from M users), notification routing by type and user preferences, delivery status tracking, and notification center with filter and search."
+      "title": "Design a Notification System UI",
+      "description": "Principal-level social engagement system design covering graph projections, ranking, privacy, moderation, virality, abuse controls, and operational recovery."
     },
     {
       "slug": "user-profile-follower-system",
-      "title": "Design a User Profile & Follower System",
-      "description": "Architecture for a user profile and follower system: profile page rendering strategy (SSR with edge caching), follow/unfollow with optimistic UI and fan-out, follower/following paginated lists, mutual follow detection, profile stats caching (follower count, post count), private account follow request flow, block and mute relationship management, suggested users based on graph proximity, and follower count consistency under high-concurrency celebrity accounts."
+      "title": "Design a User Profile and Follower System",
+      "description": "Principal-level social engagement system design covering graph projections, ranking, privacy, moderation, virality, abuse controls, and operational recovery."
     },
     {
       "slug": "viral-sharing-engagement",
-      "title": "Design a Viral Sharing & Engagement System",
-      "description": "Architecture for a viral sharing and engagement system: share sheet with deep link generation, Open Graph meta tag rendering for rich link previews, viral coefficient tracking and K-factor analytics, referral attribution with UTM and fingerprinting, engagement loop design (streak mechanics, social proof triggers), share count display with approximate HyperLogLog counting, viral content detection and CDN pre-warming, and A/B testing share CTAs."
+      "title": "Design a Viral Sharing and Engagement System",
+      "description": "Principal-level social engagement system design covering graph projections, ranking, privacy, moderation, virality, abuse controls, and operational recovery."
     }
   ],
   "system-design-problems/low-level-design/ai-modern-systems-lld": [
@@ -871,38 +871,38 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
   "system-design-problems/low-level-design/architecture-system-level-lld": [
     {
       "slug": "backend-for-frontend",
-      "title": "Backend for Frontend (BFF) Pattern",
-      "description": "Production-grade BFF architecture covering request aggregation, token management, BFF-level caching, SSR integration, edge deployment, circuit breaking, distributed tracing, and trade-offs versus GraphQL."
+      "title": "Design a Backend for Frontend",
+      "description": "Implementation-heavy architecture-level low-level design guide for design a backend for frontend."
     },
     {
       "slug": "component-library-system",
       "title": "Design a Component Library System",
-      "description": "Production-grade component library with design tokens, theming, semantic versioning, visual regression testing, and governance at scale."
+      "description": "Implementation-heavy architecture-level low-level design guide for design a component library system."
     },
     {
       "slug": "design-token-system-architecture",
       "title": "Design Token System Architecture",
-      "description": "Production-grade design token architecture covering the three-tier token hierarchy, CSS custom property injection, SSR-safe theme switching without FOUC, multi-brand and white-label token overrides, Style Dictionary toolchain, and governance workflows."
+      "description": "Implementation-heavy architecture-level low-level design guide for design token system architecture."
     },
     {
       "slug": "frontend-performance-architecture",
-      "title": "Frontend Performance Architecture",
-      "description": "Production-grade frontend performance covering Core Web Vitals (LCP, INP, CLS), bundle optimization and code splitting, image and font loading strategies, runtime performance patterns, and measurement with RUM and Lighthouse CI."
+      "title": "Design Frontend Performance Architecture",
+      "description": "Implementation-heavy architecture-level low-level design guide for design frontend performance architecture."
     },
     {
       "slug": "frontend-testing-architecture",
-      "title": "Frontend Testing Architecture",
-      "description": "Production-grade frontend testing strategy: unit tests with Vitest, component testing with Testing Library, visual regression with Playwright, E2E with Cypress, contract testing, performance budgets in CI, and test coverage governance."
+      "title": "Design Frontend Testing Architecture",
+      "description": "Implementation-heavy architecture-level low-level design guide for design frontend testing architecture."
     },
     {
       "slug": "micro-frontend-architecture",
-      "title": "Micro-Frontend Architecture",
-      "description": "Production-grade micro-frontend design covering Module Federation, composition strategies, cross-app communication, dependency management, CSS isolation, performance trade-offs, and when not to use micro-frontends."
+      "title": "Design Micro-frontend Architecture",
+      "description": "Implementation-heavy architecture-level low-level design guide for design micro-frontend architecture."
     },
     {
       "slug": "monorepo-tooling-architecture",
-      "title": "Monorepo Tooling Architecture",
-      "description": "Production-grade monorepo design covering pnpm workspace structure, Turborepo task orchestration and remote caching, Nx project graph and module boundaries, Changesets versioning, affected-only CI, dependency management, and when to split to polyrepo."
+      "title": "Design Monorepo Tooling Architecture",
+      "description": "Implementation-heavy architecture-level low-level design guide for design monorepo tooling architecture."
     }
   ],
   "system-design-problems/low-level-design/auth-user-systems": [
@@ -1094,8 +1094,8 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
   "system-design-problems/low-level-design/component-level-ui-patterns": [
     {
       "slug": "accordion-collapsible",
-      "title": "Design an Accordion / Collapsible Section",
-      "description": "Accordion system with exclusive vs independent expand, animated height transitions, accessibility, nested accordions, and URL hash sync."
+      "title": "Design an Accordion Collapsible System",
+      "description": "Implementation-heavy low-level design guide for design an accordion collapsible system."
     },
     {
       "slug": "audio-video-player",
@@ -1105,12 +1105,12 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
     {
       "slug": "avatar-component",
       "title": "Design an Avatar Component",
-      "description": "Complete LLD solution for a production-grade avatar component with fallback handling, initials generation, lazy image loading, status indicators, grouped avatar stacks, and full accessibility."
+      "description": "Implementation-heavy low-level design guide for design an avatar component."
     },
     {
       "slug": "breadcrumb-component",
-      "title": "Design a Breadcrumb Component for Routing Hierarchies",
-      "description": "Complete LLD solution for a production-grade breadcrumb component with auto-generation from routes, manual label overrides, truncation with ellipsis, configurable separators, mobile-responsive collapse, SEO schema markup, keyboard navigation, and full accessibility."
+      "title": "Design a Breadcrumb System",
+      "description": "Implementation-heavy low-level design guide for design a breadcrumb system."
     },
     {
       "slug": "calendar-scheduler",
@@ -1154,8 +1154,8 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
     },
     {
       "slug": "context-menu",
-      "title": "Design a Context Menu / Right-click Menu",
-      "description": "Complete LLD solution for an accessible context menu with viewport boundary detection, keyboard navigation, sub-menus, focus trapping, portal rendering, and ARIA compliance."
+      "title": "Design a Context Menu System",
+      "description": "Implementation-heavy low-level design guide for design a context menu system."
     },
     {
       "slug": "dashboard-builder",
@@ -1214,8 +1214,8 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
     },
     {
       "slug": "loading-skeleton",
-      "title": "Design a Loading Skeleton Component",
-      "description": "Complete LLD solution for a production-grade loading skeleton component with type-based shapes (text, image, avatar, custom), CSS shimmer animation, responsive widths, composition patterns, SSR-first rendering, accessibility, and CLS prevention."
+      "title": "Design a Loading Skeleton System",
+      "description": "Implementation-heavy low-level design guide for design a loading skeleton system."
     },
     {
       "slug": "map-based-ui",
@@ -1224,8 +1224,8 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
     },
     {
       "slug": "modal-component",
-      "title": "Design a Modal / Dialog Component",
-      "description": "Complete LLD solution for a production-grade modal component supporting multiple types (confirm, alert, custom), global control, focus trapping, z-index stacking, ARIA dialog pattern, and SSR-safe portal rendering."
+      "title": "Design a Modal System",
+      "description": "Implementation-heavy low-level design guide for design a modal system."
     },
     {
       "slug": "multi-select-tag-input",
@@ -1254,8 +1254,8 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
     },
     {
       "slug": "rating-stars-component",
-      "title": "Design a Rating / Stars Component with Keyboard Interaction and ARIA",
-      "description": "Complete LLD solution for a production-grade Rating/Stars component with half-star support, keyboard navigation, ARIA slider role, hover preview, fractional rendering, and full accessibility."
+      "title": "Design a Rating Stars Component",
+      "description": "Implementation-heavy low-level design guide for design a rating stars component."
     },
     {
       "slug": "resizable-split-pane",
@@ -1265,7 +1265,7 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
     {
       "slug": "reusable-button-system",
       "title": "Design a Reusable Button System",
-      "description": "Complete LLD solution for a production-grade reusable button system with variants, sizes, loading states, icon support, polymorphic as prop, compound ButtonGroup, ripple animation, and full accessibility."
+      "description": "Implementation-heavy low-level design guide for design a reusable button system."
     },
     {
       "slug": "rich-text-editor",
@@ -1294,13 +1294,13 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
     },
     {
       "slug": "toast-notification-system",
-      "title": "Design a Toast / Notification System",
-      "description": "Complete LLD solution for a production-grade toast notification system with queueing, stacking, dismissal, persistence, auto-dismiss, and accessibility."
+      "title": "Design a Toast Notification System",
+      "description": "Implementation-heavy low-level design guide for design a toast notification system."
     },
     {
       "slug": "tooltip-system",
       "title": "Design a Tooltip System",
-      "description": "Complete LLD solution for a production-grade tooltip system with 12-position placement, auto-flip boundary collision, delay management, portal rendering, rich content, and full accessibility."
+      "description": "Implementation-heavy low-level design guide for design a tooltip system."
     },
     {
       "slug": "tree-view-folder-explorer",
@@ -1482,348 +1482,348 @@ export const systemDesignProblemsArticles: Record<string, Array<{slug: string; t
   "system-design-problems/low-level-design/networking-data-systems": [
     {
       "slug": "cache-invalidation-strategy",
-      "title": "Cache Invalidation Strategy (After Mutations)",
-      "description": "Production-grade cache invalidation strategies for keeping frontend cache fresh after mutations with dependency tracking, selective invalidation, and race condition handling."
+      "title": "Design a Cache Invalidation Strategy After Mutations",
+      "description": "LLD for invalidating and updating frontend cache after mutations using tags, normalized entities, optimistic patches, and revalidation."
     },
     {
       "slug": "data-fetching-hook",
       "title": "Design a Data Fetching Hook",
-      "description": "Production-grade data fetching abstraction for React with loading states, error handling, dependency tracking, request lifecycle management, and cancellation support."
+      "description": "Implementation-heavy LLD for a React data fetching hook with cancellation, stale guards, retries, dedupe, cache reads, and observability."
     },
     {
       "slug": "file-upload-api-layer",
       "title": "Design a File Upload API Layer",
-      "description": "Production-grade file upload system with chunking, resumability, progress tracking, cancellation, and error handling for large files."
+      "description": "LLD for chunked upload APIs with resumability, checksums, signed URLs, progress aggregation, and retry-safe chunk commits."
     },
     {
       "slug": "frontend-caching-layer",
       "title": "Design a Frontend Caching Layer",
-      "description": "Production-grade client-side caching system with TTL, tag-based invalidation, LRU eviction, stale-while-revalidate, and memory management for high-traffic SPAs."
+      "description": "LLD for a browser-side cache with memory, persistent storage, freshness policy, invalidation, eviction, and stale rendering states."
     },
     {
       "slug": "global-api-error-handling",
       "title": "Design a Global API Error Handling Layer",
-      "description": "Production-grade centralized error handling for API responses with classification, retry logic, user-friendly messages, and observability."
+      "description": "LLD for normalizing API errors into user messages, auth actions, retry hints, telemetry, and boundary-specific recovery behavior."
     },
     {
       "slug": "graphql-client-architecture",
-      "title": "GraphQL Client Architecture",
-      "description": "Production-grade GraphQL client architecture covering normalized caching, query lifecycle, optimistic mutations, subscriptions, batching, persisted queries, N+1 prevention, auth link chain, and code generation."
+      "title": "Design a GraphQL Client Architecture",
+      "description": "LLD for GraphQL client internals: normalized cache, operation links, fragment matching, optimistic updates, and partial result handling."
     },
     {
       "slug": "optimistic-ui-system",
       "title": "Design an Optimistic UI System",
-      "description": "Production-grade optimistic updates that immediately reflect mutations locally while network request completes, with rollback on failure and conflict resolution."
+      "description": "LLD for optimistic mutations with client-generated operation IDs, rollback, reconciliation, and conflict-aware UI state."
     },
     {
       "slug": "polling-vs-websocket-system",
       "title": "Design a Polling vs WebSocket System",
-      "description": "Architecture for choosing between polling and WebSockets based on latency, throughput, and resource constraints. Hybrid approaches for real-time updates."
+      "description": "LLD for choosing and implementing polling, long polling, and WebSocket subscriptions with fallback, backpressure, and consistency boundaries."
     },
     {
       "slug": "race-condition-handling",
       "title": "Design a Race Condition Handling System",
-      "description": "Production-grade patterns for detecting and preventing race conditions in concurrent state updates, optimistic updates, and data synchronization."
+      "description": "LLD for preventing stale writes and stale reads in UI flows with sequence tokens, aborts, compare-and-swap, and commit guards."
     },
     {
       "slug": "rate-limited-autocomplete",
       "title": "Design a Rate-Limited Autocomplete System",
-      "description": "Production-grade autocomplete with debouncing, request deduplication, rate limiting, cancellation, and result caching for responsive search UX."
+      "description": "LLD for autocomplete request orchestration with debounce, rate limits, cache hits, focus/blur behavior, and stale response protection."
     },
     {
       "slug": "request-batching-system",
       "title": "Design a Request Batching System",
-      "description": "Production-grade request batching that coalesces multiple individual requests into single batch to reduce network overhead and improve throughput."
+      "description": "LLD for batching many small requests into a timed or size-limited batch while preserving per-call promises and partial failures."
     },
     {
       "slug": "request-deduplication-system",
       "title": "Design a Request Deduplication System",
-      "description": "Production-grade deduplication that coalesces identical in-flight requests, returns cached results to subscribers, and handles failures atomically."
+      "description": "LLD for sharing identical in-flight requests across components while preserving cancellation, subscribers, and cache consistency."
     },
     {
       "slug": "retry-mechanism",
       "title": "Design a Retry Mechanism",
-      "description": "Production-grade retry logic with exponential backoff, jitter, retry budgets, circuit breakers, and failure classification for resilient API communication."
+      "description": "LLD for retry policies with exponential backoff, jitter, deadlines, idempotency, retry budgets, and user-visible recovery states."
     },
     {
       "slug": "token-refresh-system",
       "title": "Design a Token Refresh System",
-      "description": "Production-grade authentication token refresh with expiration handling, race condition prevention, and seamless token rotation without user re-login."
+      "description": "LLD for access-token refresh with a single-flight mutex, queued request replay, rotation safety, logout, and cross-tab coordination."
     },
     {
       "slug": "websocket-client-architecture",
-      "title": "WebSocket Client Architecture",
-      "description": "Production-grade WebSocket client design covering connection lifecycle, exponential backoff reconnection, message protocol and queuing, request-response correlation, React integration, auth token handling, and SSE fallback strategy."
+      "title": "Design a WebSocket Client Architecture",
+      "description": "LLD for a resilient browser WebSocket client with connection lifecycle, heartbeats, subscriptions, backoff, replay, and backpressure."
     }
   ],
   "system-design-problems/low-level-design/offline-advanced-ux": [
     {
       "slug": "background-sync-queue",
-      "title": "Background Sync Queue System",
-      "description": "Application-level queueing and coordination of operations for syncing when network connectivity restores"
+      "title": "Design a Background Sync Queue",
+      "description": "Implementation-heavy low-level design guide for design a background sync queue, with offline state models, queues, conflict handling, fallback behavior, and production trade-offs."
     },
     {
       "slug": "conflict-visualization-ui",
-      "title": "Conflict Visualization UI System",
-      "description": "Visualizing and resolving data conflicts in offline-first and multi-device scenarios"
+      "title": "Design a Conflict Visualization UI",
+      "description": "Implementation-heavy low-level design guide for design a conflict visualization ui, with offline state models, queues, conflict handling, fallback behavior, and production trade-offs."
     },
     {
       "slug": "data-synchronization-conflict-resolution",
-      "title": "Design Data Synchronization & Conflict Resolution",
-      "description": "Production-grade sync system with multi-device consistency, conflict detection, three-way merge, CRDT-based merging, and event sourcing patterns."
+      "title": "Design Conflict Resolution for Offline Edits",
+      "description": "Implementation-heavy low-level design guide for design conflict resolution for offline edits, with offline state models, queues, conflict handling, fallback behavior, and production trade-offs."
     },
     {
       "slug": "local-first-architecture",
-      "title": "Local-First Architecture",
-      "description": "Building apps where local storage is primary source of truth with eventual server sync"
+      "title": "Design Local-First Architecture",
+      "description": "Implementation-heavy low-level design guide for design local-first architecture, with offline state models, queues, conflict handling, fallback behavior, and production trade-offs."
     },
     {
       "slug": "network-status-detection",
-      "title": "Design Network Status Detection & Handling",
-      "description": "Production-grade network connectivity detection with accurate online/offline status, network type awareness, latency estimation, and UI state management."
+      "title": "Design Network Failure Handling",
+      "description": "Implementation-heavy low-level design guide for design network failure handling, with offline state models, queues, conflict handling, fallback behavior, and production trade-offs."
     },
     {
       "slug": "offline-first-architecture",
-      "title": "Design an Offline-First Architecture System",
-      "description": "Production-grade offline-first design with local-first data, automatic synchronization, conflict resolution, and seamless online/offline transitions."
+      "title": "Design an Offline-First App",
+      "description": "Implementation-heavy low-level design guide for design an offline-first app, with offline state models, queues, conflict handling, fallback behavior, and production trade-offs."
     },
     {
       "slug": "progressive-enhancement",
-      "title": "Progressive Enhancement System",
-      "description": "Building resilient apps with core functionality working without JavaScript, enhanced with JavaScript when available"
+      "title": "Design a Progressive Enhancement System",
+      "description": "Implementation-heavy low-level design guide for design a progressive enhancement system, with offline state models, queues, conflict handling, fallback behavior, and production trade-offs."
     },
     {
       "slug": "push-notification-ux",
-      "title": "Push Notification UX System",
-      "description": "Designing push notifications with engagement, frequency capping, and user preference management"
+      "title": "Design Push Notification UX",
+      "description": "Implementation-heavy low-level design guide for design push notification ux, with offline state models, queues, conflict handling, fallback behavior, and production trade-offs."
     }
   ],
   "system-design-problems/low-level-design/real-world-scenario-lld": [
     {
       "slug": "activity-feed-system",
-      "title": "Design Activity Feed System",
-      "description": "Production-grade activity feed with real-time updates, pagination, filtering, and aggregation."
+      "title": "Design an Activity Feed System",
+      "description": "Implementation-heavy low-level design guide for design an activity feed system."
     },
     {
       "slug": "audit-log-viewer-ui",
-      "title": "Design Audit Log Viewer UI",
-      "description": "Production-grade audit logging interface with filtering, search, tamper-evident storage, and compliance reporting."
+      "title": "Design an Audit Log Viewer UI",
+      "description": "Implementation-heavy low-level design guide for design an audit log viewer ui."
     },
     {
       "slug": "bulk-editing-ui",
       "title": "Design Bulk Editing UI",
-      "description": "Production-grade bulk editing with selection management, batch operations, progress tracking, and rollback."
+      "description": "Implementation-heavy low-level design guide for design bulk editing ui."
     },
     {
       "slug": "checkout-flow",
       "title": "Design a Checkout Flow",
-      "description": "Production-grade checkout experience with multi-step forms, payment processing, error recovery, and order confirmation."
+      "description": "Implementation-heavy low-level design guide for design a checkout flow."
     },
     {
       "slug": "comments-system",
-      "title": "Design Comments System",
-      "description": "Production-grade comment threads with real-time updates, nested replies, moderation, and spam detection."
+      "title": "Design a Comments System",
+      "description": "Implementation-heavy low-level design guide for design a comments system."
     },
     {
       "slug": "debounced-auto-save-system",
-      "title": "Design Debounced Auto-Save System",
-      "description": "Production-grade auto-save with debouncing, optimistic updates, conflict resolution, and user feedback."
+      "title": "Design Debounced Auto-save",
+      "description": "Implementation-heavy low-level design guide for design debounced auto-save."
     },
     {
       "slug": "error-handling-architecture",
-      "title": "Error Handling Architecture",
-      "description": "Production-grade frontend error handling covering error taxonomy, React Error Boundaries with granular placement, API error handling and retry strategy, idempotency, Sentry integration with PII scrubbing, and graceful degradation patterns."
+      "title": "Design Error Handling Architecture",
+      "description": "Implementation-heavy low-level design guide for design error handling architecture."
     },
     {
       "slug": "export-system",
-      "title": "Design Export System (CSV/PDF)",
-      "description": "Production-grade export with format support, async processing, large dataset streaming, and download delivery."
+      "title": "Design an Export System for CSV and PDF",
+      "description": "Implementation-heavy low-level design guide for design an export system for csv and pdf."
     },
     {
       "slug": "feature-flag-system",
-      "title": "Design Feature Flag System",
-      "description": "Production-grade feature flags with rule-based targeting, gradual rollout, A/B testing, and kill switches."
+      "title": "Design a Feature Flag System",
+      "description": "Implementation-heavy low-level design guide for design a feature flag system."
     },
     {
       "slug": "feature-rollout-system",
-      "title": "Design a Feature Rollout System (Gradual Rollout + Targeting + Kill Switch)",
-      "description": "Production-grade feature rollout with staged percentage deployment, automatic rollback triggers, user targeting, and emergency kill switches."
+      "title": "Design a Feature Rollout System",
+      "description": "Implementation-heavy low-level design guide for design a feature rollout system."
     },
     {
       "slug": "internationalization-i18n-system",
-      "title": "Internationalization (i18n) System",
-      "description": "Production-grade i18n architecture covering translation loading and namespacing, ICU MessageFormat for pluralization, RTL layout with CSS logical properties, locale detection and URL routing, font subsetting, and translation workflow automation."
+      "title": "Design an Internationalization System",
+      "description": "Implementation-heavy low-level design guide for design an internationalization system."
     },
     {
       "slug": "map-based-ui-system",
-      "title": "Design a Map-Based UI System (Markers, Clustering, Viewport Queries)",
-      "description": "Production-grade mapping interface with marker clustering, debounced viewport queries, WebGL rendering, and real-time location updates."
+      "title": "Design a Map-based UI System",
+      "description": "Implementation-heavy low-level design guide for design a map-based ui system."
     },
     {
       "slug": "multi-tenant-ui",
-      "title": "Design Multi-Tenant UI",
-      "description": "Production-grade multi-tenant interface with organization switching, role-based access, white-label theming, and data isolation."
+      "title": "Design a Multi-tenant UI",
+      "description": "Implementation-heavy low-level design guide for design a multi-tenant ui."
     },
     {
       "slug": "notifications-badge-system",
-      "title": "Design Notifications Badge System",
-      "description": "Production-grade notification badges with real-time updates, mark-as-read, filtering, and multi-device sync."
+      "title": "Design a Notifications Badge System",
+      "description": "Implementation-heavy low-level design guide for design a notifications badge system."
     },
     {
       "slug": "offline-form-sync-system",
-      "title": "Design Offline Form Sync System",
-      "description": "Production-grade offline form handling with local persistence, conflict resolution, and synchronization on reconnect."
+      "title": "Design Offline Form Sync",
+      "description": "Implementation-heavy low-level design guide for design offline form sync."
     },
     {
       "slug": "payment-ui-system",
-      "title": "Design a Payment UI System (PCI, Secure Inputs, Third-party Integration)",
-      "description": "Production-grade payment UI with PCI compliance, secure card inputs, payment state machine, and third-party processor integration."
+      "title": "Design a Payment UI System",
+      "description": "Implementation-heavy low-level design guide for design a payment ui system."
     },
     {
       "slug": "saved-views-persistence-system",
-      "title": "Design Saved Views Persistence System",
-      "description": "Production-grade saved views with filter and sort state, URL sync, CRUD management, and cross-device synchronization."
+      "title": "Design Saved Views Persistence",
+      "description": "Implementation-heavy low-level design guide for design saved views persistence."
     },
     {
       "slug": "settings-page-system",
-      "title": "Design Settings Page System",
-      "description": "Production-grade settings with preference taxonomy, save strategies, re-auth gates, danger zone, and cross-device sync."
+      "title": "Design a Settings Page System",
+      "description": "Implementation-heavy low-level design guide for design a settings page system."
     },
     {
       "slug": "shopping-cart-system",
       "title": "Design a Shopping Cart System",
-      "description": "Production-grade shopping cart with real-time updates, persistence, cart abandonment tracking, and synchronization across devices."
+      "description": "Implementation-heavy low-level design guide for design a shopping cart system."
     },
     {
       "slug": "telemetry-analytics-pipeline",
-      "title": "Design Telemetry/Analytics Pipeline",
-      "description": "Production-grade analytics with event collection, batching, sampling, privacy compliance, and real-time dashboards."
+      "title": "Design a Telemetry Analytics Pipeline",
+      "description": "Implementation-heavy low-level design guide for design a telemetry analytics pipeline."
     },
     {
       "slug": "third-party-sdk-integration",
-      "title": "Design Third-Party SDK Integration",
-      "description": "Production-grade SDK integration with async loading, error isolation, version pinning, and graceful degradation."
+      "title": "Design Third-party SDK Integration",
+      "description": "Implementation-heavy low-level design guide for design third-party sdk integration."
     },
     {
       "slug": "version-history-system",
-      "title": "Design Version History System",
-      "description": "Production-grade version tracking with immutable snapshots, diff display, rollback, and named versions."
+      "title": "Design a Version History System",
+      "description": "Implementation-heavy low-level design guide for design a version history system."
     }
   ],
   "system-design-problems/low-level-design/search-discovery": [
     {
       "slug": "full-text-search-ui",
       "title": "Design a Full-text Search UI",
-      "description": "LLD for a full-text search UI: query parsing, snippet rendering with highlights, faceted filters, sorting, pagination, accessibility."
+      "description": "Implementation-heavy low-level design guide for design a full-text search ui."
     },
     {
       "slug": "rag-based-search-ui",
       "title": "Design a RAG-based Search UI",
-      "description": "LLD for a RAG search UI: streaming LLM-generated answers with inline citations to retrieved sources, source panels, follow-up queries, and accessibility."
+      "description": "Implementation-heavy low-level design guide for design a rag-based search ui."
     },
     {
       "slug": "search-autocomplete",
-      "title": "Design a Search Autocomplete",
-      "description": "LLD for a search autocomplete: debounced fetching, abortable requests, keyboard navigation, highlighted suggestions, result caching, and accessibility."
+      "title": "Design Search Autocomplete",
+      "description": "Implementation-heavy low-level design guide for design search autocomplete."
     },
     {
       "slug": "search-page-filters-facets-url-sync",
-      "title": "Design a Search Page (Filters + Facets + URL Sync)",
-      "description": "LLD for a search page composing query + filters + facets + sort + pagination with URL state, shareable views, and accessible controls."
+      "title": "Design Search Filters Facets and URL Sync",
+      "description": "Implementation-heavy low-level design guide for design search filters facets and url sync."
     },
     {
       "slug": "search-ranking-typo-tolerance",
-      "title": "Search Ranking & Typo Tolerance",
-      "description": "Production-grade search implementation covering edit distance, BK-trees, phonetic matching, BM25 scoring, multi-signal ranking pipeline, query expansion, synonym handling, did-you-mean, and search analytics feedback loops."
+      "title": "Design Search Ranking and Typo Tolerance",
+      "description": "Implementation-heavy low-level design guide for design search ranking and typo tolerance."
     }
   ],
   "system-design-problems/low-level-design/state-interaction-modeling": [
     {
       "slug": "async-state-handling",
       "title": "Design Async State Handling",
-      "description": "Production-grade async patterns with loading/error/success states, cancellation, retries, race condition handling, and request deduplication."
+      "description": "Implementation-heavy low-level design guide for design async state handling, covering APIs, state transitions, edge cases, failure handling, and interview trade-offs."
     },
     {
       "slug": "cross-tab-state-sync",
-      "title": "Cross-Tab State Sync System",
-      "description": "Synchronizing application state across multiple browser tabs/windows with conflict resolution and real-time updates."
+      "title": "Design Cross-Tab State Sync",
+      "description": "Implementation-heavy low-level design guide for design cross-tab state sync, covering APIs, state transitions, edge cases, failure handling, and interview trade-offs."
     },
     {
       "slug": "derived-state",
-      "title": "Derived State System",
-      "description": "Computing derived/computed state from base state efficiently with memoization, selective updates, and performance optimization."
+      "title": "Design Derived State",
+      "description": "Implementation-heavy low-level design guide for design derived state, covering APIs, state transitions, edge cases, failure handling, and interview trade-offs."
     },
     {
       "slug": "fine-grained-subscription-system",
-      "title": "Fine-Grained Subscription System",
-      "description": "Selective state subscriptions allowing components to subscribe to specific state parts, minimizing re-renders and improving performance."
+      "title": "Design a Fine-Grained Subscription System",
+      "description": "Implementation-heavy low-level design guide for design a fine-grained subscription system, covering APIs, state transitions, edge cases, failure handling, and interview trade-offs."
     },
     {
       "slug": "finite-state-machines",
       "title": "Design Finite State Machines",
-      "description": "Production-grade FSM implementation for complex workflows with state transitions, guards, actions, and XState for robust state modeling."
+      "description": "Implementation-heavy low-level design guide for design finite state machines, covering APIs, state transitions, edge cases, failure handling, and interview trade-offs."
     },
     {
       "slug": "global-event-bus",
-      "title": "Global Event Bus System",
-      "description": "Pub/sub event bus for decoupled component communication with event filtering, priority handling, and async event processing."
+      "title": "Design a Global Event Bus",
+      "description": "Implementation-heavy low-level design guide for design a global event bus, covering APIs, state transitions, edge cases, failure handling, and interview trade-offs."
     },
     {
       "slug": "state-hydration-rehydration",
-      "title": "State Hydration/Rehydration System",
-      "description": "Initializing application state from server, localStorage, and other sources with validation and migration handling."
+      "title": "Design State Hydration and Rehydration",
+      "description": "Implementation-heavy low-level design guide for design state hydration and rehydration, covering APIs, state transitions, edge cases, failure handling, and interview trade-offs."
     },
     {
       "slug": "time-travel-debugging",
-      "title": "Time-Travel Debugging System",
-      "description": "Stepping through application state history to debug complex issues, inspect state at any point, and replay events."
+      "title": "Design Time Travel Debugging",
+      "description": "Implementation-heavy low-level design guide for design time travel debugging, covering APIs, state transitions, edge cases, failure handling, and interview trade-offs."
     },
     {
       "slug": "undo-redo",
-      "title": "Undo/Redo System",
-      "description": "Production-grade undo/redo with command pattern, state snapshots, selective undo, and conflict resolution in collaborative editing."
+      "title": "Design Undo Redo",
+      "description": "Implementation-heavy low-level design guide for design undo redo, covering APIs, state transitions, edge cases, failure handling, and interview trade-offs."
     }
   ],
   "system-design-problems/low-level-design/web-platform-browser-apis": [
     {
       "slug": "background-sync",
-      "title": "Background Sync System",
-      "description": "Service Worker background sync for reliable delivery of queued actions when network recovers"
+      "title": "Design a Background Sync System",
+      "description": "Implementation-heavy low-level design for design a background sync system, covering browser capability checks, state machines, fallbacks, security, performance, and observability."
     },
     {
       "slug": "clipboard-api",
-      "title": "Design Clipboard API",
-      "description": "Production-grade clipboard handling with copy/paste, permissions, data formats, and cross-platform compatibility for content sharing."
+      "title": "Design a Clipboard System",
+      "description": "Implementation-heavy low-level design for design a clipboard system, covering browser capability checks, state machines, fallbacks, security, performance, and observability."
     },
     {
       "slug": "geolocation-permissions",
-      "title": "Design Geolocation & Permissions",
-      "description": "Production-grade geolocation with privacy controls, permissions API, location tracking, accuracy handling, and graceful degradation."
+      "title": "Design Geolocation Permissions UX",
+      "description": "Implementation-heavy low-level design for design geolocation permissions ux, covering browser capability checks, state machines, fallbacks, security, performance, and observability."
     },
     {
       "slug": "idle-task-scheduling",
-      "title": "Idle Task Scheduling System",
-      "description": "Scheduling non-critical work during browser idle time using requestIdleCallback"
+      "title": "Design Idle Task Scheduling",
+      "description": "Implementation-heavy low-level design for design idle task scheduling, covering browser capability checks, state machines, fallbacks, security, performance, and observability."
     },
     {
       "slug": "native-drag-drop-file",
-      "title": "Native Drag-and-Drop File System",
-      "description": "Handling file drops from OS with validation, preview, and upload orchestration"
+      "title": "Design Native Drag Drop File Handling",
+      "description": "Implementation-heavy low-level design for design native drag drop file handling, covering browser capability checks, state machines, fallbacks, security, performance, and observability."
     },
     {
       "slug": "observer-apis",
-      "title": "Design Observer APIs",
-      "description": "Production-grade Intersection, Mutation, and Resize Observers for efficient DOM monitoring, lazy loading, and responsive layouts without polling."
+      "title": "Design Observer API Systems",
+      "description": "Implementation-heavy low-level design for design observer api systems, covering browser capability checks, state machines, fallbacks, security, performance, and observability."
     },
     {
       "slug": "visibility-based-rendering",
-      "title": "Visibility-Based Rendering System",
-      "description": "Conditional rendering and resource optimization based on page visibility and viewport intersection"
+      "title": "Design Visibility-Based Rendering",
+      "description": "Implementation-heavy low-level design for design visibility-based rendering, covering browser capability checks, state machines, fallbacks, security, performance, and observability."
     },
     {
       "slug": "web-workers-threading",
-      "title": "Design Web Workers & Threading",
-      "description": "Production-grade Web Workers for background processing, parallel computation, and offloading heavy tasks from the main thread."
+      "title": "Design Web Worker Computation",
+      "description": "Implementation-heavy low-level design for design web worker computation, covering browser capability checks, state machines, fallbacks, security, performance, and observability."
     }
   ]
 };

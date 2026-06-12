@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function KanbanBoardArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function KanbanBoardArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Kanban Board</h1><h2>Definition &amp; Context</h2><p>Design a Kanban Board is an implementation-heavy interaction design covering column paging, card ordering, cross-column drag, auto-scroll, optimistic mutation, version conflicts, and presence. A principal-level answer must explain state ownership, geometry, browser events, cancellation, accessibility, persistence, scale, and observability.</p><p>Keep committed card positions separate from transient drag projection. Use stable card ids and position keys. Core structures: column map, card map, position keys, drag session, projected destination, cursors, optimistic journal, versions, and presence overlay.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/kanban-board-runtime.svg" alt="Design a Kanban Board runtime" caption="Interaction flow from input through projection, policy, commit, and render." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -87,7 +86,7 @@ export default function KanbanBoardArticle() {
       </section>
 
       <section>
-        <h2>Functional Requirements</h2>
+        <h3>Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -125,7 +124,7 @@ export default function KanbanBoardArticle() {
       </section>
 
       <section>
-        <h2>Non-Functional Requirements</h2>
+        <h3>Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -168,7 +167,7 @@ export default function KanbanBoardArticle() {
       </section>
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <HighlightBlock as="p" tier="important">
           The board composes <strong>multiple
           drag-and-drop lists with shared drag
@@ -271,14 +270,10 @@ export default function KanbanBoardArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/kanban-board-architecture.svg"
-        alt="Kanban board architecture showing columns (Todo, In Progress, Review, Done), card drag arrow, and optimistic update state machine with server sync"
-        caption="Kanban board: column layout, drag-and-drop between columns, and optimistic update + rollback state machine"
-      />
+      
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial">
           <strong>Card</strong> renders one card. <strong>DragContext</strong>{" "}
           holds active drag state.
@@ -291,7 +286,7 @@ export default function KanbanBoardArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Cards-per-column in external store.
           <Highlight tier="important">Drag state ephemeral in drag
@@ -301,7 +296,7 @@ export default function KanbanBoardArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="crucial">Card shape:{" "}
           <code>{` { id, columnId, position, ...content } `}</code>.
           Move</HighlightBlock>
@@ -312,7 +307,7 @@ export default function KanbanBoardArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Drag at 60 fps via <Highlight tier="important">FLIP. Real-time
           events batched per RAF</Highlight> tick. Long
@@ -321,7 +316,7 @@ export default function KanbanBoardArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">Columns horizontally scrollable when
           many. Cards visually consistent.
           Drop indicators clear in both source
@@ -333,7 +328,7 @@ export default function KanbanBoardArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">Each column labeled (e.g. &ldquo;To
           Do, 5 cards&rdquo;). Cards focusable;</HighlightBlock>
 <HighlightBlock as="p" tier="important">Space picks up; arrows and Tab move;
@@ -344,7 +339,7 @@ export default function KanbanBoardArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Server enforces card move authorization.
           <Highlight tier="important">Rate-limited</Highlight>.
@@ -353,7 +348,7 @@ export default function KanbanBoardArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Drag tests within and across columns.
           Real-time event <Highlight tier="important">integration tests.
@@ -364,7 +359,7 @@ export default function KanbanBoardArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">Network drop
           mid-drag: the drop locally
           succeeds; persistence retries; if
@@ -376,7 +371,7 @@ export default function KanbanBoardArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Pattern reuses for <Highlight tier="important">any column-list
           UI (workflow tools, sales</Highlight> pipelines,
@@ -385,7 +380,7 @@ export default function KanbanBoardArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Column headers and labels via <Highlight tier="important">i18n.
           RTL flips column order; cross-</Highlight>
@@ -395,7 +390,7 @@ export default function KanbanBoardArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Shared drag context vs per-column</h3>
         <HighlightBlock as="p" tier="important">
@@ -424,98 +419,19 @@ export default function KanbanBoardArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Cross-board card drag. Bulk move.
           <Highlight tier="important">Smart auto-arrange. AI-suggested
           column for new</Highlight> cards. Real-time
           presence indicators per column.
         </Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. How does cross-column drag
-          work?</strong> Shared drag context
-          across all columns. Active drag
-          can drop in any column. Drop
-          calculation per column uses card
-          bounding rects.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How are real-time updates
-          handled?</strong> WebSocket events
-          drive the store. Updates render
-          smoothly. Mid-local-drag conflicts
-          resolved by deferring remote
-          changes for the dragged card until
-          local drag completes.
-        </HighlightBlock>
-
-        <p>
-          <strong>3. How are concurrent moves
-          resolved?</strong> Server processes
-          serially; last-write-wins. Both
-          clients see the final position via
-          the real-time event.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. How does keyboard
-          cross-column drag work?</strong>{" "}
-          Space picks up; arrows move within
-          column; Tab to next column; Space
-          drops. Live region announces source
-          and target.
-        </HighlightBlock>
-
-        <p>
-          <strong>5. How does WIP limit
-          enforcement work?</strong> Column
-          tracks count vs limit. Visual
-          warning when over. Configurable to
-          block or allow drop with override.
-        </p>
-
-        <p>
-          <strong>6. How does this build on
-          the Drag &amp; Drop List?</strong>{" "}
-          Each column is a sortable list.
-          Shared drag context spans columns.
-          Persistence, optimistic update,
-          and FLIP animation reuse.
-        </p>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>7. How is performance
-          maintained with many cards?</strong>{" "}
-          Virtualize long columns. Memoize
-          cards. Real-time events batched.
-          Drag uses cached bounding rects.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>8. How is this
-          accessible?</strong> Labeled columns.
-          Keyboard drag with announcements.
-          Tab between columns. Cross-column
-          moves explicit in announcements.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">Last-write-wins handles conflicts;
-          mid-drag conflicts defer; keyboard
-          cross-column drag gives</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">parity.
-          The result is direct-manipulation
-          workflows that scale across users
-          and devices.</Highlight></HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Normalize pointer, touch, keyboard, resize, and async events before applying transitions. Separate raw intent, transient projection, committed state, derived geometry, and telemetry. Release pointer capture, listeners, observers, timers, and animation handles idempotently.</p><p>Keep committed card positions separate from transient drag projection. Use stable card ids and position keys.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/complex-interaction-systems/kanban-board-recovery.svg" alt="Design a Kanban Board recovery" caption="Recovery flow: cancel safely, retain committed truth, recalculate projection, and restore UI." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Server card version and accepted location are authoritative. Drag projection is optimistic. Scale pressure comes from hot columns, thousands of cards, concurrent moves, filtered views, reconnect, and permission drift. Bound measurement, batch rendering, and degrade predictably.</p><p>Prefer native semantics where they meet requirements. Custom interaction earns its cost only when product behavior needs explicit gesture, geometry, or workflow policy.</p></section>
+<section><h2>Best practices</h2><p>Use typed sessions, stable ids, pointer capture, keyboard alternatives, reduced-motion policy, clamped geometry, idempotent cleanup, and deterministic tests. Measure latency, dropped frames, cancellation, rollback, and accessibility regressions.</p><h3>Operational implementation: cross-column move projection and position keys</h3><p>Keep committed cards and projected drag placement separate. Use stable card ids, column ids, fractional position keys, collision targets, and board version. Persist one idempotent move command, rebalance dense keys asynchronously, and roll back rejected moves.</p><p>Define a typed interaction session with owner, generation, start geometry, latest projection, committed snapshot, cancellation reason, and cleanup handles. Instrument pointer-to-paint latency, dropped frames, measurement cost, projection count, cancellation, rollback, constraint violations, and accessibility fallback usage. Test pointer loss, resize during interaction, keyboard-only flow, reduced motion, hidden tabs, unmount cleanup, stale persistence response, and extreme geometry.</p></section>
+<h3>Principal defense: scale, privacy, and rollback</h3><p>Keep committed domain state separate from transient geometry, pointer samples, animations, and derived guides. Under large collections, index only visible or nearby geometry, batch pointer updates to animation frames, cancel stale measurements, and degrade visual fidelity before interaction correctness. Persistence uses stable ids and versions; a rejected write restores the last committed snapshot and preserves an actionable retry state.</p><p>Even local interactions need abuse and privacy boundaries when they persist or collaborate. Validate dimensions, coordinates, payload sizes, and mutation frequency before accepting expensive work. Do not leak hidden objects, restricted calendar details, or cross-tenant geometry through previews, presence, or telemetry. Observe cancellation reason, long tasks, frame drops, rejected transitions, rollback outcome, and cleanup leaks.</p><section><h2>Common Pitfalls</h2><p>Common failures include mixing raw and committed state, leaking listeners, failing to handle pointer cancellation, ignoring keyboard users, and persisting invalid geometry.</p><p>For this topic, cancel invalid drops, reconcile version conflicts, reload affected columns, stop auto-scroll, and preserve focus.</p><h3>Board projection and concurrent moves</h3><p>Normalize columns and cards so a projected move changes ordered id lists rather than rebuilding card entities. During drag, compute one insertion destination from measured column zones and card boundaries. For keyboard users, expose lift, move, drop, and cancel commands with live announcements. Keep horizontal board scrolling and vertical column scrolling separately owned so auto-scroll does not oscillate.</p><p>A move command includes card id, source column, destination column, neighbor ids or position key, board version, and idempotency key. If two users move the same card, the server decides the accepted version and publishes one authoritative event. Clients reconcile optimistic projection, retain a visible explanation for rejection, and invalidate stale column pages when position-key rebalancing occurs.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to repeated direct-manipulation workflows where responsive projection and safe cancellation matter as much as durable persistence.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep committed card positions separate from transient drag projection. Use stable card ids and position keys.</p><h3>What breaks at scale?</h3><p>hot columns, thousands of cards, concurrent moves, filtered views, reconnect, and permission drift.</p><h3>What consistency applies?</h3><p>Server card version and accepted location are authoritative. Drag projection is optimistic.</p><h3>How do you recover?</h3><p>cancel invalid drops, reconcile version conflicts, reload affected columns, stop auto-scroll, and preserve focus.</p><h3>How do you defend the architecture?</h3><p>I would prefer native behavior until the required geometry, gesture, or workflow policy justifies a custom controller.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events" target="_blank" rel="noreferrer">MDN Pointer Events</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver" target="_blank" rel="noreferrer">MDN ResizeObserver</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA APG</a></li></ul></section>
+</ArticleLayout>}

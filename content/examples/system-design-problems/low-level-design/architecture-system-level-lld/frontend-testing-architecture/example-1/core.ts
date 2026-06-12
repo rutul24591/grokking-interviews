@@ -1,0 +1,1 @@
+export type Risk="low"|"medium"|"high";export interface Change{files:string[];risk:Risk}export function testPlan(c:Change){const tasks=["lint","types","unit"];if(c.files.some(f=>f.includes("api/")))tasks.push("contract");if(c.risk!=="low")tasks.push("component","integration");if(c.risk==="high")tasks.push("e2e","visual","a11y");return tasks}

@@ -160,7 +160,7 @@ export default function MinificationUglificationArticle() {
           </li>
           <li>
             <strong>Comment Removal:</strong> All comments are stripped except license comments 
-            (preserved by convention with <code>/*! ... */</code> or <code>@preserve</code>).
+            (preserved by convention with <code>{"/*! ... */"}</code> or <code>@preserve</code>).
           </li>
           <li>
             <strong>Variable Renaming:</strong> Local variables and function names are renamed to 

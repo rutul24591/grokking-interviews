@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="system-ui, -apple-system, BlinkMacSystemFont, sans-serif" role="img" aria-label="Stepper Progress Tracker: recovery matrix">
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#2563eb"/></marker>
+    <marker id="arrow-teal" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#0f766e"/></marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#c2410c"/></marker>
+    <marker id="arrow-rose" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8 Z" fill="#be123c"/></marker>
+  </defs>
+  <rect x="18" y="18" width="924" height="524" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="54" y="56" font-size="18" font-weight="700" fill="#172033">Stepper Progress Tracker: recovery matrix</text>
+  <text x="54" y="78" font-size="11.5" fill="#526074">Every abnormal completion maps to a guard, deterministic action, and observable evidence.</text>
+  <rect x="48" y="106" width="864" height="344" rx="9" fill="#fff1f2" stroke="#be123c" stroke-width="1.1"/>
+  <text x="68" y="129" font-size="12.5" font-weight="700" fill="#be123c">FAILURE DECISION MATRIX</text><text x="76" y="154" font-size="11" font-weight="700" fill="#be123c">SIGNAL</text>
+  <text x="312" y="154" font-size="11" font-weight="700" fill="#c2410c">GUARD</text>
+  <text x="530" y="154" font-size="11" font-weight="700" fill="#0f766e">ACTION</text>
+  <text x="744" y="154" font-size="11" font-weight="700" fill="#6d28d9">EVIDENCE</text><rect x="70" y="184" width="820" height="42" rx="7" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="88" y="210" font-size="10.5" fill="#172033">late completion</text>
+    <text x="312" y="210" font-size="10.5" fill="#172033">generation stale</text>
+    <text x="530" y="210" font-size="10.5" font-weight="700" fill="#0f766e">ignore result</text>
+    <text x="744" y="210" font-size="10.5" fill="#526074">stale age</text><rect x="70" y="240" width="820" height="42" rx="7" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="88" y="266" font-size="10.5" fill="#172033">timeout / denial</text>
+    <text x="312" y="266" font-size="10.5" fill="#172033">retry budget</text>
+    <text x="530" y="266" font-size="10.5" font-weight="700" fill="#0f766e">retry or degrade</text>
+    <text x="744" y="266" font-size="10.5" fill="#526074">attempt + reason</text><rect x="70" y="296" width="820" height="42" rx="7" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="88" y="322" font-size="10.5" fill="#172033">invalid scope</text>
+    <text x="312" y="322" font-size="10.5" fill="#172033">owner mismatch</text>
+    <text x="530" y="322" font-size="10.5" font-weight="700" fill="#0f766e">rollback stable</text>
+    <text x="744" y="322" font-size="10.5" fill="#526074">scope + trace</text><rect x="70" y="352" width="820" height="42" rx="7" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="88" y="378" font-size="10.5" fill="#172033">unmount / cancel</text>
+    <text x="312" y="378" font-size="10.5" fill="#172033">liveness false</text>
+    <text x="530" y="378" font-size="10.5" font-weight="700" fill="#0f766e">release effects</text>
+    <text x="744" y="378" font-size="10.5" fill="#526074">cleanup proof</text><text x="72" y="486" font-size="11" fill="#172033">Stable target: committed state. Recovery must preserve committed truth and explain visible fallback.</text>
+</svg>

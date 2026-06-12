@@ -201,15 +201,15 @@ export default function TreeShakingArticle() {
         <h3>Pure Functions and Annotations</h3>
         <p>
           Bundlers use <strong>purity annotations</strong> to identify code that can be safely eliminated. The 
-          <code>/*#__PURE__*/</code> comment tells the bundler that a function call has no side effects and can 
+          <code>{"/*#__PURE__*/"}</code> comment tells the bundler that a function call has no side effects and can 
           be removed if its result is unused:
         </p>
         <ul className="space-y-2">
           <li>
-            <code>/*#__PURE__*/ createExpensiveObject()</code> — If the result is unused, the call can be removed.
+            <code>{"/*#__PURE__*/ createExpensiveObject()"}</code> — If the result is unused, the call can be removed.
           </li>
           <li>
-            <code>/*#__PURE__*/ someFunction().chain().method()</code> — The entire chain can be removed if unused.
+            <code>{"/*#__PURE__*/ someFunction().chain().method()"}</code> — The entire chain can be removed if unused.
           </li>
         </ul>
         <p>

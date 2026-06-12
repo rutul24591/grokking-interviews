@@ -23,7 +23,7 @@ export default function AdsDeliveryTargetingUiArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame Design an Ads Delivery &amp; Targeting UI around system boundary, state ownership, failure handling, scalability, security, and observable recovery. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock>
         <HighlightBlock as="p" tier="important">
           A ads delivery and targeting UI is a monetization control surface used by advertisers, campaign managers, growth teams, policy reviewers, marketplace quality teams, privacy reviewers, ad-serving engineers, and SREs to let advertisers define audiences, budgets, bids, creatives, placements, schedules, and safety constraints while the platform protects privacy, auction quality, user experience, and revenue integrity. At principal level, this is not a CRUD dashboard for campaigns or payments. It is a money-moving, privacy-sensitive, policy-constrained system where incorrect data can harm users, advertisers, creators, finance, and platform trust.
         </HighlightBlock>
@@ -42,7 +42,7 @@ export default function AdsDeliveryTargetingUiArticle() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: the design must preserve correctness under latency, concurrency, partial failure, and changing permissions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design an Ads Delivery &amp; Targeting UI, the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock>
         <p>
           The first concept is separating operational state from financial truth. Campaign configuration, dashboard aggregates, attribution results, and payout balances may all be derived from the same activity, but finance-grade ledgers and audit trails need stronger guarantees than exploratory charts.
         </p>
@@ -82,7 +82,7 @@ export default function AdsDeliveryTargetingUiArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: state model, API contracts, cache policy, async workflow, authorization, rollout, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock>
         <p>
           A practical architecture includes campaign UI, targeting service, audience estimator, creative review pipeline, policy engine, budget and pacing service, ad-serving config publisher, auction eligibility index, attribution pipeline, and monitoring. The serving or revenue path should be optimized for scale, while policy, reporting, and finance paths preserve auditability and correctness.
         </p>
@@ -143,7 +143,7 @@ export default function AdsDeliveryTargetingUiArticle() {
       </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           The central trade-off is advertiser control and revenue growth versus privacy, policy safety, and user experience. A principal-ready answer should explain how the system balances growth incentives with safety, correctness, and long-term marketplace trust.
         </HighlightBlock>
@@ -174,7 +174,7 @@ export default function AdsDeliveryTargetingUiArticle() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: latency, error rate, fallback rate, conversion, stale-state duration, and rollback success.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock>
         <p>
           Label every metric by state: estimated, delayed, fraud-filtered, privacy-suppressed, finalized, invoiced, settled, held, or paid. This avoids false precision in money-facing dashboards.
         </p>
@@ -208,7 +208,7 @@ export default function AdsDeliveryTargetingUiArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: stale state, hidden partial failure, unbounded retries, ownership ambiguity, and missing observability.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock>
         <p>
           A common pitfall is treating a ads delivery and targeting UI as a reporting UI over a few tables. That misses over-targeting sensitive cohorts, creative policy bypass, budget overspend, under-delivery, frequency-cap drift, stale campaign snapshot, attribution inflation, auction eligibility bug, and regional privacy violation. Monetization systems need ledgers, policy state, privacy boundaries, and operational recovery.
         </p>
@@ -236,7 +236,7 @@ export default function AdsDeliveryTargetingUiArticle() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock>
         <p>
           Real-world use cases for a ads delivery and targeting UI include self-serve campaign launch, retargeting suppression, regional placement targeting, brand-safety review, budget pacing recovery, frequency-cap enforcement, and emergency campaign takedown. Each use case has different expectations for freshness, privacy, auditability, and money accuracy.
         </p>
@@ -258,7 +258,7 @@ export default function AdsDeliveryTargetingUiArticle() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock>
         <h3>1. How would you design the high-level architecture for a ads delivery and targeting UI?</h3>
         <p>
           Separate the authoring or dashboard surface from serving, event ingestion, policy, privacy, ledger, and analytics systems. Serving paths should consume compact approved snapshots and emit durable telemetry. Reporting paths should deduplicate, attribute, filter fraud, aggregate, and reconcile with ledgers. Dashboard APIs should show freshness, privacy suppression, and caveats. Finance and support tooling should read immutable evidence rather than mutable counters. This architecture keeps low-latency operations separate from money correctness.

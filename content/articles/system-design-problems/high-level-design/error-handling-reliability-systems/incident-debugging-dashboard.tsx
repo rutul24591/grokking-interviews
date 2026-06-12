@@ -23,7 +23,7 @@ export default function IncidentDebuggingDashboardArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame Design an Incident Debugging Dashboard around system boundary, state ownership, failure handling, scalability, security, and observable recovery. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock>
         <HighlightBlock as="p" tier="important">
           A incident investigation and correlation dashboard is the reliability layer that helps on-call engineers, incident commanders, service owners, support teams, executives, and postmortem reviewers survive partial failures without losing trust or evidence. It is not just a modal, toast, or dashboard. It is a system for classifying failure, containing blast radius, guiding recovery, and creating enough signal for engineering teams to fix the cause.
         </HighlightBlock>
@@ -36,7 +36,7 @@ export default function IncidentDebuggingDashboardArticle() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: the design must preserve correctness under latency, concurrency, partial failure, and changing permissions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design an Incident Debugging Dashboard, the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock>
         <p>
           The core entities are incidents, alerts, timelines, services, owners, traces, logs, metrics, deploys, feature flags, customer impact, and remediation actions. Each entity needs ownership, lifecycle state, correlation identifiers, severity, privacy classification, and a relationship to release or operation context. Without those fields, the system cannot answer whether a failure is isolated, repeated, customer-specific, or caused by a deployment.
         </p>
@@ -73,7 +73,7 @@ export default function IncidentDebuggingDashboardArticle() {
         </p>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: state model, API contracts, cache policy, async workflow, authorization, rollout, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock>
         <p>
           A strong architecture has a capture layer, classification layer, recovery policy layer, telemetry pipeline, correlation store, support view, and alerting path. The capture layer receives user-visible failures and backend operation outcomes. The classifier decides failure type, severity, retry safety, and scope. The policy layer selects fallback, retry, queue, reload, or support escalation.
         </p>
@@ -122,7 +122,7 @@ export default function IncidentDebuggingDashboardArticle() {
         </p>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock>
         <p>
           The dashboard must reduce time to diagnosis without becoming another noisy observability tool. It should prioritize correlation, ownership, and blast radius over showing every raw signal at once.
         </p>
@@ -156,7 +156,7 @@ export default function IncidentDebuggingDashboardArticle() {
         </p>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: latency, error rate, fallback rate, conversion, stale-state duration, and rollback success.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock>
         <p>
           Define failure taxonomies before building UI. The taxonomy should cover transient, recoverable, stale, unauthorized, conflict, dependency, render, release, and fatal states. This gives product, support, and engineering a shared language.
         </p>
@@ -193,7 +193,7 @@ export default function IncidentDebuggingDashboardArticle() {
         </p>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: stale state, hidden partial failure, unbounded retries, ownership ambiguity, and missing observability.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock>
         <p>
           The common failure is creating a wall of charts with no decision model. Incident response needs a timeline, suspected causes, owners, mitigations, and evidence, not only dashboards.
         </p>
@@ -227,7 +227,7 @@ export default function IncidentDebuggingDashboardArticle() {
         </p>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock>
         <p>
           incident investigation and correlation dashboard is critical for critical user journeys such as checkout, admin changes, exports, collaboration, and workflow execution. The failure state often determines whether the user retries safely or creates duplicate side effects.
         </p>
@@ -249,7 +249,7 @@ export default function IncidentDebuggingDashboardArticle() {
         </p>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock>
         <h3>How would you model incident investigation and correlation dashboard at production scale?</h3>
         <p>
           I would model failures as first-class domain events with scope, classification, user impact, retry safety, release context, and correlation identifiers. The UI should separate transient, recoverable, permission, data-conflict, and fatal states. The backend should preserve operation or incident state so support and engineering can reconstruct what happened after the user leaves the page.

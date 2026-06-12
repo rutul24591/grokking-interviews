@@ -24,7 +24,7 @@ export default function HybridAppWebviewNativeBridgeArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame Design a Hybrid App (WebView + Native Bridge) around system boundary, state ownership, failure handling, scalability, security, and observable recovery. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock>
         <p>
           A hybrid mobile app uses a native iOS or Android shell to host a WebView-based application while exposing selected device capabilities through a JavaScript-to-native bridge. The WebView owns most product screens, routing, rendering, and release velocity. The native shell owns the app container, app lifecycle, push notification registration, secure storage, camera and biometric prompts, deep link entry points, and platform-specific system integration.
         </p>
@@ -40,7 +40,7 @@ export default function HybridAppWebviewNativeBridgeArticle() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: the design must preserve correctness under latency, concurrency, partial failure, and changing permissions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design a Hybrid App (WebView + Native Bridge), the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock>
         <p>
           The native shell is the trusted runtime. It initializes platform services, owns the root navigation stack, creates the WebView, injects immutable bootstrap data, installs bridge handlers, manages app lifecycle events, and decides whether a destination should open as a native screen or a WebView route. The shell should be intentionally small, because every native change requires app-store release management and long-tail client compatibility.
         </p>
@@ -65,7 +65,7 @@ export default function HybridAppWebviewNativeBridgeArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: state model, API contracts, cache policy, async workflow, authorization, rollout, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock>
         <p>
           The high-level architecture has five planes. The web plane contains the bundled HTML, JavaScript, CSS, and client-side application state. The bridge plane handles message serialization, request tracking, timeout enforcement, typed errors, and native callbacks. The native capability plane contains platform adapters for iOS and Android. The delivery plane provides OTA bundle metadata, staged rollout, checksum and signature verification, and rollback decisions. The control plane provides remote flags, routing ownership, kill switches, and compatibility rules.
         </p>
@@ -102,7 +102,7 @@ export default function HybridAppWebviewNativeBridgeArticle() {
       </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock>
         <p>
           Hybrid WebView maximizes web reuse and delivery speed. A small team can ship UI fixes and content-heavy flows through web deployment or controlled OTA bundles without waiting for app-store review. The cost is that the user experience inherits WebView limitations: startup tuning is harder, scroll and gesture behavior may differ from native screens, memory pressure is more visible on low-end Android devices, and high-frequency bridge calls can create jank.
         </p>
@@ -127,7 +127,7 @@ export default function HybridAppWebviewNativeBridgeArticle() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: latency, error rate, fallback rate, conversion, stale-state duration, and rollback success.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock>
         <p>
           Model the bridge contract as a product API. Maintain a typed schema for every action, version each capability, publish deprecation windows, and generate thin wrappers for the web layer. The web app should not manually construct raw bridge messages throughout the codebase. Central wrappers make it possible to add telemetry, deadlines, retries where safe, and platform fallback behavior consistently.
         </p>
@@ -149,7 +149,7 @@ export default function HybridAppWebviewNativeBridgeArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: stale state, hidden partial failure, unbounded retries, ownership ambiguity, and missing observability.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock>
         <p>
           The most dangerous pitfall is exposing a generic native execution bridge. Methods such as callNative(action, payload) are acceptable only if backed by strict schema validation and an allowlisted dispatcher. Without that, every product shortcut becomes part of a privileged attack surface, and an XSS bug can escalate into secure storage access, device permission prompts, or arbitrary navigation.
         </p>
@@ -168,7 +168,7 @@ export default function HybridAppWebviewNativeBridgeArticle() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock>
         <p>
           Commerce apps often use hybrid architecture for product discovery, merchandising pages, account screens, and promotional flows, while keeping checkout, payments, and wallet authorization native. This lets marketing and marketplace teams iterate quickly while keeping money movement on a tightly governed native path.
         </p>
@@ -184,7 +184,7 @@ export default function HybridAppWebviewNativeBridgeArticle() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock>
         <h3 className="mt-6 mb-3 text-lg font-semibold">1. How would you design the JavaScript-to-native bridge so it is safe and debuggable?</h3>
         <p>
           I would design it as a versioned asynchronous RPC layer. JavaScript wrappers create requests with request id, action, schema version, payload, route context, correlation id, and deadline. The native dispatcher validates the WebView origin, action allowlist, schema, app and bundle compatibility, and permission state before calling a platform adapter. Responses return by request id with either typed result data or typed error codes. The pending request map enforces deadlines so the web layer never waits forever. Every call emits telemetry on both sides with the same correlation id, which makes production debugging possible across web logs, native logs, backend traces, and crash reports.

@@ -23,6 +23,8 @@ export const metadata: ArticleMetadata = {
 export default function AIAssistedSearchQAArticle() {
   return (
     <ArticleLayout metadata={metadata}>
+      <section><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame AI-Assisted Search &amp; Q&amp;A UI around system boundary, state ownership, failure handling, scalability, security, and observable recovery. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock><p>AI-Assisted Search and Q&A UI is an implementation-heavy low-level design problem. A principal-level answer must define authoritative state, client projections, lifecycle transitions, failure behavior, privacy boundaries, abuse controls, cost limits, rollback, and observability.</p><p>The retrieval service is authoritative for authorized source candidates; the generated answer is a derived projection that must remain grounded in cited chunks.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/ai-modern-systems/ai-assisted-search-qa-ui-runtime.svg" alt="AI-Assisted Search and Q&A UI runtime lifecycle" caption="Runtime lifecycle with authority boundaries and observable checkpoints." /></section>
+      <section><h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: the design must preserve correctness under latency, concurrency, partial failure, and changing permissions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For AI-Assisted Search &amp; Q&amp;A UI, the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock><p>The retained deep dive below covers the topic-specific implementation mechanics.</p>
       <p>
         AI-assisted search occupies an uncomfortable middle ground between full
         chat interfaces and traditional keyword search. Users arrive with specific
@@ -35,14 +37,7 @@ export default function AIAssistedSearchQAArticle() {
         generation, citation rendering, and the hallucination detection layer that
         keeps the system honest about what it does and doesn't know.
       </p>
-
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/ai-modern-systems/ai-assisted-search-qa-ui.svg"
-        alt="AI-assisted search and QA UI showing query pipeline with intent classification and RAG retrieval, AI answer card with citations, hybrid search results, and source handling"
-        caption="AI-assisted search and QA UI: intent routing, dense retrieval, re-ranking, context assembly, answer generation, and hybrid search fallback"
-      />
-
-      <h2>Clarifying the Requirements</h2>
+<h2>Clarifying the Requirements</h2>
       <p>
         Before building, establish scope. The answer changes the architecture significantly:
       </p>
@@ -415,65 +410,16 @@ export default function AIAssistedSearchQAArticle() {
         triggering updates where discrepancies are found.
       </p>
 
-      <h2>Interview Q&A</h2>
 
-      <h3>Q: How do you handle the case where no retrieved documents contain the answer?</h3>
-      <p>
-        This is the "I don't know" case. Three mechanisms prevent hallucination: (1) The
-        system prompt explicitly instructs the LLM to respond with a defined phrase when
-        retrieved context doesn't contain the answer. (2) The similarity scores of the
-        top retrieved chunks are checked before sending to the LLM — if the maximum
-        similarity is below a threshold (0.70 for typical RAG corpora), the answer is
-        withheld and traditional results are shown with a note that the AI couldn't find
-        a confident answer. (3) After generation, a grounding check verifies each factual
-        claim against the retrieved context. A well-tuned combination of all three provides
-        a robust defense. The threshold-based pre-check (option 2) is the highest-leverage
-        single mechanism because it prevents a bad generation entirely rather than trying
-        to detect it after the fact.
-      </p>
 
-      <h3>Q: Why use chunking + embedding retrieval rather than just putting the entire document in the LLM's context window?</h3>
-      <p>
-        For a large corpus (thousands of documents, millions of tokens total), full-context
-        retrieval is impossible — you cannot fit the entire corpus in a single context window.
-        Chunking + retrieval selects the few hundred tokens most relevant to the specific
-        query. However, for individual documents with a very long context model (128K+ token
-        window), full-document context is viable and often superior — the model can see
-        cross-document references and structure that chunking destroys. The trade-off is
-        cost: a 100K-token context call is 100x more expensive than a 1K-token call.
-        Use per-document full-context for document-specific Q&A (legal review, contract
-        analysis) and chunking + retrieval for corpus-wide Q&A (knowledge base search,
-        documentation assistance).
-      </p>
-
-      <h3>Q: How do you handle a query that spans multiple documents?</h3>
-      <p>
-        Multi-hop RAG handles queries that require synthesizing information from documents
-        that don't appear together in a single retrieval result. For example: "compare
-        the retry policies in service A and service B" requires retrieving chunks from
-        both service A and B documentation. Standard top-K retrieval may return chunks
-        from only one if the other is poorly represented in the embedding space. Solutions:
-        (1) Decompose the query into sub-questions ("what is service A's retry policy?"
-        and "what is service B's retry policy?"), retrieve independently, and synthesize.
-        (2) Increase K and rely on re-ranking to surface both documents. (3) Use a hybrid
-        approach where keyword search (which surfaces exact term matches) is combined with
-        semantic search. For most production systems, query decomposition produces the most
-        reliable results for explicit multi-document queries.
-      </p>
-
-      <h3>Q: How do you measure and improve retrieval quality without labeled data?</h3>
-      <p>
-        Without a labeled test set, use implicit feedback signals as a retrieval quality
-        proxy. When a user clicks a traditional search result immediately after receiving
-        an AI answer, the retrieved chunks likely missed the mark. When a user rates an
-        answer negatively and the cited sources are clearly related to the question, the
-        problem may be generation (LLM failed to synthesize), not retrieval. Separating
-        retrieval failures from generation failures in user feedback is difficult without
-        per-component instrumentation — log the retrieved chunk similarity scores and IDs
-        with each query, then correlate with user feedback to identify whether low-rating
-        queries also have low retrieval similarity scores. If they do, the problem is
-        retrieval; if high similarity but low rating, the problem is generation or grounding.
-      </p>
+</section>
+      <section><h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: state model, API contracts, cache policy, async workflow, authorization, rollout, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock><p>Model the runtime as explicit transitions: query rewrite to ACL filter to hybrid retrieve to rerank to ground answer. Every asynchronous completion carries a generation, version, or correlation id so stale work can be rejected safely. Separate user intent, untrusted transport input, validated intermediate state, durable truth, and derived UI projection.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/ai-modern-systems/ai-assisted-search-qa-ui-recovery.svg" alt="AI-Assisted Search and Q&A UI failure containment and rollback" caption="Failure containment, rollback controls, and audit evidence." /></section>
+      <section><h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock><p>The retrieval service is authoritative for authorized source candidates; the generated answer is a derived projection that must remain grounded in cited chunks.</p><p>The major pressure points are permission-filtered ANN recall, stale indexes, citation drift, multi-turn query ambiguity, retrieval fan-out, reranker latency, and unsupported-answer refusal. Prefer explicit bounded degradation over hidden correctness loss. Caches and optimistic UI improve latency only when invalidation, expiry, cancellation, and stale-response rejection are designed with them.</p></section>
+      <section><h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: latency, error rate, fallback rate, conversion, stale-state duration, and rollback success.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock><p>Use typed state machines, immutable identifiers, bounded queues, idempotent writes, cancellation propagation, versioned contracts, redacted logs, privacy-aware retention, and stage-level metrics. Test stale callbacks, retries, partial failure, duplicate input, slow consumers, access-control changes, rollback, and degraded dependencies.</p></section>
+      <h3>Principal defense: consistency, cost, and rollback</h3><p>State the consistency boundary explicitly. User intent, request generation, model or retrieval bundle version, and terminal status belong to one attributable execution. Streaming tokens and previews are derived projections; durable history, approved revisions, feedback events, and citation access checks are authoritative records. Reject late generations after cancellation or supersession even when transport continues to deliver bytes.</p><p>Defend cost as a product constraint, not an infrastructure footnote. Bound context, retrieval fan-out, concurrent generations, retry budgets, preview depth, and retained history. Record bundle id, latency by stage, token or candidate volume, refusal reason, and fallback outcome. Roll back by immutable revision or alias swap so a bad prompt, model, parser, or retrieval policy can be isolated without rewriting evidence.</p><section><h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: stale state, hidden partial failure, unbounded retries, ownership ambiguity, and missing observability.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock><p>Avoid treating derived UI as authoritative, accepting stale asynchronous completion, hiding unsupported states, leaking sensitive payloads into telemetry, retrying non-idempotent work blindly, and adding expensive AI calls without latency and cost budgets.</p></section>
+      <section><h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock><p>This design applies to enterprise knowledge search, policy lookup, support-agent assistance, and citation-backed documentation Q&A.</p></section>
+      <section><h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock><h3>What state is authoritative, and what may remain optimistic?</h3><p>The retrieval service is authoritative for authorized source candidates; the generated answer is a derived projection that must remain grounded in cited chunks.</p><h3>What fails first under scale, abuse, or degraded dependencies?</h3><p>Pressure-test permission-filtered ANN recall, stale indexes, citation drift, multi-turn query ambiguity, retrieval fan-out, reranker latency, and unsupported-answer refusal. Bound queues, reject stale transitions, preserve provenance, and make degraded behavior explicit rather than silently returning misleading UI.</p><h3>How do you recover or roll back without corrupting user-visible state?</h3><p>version indexes, retain source provenance, reject stale generations, fall back to ranked documents, and expose an explicit insufficient-evidence state</p><h3>How do you make the design observable in production?</h3><p>Emit redacted correlation ids, stage latency, terminal status, retry count, rejection reason, version identifiers, queue depth, and recovery outcome. Alert on ratios and tail latency, not only aggregate success counts.</p><h3>How do you defend the architecture against a simpler alternative?</h3><p>Start with the simplest state machine that preserves authority boundaries. Add asynchronous stages, caching, workers, or secondary indexes only when measured latency, scale, or isolation requirements justify their operational cost.</p></section>
+      <section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Streams_API" target="_blank" rel="noreferrer">MDN Streams API</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://owasp.org/www-project-cheat-sheets/" target="_blank" rel="noreferrer">OWASP Cheat Sheet Series</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA Authoring Practices</a></li></ul></section>
     </ArticleLayout>
   );
 }

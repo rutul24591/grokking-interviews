@@ -21,10 +21,10 @@ export const metadata: ArticleMetadata = {
 
 export default function SplayTreeArticle() {
   return (
-    <ArticleLayout metadata={metadata}>
+    <ArticleLayout metadata={metadata}><HighlightBlock as="p" tier="crucial" className="mb-4">Interview focus: Splay Tree — Self-Adjusting BST should be explained through a correctness invariant first, then through the implementation technique.</HighlightBlock><HighlightBlock as="p" tier="crucial" className="mb-4">Interview focus: In interviews, the decisive point is why this approach is valid under the stated constraints, not just what API or algorithm is used.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Compare the simple baseline with the optimized or production-ready approach so the trade-off is explicit.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Name the data structure, state machine, pipeline stage, or control plane that owns each decision.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Include the cost model: preprocessing cost, per-operation cost, storage cost, latency impact, and failure recovery cost.</HighlightBlock>
 
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Interview lens: frame Splay Tree — Self-Adjusting BST around operation contract, invariants, update cost, query cost, memory layout, and persistence or balancing behavior. This is what turns the article from concept notes into interview-ready reasoning.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           Interview focus: splay trees demonstrate amortized analysis using the potential method — interviewers ask about them to test whether you understand that per-operation worst case and amortized cost can differ, and how temporal locality translates into algorithmic advantage. The three rotation cases (Zig, Zig-Zig, Zig-Zag) and the O(log n) amortized proof are the key depth signals.
         </HighlightBlock>
@@ -81,7 +81,7 @@ export default function SplayTreeArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core invariant to defend: the data structure must preserve its structural invariant after every supported operation.</HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/data-structures/splay-tree-architecture.svg"
           alt="Splay Tree Architecture — Zig/Zig-Zig/Zig-Zag rotations, amortized analysis, and applications"
@@ -164,7 +164,7 @@ export default function SplayTreeArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="important" className="mb-4">Decision quality comes from naming the constraint, the chosen technique, the proof boundary, and the cost model before discussing implementation details.</HighlightBlock>
         <HighlightBlock as="p" tier="important">
           The most common implementation bug is confusing Zig-Zig and Zig-Zag. Zig-Zig (same side): rotate parent first. Zig-Zag (opposite sides): rotate x twice (x over p, then x over g). Getting these backwards produces an incorrect splay that does not achieve the amortized bound and may not even bring x to the root.
         </HighlightBlock>

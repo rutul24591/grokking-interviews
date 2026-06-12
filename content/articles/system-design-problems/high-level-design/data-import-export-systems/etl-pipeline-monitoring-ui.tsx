@@ -24,7 +24,7 @@ export default function EtlPipelineMonitoringUi() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame Design an ETL Pipeline Monitoring UI around system boundary, state ownership, failure handling, scalability, security, and observable recovery. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock>
         <p>
           An ETL pipeline monitoring UI helps data platform teams observe extract, transform, and load workflows across batch, micro-batch, and streaming systems. It shows pipeline DAGs, run history, stage status, throughput, latency, data quality, freshness, SLA breaches, retries, logs, lineage, and downstream impact.
         </p>
@@ -40,7 +40,7 @@ export default function EtlPipelineMonitoringUi() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: the design must preserve correctness under latency, concurrency, partial failure, and changing permissions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design an ETL Pipeline Monitoring UI, the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock>
         <p>
           A pipeline run is a durable execution of a pipeline definition. It has run id, scheduled time, actual start time, status, stages, attempts, checkpoints, inputs, outputs, row counts, watermarks, quality results, and lineage. Scheduled time matters because a run can start late but still be responsible for a specific data window.
         </p>
@@ -74,7 +74,7 @@ export default function EtlPipelineMonitoringUi() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: state model, API contracts, cache policy, async workflow, authorization, rollout, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock>
         <p>
           The architecture has five planes. The orchestration plane emits run and stage events. The metrics plane collects throughput, latency, freshness, and quality metrics. The log plane captures structured stage logs. The lineage plane records source-to-target relationships. The UI plane combines these signals into a run dashboard, DAG view, alert surface, and recovery console.
         </p>
@@ -117,7 +117,7 @@ export default function EtlPipelineMonitoringUi() {
       </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock>
         <p>
           Polling orchestrator state is simple but can miss fine-grained stage events and creates load at scale. Event-driven monitoring gives fresher and more detailed telemetry, but requires durable event ingestion, ordering strategy, and replay for UI consistency.
         </p>
@@ -154,7 +154,7 @@ export default function EtlPipelineMonitoringUi() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: latency, error rate, fallback rate, conversion, stale-state duration, and rollback success.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock>
         <p>
           Emit structured lifecycle events from every pipeline run and stage. Include pipeline id, run id, scheduled window, stage id, attempt, input watermark, output watermark, row counts, and status.
         </p>
@@ -188,7 +188,7 @@ export default function EtlPipelineMonitoringUi() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: stale state, hidden partial failure, unbounded retries, ownership ambiguity, and missing observability.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock>
         <p>
           A common pitfall is showing only green or red job status. Operators need stage-level status, quality results, freshness, logs, and lineage to take action.
         </p>
@@ -213,7 +213,7 @@ export default function EtlPipelineMonitoringUi() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock>
         <p>
           Data warehouse teams monitor nightly ingestion from product databases into analytics marts. They need freshness, row-count trends, schema drift detection, and downstream dashboard impact.
         </p>
@@ -232,7 +232,7 @@ export default function EtlPipelineMonitoringUi() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock>
         <h3 className="mt-6 mb-3 text-lg font-semibold">1. What should an ETL monitoring UI show beyond job status?</h3>
         <p>
           It should show DAG stage status, run timeline, duration, throughput, row counts, freshness, SLA breaches, data quality results, logs, retries, checkpoints, lineage, and downstream impact. Operators need enough context to diagnose and recover, not just see that a job failed.

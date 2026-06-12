@@ -24,7 +24,7 @@ export default function ArticlePage() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Interview lens: frame Prompt Optimization — DSPy, OPRO, and Systematic Prompt Engineering around model behavior, grounding, memory, evaluation, safety boundaries, latency, and cost control. This is what turns the article from concept notes into interview-ready reasoning.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           Interview focus: prompt optimization is about systematizing what was previously an art form. Interviewers at staff level expect you to know the full spectrum — from manual iteration to DSPy compiled programs — and to articulate when each approach is appropriate. Key concepts: DSPy signatures and optimizers, self-consistency with majority voting (when and why), tree-of-thought vs. chain-of-thought trade-offs, how to run statistically rigorous A/B tests on prompts, and how to integrate prompt regression testing into CI/CD.
         </HighlightBlock>
@@ -43,7 +43,7 @@ export default function ArticlePage() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core invariant to defend: AI systems must keep generated output attributable, bounded, observable, and recoverable despite probabilistic behavior.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           DSPy&apos;s core insight is that a well-structured program specification (signature + metric) contains enough information to automatically discover optimal prompts and few-shot examples through a compilation process. You write your program in terms of what you want (inputs, outputs, constraints) rather than how to instruct the model. The DSPy optimizer searches over the space of prompts and few-shot examples and selects the combination that maximizes your metric on a validation set. This is fundamentally different from manual prompting, where you are directly writing the instruction text.
         </HighlightBlock>
@@ -73,7 +73,7 @@ export default function ArticlePage() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="important" className="mb-4">Decision quality comes from naming the constraint, the chosen technique, the proof boundary, and the cost model before discussing implementation details.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           The prompt CI/CD pipeline treats prompts as code: versioned in git, evaluated against a golden dataset on every change, gated by a regression threshold, deployed via canary release with gradual traffic increase, and rolled back immediately if metrics degrade. This is the most impactful change most teams can make to their prompt engineering process — it converts prompt changes from ad-hoc manual updates to a controlled, observable, reversible deployment process.
         </HighlightBlock>
@@ -126,7 +126,7 @@ export default function ArticlePage() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="important" className="mb-4">Failure modes to call out: hallucination, prompt injection, stale retrieval, unbounded context growth, hidden model cost, and UI that overstates certainty.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           Overfitting to the evaluation set is a real risk with automated optimizers, especially DSPy. The optimizer will find prompts that maximize your metric on the validation set — if your metric is imperfect or your dataset is too small, the optimizer finds prompts that &quot;game&quot; the metric without improving true task performance. Mitigations: (1) use a separate held-out test set that the optimizer never sees, to measure true generalization; (2) use multiple metrics (primary + guardrails like cost and latency); (3) manually review a sample of optimizer outputs to sanity-check quality; (4) periodically re-evaluate on fresh data from production to detect overfitting-to-past-distribution.
         </HighlightBlock>

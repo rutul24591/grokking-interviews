@@ -19,23 +19,18 @@ export const metadata: ArticleMetadata = {
   tags: ["oauth", "oidc", "sso", "pkce", "jwt", "saml", "authentication", "lld"],
 };
 
-export default function OAuthOidcSsoArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <p>
+export default function OAuthOidcSsoArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design OAuth OIDC and SSO</h1><h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame OAuth 2.0 / OIDC / SSO — Authentication Architecture around identity UX, token/session safety, recovery flows, permission modeling, and abuse resistance. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock><p>Design OAuth OIDC and SSO is a security-sensitive low-level design problem covering authorization redirect, PKCE, state and nonce, callback validation, token exchange, OIDC claims, refresh coordination, and logout. A principal-level answer must state the authoritative server boundary, threat model, lifecycle, abuse controls, rollback, privacy, observability, and user-safe degraded behavior.</p><p>Keep authorization transaction state, PKCE verifier, nonce, callback result, and server session separate. Tokens should remain server-side where a BFF is available. Core structures: state, nonce, PKCE verifier, redirect target, authorization code, callback status, server session, refresh lock, provider metadata, and logout state.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/auth-user-systems/oauth-oidc-sso-runtime.svg" alt="Design OAuth OIDC and SSO runtime" caption="Security flow from user intent through authoritative validation and audit." /></section>
+<section><h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: client UI can guide auth flows but server-side policy remains the authority for identity, session, and permission decisions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For OAuth 2.0 / OIDC / SSO — Authentication Architecture, the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock><p>The retained deep dive below captures the topic-specific mechanics.</p><p>
         OAuth 2.0 and OpenID Connect (OIDC) are the industry standard protocols for delegated authorization and
         federated authentication. Nearly every FAANG-scale product uses them — for social login, enterprise SSO,
         service-to-service auth, and mobile app authentication. Understanding the exact flow, token lifecycle,
         security pitfalls, and frontend implementation details is essential for staff-level engineering interviews.
       </p>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/auth-user-systems/oauth-oidc-sso.svg"
-        alt="OAuth 2.0 / OIDC / SSO architecture diagram"
-        caption="OAuth 2.0 Authorization Code + PKCE, token lifecycle, enterprise SSO federation, and security edge cases"
-      />
+      
 
-      <h2>Why OAuth 2.0 + PKCE for SPAs</h2>
+      <h3>Why OAuth 2.0 + PKCE for SPAs</h3>
       <p>
         The original OAuth 2.0 Implicit Flow was designed for browser-based applications but has been deprecated.
         It returned access tokens directly in the URL fragment — visible in browser history, referrer headers,
@@ -57,7 +52,7 @@ export default function OAuthOidcSsoArticle() {
         httpOnly Secure SameSite=Strict cookies managed by a BFF or server-side endpoint.
       </HighlightBlock>
 
-      <h2>Authorization Code + PKCE — Step-by-Step Implementation</h2>
+      <h3>Authorization Code + PKCE — Step-by-Step Implementation</h3>
       <p>
         The complete flow involves eight steps that the frontend must implement correctly. A single mistake —
         such as skipping state validation or storing tokens insecurely — creates critical vulnerabilities.
@@ -105,7 +100,7 @@ export default function OAuthOidcSsoArticle() {
         expiry using the <code>exp</code> claim.
       </p>
 
-      <h2>Token Lifecycle and Silent Refresh</h2>
+      <h3>Token Lifecycle and Silent Refresh</h3>
       <p>
         Access tokens are intentionally short-lived (15–60 minutes) to limit the impact of theft. Refresh
         tokens are long-lived (days to weeks) and must be stored securely. The challenge: keeping the user
@@ -142,7 +137,7 @@ export default function OAuthOidcSsoArticle() {
         token will be visible in the response body and must be stored insecurely in JS-accessible storage.
       </HighlightBlock>
 
-      <h2>OIDC — OpenID Connect Layer</h2>
+      <h3>OIDC — OpenID Connect Layer</h3>
       <p>
         OpenID Connect is an identity layer built on top of OAuth 2.0. It adds the <strong>id_token</strong>
         (a signed JWT containing user identity claims) and standardizes the discovery document
@@ -166,7 +161,7 @@ export default function OAuthOidcSsoArticle() {
         different browser session.
       </p>
 
-      <h2>Enterprise SSO — SAML and OIDC Federation</h2>
+      <h3>Enterprise SSO — SAML and OIDC Federation</h3>
       <p>
         Enterprise customers expect to authenticate with their corporate identity provider (Okta, Azure AD,
         Ping Identity, Google Workspace). Supporting this requires understanding both SAML 2.0 and OIDC
@@ -201,7 +196,7 @@ export default function OAuthOidcSsoArticle() {
         implement local session timeouts as a fallback.
       </p>
 
-      <h2>Security Hardening</h2>
+      <h3>Security Hardening</h3>
       <p>
         <strong>Redirect URI validation.</strong> Register exact redirect URIs with the IdP — no wildcards.
         The IdP rejects authorization requests with unregistered redirect URIs, preventing open redirect attacks.
@@ -229,7 +224,7 @@ export default function OAuthOidcSsoArticle() {
         credentials. Request it only for apps that need background sync.
       </p>
 
-      <h2>Implementation Architecture</h2>
+      <h3>Implementation Architecture</h3>
       <p>
         A production OAuth implementation involves three layers: the React UI layer handles the auth flow
         initiation and callback, an auth context/store manages token state and provides hooks to components,
@@ -253,7 +248,7 @@ export default function OAuthOidcSsoArticle() {
         see a flash of the callback URL.
       </p>
 
-      <h2>Testing OAuth Flows</h2>
+      <h3>Testing OAuth Flows</h3>
       <p>
         OAuth flows are notoriously difficult to test because they involve external redirects. Effective
         testing strategies:
@@ -274,82 +269,12 @@ export default function OAuthOidcSsoArticle() {
       <p>
         <strong>Mock auth in unit/component tests.</strong> Provide a mock AuthContext with preset user and
         tokens — never hit the real IdP in unit tests. This keeps tests fast and deterministic.
-      </p>
-
-      <h2>Interview Questions</h2>
-
-      <h3>Q1: Why is the Implicit Flow deprecated and what does PKCE solve?</h3>
-      <p>
-        The Implicit Flow returned access tokens in the URL fragment, exposing them to browser history,
-        referrer headers, and JavaScript running on the page. PKCE eliminates the client_secret requirement
-        for public clients by adding a cryptographic challenge. The code_verifier is generated on the client,
-        the code_challenge (SHA256 hash) is sent with the authorization request, and the verifier is sent
-        during code exchange. An attacker who intercepts the authorization code cannot exchange it without
-        the verifier — which was never transmitted over the network and is stored only in sessionStorage.
-        PKCE makes the Authorization Code Flow safe for SPAs and mobile apps.
-      </p>
-
-      <h3>Q2: Where should access tokens and refresh tokens be stored in a SPA?</h3>
-      <p>
-        Access tokens: in-memory only (React state, Zustand store, module-level variable). Never in
-        localStorage (XSS-accessible) or sessionStorage (also XSS-accessible, though tab-scoped).
-        In-memory tokens are lost on page refresh — recover by calling a /auth/me endpoint that reads
-        the httpOnly cookie and issues a new access token.
-      </p>
-      <p>
-        Refresh tokens: in an httpOnly, Secure, SameSite=Strict cookie managed by your BFF. JavaScript
-        can never read httpOnly cookies. The BFF exposes a /auth/refresh endpoint that reads the cookie,
-        calls the IdP token endpoint, issues a new access token in the response body and rotates the
-        refresh token cookie.
-      </p>
-
-      <h3>Q3: How do you handle token refresh when multiple concurrent API calls encounter a 401?</h3>
-      <p>
-        Without coordination, each 401 triggers a separate refresh call, potentially invalidating each other
-        if refresh token rotation is enabled. The solution: maintain a boolean <code>isRefreshing</code> flag
-        and a <code>refreshSubscribers</code> queue. When the first 401 arrives, set isRefreshing = true and
-        call the refresh endpoint. Subsequent 401s add their retry callbacks to the queue instead of calling
-        refresh again. When the refresh succeeds, flush the queue by calling each callback with the new token.
-        If refresh fails, clear the queue with an error and redirect to login.
-      </p>
-
-      <h3>Q4: How would you implement enterprise SSO for a multi-tenant SaaS app?</h3>
-      <p>
-        Store a tenant IdP configuration table: <code>&#123;domain: "acme.com", type: "saml", metadata_url: "...", idp_entity_id: "..."&#125;</code>.
-        On login, extract the email domain and look up the tenant config. For SAML: generate a SAMLRequest,
-        redirect to the IdP SSO URL. Implement an ACS endpoint that validates the SAMLResponse signature
-        using the IdP's certificate, extracts attributes, performs JIT provisioning if new user, and
-        establishes a session. For OIDC: use the tenant's client_id and authorization_endpoint from their
-        discovery document. Abstract behind an AuthStrategy interface so the login page is IdP-agnostic.
-        Map IdP groups to app roles in a configuration layer — do not hardcode.
-      </p>
-
-      <h3>Q5: Design the token refresh architecture for a Next.js app with SSR and client components.</h3>
-      <p>
-        The challenge: server-rendered pages need a valid access token to fetch data, but access tokens
-        live in-memory client-side. Solution: store the refresh token in an httpOnly cookie accessible
-        server-side. In Next.js middleware (runs on every request), check if the session cookie is present
-        and valid. If the access token has expired (check a short-lived session cookie or a signed JWT
-        containing the exp), call the token endpoint server-side to get a fresh access token. Attach the
-        new access token to the request headers so server components can use it for data fetching. Set
-        a new short-lived cookie with the new token's exp. On the client side, use the AuthProvider to
-        initialize token state from the /auth/me endpoint on mount. The BFF approach cleanly separates
-        concerns: Next.js middleware handles SSR tokens, the client AuthProvider handles SPA token state,
-        and both ultimately rely on the same httpOnly refresh token cookie.
-      </p>
-
-      <h3>Q6: What are the security implications of using "Sign in with Google" on a website that also has email/password auth?</h3>
-      <p>
-        Account takeover via email collision: if a user registers with email/password using email A, then
-        later signs in with Google using the same email A, and your system links accounts by email, an
-        attacker who controls the Google account for email A can take over the password account. Mitigations:
-        (1) Treat each auth method as separate identity — link them explicitly with user confirmation.
-        (2) On first Google login, if an email-matched account exists, require the user to verify ownership
-        via the existing password before linking. (3) Store a flag indicating which auth methods are linked
-        per account. Additional: OAuth tokens from Google don't prove email ownership (the user may have
-        changed their Google email). Always re-verify email after linking. Use the IdP's <code>sub</code>
-        claim (stable user ID) as the primary identifier, not email.
-      </p>
-    </ArticleLayout>
-  );
-}
+      </p></section>
+<section><h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: token storage, MFA challenge state, redirect handling, session timeout, impersonation audit, and permission-cache invalidation.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock><p>Separate user intent, browser-safe projection, server validation, durable security record, audit evidence, and cleanup. Frontend state improves UX but never replaces server enforcement. Tokens, challenges, sessions, and privileged grants need explicit expiry and revocation.</p><p>Keep authorization transaction state, PKCE verifier, nonce, callback result, and server session separate. Tokens should remain server-side where a BFF is available.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/auth-user-systems/oauth-oidc-sso-recovery.svg" alt="Design OAuth OIDC and SSO threat recovery" caption="Threat recovery: validate, deny safely, preserve authoritative truth, audit, and recover." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock><p>Provider tokens and server session are authoritative. Callback state and nonce are one-time correlation proofs, not user identity by themselves. Scale and threat pressure comes from CSRF, code interception, nonce replay, open redirects, multi-tab callbacks, refresh storms, provider outage, and claim drift. Fail closed for privilege while keeping error UX actionable.</p></section>
+<section><h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: login completion, MFA failure, revocation latency, session timeout accuracy, and permission denial rate.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock><p>Use short-lived scoped grants, secure cookies, CSRF defenses, replay prevention, rotation, versioned writes, server-side authorization, rate limits, redacted logs, and explicit audit events. Test expiry, replay, revocation, retries, multiple tabs, and permission drift.</p></section>
+<h3>Principal defense: authority, consistency, and abuse cost</h3><p>Use server-authoritative consistency for security decisions. Browser state is a revocable projection that can improve responsiveness but cannot grant access, extend expiry, or confirm a privileged transition. Every mutation carries a version, expiry, nonce, or idempotency key as appropriate; stale projections refresh or fail closed. Rollback means revoking the grant, session family, policy version, or pending intent while retaining an audit trail.</p><p>Model abuse and cost together. Rate-limit sensitive attempts by account, device, network, and risk cohort without turning the UI into an enumeration oracle. Bound session inventory, audit retention, challenge issuance, cross-tab broadcasts, and refresh retries. Emit denial reason classes, revocation lag, suspicious reuse, policy version, and correlation ids while avoiding sensitive payloads in telemetry.</p><section><h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: token leakage, stale auth state, broken recovery, confused deputy access, and invisible session revocation.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock><p>Common failures include trusting frontend guards, storing bearer tokens in localStorage, leaking account existence, missing idempotency, weak redirect validation, and incomplete audit evidence.</p><p>For this topic, generate strong state and verifier, validate redirect allowlist, exchange codes once, coordinate refresh, handle provider failure, and clear sessions on logout.</p></section>
+<section><h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock><p>This design applies to user identity and access workflows where convenience must not weaken authoritative server enforcement or incident evidence.</p></section>
+<section><h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock><h3>What is authoritative?</h3><p>Provider tokens and server session are authoritative. Callback state and nonce are one-time correlation proofs, not user identity by themselves.</p><h3>What breaks under abuse?</h3><p>CSRF, code interception, nonce replay, open redirects, multi-tab callbacks, refresh storms, provider outage, and claim drift.</p><h3>How do you recover?</h3><p>generate strong state and verifier, validate redirect allowlist, exchange codes once, coordinate refresh, handle provider failure, and clear sessions on logout.</p><h3>What does the client enforce?</h3><p>The client improves usability and fails closed for privileged views; the server enforces every protected read and mutation.</p><h3>How do you observe incidents?</h3><p>Emit redacted audit records with subject, actor, policy version, reason, outcome, and correlation id.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.rfc-editor.org/rfc/rfc7636" target="_blank" rel="noreferrer">RFC 7636 PKCE</a></li><li><a href="https://www.w3.org/TR/webauthn-3/" target="_blank" rel="noreferrer">WebAuthn Level 3</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies" target="_blank" rel="noreferrer">MDN Cookies</a></li><li><a href="https://owasp.org/www-project-cheat-sheets/" target="_blank" rel="noreferrer">OWASP Cheat Sheets</a></li></ul></section>
+</ArticleLayout>}

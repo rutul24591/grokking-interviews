@@ -33,11 +33,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function PasswordResetArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
+export default function PasswordResetArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Password Reset System</h1><h2>Definition &amp; Context</h2><p>Design a Password Reset System is a security-sensitive low-level design problem covering account lookup, non-enumerating response, reset token issuance, out-of-band delivery, single-use verification, password update, and session invalidation. A principal-level answer must state the authoritative server boundary, threat model, lifecycle, abuse controls, rollback, privacy, observability, and user-safe degraded behavior.</p><p>Keep reset request acknowledgement separate from actual account existence. Reset grants are single-use, hashed, scoped, and short-lived. Core structures: request id, opaque token hash, user id, expiry, used-at, delivery status, rate-limit key, password policy result, and session revocation job.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/auth-user-systems/password-reset-system-runtime.svg" alt="Design a Password Reset System runtime" caption="Security flow from user intent through authoritative validation and audit." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>Problem Clarification</h3>
         <HighlightBlock as="p" tier="important">
           Users inevitably forget passwords. The system must securely enable password recovery without compromising account security or exposing identity verification to attackers. Consider a real scenario: a user forgets their password and requests a reset. They receive an email with a link. If anyone with that link can change the password (attacker intercepts email, or user forwards email unsecurely), any account is compromised. If the reset link never expires, an attacker can use it weeks later. If the token is predictable (sequential numbers), attackers brute-force reset links for other users. If the same reset link works multiple times, an attacker keeps resetting passwords.
         </HighlightBlock>
@@ -53,7 +52,7 @@ export default function PasswordResetArticle() {
       </section>
 
       <section>
-        <h2>Requirements</h2>
+        <h3>Requirements</h3>
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Functional Requirements</h3>
         <ul className="space-y-2">
           <li><strong>Reset Request Initiation:</strong> User provides email, system verifies it exists (silently if not found), generates reset token, sends link via email. Support bulk requests without revealing which emails exist (privacy by default).</li>
@@ -88,7 +87,7 @@ export default function PasswordResetArticle() {
       </section>
 
       <section>
-        <h2>High-Level Approach</h2>
+        <h3>High-Level Approach</h3>
         <HighlightBlock as="p" tier="important">
           The password reset flow has three phases: request, email delivery, and confirmation.
         </HighlightBlock>
@@ -107,13 +106,9 @@ export default function PasswordResetArticle() {
       </section>
 
       <section>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/auth-user-systems/password-reset-system.svg"
-          alt="Password reset flow with token security, UI states, password strength meter requirements, and post-reset session invalidation"
-          caption="Password reset flow with token security, UI states, password strength meter requirements, and post-reset session invalidation"
-        />
+        
 
-        <h2>Detailed Design</h2>
+        <h3>Detailed Design</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Reset Request Handling and Rate Limiting</h3>
         <p>
@@ -219,7 +214,7 @@ export default function PasswordResetArticle() {
       </section>
 
       <section>
-        <h2>Implementation Considerations</h2>
+        <h3>Implementation Considerations</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Token in URL vs In-App</h3>
         <HighlightBlock as="p" tier="important">
@@ -248,7 +243,7 @@ export default function PasswordResetArticle() {
       </section>
 
       <section>
-        <h2>Advanced Production Patterns</h2>
+        <h3>Advanced Production Patterns</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Account Takeover Detection</h3>
         <p>
@@ -313,7 +308,7 @@ export default function PasswordResetArticle() {
       </section>
 
       <section>
-        <h2>Trade-offs and Considerations</h2>
+        <h3>Trade-offs and Considerations</h3>
 
         <h3 className="mt-6 mb-3 text-lg font-semibuild">Email vs SMS vs MFA-Based Reset</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -334,20 +329,12 @@ export default function PasswordResetArticle() {
         <HighlightBlock as="p" tier="important">
           Silently returning success for non-existent emails (good for security) breaks UX: user submits reset request, doesn't receive email, assumes email is wrong, requests again. Bad experience. Alternative: always send email (even for non-existent addresses, send "this email not registered"). UX benefit: user gets feedback. Security downside: attackers can enumerate which emails exist (reset endpoint reveals user base). Most apps go silent (don't confirm whether email exists) for security. Tradeoff: improve UX with explanatory message "If this email is registered, you'll receive a reset link shortly" (neutral, doesn't reveal).
         </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>Summary</h2>
-        <HighlightBlock as="p" tier="crucial">
-          Password reset is a critical security feature that balances account protection with user recovery needs. For staff/principal engineers implementing this at scale, key architectural aspects include: (1) Cryptographically random, single-use tokens with short TTL (15 minutes) to prevent replay attacks. (2) Token hashing before storage (prevent database breach from exposing reset tokens). (3) Atomic transaction combining password update and token invalidation—never allow partial updates. (4) Comprehensive session termination across all devices to evict attackers from existing sessions. (5) Rate limiting (per-email, per-IP, global) and CAPTCHA escalation to prevent mass account takeover attacks. (6) Account takeover detection via anomaly scoring (multiple resets, unusual IPs/locations, rapid email changes). (7) Immutable audit logging for compliance and forensics. (8) High-reliability email delivery with retries and alerting.
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          At 1 million users, reset email volume is substantial (peak rates can exceed 1000 requests/second during outages). Implement asynchronous email queueing with backoff retry to avoid overloading email service. Monitor key metrics: reset success rate, email delivery rate, token usage rate (% of tokens used vs expired). Alert on anomalies (success rate &lt; 70%, delivery rate &lt; 99%, spike in reset requests).
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          Real-world implementation patterns: (1) Email-based reset for consumer apps (simple, common). (2) SMS-based reset for high-security apps (more secure, requires SMS provider). (3) MFA-based reset for enterprise (strongest security, highest friction). (4) Hybrid approach: support multiple methods. Testing must cover security edge cases: token reuse (second use fails), expiration boundaries (token valid at T+14:59, invalid at T+15:01), concurrent reset + login race conditions, account lockout during resets, email failures. Integration with related systems critical: session management (terminating all sessions), MFA (using MFA to verify identity for reset), account lockout (after 5 failed resets, lock account), and device fingerprinting (detect stolen tokens used from different device). Balance security (strict controls, short expiration, session termination) vs UX (reliable email, reasonable expiration, minimal friction).
-        </HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate user intent, browser-safe projection, server validation, durable security record, audit evidence, and cleanup. Frontend state improves UX but never replaces server enforcement. Tokens, challenges, sessions, and privileged grants need explicit expiry and revocation.</p><p>Keep reset request acknowledgement separate from actual account existence. Reset grants are single-use, hashed, scoped, and short-lived.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/auth-user-systems/password-reset-system-recovery.svg" alt="Design a Password Reset System threat recovery" caption="Threat recovery: validate, deny safely, preserve authoritative truth, audit, and recover." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Server token record is authoritative. The UI reveals no account-existence difference and accepts a reset only once. Scale and threat pressure comes from account enumeration, spam, token theft, replay, expired links, password reuse, and concurrent resets. Fail closed for privilege while keeping error UX actionable.</p></section>
+<section><h2>Best practices</h2><p>Use short-lived scoped grants, secure cookies, CSRF defenses, replay prevention, rotation, versioned writes, server-side authorization, rate limits, redacted logs, and explicit audit events. Test expiry, replay, revocation, retries, multiple tabs, and permission drift.</p></section>
+<h3>Principal defense: authority, consistency, and abuse cost</h3><p>Use server-authoritative consistency for security decisions. Browser state is a revocable projection that can improve responsiveness but cannot grant access, extend expiry, or confirm a privileged transition. Every mutation carries a version, expiry, nonce, or idempotency key as appropriate; stale projections refresh or fail closed. Rollback means revoking the grant, session family, policy version, or pending intent while retaining an audit trail.</p><p>Model abuse and cost together. Rate-limit sensitive attempts by account, device, network, and risk cohort without turning the UI into an enumeration oracle. Bound session inventory, audit retention, challenge issuance, cross-tab broadcasts, and refresh retries. Emit denial reason classes, revocation lag, suspicious reuse, policy version, and correlation ids while avoiding sensitive payloads in telemetry.</p><section><h2>Common Pitfalls</h2><p>Common failures include trusting frontend guards, storing bearer tokens in localStorage, leaking account existence, missing idempotency, weak redirect validation, and incomplete audit evidence.</p><p>For this topic, respond uniformly, hash tokens, expire quickly, rate-limit requests, invalidate sessions, prevent reuse, and audit security events.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to user identity and access workflows where convenience must not weaken authoritative server enforcement or incident evidence.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>What is authoritative?</h3><p>Server token record is authoritative. The UI reveals no account-existence difference and accepts a reset only once.</p><h3>What breaks under abuse?</h3><p>account enumeration, spam, token theft, replay, expired links, password reuse, and concurrent resets.</p><h3>How do you recover?</h3><p>respond uniformly, hash tokens, expire quickly, rate-limit requests, invalidate sessions, prevent reuse, and audit security events.</p><h3>What does the client enforce?</h3><p>The client improves usability and fails closed for privileged views; the server enforces every protected read and mutation.</p><h3>How do you observe incidents?</h3><p>Emit redacted audit records with subject, actor, policy version, reason, outcome, and correlation id.</p></section>
+<section><h2>References</h2><ul><li><a href="https://www.rfc-editor.org/rfc/rfc7636" target="_blank" rel="noreferrer">RFC 7636 PKCE</a></li><li><a href="https://www.w3.org/TR/webauthn-3/" target="_blank" rel="noreferrer">WebAuthn Level 3</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies" target="_blank" rel="noreferrer">MDN Cookies</a></li><li><a href="https://owasp.org/www-project-cheat-sheets/" target="_blank" rel="noreferrer">OWASP Cheat Sheets</a></li></ul></section>
+</ArticleLayout>}

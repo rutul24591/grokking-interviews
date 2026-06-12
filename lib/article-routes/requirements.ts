@@ -7,7 +7,9 @@
  * To update: run `pnpm generate-article-routes`
  */
 
-export const requirementsRoutes: Record<string, () => Promise<any>> = {
+import type { ArticleModule } from "./types";
+
+export const requirementsRoutes: Record<string, () => Promise<ArticleModule>> = {
   "requirements/functional-requirements/admin-moderation/abuse-detection": () => import("@/content/articles/requirements/functional-requirements/admin-moderation/abuse-detection"),
   "requirements/functional-requirements/admin-moderation/admin-apis": () => import("@/content/articles/requirements/functional-requirements/admin-moderation/admin-apis"),
   "requirements/functional-requirements/admin-moderation/admin-dashboard": () => import("@/content/articles/requirements/functional-requirements/admin-moderation/admin-dashboard"),

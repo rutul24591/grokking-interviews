@@ -24,7 +24,7 @@ export default function TimeSeriesVisualizationArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame Design a Time-Series Visualization System around system boundary, state ownership, failure handling, scalability, security, and observable recovery. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock>
         <p>
           A time-series visualization system helps users inspect metrics over time, correlate changes across panels, and diagnose incidents or business shifts. A Grafana-like product supports dashboards with many panels, shared time ranges, query editors, annotations, threshold overlays, comparison mode, and exports. The hard problem is returning visually useful data quickly across time windows ranging from minutes to years.
         </p>
@@ -40,7 +40,7 @@ export default function TimeSeriesVisualizationArticle() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: the design must preserve correctness under latency, concurrency, partial failure, and changing permissions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design a Time-Series Visualization System, the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock>
         <p>
           Multi-resolution storage keeps raw samples for short windows and rollups for longer windows. Raw data preserves fidelity for recent incident diagnosis. One-minute, five-minute, and one-hour rollups make long-range dashboards fast. Rollups should store min, max, avg, count, and sometimes percentiles because average alone can hide spikes.
         </p>
@@ -68,7 +68,7 @@ export default function TimeSeriesVisualizationArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: state model, API contracts, cache policy, async workflow, authorization, rollout, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock>
         <p>
           The architecture has four planes. The dashboard plane stores panel layouts, query definitions, thresholds, variables, and annotation sources. The query gateway plane handles resolution selection, data source routing, caching, and concurrency. The data plane includes short-retention raw stores and long-retention rollup stores. The visualization plane renders panels, synchronized cursors, annotations, and comparison overlays.
         </p>
@@ -111,7 +111,7 @@ export default function TimeSeriesVisualizationArticle() {
       </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock>
         <p>
           Raw data provides maximum fidelity but becomes expensive and visually wasteful over long ranges. Rollups are fast and cheap but lose detail. The system should use raw data for recent narrow windows, rollups for wide windows, and clearly show when the chart is rendering aggregated data.
         </p>
@@ -148,7 +148,7 @@ export default function TimeSeriesVisualizationArticle() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: latency, error rate, fallback rate, conversion, stale-state duration, and rollback success.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock>
         <p>
           Store rollups with extrema and counts, not only averages. Min-max bands, counts, and percentiles help preserve spikes, gaps, and sampling quality across long time ranges.
         </p>
@@ -179,7 +179,7 @@ export default function TimeSeriesVisualizationArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: stale state, hidden partial failure, unbounded retries, ownership ambiguity, and missing observability.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock>
         <p>
           A common pitfall is querying raw data for every time range. This works for short demos and fails for 30-day or one-year dashboards. Multi-resolution rollups are foundational, not an optimization to add later.
         </p>
@@ -204,7 +204,7 @@ export default function TimeSeriesVisualizationArticle() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock>
         <p>
           SRE dashboards correlate request rate, latency, error rate, saturation, deployments, and incidents during production debugging. Shared cursors and annotations reduce time to identify a regression.
         </p>
@@ -220,7 +220,7 @@ export default function TimeSeriesVisualizationArticle() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock>
         <h3 className="mt-6 mb-3 text-lg font-semibold">1. How would you make 30-day time-series dashboards load quickly?</h3>
         <p>
           I would use multi-resolution storage and adaptive query routing. Raw data is used for short recent windows. Longer windows route to one-minute, five-minute, or one-hour rollups based on panel width and time range. The query gateway chooses the step, caches results, and returns only the number of points the chart can use.

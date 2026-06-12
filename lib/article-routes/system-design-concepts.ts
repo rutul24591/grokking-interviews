@@ -7,7 +7,9 @@
  * To update: run `pnpm generate-article-routes`
  */
 
-export const systemDesignConceptsRoutes: Record<string, () => Promise<any>> = {
+import type { ArticleModule } from "./types";
+
+export const systemDesignConceptsRoutes: Record<string, () => Promise<ArticleModule>> = {
   "system-design-concepts/frontend-concepts/accessibility-a11y/accessible-forms": () => import("@/content/articles/system-design/frontend/accessibility-a11y/accessible-forms"),
   "system-design-concepts/frontend-concepts/accessibility-a11y/accessible-modals-and-dialogs": () => import("@/content/articles/system-design/frontend/accessibility-a11y/accessible-modals-and-dialogs"),
   "system-design-concepts/frontend-concepts/accessibility-a11y/aria-attributes": () => import("@/content/articles/system-design/frontend/accessibility-a11y/aria-attributes"),

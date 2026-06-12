@@ -21,10 +21,10 @@ export const metadata: ArticleMetadata = {
 
 export default function SparseTableArticle() {
   return (
-    <ArticleLayout metadata={metadata}>
+    <ArticleLayout metadata={metadata}><HighlightBlock as="p" tier="crucial" className="mb-4">Interview focus: Sparse Table &amp; Range Minimum Query (RMQ) should be explained through a correctness invariant first, then through the implementation technique.</HighlightBlock><HighlightBlock as="p" tier="crucial" className="mb-4">Interview focus: In interviews, the decisive point is why this approach is valid under the stated constraints, not just what API or algorithm is used.</HighlightBlock>
 
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Interview lens: frame Sparse Table &amp; Range Minimum Query (RMQ) around operation contract, invariants, update cost, query cost, memory layout, and persistence or balancing behavior. This is what turns the article from concept notes into interview-ready reasoning.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           Interview focus: the sparse table is the canonical answer to &quot;how do you answer millions of range minimum queries on a static array in O(1) per query?&quot; — knowing the idempotency constraint and when to choose it over a segment tree or Fenwick tree is a mid-to-senior level signal.
         </HighlightBlock>
@@ -95,7 +95,7 @@ export default function SparseTableArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core invariant to defend: the data structure must preserve its structural invariant after every supported operation.</HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/data-structures/sparse-table-architecture.svg"
           alt="Sparse Table & RMQ Architecture"
@@ -187,7 +187,7 @@ export default function SparseTableArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="important" className="mb-4">Decision quality comes from naming the constraint, the chosen technique, the proof boundary, and the cost model before discussing implementation details.</HighlightBlock>
         <HighlightBlock as="p" tier="important">
           The most common mistake is attempting to use a sparse table for range sum queries. Because the two intervals overlap, elements in the overlap get counted twice and the answer is wrong. If you need range sums, use a prefix sum array (static) or Fenwick tree (mutable).
         </HighlightBlock>

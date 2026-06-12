@@ -24,7 +24,7 @@ export default function AlertingAnomalyDetectionDashboardArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame Design an Alerting &amp; Anomaly Detection Dashboard around system boundary, state ownership, failure handling, scalability, security, and observable recovery. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock>
         <p>
           An alerting and anomaly detection dashboard helps teams define alert rules, detect abnormal behavior, route notifications, manage active incidents, and reduce operational noise. The primary user is often an on-call engineer who may be tired, under pressure, and trying to decide within seconds whether a page is real, severe, actionable, and owned by their team.
         </p>
@@ -40,7 +40,7 @@ export default function AlertingAnomalyDetectionDashboardArticle() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: the design must preserve correctness under latency, concurrency, partial failure, and changing permissions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design an Alerting &amp; Anomaly Detection Dashboard, the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock>
         <p>
           Alert rules describe a signal, condition, duration, severity, owner, routing policy, and runbook. The condition can be a threshold, rate of change, absence of data, burn-rate expression, or anomaly score. The duration clause prevents one-sample spikes from paging humans.
         </p>
@@ -68,7 +68,7 @@ export default function AlertingAnomalyDetectionDashboardArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: state model, API contracts, cache policy, async workflow, authorization, rollout, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock>
         <p>
           The architecture has five planes. The rule plane stores rule definitions, ownership, runbooks, and replay results. The evaluation plane queries metrics and computes state transitions. The anomaly plane trains and applies baselines or models. The routing plane groups, inhibits, silences, deduplicates, and sends notifications. The dashboard plane shows active alerts, timelines, tuning insights, and alert quality metrics.
         </p>
@@ -111,7 +111,7 @@ export default function AlertingAnomalyDetectionDashboardArticle() {
       </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock>
         <p>
           Threshold alerts are simple, explainable, and predictable. They are best for well-understood user-impacting signals such as error rate, availability, queue age, SLO burn rate, and failed payment rate. Their weakness is that fixed thresholds often ignore seasonality and changing traffic levels.
         </p>
@@ -148,7 +148,7 @@ export default function AlertingAnomalyDetectionDashboardArticle() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: latency, error rate, fallback rate, conversion, stale-state duration, and rollback success.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock>
         <p>
           Require every paging alert to have an owner, runbook, severity, actionability statement, and expected user impact. Alerts without these fields should not be allowed to page humans.
         </p>
@@ -176,7 +176,7 @@ export default function AlertingAnomalyDetectionDashboardArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: stale state, hidden partial failure, unbounded retries, ownership ambiguity, and missing observability.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock>
         <p>
           The most damaging pitfall is creating alerts for symptoms that require no action. Every unactionable page reduces trust in the system. Alerts should map to decisions and owners.
         </p>
@@ -204,7 +204,7 @@ export default function AlertingAnomalyDetectionDashboardArticle() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock>
         <p>
           SRE teams use alert dashboards to manage service reliability alerts, SLO burn rates, deployment regressions, dependency outages, and incident response timelines.
         </p>
@@ -220,7 +220,7 @@ export default function AlertingAnomalyDetectionDashboardArticle() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock>
         <h3 className="mt-6 mb-3 text-lg font-semibold">1. How would you design the alert evaluation engine?</h3>
         <p>
           I would run scheduled evaluations for active rules, query the metrics backend, evaluate conditions per label set, and persist state transitions in durable storage. Each alert instance is keyed by rule and label set. The engine supports pending duration before firing, resolved transitions when conditions clear, and idempotent event emission to the routing pipeline.

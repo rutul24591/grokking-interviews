@@ -1,89 +1,51 @@
-export type fileUploadSystemSignal = {
-  uploadedBytes: number;
-  checksumMismatch: number;
-  transcodeLagMs: number;
-  retryCount: number;
+export type FileUploadSystemStage = "queued" | "creating-session" | "hashing" | "uploading-chunks" | "verifying" | "complete";
+
+export type FileUploadSystemTransition = {
+  command: string;
+  from: FileUploadSystemStage;
+  to: FileUploadSystemStage;
+  revision: number;
 };
 
-export type fileUploadSystemEvent = {
+export type FileUploadSystemState = {
   id: string;
-  topic: "file-upload-system";
-  actorId: string;
-  sequence: number;
-  receivedAtMs: number;
-  expectedVersion: number;
-  currentVersion: number;
-  payloadSize: number;
-  signal: fileUploadSystemSignal;
-};
-
-export type fileUploadSystemDecision = {
-  accepted: boolean;
-  action: "resume-from-checkpoint" | "verify-checksum" | "serve-lower-rendition" | "commit";
-  nextVersion: number;
-  reasons: string[];
+  stage: FileUploadSystemStage;
+  revision: number;
   audit: string[];
 };
 
-const topicInvariant = "Large file and media operations must be resumable, verified, and safe to retry.";
-
-export function evaluateFileUploadSystemEvent(event: fileUploadSystemEvent): fileUploadSystemDecision {
-  const reasons: string[] = [];
-
-  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
-  if (event.sequence <= 0) reasons.push("invalid-sequence");
-  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
-  if (event.signal.uploadedBytes > 2_000) reasons.push("uploadedBytes-outside-slo");
-  if (event.signal.transcodeLagMs > 0.2) reasons.push("transcodeLagMs-requires-guardrail");
-
-  let action: fileUploadSystemDecision["action"] = "commit";
-  if (reasons.includes("version-mismatch")) action = "resume-from-checkpoint";
-  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "verify-checksum";
-  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "serve-lower-rendition";
-
+// Complete only after the server ledger confirms every chunk checksum exactly once.
+export function applyFileUploadSystemTransition(
+  state: FileUploadSystemState,
+  transition: FileUploadSystemTransition,
+): FileUploadSystemState {
+  if (transition.revision <= state.revision) return state;
+  if (transition.from !== state.stage) {
+    throw new Error(`Invalid multipart upload transition: ${state.stage} -> ${transition.to}`);
+  }
   return {
-    accepted: reasons.length === 0,
-    action,
-    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
-    reasons,
-    audit: [
-      "topic:File Upload System",
-      "subcategory:file-media-content-systems",
-      "entity:media asset",
-      "state:upload or playback session",
-      "operation:file pipeline transition",
-      "invariant:" + topicInvariant,
-      "actor:" + event.actorId,
-      "event:" + event.id,
-    ],
+    ...state,
+    stage: transition.to,
+    revision: transition.revision,
+    audit: [...state.audit, `${transition.revision}:${transition.command}`],
   };
 }
 
-export function runFileUploadSystemContractScenario() {
-  const base = Date.parse("2026-05-29T09:00:00.000Z");
-  const accepted = evaluateFileUploadSystemEvent({
-    id: "file-upload-system-evt-1",
-    topic: "file-upload-system",
-    actorId: "user-42",
-    sequence: 7,
-    receivedAtMs: base,
-    expectedVersion: 12,
-    currentVersion: 12,
-    payloadSize: 18_500,
-    signal: { uploadedBytes: 180, checksumMismatch: 0, transcodeLagMs: 0.01, retryCount: 1 },
+export function runFileUploadSystemProtocolScenario() {
+  const transitions: FileUploadSystemTransition[] = [
+  { command: "create-session", from: "queued", to: "creating-session", revision: 1 },
+  { command: "hash-chunks", from: "creating-session", to: "hashing", revision: 2 },
+  { command: "upload-bounded-pool", from: "hashing", to: "uploading-chunks", revision: 3 },
+  { command: "verify-ledger", from: "uploading-chunks", to: "verifying", revision: 4 },
+  { command: "commit-upload", from: "verifying", to: "complete", revision: 5 },
+  ];
+  return transitions.reduce(applyFileUploadSystemTransition, {
+    id: "file-upload-system-case-17",
+    stage: "queued",
+    revision: 0,
+    audit: [],
   });
-
-  const guarded = evaluateFileUploadSystemEvent({
-    id: "file-upload-system-evt-late",
-    topic: "file-upload-system",
-    actorId: "user-42",
-    sequence: 8,
-    receivedAtMs: base + 4_000,
-    expectedVersion: 12,
-    currentVersion: 14,
-    payloadSize: 310_000,
-    signal: { uploadedBytes: 2_700, checksumMismatch: 3, transcodeLagMs: 0.34, retryCount: 2 },
-  });
-
-  return { accepted, guarded };
 }
+
+export const FileUploadSystemInvariant =
+  "Complete only after the server ledger confirms every chunk checksum exactly once.";

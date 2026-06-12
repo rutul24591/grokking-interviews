@@ -26,11 +26,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function CollaborativeWhiteboardArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function CollaborativeWhiteboardArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Collaborative Whiteboard</h1><h2>Definition &amp; Context</h2><p>Design a Collaborative Whiteboard is an implementation-heavy low-level design problem covering canvas objects, pointer sampling, viewport transforms, operation batching, presence, undo, conflict handling, and snapshots. A principal-level answer must define ordering, ephemeral versus durable state, reconnect behavior, rollback, abuse controls, privacy, cost, and observability.</p><p>Store semantic objects and operations separately from canvas pixels. Viewport and selection are local projections. The core structures are object map, operation log, snapshot version, local selection, viewport transform, stroke buffer, presence TTL, undo journal, and reconnect cursor.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/collaborative-whiteboard-runtime.svg" alt="Design a Collaborative Whiteboard runtime" caption="Real-time flow from input through merge policy and UI projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -86,7 +85,7 @@ export default function CollaborativeWhiteboardArticle() {
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h3>⚙️ Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -121,7 +120,7 @@ export default function CollaborativeWhiteboardArticle() {
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h3>📊 Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -167,13 +166,9 @@ export default function CollaborativeWhiteboardArticle() {
       </section>
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
 
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/communication-collaboration/collaborative-whiteboard-architecture.svg"
-          alt="Collaborative whiteboard architecture showing canvas model, tool system, viewport rendering, and presence sync"
-          caption="Architecture Overview"
-        />
+        
 
         <HighlightBlock as="p" tier="crucial">
           The whiteboard composes <strong>CRDT
@@ -288,7 +283,7 @@ export default function CollaborativeWhiteboardArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial">
           <strong>SpatialIndex</strong> for hit testing.{" "}
           <strong>CursorOverlay</strong> for live cursors.
@@ -301,7 +296,7 @@ export default function CollaborativeWhiteboardArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Document in CRDT. Local state (active
           tool, <Highlight tier="important">selected objects, viewport
@@ -312,7 +307,7 @@ export default function CollaborativeWhiteboardArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="crucial">Object schema:{" "}
           <code>{` { id, type, transform, ...typeProps } `}</code>.
           CRDT operations: add, update, delete.</HighlightBlock>
@@ -322,7 +317,7 @@ export default function CollaborativeWhiteboardArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="crucial">Viewport virtualization: draw only
           on-screen objects. Spatial index for</HighlightBlock>
 <HighlightBlock as="p" tier="important">O(log n) hit tests. Dirty-rect
@@ -332,7 +327,7 @@ export default function CollaborativeWhiteboardArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">Familiar tools palette (Figma-style).
           Smooth pan/zoom. Live cursors with</HighlightBlock>
 <HighlightBlock as="p" tier="important">colored arrows. Selection handles for
@@ -342,7 +337,7 @@ export default function CollaborativeWhiteboardArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial"><Highlight tier="important">Selected
           object announces (&ldquo;Rectangle, x
           120 y 80, width 200</Highlight></HighlightBlock>
@@ -352,7 +347,7 @@ export default function CollaborativeWhiteboardArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Authenticated transport. Per-board
           authorization. <Highlight tier="important">Text content sanitized
@@ -362,7 +357,7 @@ export default function CollaborativeWhiteboardArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="crucial">Unit tests for hit testing,
           transformations, spatial index.
           Integration</HighlightBlock>
@@ -375,7 +370,7 @@ export default function CollaborativeWhiteboardArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">Two users edit
           the same object: CRDT converges; one
           user&rsquo;s position update wins
@@ -387,7 +382,7 @@ export default function CollaborativeWhiteboardArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           The pattern (CRDT + canvas + <Highlight tier="important">tools +
           cursors) reuses for design</Highlight> tools,
@@ -397,7 +392,7 @@ export default function CollaborativeWhiteboardArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Toolbar labels via i18n. Text in <Highlight tier="important">text
           objects is the user&rsquo;s. RTL</Highlight>
@@ -407,7 +402,7 @@ export default function CollaborativeWhiteboardArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Canvas vs WebGL vs SVG</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -447,7 +442,7 @@ export default function CollaborativeWhiteboardArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           AI-assisted shape recognition (draw a
           rough rectangle, <Highlight tier="important">get a perfect one).
@@ -455,88 +450,12 @@ export default function CollaborativeWhiteboardArticle() {
           whiteboard. Real-time path
           simplification for performance.
         </Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. Why CRDT for collab?</strong>{" "}
-          Conflict-free convergence; offline-first
-          works naturally; no central coordinator
-          needed for correctness.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How does pan/zoom scale to
-          large boards?</strong> Viewport-based
-          virtualization (draw only on-screen
-          objects). Spatial index for O(log n)
-          hit tests. Dirty-rect rendering.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>3. How do live cursors work
-          here?</strong> Same as Live Cursor /
-          Presence: throttled broadcast, RAF
-          interpolation, document coordinates,
-          per-user color.
-        </HighlightBlock>
-
-        <p>
-          <strong>4. How is freehand drawing
-          handled?</strong> Collect pointer points
-          during draw. On pointer-up, create a
-          path object with simplified points.
-          Optionally smooth via spline. Commit
-          to CRDT.
-        </p>
-
-        <p>
-          <strong>5. How does undo/redo work in a
-          multi-user setting?</strong> Per-user
-          undo via Yjs UndoManager. Each user
-          can undo their own operations
-          independently without affecting others&rsquo;
-          work.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>6. How do you handle very large
-          boards?</strong> WebGL rendering;
-          spatial indexing; aggressive
-          virtualization; simplification of
-          dense paths. Memory bounded by
-          on-screen objects.
-        </HighlightBlock>
-
-        <p>
-          <strong>7. How is offline
-          handled?</strong> CRDT operations queue
-          locally; IndexedDB persists. On
-          reconnect, sync via Yjs provider;
-          convergence guaranteed.
-        </p>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>8. How is accessibility
-          handled?</strong> Toolbar with
-          shortcuts. Object focus and keyboard
-          movement. Selected object announces
-          properties. Keyboard equivalents for
-          all actions.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">Document
-          coordinates are canonical; viewport
-          virtualization keeps performance</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">flat at scale; CRDT handles
-          collaboration. The result is
-          Figma-class boards in a web app.</Highlight></HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate durable records, optimistic intent, transport events, ephemeral awareness, rendered projection, and telemetry. Every connection, timer, cursor, replay buffer, subscription, and retry queue needs an explicit owner and cleanup path.</p><p>Store semantic objects and operations separately from canvas pixels. Viewport and selection are local projections.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/collaborative-whiteboard-recovery.svg" alt="Design a Collaborative Whiteboard recovery" caption="Recovery flow: classify gaps, retain stable truth, replay safely, and emit evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Sending bitmap frames is simple but wasteful; semantic operations are justified for collaboration and replay.</p><p>Server operation sequence or CRDT merge is authoritative. Cursor and selection presence are ephemeral TTL state. Scale pressure comes from high-frequency strokes, large boards, reconnect gaps, concurrent edits, object deletion, and memory pressure. Bound queues, dedupe events, expire ephemeral state, and degrade predictably.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, event sequences, idempotency keys, monotonic watermarks, TTLs, replay cursors, bounded buffers, authorization checks, and cleanup. Test reconnect gaps, duplicates, stale events, offline recovery, privacy settings, and accessibility announcements.</p><p>Measure latency, backlog, reconnect rate, gap recovery, retries, stale drops, TTL expiry, and accessibility regressions without logging sensitive content.</p><h3>Operational implementation: semantic operation batching and snapshots</h3><p>Persist semantic object operations rather than pixels. Sample strokes locally, batch points under a payload budget, order operations by document version or CRDT clock, compact snapshots, replay reconnect gaps, and keep cursor presence outside durable history.</p><p>Define explicit metrics for accepted events, duplicate drops, stale drops, replay gap size, reconnect duration, queue depth, TTL expiry, degraded-mode entry, authorization denial, and rollback outcome. Redact user content and sensitive identifiers from telemetry. Test duplicate delivery, out-of-order events, disconnect during mutation, hidden tabs, unmount cleanup, multiple tabs, permission removal, burst traffic, and a rollback to the previous policy version.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include treating ephemeral state as durable, trusting arrival order, leaking timers or sockets, missing dedupe, unbounded replay, and hiding degraded connectivity.</p><p>For this topic, batch stroke points, compact snapshots, replay missing operations, discard stale presence, bound history, and preserve offline edits.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to collaborative products where transport, persistence, and UI projection fail independently. Inject product policy for authorization, retention, fallback, and observability explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Store semantic objects and operations separately from canvas pixels. Viewport and selection are local projections.</p><h3>What breaks at scale?</h3><p>high-frequency strokes, large boards, reconnect gaps, concurrent edits, object deletion, and memory pressure.</p><h3>What consistency applies?</h3><p>Server operation sequence or CRDT merge is authoritative. Cursor and selection presence are ephemeral TTL state.</p><h3>How do you recover?</h3><p>batch stroke points, compact snapshots, replay missing operations, discard stale presence, bound history, and preserve offline edits.</p><h3>Why this architecture?</h3><p>Sending bitmap frames is simple but wasteful; semantic operations are justified for collaboration and replay.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket" target="_blank" rel="noreferrer">MDN WebSocket</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA APG</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

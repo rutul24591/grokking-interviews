@@ -24,7 +24,7 @@ export default function WebReactNativeSharedSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame Design a Web + React Native Shared System around system boundary, state ownership, failure handling, scalability, security, and observable recovery. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock>
         <p>
           A Web and React Native shared system lets a product organization build a browser application and a native mobile application from one coordinated codebase while preserving platform-specific user experience. React and React Native share a programming model, but they do not share a rendering target. Web renders DOM, CSS, browser navigation, cookies, and service workers. React Native renders native views, uses native navigation, and integrates with APNs, FCM, SecureStore, Keychain, Keystore, sensors, and app lifecycle APIs.
         </p>
@@ -40,7 +40,7 @@ export default function WebReactNativeSharedSystemArticle() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: the design must preserve correctness under latency, concurrency, partial failure, and changing permissions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design a Web + React Native Shared System, the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock>
         <p>
           The monorepo is the coordination mechanism. It allows atomic changes across shared packages and platform apps, common linting, shared testing utilities, consistent dependency versions, and cached CI tasks. A typical structure separates web and mobile apps from packages for core logic, API clients, validation, design tokens, analytics, and UI contracts. The dependency graph must flow inward from apps to shared packages, not from shared packages back to platform applications.
         </p>
@@ -65,7 +65,7 @@ export default function WebReactNativeSharedSystemArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: state model, API contracts, cache policy, async workflow, authorization, rollout, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock>
         <p>
           The architecture has three layers. Platform apps own entry points, routing, platform permissions, native module wiring, platform-specific storage, and release configuration. Shared platform adapters expose a common interface for storage, network status, notifications, analytics transport, and secure token access. Pure shared packages contain domain logic, schemas, state transitions, API contracts, feature flag interpretation, and reusable UI contracts.
         </p>
@@ -99,7 +99,7 @@ export default function WebReactNativeSharedSystemArticle() {
       </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock>
         <p>
           Sharing more code reduces duplication and keeps behavior aligned, but it can also flatten platform quality. Business rules, validation, API clients, feature flags, analytics contracts, and state machines are usually good sharing candidates. Rendering, navigation, gestures, platform permissions, storage, notification delivery, and performance-sensitive UI often need platform-specific implementation. The important decision is not how much code is shared, but whether the shared boundary preserves product correctness and platform quality.
         </p>
@@ -124,7 +124,7 @@ export default function WebReactNativeSharedSystemArticle() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: latency, error rate, fallback rate, conversion, stale-state duration, and rollback success.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock>
         <p>
           Define package boundaries in writing and enforce them mechanically. Core packages should have no platform dependencies. Adapter packages can depend on platform APIs. App packages can compose everything. Lint rules, TypeScript project references, dependency graph checks, and code owners should all reinforce the same architecture.
         </p>
@@ -152,7 +152,7 @@ export default function WebReactNativeSharedSystemArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: stale state, hidden partial failure, unbounded retries, ownership ambiguity, and missing observability.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock>
         <p>
           The most common pitfall is importing platform APIs into shared core packages because it is convenient. One browser storage call or one React Native module import can make a package unusable in SSR, tests, or the other platform. The boundary must fail at lint or compile time, not during a mobile release candidate.
         </p>
@@ -177,7 +177,7 @@ export default function WebReactNativeSharedSystemArticle() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock>
         <p>
           Consumer marketplaces often share search query construction, filter schemas, listing models, pricing rules, experimentation flags, and analytics events across web and mobile. The web app may prioritize SEO and dense comparison pages, while native apps focus on push re-engagement, saved searches, and smooth gesture navigation.
         </p>
@@ -193,7 +193,7 @@ export default function WebReactNativeSharedSystemArticle() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock>
         <h3 className="mt-6 mb-3 text-lg font-semibold">1. What would you share between web and React Native, and what would you keep separate?</h3>
         <p>
           I would share domain models, API clients, validation schemas, business workflows, feature-flag interpretation, analytics contracts, design tokens, and state-machine logic. I would keep rendering, navigation execution, native modules, secure storage, notification delivery, gestures, animations, and platform lifecycle handling separate or behind adapters. The goal is shared product correctness with platform-native UX.

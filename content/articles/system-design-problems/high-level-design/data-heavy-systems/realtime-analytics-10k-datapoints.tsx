@@ -24,7 +24,7 @@ export default function RealtimeAnalytics10kDatapointsArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame Design Real-Time Analytics with 10k+ Data Points around system boundary, state ownership, failure handling, scalability, security, and observable recovery. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock>
         <p>
           A real-time analytics dashboard with 10,000 or more data points per second shows fast-moving metrics such as infrastructure telemetry, financial ticks, IoT sensor streams, product events, ad delivery counters, or operational KPIs. The system must ingest and visualize continuous updates while preserving interaction responsiveness, visual correctness, and network efficiency.
         </p>
@@ -40,7 +40,7 @@ export default function RealtimeAnalytics10kDatapointsArticle() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: the design must preserve correctness under latency, concurrency, partial failure, and changing permissions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design Real-Time Analytics with 10k+ Data Points, the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock>
         <p>
           The real-time path receives new metric points, writes them to durable time-series storage, and fans them out to active dashboard subscriptions. The historical path serves paused views, rewind, initial chart loads, and zoomed time ranges. Both paths should use the same downsampling and aggregation semantics so users do not see different shapes for live and historical data.
         </p>
@@ -68,7 +68,7 @@ export default function RealtimeAnalytics10kDatapointsArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: state model, API contracts, cache policy, async workflow, authorization, rollout, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock>
         <p>
           The architecture has four planes. The ingestion plane receives metrics from producers and writes durable time-series data. The streaming plane tracks active subscriptions and sends viewport-appropriate updates. The query plane serves historical and rewind requests. The rendering plane draws charts with bounded memory and frame budgets.
         </p>
@@ -111,7 +111,7 @@ export default function RealtimeAnalytics10kDatapointsArticle() {
       </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock>
         <p>
           WebSocket is a good fit when the client must send subscription updates such as zoom, pause, resume, hidden-tab state, selected metrics, and viewport width. Server-Sent Events are simpler for one-way server push and automatic reconnect, but they are weaker when the server needs frequent client-driven subscription changes. Polling is operationally simple, but it wastes latency and bandwidth for high-frequency live charts.
         </p>
@@ -145,7 +145,7 @@ export default function RealtimeAnalytics10kDatapointsArticle() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: latency, error rate, fallback rate, conversion, stale-state duration, and rollback success.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock>
         <p>
           Separate raw ingestion fidelity from visual delivery fidelity. Store raw or appropriately aggregated data durably according to retention policy, then derive viewport-specific visual streams for dashboards. Users should be able to zoom or rewind to higher fidelity when needed.
         </p>
@@ -176,7 +176,7 @@ export default function RealtimeAnalytics10kDatapointsArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: stale state, hidden partial failure, unbounded retries, ownership ambiguity, and missing observability.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock>
         <p>
           The most common pitfall is rendering dense metrics with DOM or SVG elements because it works in demos. Once point count, chart count, or update rate grows, layout and paint overwhelm the frame budget. Dense live charts need Canvas or WebGL.
         </p>
@@ -198,7 +198,7 @@ export default function RealtimeAnalytics10kDatapointsArticle() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock>
         <p>
           Infrastructure monitoring dashboards show CPU, memory, request rate, latency, error rate, saturation, and queue depth for thousands of services. Operators need live views during incidents and rewind for post-incident analysis.
         </p>
@@ -214,7 +214,7 @@ export default function RealtimeAnalytics10kDatapointsArticle() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock>
         <h3 className="mt-6 mb-3 text-lg font-semibold">1. How would you handle 10,000 points per second in a browser chart?</h3>
         <p>
           I would not send or render all raw points. The server would downsample or aggregate based on viewport width, time range, and metric semantics. The client would receive batched updates at animation-frame cadence, store them in bounded typed arrays, and render with Canvas or WebGL. React would manage controls and configuration, not per-point state.

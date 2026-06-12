@@ -2,6 +2,7 @@
 
 import { ArticleLayout } from "@/components/articles/ArticleLayout";
 import { ArticleImage } from "@/components/articles/ArticleImage";
+import { HighlightBlock } from "@/components/articles/HighlightBlock";
 import type { ArticleMetadata } from "@/types/article";
 
 export const metadata: ArticleMetadata = {
@@ -23,7 +24,7 @@ export default function StateHydrationRehydrationArticle() {
     <ArticleLayout metadata={metadata}>
       <section>
         <h1>Design State Hydration and Rehydration</h1>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Design State Hydration and Rehydration should be framed as an implementation-level design problem with a clear runtime boundary, not as a visual mock or helper function.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview signal: identify the state machines, derived state, event ordering, subscriptions, hydration, undo-redo, and debugability before discussing APIs or code structure.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">The answer should connect user-visible behavior to engineering constraints: correctness, accessibility, latency, failure recovery, testability, and operational ownership.</HighlightBlock>
         <p>
           Design State Hydration and Rehydration is a low-level design problem about building a reusable versioned hydration validator that product teams can depend on under real user behavior, not just the happy path. In a staff or principal interview, the answer should move past naming a pattern and describe the runtime contract: public API, internal state shape, transition rules, ownership boundaries, observability, and what the component refuses to do when correctness is uncertain.
         </p>
@@ -38,7 +39,7 @@ export default function StateHydrationRehydrationArticle() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core invariant: one canonical state snapshot should drive rendering, side effects, derived values, and user-visible transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design State Hydration and Rehydration, the strongest explanation names the state model, the data structures that hold that state, and the events allowed to mutate it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not skip ownership: distinguish product-owned state, platform-owned policy, browser/runtime state, server-authoritative state, and speculative local state.</HighlightBlock>
         <p>
           Start with a narrow ownership boundary. The versioned hydration validator owns transition validity, deduplication of unsafe work, disposal, and telemetry. UI components should not manually coordinate the same rules with scattered booleans. A component may ask for a transition, but the runtime decides whether the event is accepted, ignored, coalesced, retried, or rejected with a typed reason.
         </p>
@@ -58,7 +59,7 @@ export default function StateHydrationRehydrationArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture flow should cover input event, validation, state transition, side effect, commit guard, cleanup, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Key design decisions: event model, reducer boundaries, finite-state transitions, subscription granularity, hydration strategy, time-travel logs, and rollback semantics.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A principal-level answer should describe the hard path, not only the happy path: delayed responses, unmounts, retries, stale state, permission changes, and partial degradation.</HighlightBlock>
         <p>
           The production design has five layers. The API facade accepts domain-specific calls and validates input. The event normalizer converts those calls into a small event vocabulary. The transition engine checks legal state movement and computes the next snapshot. The effect runner performs work outside the reducer, using cancellation tokens and idempotency keys where needed. The observer layer publishes stable snapshots, metrics, and debug events without leaking internal mutable data.
         </p>
@@ -87,7 +88,7 @@ export default function StateHydrationRehydrationArticle() {
       </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: choose the design that keeps correctness and recovery explicit while bounding latency, memory, and integration complexity.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized runtime behavior with local component control. Centralization improves consistency and observability, but can become a bottleneck if extension points are not governed.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design State Hydration and Rehydration, defend what is intentionally strict, what is configurable, and what should remain outside the abstraction.</HighlightBlock>
         <p>
           A simple component-local implementation is cheaper for one screen, but it pushes correctness into every caller. That approach usually fails when several components share the same resource, when work outlives a component, or when a late event arrives after the user has changed intent. A centralized runtime adds indirection, but it gives the organization one place to enforce server-authoritative boot consistency with selective client persistence after validation.
         </p>
@@ -106,7 +107,7 @@ export default function StateHydrationRehydrationArticle() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make illegal or ambiguous states unrepresentable through explicit state unions, typed events, stable IDs, and guarded transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Test the lifecycle, not just the render output: rapid interaction, stale async settlement, unmount cleanup, keyboard-only use, SSR hydration, degraded capability, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Expose diagnostics that prove the design works in production: transition counts, suppressed stale work, failure reasons, cleanup counts, latency, fallback rate, and user-visible recovery.</HighlightBlock>
         <p>
           Design the state shape before implementing handlers. Write down legal transitions, terminal states, and whether each transition is synchronous, asynchronous, retryable, or reversible. Every public method should either commit a transition, return a typed rejection, or be a no-op with an observable reason. Silent failure makes interview designs look simple while making production systems impossible to diagnose.
         </p>
@@ -125,7 +126,7 @@ export default function StateHydrationRehydrationArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Main risks to call out: duplicated derived state, stale subscriptions, hydration mismatch, impossible states, event-bus leaks, and undo stacks that corrupt newer work.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A common interview failure is describing the API surface but not the lifecycle guarantees that prevent stale work, leaked resources, inaccessible states, or unsafe commits.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not hide failure behind generic loading and error flags. Name the difference between blocked, cancelled, stale, degraded, retrying, unauthorized, conflicted, and committed states.</HighlightBlock>
         <p>
           The most common pitfall is modeling this problem as disconnected boolean flags. Booleans allow contradictory states and make edge cases dependent on update ordering. A principal-ready design names states and transitions directly, then validates the transition before committing any state or effect.
         </p>
@@ -144,7 +145,7 @@ export default function StateHydrationRehydrationArticle() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world use: workflow engines, global stores, async state, cross-tab sync, fine-grained subscriptions, finite-state machines, and debugging tools.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the design to operational behavior: how teams roll it out, observe it, debug it, migrate consumers, and roll it back without breaking active users.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">At staff/principal level, explain how this component or runtime reduces repeated product-team mistakes while still allowing legitimate product-specific policy.</HighlightBlock>
         <p>
           This design appears in collaborative editors, dashboards, multi-step workflows, offline-capable applications, design tools, and internal admin consoles. These products need predictable user-visible state even when the network is slow, multiple browser contexts are active, or debugging tools replay previous behavior.
         </p>
@@ -160,7 +161,7 @@ export default function StateHydrationRehydrationArticle() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">When asked to design Design State Hydration and Rehydration, lead with the invariant, then walk through state, events, data structures, failure handling, and measurable production signals.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A strong answer includes a concrete edge-case walkthrough where the system receives conflicting or delayed events and still commits the correct final state.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Close by naming complexity and test strategy: runtime cost, memory bounds, cleanup guarantees, accessibility tests, race tests, and observability checks.</HighlightBlock>
         <h3>How would you design the implementation end to end?</h3>
         <p>
           I would define the public facade first, then map each method to a small event vocabulary. The runtime would keep versioned snapshot, migration registry, checksum, tenant boundary, persisted slice allowlist, hydration gate and expose read-only snapshots. The transition engine would validate legal movement across serverSnapshot, bootstrapping, migrated, rejected, ready, quarantined and return effect descriptions. Effects would run after commit with operation identity, cancellation, and settlement guards. Observers would receive selector-scoped snapshots so UI rendering stays predictable.

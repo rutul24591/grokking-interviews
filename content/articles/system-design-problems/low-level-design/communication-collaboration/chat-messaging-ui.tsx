@@ -26,11 +26,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function ChatMessagingUIArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>Problem Clarification</h2>
+export default function ChatMessagingUIArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Chat Messaging UI</h1><h2>Definition &amp; Context</h2><p>Design a Chat Messaging UI is an implementation-heavy low-level design problem covering message pagination, optimistic sending, socket merge, scroll anchors, receipts, typing, attachments, and reconnect gaps. A principal-level answer must define ordering, ephemeral versus durable state, reconnect behavior, rollback, abuse controls, privacy, cost, and observability.</p><p>Keep a normalized message map, ordered ids, live edge, viewed window, and optimistic-id reconciliation separate. The core structures are message map, ordered ids, cursor ledger, live edge, optimistic ids, receipt watermark, typing TTLs, anchor record, and socket buffer.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/chat-messaging-ui-runtime.svg" alt="Design a Chat Messaging UI runtime" caption="Real-time flow from input through merge policy and UI projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>Problem Clarification</h3>
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
           We are designing a chat / messaging UI — the familiar two-pane (or
@@ -85,7 +84,7 @@ export default function ChatMessagingUIArticle() {
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h3>⚙️ Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -122,7 +121,7 @@ export default function ChatMessagingUIArticle() {
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h3>📊 Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -160,14 +159,10 @@ export default function ChatMessagingUIArticle() {
         </HighlightBlock>
       </section>
 
-      <ArticleImage
-        src="/diagrams/system-design-problems/low-level-design/chat-messaging-ui-architecture.svg"
-        alt="Chat / Messaging UI Architecture"
-        caption="WebSocket + REST adapter → Message store (per conversation, ordered, dedup by id) → Virtualized scroller (upward infinite) → Message bubbles with grouping + status → Send input with optimistic dispatch + retry. Read receipts via IntersectionObserver."
-      />
+      
 
       <section>
-        <h2>🧠 Solution Approach</h2>
+        <h3>🧠 Solution Approach</h3>
         <HighlightBlock as="p" tier="important">
           The chat is built around a{" "}
           <strong>per- conversation message store</strong> (ordered list,
@@ -250,7 +245,7 @@ export default function ChatMessagingUIArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial"><strong> MessageBubble</strong> renders one message with grouping
           context.
           <strong> SendInput</strong> is the composer.{" "}
@@ -261,7 +256,7 @@ export default function ChatMessagingUIArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">Active conversation, send state, scroll position per
           conversation in</HighlightBlock>
 <HighlightBlock as="p" tier="important"><Highlight tier="important">component state. WebSocket connection state in a
@@ -269,7 +264,7 @@ export default function ChatMessagingUIArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important">
           <Highlight tier="crucial">Message shape:</Highlight>{" "}
           <Highlight tier="important">
@@ -281,7 +276,7 @@ export default function ChatMessagingUIArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="crucial">Virtualization scopes mounted DOM. Message bubbles memoized by (id,</HighlightBlock>
 <HighlightBlock as="p" tier="important">status, grouping). Optimistic sends are local-only until server
           confirms.</HighlightBlock>
@@ -291,7 +286,7 @@ export default function ChatMessagingUIArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">Optimistic messages show subtle
           &ldquo;sending&rdquo; state. Failed messages show retry. Typing</HighlightBlock>
 <HighlightBlock as="p" tier="important"><Highlight tier="important">indicator subtly animated. Read receipts as subtle eye icons or text.
@@ -299,7 +294,7 @@ export default function ChatMessagingUIArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="crucial">Send input is a
           textarea with proper labeling. Read receipts have text</HighlightBlock>
 <HighlightBlock as="p" tier="important"><Highlight tier="important">alternatives.
@@ -307,7 +302,7 @@ export default function ChatMessagingUIArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="crucial">Messages render as text; markdown opt-in via sanitizer. URLs validated</HighlightBlock>
 <HighlightBlock as="p" tier="important">before showing previews. Cross-user authorization server-enforced.</HighlightBlock>
 <HighlightBlock as="p" tier="important">End-to- end encryption out of scope but accommodatable via consumer
@@ -315,7 +310,7 @@ export default function ChatMessagingUIArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="crucial">Unit tests for message store (dedup, prepend/append, optimistic
           merge). Integration</HighlightBlock>
 <HighlightBlock as="p" tier="important">tests with mock backend: send + confirm; receive
@@ -325,7 +320,7 @@ export default function ChatMessagingUIArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">Very long message: bubble
           grows; virtualization handles. Message edited server-side: update via
           WebSocket. Conversation deleted while</HighlightBlock>
@@ -335,7 +330,7 @@ export default function ChatMessagingUIArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Backend adapter for any messaging protocol. Renderers per message type
           plug <Highlight tier="important">in. The pattern (store + scroller</Highlight> + optimistic send) reuses for
@@ -344,7 +339,7 @@ export default function ChatMessagingUIArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           UI strings via i18n. Timestamps <Highlight tier="important">via
           </Highlight><code> Intl.RelativeTimeFormat</code>. RTL flips message bubble</Highlight>
@@ -353,7 +348,7 @@ export default function ChatMessagingUIArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Optimistic send vs confirmed-first</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -381,79 +376,18 @@ export default function ChatMessagingUIArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           End-to-end encryption. Voice messages. Real-time <Highlight tier="important">translation.
           AI-suggested replies. Video calls. Cross-device</Highlight> read sync via service
           worker push.
         </Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. How does optimistic send work?</strong> Insert with
-          temporary id and sending status. Dispatch to backend. On success,
-          status updates; on failure, retry action surfaces. Server-confirmed
-          message merges via WebSocket.
-        </HighlightBlock>
-
-        <p>
-          <strong>2. How is scroll preserved on older message prepend?</strong>{" "}
-          Adjust scrollTop by prepended height in the same frame as the DOM
-          mutation. User sees no jump.
-        </p>
-
-        <p>
-          <strong>3. When do you auto-scroll on new messages?</strong> Only when
-          the user is at or near the bottom. Otherwise surface a banner with new
-          message count.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. How does message grouping work?</strong> Render-time check
-          on adjacent messages from the same sender within a time window. Avatar
-          collapses; gap reduces. Updates automatically as new messages arrive.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>5. How are read receipts tracked?</strong>{" "}
-          IntersectionObserver on each message; when visible, send a read event.
-          Batched per second. Server broadcasts; sender&rsquo;s UI updates the
-          status.
-        </HighlightBlock>
-
-        <p>
-          <strong>6. How does reconnection work?</strong> WebSocket
-          auto-reconnects with backoff. On reconnect, REST fetches messages
-          since the last seen timestamp; merge into store.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>
-            7. How are concurrent sends from multiple tabs handled?
-          </strong>{" "}
-          Each message has a client-generated id. BroadcastChannel synchronizes
-          optimistic state across tabs. Server dedups by client id. The end
-          state is consistent.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>8. How is the chat accessible?</strong> Conversation list as a
-          list with selection announcements. Messages announce via polite live
-          region, throttled. Send input proper textarea. Read receipts and
-          typing indicators have text equivalents.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">Scroll preservation on prepend, banner- on-new-while-scrolled,
-          render-time grouping, optimistic</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">send with rollback — these are the
-          patterns that make a chat feel alive without overwhelming users.</Highlight></HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate durable records, optimistic intent, transport events, ephemeral awareness, rendered projection, and telemetry. Every connection, timer, cursor, replay buffer, subscription, and retry queue needs an explicit owner and cleanup path.</p><p>Keep a normalized message map, ordered ids, live edge, viewed window, and optimistic-id reconciliation separate.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/chat-messaging-ui-recovery.svg" alt="Design a Chat Messaging UI recovery" caption="Recovery flow: classify gaps, retain stable truth, replay safely, and emit evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Polling is simpler; sockets are justified for low-latency messaging but still require cursor recovery.</p><p>Server sequence is durable ordering truth. Optimistic sends are provisional; receipts are monotonic and typing is ephemeral. Scale pressure comes from history gaps, out-of-order events, media shifts, reconnect replay, burst traffic, and users reading older messages. Bound queues, dedupe events, expire ephemeral state, and degrade predictably.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, event sequences, idempotency keys, monotonic watermarks, TTLs, replay cursors, bounded buffers, authorization checks, and cleanup. Test reconnect gaps, duplicates, stale events, offline recovery, privacy settings, and accessibility announcements.</p><p>Measure latency, backlog, reconnect rate, gap recovery, retries, stale drops, TTL expiry, and accessibility regressions without logging sensitive content.</p><h3>Operational implementation: message sequence and optimistic reconciliation</h3><p>Store server ids separately from client idempotency keys. Merge socket events by conversation sequence, reconcile optimistic rows after acknowledgement, detect replay gaps, preserve scroll anchors when prepending history, and retain failed drafts for explicit retry.</p><p>Define explicit metrics for accepted events, duplicate drops, stale drops, replay gap size, reconnect duration, queue depth, TTL expiry, degraded-mode entry, authorization denial, and rollback outcome. Redact user content and sensitive identifiers from telemetry. Test duplicate delivery, out-of-order events, disconnect during mutation, hidden tabs, unmount cleanup, multiple tabs, permission removal, burst traffic, and a rollback to the previous policy version.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include treating ephemeral state as durable, trusting arrival order, leaking timers or sockets, missing dedupe, unbounded replay, and hiding degraded connectivity.</p><p>For this topic, buffer initial socket events, dedupe ids, detect gaps, preserve prepend anchors, retry failed sends, and retain typed drafts.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to collaborative products where transport, persistence, and UI projection fail independently. Inject product policy for authorization, retention, fallback, and observability explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Keep a normalized message map, ordered ids, live edge, viewed window, and optimistic-id reconciliation separate.</p><h3>What breaks at scale?</h3><p>history gaps, out-of-order events, media shifts, reconnect replay, burst traffic, and users reading older messages.</p><h3>What consistency applies?</h3><p>Server sequence is durable ordering truth. Optimistic sends are provisional; receipts are monotonic and typing is ephemeral.</p><h3>How do you recover?</h3><p>buffer initial socket events, dedupe ids, detect gaps, preserve prepend anchors, retry failed sends, and retain typed drafts.</p><h3>Why this architecture?</h3><p>Polling is simpler; sockets are justified for low-latency messaging but still require cursor recovery.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket" target="_blank" rel="noreferrer">MDN WebSocket</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA APG</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

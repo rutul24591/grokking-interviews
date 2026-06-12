@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function LiveCursorPresenceSystemArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function LiveCursorPresenceSystemArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Live Cursor Presence System</h1><h2>Definition &amp; Context</h2><p>Design a Live Cursor Presence System is an implementation-heavy low-level design problem covering pointer sampling, coordinate transforms, throttled broadcast, interpolation, TTL cleanup, colors, and reconnect. A principal-level answer must define ordering, ephemeral versus durable state, reconnect behavior, rollback, abuse controls, privacy, cost, and observability.</p><p>Treat cursor presence as lossy ephemeral state. Local coordinates transform through the shared viewport before broadcast. The core structures are participant map, cursor coordinates, viewport transform, sequence, sent timestamp, TTL expiry, interpolation samples, and color assignment.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/live-cursor-presence-system-runtime.svg" alt="Design a Live Cursor Presence System runtime" caption="Real-time flow from input through merge policy and UI projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -79,7 +78,7 @@ export default function LiveCursorPresenceSystemArticle() {
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h3>⚙️ Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -107,7 +106,7 @@ export default function LiveCursorPresenceSystemArticle() {
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h3>📊 Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -143,12 +142,8 @@ export default function LiveCursorPresenceSystemArticle() {
       </section>
 
       <section>
-        <h2>🧠 Solution Approach</h2>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/communication-collaboration/live-cursor-presence-system-architecture.svg"
-          alt="Live cursor and presence system architecture showing cursor payload model, presence store, WebSocket broadcast channel, channel alternatives, client throttle, remote interpolation, cursor renderer, and cleanup"
-          caption="Architecture Overview"
-        />
+        <h3>🧠 Solution Approach</h3>
+        
         <HighlightBlock as="p" tier="important">
           The system has four parts: <strong>cursor broadcaster</strong>{" "}
           (throttle local cursor and broadcast),{" "}
@@ -222,7 +217,7 @@ export default function LiveCursorPresenceSystemArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial">
           <strong>CursorOverlay</strong> renders cursor SVGs.{" "}
           <strong>PresenceList</strong> renders user list.
@@ -237,7 +232,7 @@ export default function LiveCursorPresenceSystemArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">
           Cursor positions per remote user in a ref-backed map (no React
           re-render on
@@ -251,7 +246,7 @@ export default function LiveCursorPresenceSystemArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="important">
           <Highlight tier="crucial">Cursor message:</Highlight>{" "}
           <Highlight tier="important">
@@ -265,7 +260,7 @@ export default function LiveCursorPresenceSystemArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="crucial">
           Throttle broadcasts to 30 Hz. Interpolation runs in RAF for smooth
         </HighlightBlock>
@@ -280,7 +275,7 @@ export default function LiveCursorPresenceSystemArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">
           Cursors are colored arrows with a small name label. Smooth movement.
           Idle cursors fade. Presence list near the top of the room.
@@ -294,7 +289,7 @@ export default function LiveCursorPresenceSystemArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="important">
           <Highlight tier="important">
             Room state changes (X joined, Y left) announce in chunks via
@@ -306,7 +301,7 @@ export default function LiveCursorPresenceSystemArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important">
           <Highlight tier="crucial">
             Authenticated transport. Server enforces room{" "}
@@ -319,7 +314,7 @@ export default function LiveCursorPresenceSystemArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="crucial">
           Unit tests for throttle and interpolation. Integration tests with
           simulated
@@ -333,7 +328,7 @@ export default function LiveCursorPresenceSystemArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">
           User reconnects after long disconnect: rejoin with new cursor; old
           stale removed via timeout.
@@ -347,7 +342,7 @@ export default function LiveCursorPresenceSystemArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important">
           <Highlight tier="crucial">
             Generic over transport. Cursor{" "}
@@ -360,7 +355,7 @@ export default function LiveCursorPresenceSystemArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important">
           <Highlight tier="crucial">
             User names display as authored. Following{" "}
@@ -373,7 +368,7 @@ export default function LiveCursorPresenceSystemArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Throttle rate vs bandwidth</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -404,7 +399,7 @@ export default function LiveCursorPresenceSystemArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="crucial">
           Cursor reactions (emoji bursts). Voice chat alongside cursors. Cursor
         </HighlightBlock>
@@ -414,75 +409,12 @@ export default function LiveCursorPresenceSystemArticle() {
         <HighlightBlock as="p" tier="important">
           near your cursor). Group cursor (multiple users acting as one).
         </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>1. How do cursors move smoothly?</strong> Throttled broadcast
-          at ~30 Hz; receiver interpolates between received positions per RAF
-          frame (eased fraction). Even at 30 Hz, the motion appears 60 fps
-          smooth.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>2. How do you avoid network flood?</strong> Throttle mousemove
-          to one broadcast per ~33 ms. Interpolation fills in the gaps locally.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>3. How are cursors cleaned up?</strong> Disconnect events fire
-          cleanup. Stale cursors (no update for 5 s) timeout. Both cover the
-          cases where the disconnect didn&rsquo;t fire cleanly.
-        </HighlightBlock>
-
-        <p>
-          <strong>4. How is idle detected?</strong> Track last activity; if none
-          for threshold, mark idle. Page Visibility API integration for
-          tab-hidden idle.
-        </p>
-
-        <p>
-          <strong>5. Why document coordinates?</strong> Different viewers may
-          have different zoom and scroll; document coordinates work across all
-          viewers without per-viewer translation on broadcast.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>6. How do users get consistent colors?</strong> Deterministic
-          hash from user id to a curated palette. Same user gets same color
-          across sessions and across viewers.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>7. How is this accessible?</strong> Presence list as a real
-          list. Cursor visuals decorative, not announced. Room state changes
-          (join/leave) announce in chunks. Following affordances keyboard-
-          accessible.
-        </HighlightBlock>
-
-        <p>
-          <strong>8. How does this relate to the collaborative editor?</strong>{" "}
-          The editor uses the same awareness channel for cursors and presence.
-          Live cursor system can also work standalone (e.g. on a whiteboard)
-          with its own transport.
-        </p>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">
-          Document coordinates work across viewers; deterministic colors stay
-          consistent; interpolation makes 30
-        </HighlightBlock>
-        <HighlightBlock as="p" tier="important">
-          <Highlight tier="important">
-            Hz updates feel 60 fps smooth. The result is the ambient awareness
-            that makes collaboration feel alive.
-          </Highlight>
-        </HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate durable records, optimistic intent, transport events, ephemeral awareness, rendered projection, and telemetry. Every connection, timer, cursor, replay buffer, subscription, and retry queue needs an explicit owner and cleanup path.</p><p>Treat cursor presence as lossy ephemeral state. Local coordinates transform through the shared viewport before broadcast.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/live-cursor-presence-system-recovery.svg" alt="Design a Live Cursor Presence System recovery" caption="Recovery flow: classify gaps, retain stable truth, replay safely, and emit evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Reliable delivery adds latency and backlog; lossy latest-value presence is justified for responsive cursors.</p><p>Latest sequence wins per participant. Cursor state expires by TTL and is never durable document truth. Scale pressure comes from many users, rapid motion, packet loss, stale cursors, zoom changes, reconnects, and hidden tabs. Bound queues, dedupe events, expire ephemeral state, and degrade predictably.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, event sequences, idempotency keys, monotonic watermarks, TTLs, replay cursors, bounded buffers, authorization checks, and cleanup. Test reconnect gaps, duplicates, stale events, offline recovery, privacy settings, and accessibility announcements.</p><p>Measure latency, backlog, reconnect rate, gap recovery, retries, stale drops, TTL expiry, and accessibility regressions without logging sensitive content.</p><h3>Operational implementation: lossy cursor sampling and TTL expiry</h3><p>Broadcast transformed document coordinates at a bounded rate. Newer cursor sequence replaces older samples, interpolation stays local, stale participants expire by TTL, and hidden tabs stop renewal. Never persist pointer trails as document history.</p><p>Define explicit metrics for accepted events, duplicate drops, stale drops, replay gap size, reconnect duration, queue depth, TTL expiry, degraded-mode entry, authorization denial, and rollback outcome. Redact user content and sensitive identifiers from telemetry. Test duplicate delivery, out-of-order events, disconnect during mutation, hidden tabs, unmount cleanup, multiple tabs, permission removal, burst traffic, and a rollback to the previous policy version.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include treating ephemeral state as durable, trusting arrival order, leaking timers or sockets, missing dedupe, unbounded replay, and hiding degraded connectivity.</p><p>For this topic, throttle sends, interpolate renders, drop old sequences, expire stale users, pause hidden work, and refresh after reconnect.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to collaborative products where transport, persistence, and UI projection fail independently. Inject product policy for authorization, retention, fallback, and observability explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Treat cursor presence as lossy ephemeral state. Local coordinates transform through the shared viewport before broadcast.</p><h3>What breaks at scale?</h3><p>many users, rapid motion, packet loss, stale cursors, zoom changes, reconnects, and hidden tabs.</p><h3>What consistency applies?</h3><p>Latest sequence wins per participant. Cursor state expires by TTL and is never durable document truth.</p><h3>How do you recover?</h3><p>throttle sends, interpolate renders, drop old sequences, expire stale users, pause hidden work, and refresh after reconnect.</p><h3>Why this architecture?</h3><p>Reliable delivery adds latency and backlog; lossy latest-value presence is justified for responsive cursors.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket" target="_blank" rel="noreferrer">MDN WebSocket</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA APG</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

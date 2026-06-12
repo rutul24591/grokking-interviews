@@ -24,7 +24,7 @@ export default function DeveloperDocumentationSystemArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame Design a Developer Documentation System (like Notion/Docusaurus) around system boundary, state ownership, failure handling, scalability, security, and observable recovery. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock>
         <HighlightBlock as="p" tier="important">
           A developer documentation system is the discovery, learning, reference, and troubleshooting surface for a technical product. Docusaurus, Stripe Docs, React Docs, AWS Docs, and internal platform portals all solve this problem. At principal level, the design must go beyond rendering markdown. It must explain how content stays correct as APIs change, how search works across prose and reference material, how versions are served, how interactive examples are sandboxed, and how maintainers detect stale or broken documentation.
         </HighlightBlock>
@@ -34,7 +34,7 @@ export default function DeveloperDocumentationSystemArticle() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: the design must preserve correctness under latency, concurrency, partial failure, and changing permissions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design a Developer Documentation System (like Notion/Docusaurus), the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock>
         <p>
           The core content model includes authored pages, generated API reference pages, navigation metadata, version metadata, code snippets, media assets, redirects, and health signals. Hand-authored guides explain concepts and workflows. Generated reference pages should come from source-of-truth artifacts such as OpenAPI, AsyncAPI, TypeDoc, protobuf schemas, or component metadata. Mixing authored and generated content is powerful, but it requires a build pipeline that can validate links, headings, examples, and referenced API entities.
         </p>
@@ -53,7 +53,7 @@ export default function DeveloperDocumentationSystemArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: state model, API contracts, cache policy, async workflow, authorization, rollout, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock>
         <p>
           A practical architecture uses a source repository, content build pipeline, generated reference pipeline, static rendering layer, search index generator, CDN, and a small set of dynamic services for feedback, authenticated examples, or health dashboards. On each content change, CI validates the content graph, builds pages, generates reference material, builds the search index, runs link checks, produces a health report, and deploys immutable assets to the CDN.
         </p>
@@ -96,7 +96,7 @@ export default function DeveloperDocumentationSystemArticle() {
       </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock>
         <p>
           Static generation is fast, cheap, resilient, and CDN-friendly, but it rebuilds indexes and pages after changes. Server-rendered documentation can personalize content, update immediately, and integrate live permissions, but it costs more to operate and is less resilient to backend outages. For most public documentation, static pages plus small dynamic islands are the best default. Internal portals with per-team permissions may justify more server-side rendering.
         </p>
@@ -118,7 +118,7 @@ export default function DeveloperDocumentationSystemArticle() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: latency, error rate, fallback rate, conversion, stale-state duration, and rollback success.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock>
         <p>
           Make correctness observable. Every page should have ownership, last update signal, version status, source file link, and health score. CI should fail on broken internal links, missing frontmatter, invalid generated references, and inaccessible heading hierarchy. Search should log zero-result queries and low-click queries so documentation teams can prioritize gaps.
         </p>
@@ -152,7 +152,7 @@ export default function DeveloperDocumentationSystemArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: stale state, hidden partial failure, unbounded retries, ownership ambiguity, and missing observability.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock>
         <p>
           A common failure is allowing docs to become detached from code. If an endpoint changes but reference docs and guides do not, users lose trust quickly. Another failure is hiding version context; developers may copy an old installation command or outdated parameter because the page does not clearly state its version. Search can also fail silently when it indexes only prose and misses snippets, error messages, and API paths.
         </p>
@@ -168,7 +168,7 @@ export default function DeveloperDocumentationSystemArticle() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock>
         <p>
           Public API companies use developer docs to reduce integration friction and support tickets. Platform engineering teams use internal docs portals to explain service templates, deployment standards, incident response, and golden paths. Open source projects use docs systems to accept community pull requests, publish versioned guides, and keep examples aligned with releases.
         </p>
@@ -181,7 +181,7 @@ export default function DeveloperDocumentationSystemArticle() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock>
         <h3>How do you keep documentation from becoming stale?</h3>
         <p>
           I would tie generated reference pages to source-of-truth specs, validate authored references during CI, track ownership and last-updated metadata, and produce a health report on every build. If an API endpoint changes after a page that references it, the page is marked stale and assigned to an owner. I would also use search and feedback signals such as zero-result searches, thumbs-down feedback, and support-ticket links to prioritize content updates.

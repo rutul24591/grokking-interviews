@@ -25,11 +25,10 @@ export const metadata: ArticleMetadata = {
   ],
 };
 
-export default function MessageDeliveryStateSystemArticle() {
-  return (
-    <ArticleLayout metadata={metadata}>
-      <section>
-        <h2>🎯 Problem Context &amp; Scope Definition</h2>
+export default function MessageDeliveryStateSystemArticle(){return <ArticleLayout metadata={metadata}>
+<section><h1>Design a Message Delivery State System</h1><h2>Definition &amp; Context</h2><p>Design a Message Delivery State System is an implementation-heavy low-level design problem covering client ids, send queue, acknowledgements, delivered and read watermarks, retries, dedupe, and multi-device merge. A principal-level answer must define ordering, ephemeral versus durable state, reconnect behavior, rollback, abuse controls, privacy, cost, and observability.</p><p>Model sending, sent, delivered, read, and failed as monotonic transitions except explicit retry from failed. The core structures are client id, server id, queue entry, idempotency key, retry schedule, delivery watermark, read watermark, device state, and evidence.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/message-delivery-state-system-runtime.svg" alt="Design a Message Delivery State System runtime" caption="Real-time flow from input through merge policy and UI projection." /></section>
+<section><h2>Core Concepts</h2><p>The retained deep dive below captures the topic-specific mechanics.</p><section>
+        <h3>🎯 Problem Context &amp; Scope Definition</h3>
 
         <h3>Problem Statement</h3>
         <HighlightBlock as="p" tier="important">
@@ -84,7 +83,7 @@ export default function MessageDeliveryStateSystemArticle() {
       </section>
 
       <section>
-        <h2>⚙️ Functional Requirements</h2>
+        <h3>⚙️ Functional Requirements</h3>
 
         <h3>Core (Must-have)</h3>
         <HighlightBlock as="p" tier="crucial">
@@ -117,7 +116,7 @@ export default function MessageDeliveryStateSystemArticle() {
       </section>
 
       <section>
-        <h2>📊 Non-Functional Requirements</h2>
+        <h3>📊 Non-Functional Requirements</h3>
 
         <h3>Performance</h3>
         <HighlightBlock as="p" tier="important">
@@ -161,12 +160,8 @@ export default function MessageDeliveryStateSystemArticle() {
       </section>
 
       <section>
-        <h2>🧠 Solution Approach</h2>
-        <ArticleImage
-          src="/diagrams/system-design-problems/low-level-design/communication-collaboration/message-delivery-state-system-architecture.svg"
-          alt="Message delivery state system architecture showing message model, status FSM transitions, sending with idempotency, delivery receipts, status icons, read receipt display, retry logic, and offline IndexedDB queue"
-          caption="Architecture Overview"
-        />
+        <h3>🧠 Solution Approach</h3>
+        
         <HighlightBlock as="p" tier="important">
           The system is a per-message state
           machine plus a per-recipient tracker for
@@ -244,7 +239,7 @@ export default function MessageDeliveryStateSystemArticle() {
       </section>
 
       <section>
-        <h2>🧱 Component Architecture</h2>
+        <h3>🧱 Component Architecture</h3>
         <HighlightBlock as="p" tier="crucial">
           <strong>DeliveryStateProvider</strong> maintains state per message.{" "}
           <strong>StateMachine</strong> handles transitions.
@@ -258,7 +253,7 @@ export default function MessageDeliveryStateSystemArticle() {
       </section>
 
       <section>
-        <h2>🔄 State Management</h2>
+        <h3>🔄 State Management</h3>
         <HighlightBlock as="p" tier="crucial">Per-message state in chat&rsquo;s message
           store, mutated by this subsystem.</HighlightBlock>
 <HighlightBlock as="p" tier="important">Per-recipient tracking attached to each
@@ -269,7 +264,7 @@ export default function MessageDeliveryStateSystemArticle() {
       </section>
 
       <section>
-        <h2>🔁 Data Flow &amp; Contracts</h2>
+        <h3>🔁 Data Flow &amp; Contracts</h3>
         <HighlightBlock as="p" tier="crucial">Events: <code>message.sent</code>,
           <code> message.delivered</code>,
           <code> message.read</code>, each
@@ -282,7 +277,7 @@ export default function MessageDeliveryStateSystemArticle() {
       </section>
 
       <section>
-        <h2>⚡ Performance</h2>
+        <h3>⚡ Performance</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           State changes batch <Highlight tier="important">within RAF.
           Per-recipient updates aggregate before</Highlight>
@@ -292,7 +287,7 @@ export default function MessageDeliveryStateSystemArticle() {
       </section>
 
       <section>
-        <h2>🎨 UX</h2>
+        <h3>🎨 UX</h3>
         <HighlightBlock as="p" tier="crucial">Subtle icons; familiar conventions.
           Tooltip on hover for details. Failed
           state visible without being alarming.</HighlightBlock>
@@ -303,7 +298,7 @@ export default function MessageDeliveryStateSystemArticle() {
       </section>
 
       <section>
-        <h2>♿ Accessibility</h2>
+        <h3>♿ Accessibility</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Icons have text equivalents. Screen
           readers <Highlight tier="important">announce state on focus.
@@ -313,7 +308,7 @@ export default function MessageDeliveryStateSystemArticle() {
       </section>
 
       <section>
-        <h2>🔐 Security</h2>
+        <h3>🔐 Security</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Server enforces who can see what <Highlight tier="important">state.
           Privacy preferences respected. Read
@@ -323,7 +318,7 @@ export default function MessageDeliveryStateSystemArticle() {
       </section>
 
       <section>
-        <h2>🧪 Testing</h2>
+        <h3>🧪 Testing</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Unit tests for state machine
           transitions. <Highlight tier="important">Retry/backoff tests with
@@ -334,7 +329,7 @@ export default function MessageDeliveryStateSystemArticle() {
       </section>
 
       <section>
-        <h2>🚨 Edge Cases</h2>
+        <h3>🚨 Edge Cases</h3>
         <HighlightBlock as="p" tier="crucial">Recipient never reads
           (sent but unread for days): state
           stays at delivered; user sees the
@@ -346,7 +341,7 @@ export default function MessageDeliveryStateSystemArticle() {
       </section>
 
       <section>
-        <h2>🔁 Reusability</h2>
+        <h3>🔁 Reusability</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Pattern reuses across <Highlight tier="important">chat,
           notifications, email-like inboxes —
@@ -355,7 +350,7 @@ export default function MessageDeliveryStateSystemArticle() {
       </section>
 
       <section>
-        <h2>🌍 Internationalization</h2>
+        <h3>🌍 Internationalization</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           Tooltip strings via <Highlight tier="important">i18n. Read-by names
           display as authored.</Highlight> Counts via Intl.
@@ -363,7 +358,7 @@ export default function MessageDeliveryStateSystemArticle() {
       </section>
 
       <section>
-        <h2>⚖️ Trade-offs</h2>
+        <h3>⚖️ Trade-offs</h3>
 
         <h3>Per-recipient vs aggregate state</h3>
         <HighlightBlock as="p" tier="important">
@@ -392,92 +387,19 @@ export default function MessageDeliveryStateSystemArticle() {
       </section>
 
       <section>
-        <h2>🔮 Future Improvements</h2>
+        <h3>🔮 Future Improvements</h3>
         <HighlightBlock as="p" tier="important"><Highlight tier="crucial">
           End-to-end encryption integrity status.
           Cross-device read <Highlight tier="important">sync. Smart icons
           (animated when transitioning).</Highlight> Detailed
           delivery analytics for power users.
         </Highlight></HighlightBlock>
-      </section>
-
-      <section>
-        <h2>🎤 Interview Q&amp;A</h2>
-
-        <p>
-          <strong>1. What are the
-          states?</strong> Sending, sent,
-          delivered, read. Plus failed for the
-          error case.
-        </p>
-
-        <HighlightBlock as="p" tier="crucial">
-          <strong>2. How do retries
-          work?</strong> Exponential backoff (1
-          s, 2 s, 4 s, capped). Client-generated
-          id ensures idempotency. After max
-          retries, surface for manual retry.
-        </HighlightBlock>
-
-        <p>
-          <strong>3. How is per-recipient state
-          tracked in groups?</strong> Per-(message,
-          recipient) state. Aggregate for the
-          summary view; expand to per-recipient
-          on hover or popover.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>4. How are out-of-order events
-          handled?</strong> State machine accepts
-          forward transitions only. Read before
-          delivered → accept; mark delivered too
-          (implied).
-        </HighlightBlock>
-
-        <p>
-          <strong>5. How are privacy preferences
-          honored?</strong> When read receipts are
-          off, the recipient doesn&rsquo;t emit
-          read events; the sender sees no read
-          progression. Server enforces.
-        </p>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>6. How is this
-          accessible?</strong> Icons have text
-          equivalents. Screen readers announce
-          state. Failed state announces with
-          retry option.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>7. What ensures retry
-          idempotency?</strong> Client-generated
-          message id sent with every retry.
-          Server dedupes by id.
-        </HighlightBlock>
-
-        <HighlightBlock as="p" tier="important">
-          <strong>8. How does this integrate with
-          the chat UI?</strong> The chat&rsquo;s
-          message store has a state field per
-          message; this subsystem updates it
-          based on backend events. The chat
-          renders state via the StateIcon
-          component.
-        </HighlightBlock>
-      </section>
-
-      <section>
-        <h2>📌 Summary</h2>
-        <HighlightBlock as="p" tier="crucial">State conventions
-          familiar from messaging apps; per-
-          recipient details for groups; privacy</HighlightBlock>
-<HighlightBlock as="p" tier="important"><Highlight tier="important">preferences honored. The result is
-          trustworthy, glanceable delivery
-          state that users come to rely on.</Highlight></HighlightBlock>
-      </section>
-    </ArticleLayout>
-  );
-}
+      </section></section>
+<section><h2>Architecture &amp; Flow</h2><p>Separate durable records, optimistic intent, transport events, ephemeral awareness, rendered projection, and telemetry. Every connection, timer, cursor, replay buffer, subscription, and retry queue needs an explicit owner and cleanup path.</p><p>Model sending, sent, delivered, read, and failed as monotonic transitions except explicit retry from failed.</p><ArticleImage src="/diagrams/system-design-problems/low-level-design/communication-collaboration/message-delivery-state-system-recovery.svg" alt="Design a Message Delivery State System recovery" caption="Recovery flow: classify gaps, retain stable truth, replay safely, and emit evidence." /></section>
+<section><h2>Trade offs &amp; Comparison</h2><p>Per-message receipts are precise but costly; watermarks are justified for scalable ordered conversations.</p><p>Server ids and per-conversation watermarks are authoritative. Client states project optimistically and reconcile idempotently. Scale pressure comes from offline sends, duplicates, delayed ack, multi-device reads, reconnect replay, and burst delivery. Bound queues, dedupe events, expire ephemeral state, and degrade predictably.</p></section>
+<section><h2>Best practices</h2><p>Use stable ids, event sequences, idempotency keys, monotonic watermarks, TTLs, replay cursors, bounded buffers, authorization checks, and cleanup. Test reconnect gaps, duplicates, stale events, offline recovery, privacy settings, and accessibility announcements.</p><p>Measure latency, backlog, reconnect rate, gap recovery, retries, stale drops, TTL expiry, and accessibility regressions without logging sensitive content.</p><h3>Operational implementation: monotonic message delivery transitions</h3><p>Model localPending, sent, delivered, read, and failed as monotonic transitions. Reconcile client and server ids, dedupe acknowledgements, retain retry intent, and prevent a late delivered event from moving an already-read message backward.</p><p>Define explicit metrics for accepted events, duplicate drops, stale drops, replay gap size, reconnect duration, queue depth, TTL expiry, degraded-mode entry, authorization denial, and rollback outcome. Redact user content and sensitive identifiers from telemetry. Test duplicate delivery, out-of-order events, disconnect during mutation, hidden tabs, unmount cleanup, multiple tabs, permission removal, burst traffic, and a rollback to the previous policy version.</p></section>
+<section><h2>Common Pitfalls</h2><p>Common failures include treating ephemeral state as durable, trusting arrival order, leaking timers or sockets, missing dedupe, unbounded replay, and hiding degraded connectivity.</p><p>For this topic, dedupe by idempotency key, retry with jitter, merge monotonic watermarks, preserve failed items, and explain retry.</p></section>
+<section><h2>Real-world use cases</h2><p>This design applies to collaborative products where transport, persistence, and UI projection fail independently. Inject product policy for authorization, retention, fallback, and observability explicitly.</p></section>
+<section><h2>Common interview question with detailed answer</h2><h3>How do you model state?</h3><p>Model sending, sent, delivered, read, and failed as monotonic transitions except explicit retry from failed.</p><h3>What breaks at scale?</h3><p>offline sends, duplicates, delayed ack, multi-device reads, reconnect replay, and burst delivery.</p><h3>What consistency applies?</h3><p>Server ids and per-conversation watermarks are authoritative. Client states project optimistically and reconcile idempotently.</p><h3>How do you recover?</h3><p>dedupe by idempotency key, retry with jitter, merge monotonic watermarks, preserve failed items, and explain retry.</p><h3>Why this architecture?</h3><p>Per-message receipts are precise but costly; watermarks are justified for scalable ordered conversations.</p></section>
+<section><h2>References</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket" target="_blank" rel="noreferrer">MDN WebSocket</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noreferrer">MDN AbortController</a></li><li><a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noreferrer">WAI-ARIA APG</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank" rel="noreferrer">React state ownership</a></li></ul></section>
+</ArticleLayout>}

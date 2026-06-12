@@ -471,7 +471,7 @@ export default function StaticAssetHostingArticle() {
         <ul className="space-y-3">
           <HighlightBlock as="li" tier="crucial">
             <strong>Invalidating all CDN paths on every deploy:</strong>{" "}
-            Wildcard invalidation (<code>/*</code>) is expensive and slow. With
+            Wildcard invalidation (<code>{"/*"}</code>) is expensive and slow. With
             content-hashed filenames, you only need to invalidate{" "}
             <code>/index.html</code> and possibly <code>/manifest.json</code>.
             Hashed assets never need invalidation.

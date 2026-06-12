@@ -24,7 +24,7 @@ export default function LargeDatasetExplorationUIArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame Design a Large Dataset Exploration UI (Millions of Rows) around system boundary, state ownership, failure handling, scalability, security, and observable recovery. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock>
         <p>
           A large dataset exploration UI lets analysts, data scientists, support engineers, finance teams, and operations teams inspect tabular datasets containing millions or billions of rows without downloading the dataset into the browser. The interface usually looks like a spreadsheet or database grid, but the system underneath must behave like a distributed query product: every filter, sort, aggregation, profile, and export has to be pushed to a server-side execution layer.
         </p>
@@ -40,7 +40,7 @@ export default function LargeDatasetExplorationUIArticle() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: the design must preserve correctness under latency, concurrency, partial failure, and changing permissions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design a Large Dataset Exploration UI (Millions of Rows), the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock>
         <p>
           Two-dimensional virtualization is the core rendering technique. The grid renders only the rows and columns visible in the viewport plus a small overscan buffer. A table with ten million rows and five hundred columns should still keep only a few hundred visible cells in the DOM. Vertical virtualization controls row count. Horizontal virtualization controls column count. Pinned columns, variable row heights, expanded row detail, and keyboard navigation make the implementation significantly harder than a simple virtual list.
         </p>
@@ -68,7 +68,7 @@ export default function LargeDatasetExplorationUIArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: state model, API contracts, cache policy, async workflow, authorization, rollout, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock>
         <p>
           The architecture has five planes. The interaction plane contains the virtual grid, filter builder, column state, keyboard model, and profile panels. The query API plane validates user intent and translates it into safe server-side queries. The execution plane runs SQL or warehouse queries with tenant isolation and cost controls. The metadata plane stores schemas, field types, indexes, partitions, statistics, permissions, and cached profiles. The job plane handles long-running exports and heavy profiling work.
         </p>
@@ -111,7 +111,7 @@ export default function LargeDatasetExplorationUIArticle() {
       </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock>
         <p>
           A mature grid library such as AG Grid can save months of engineering effort because it already handles virtualization, resizing, pinned columns, keyboard navigation, accessibility patterns, and edge cases. The cost is bundle size, licensing for advanced features, theming constraints, and a larger abstraction surface. A custom grid built on lower-level virtualization libraries can be lighter and more tailored, but every spreadsheet-like feature becomes engineering ownership.
         </p>
@@ -145,7 +145,7 @@ export default function LargeDatasetExplorationUIArticle() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: latency, error rate, fallback rate, conversion, stale-state duration, and rollback success.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock>
         <p>
           Treat every query as untrusted user input. Validate fields and operators against metadata, bind values as parameters, inject tenant predicates server-side, and enforce maximum page size, maximum selected columns, maximum predicate depth, and query timeout. Query safety is a product requirement, not only a backend concern.
         </p>
@@ -176,7 +176,7 @@ export default function LargeDatasetExplorationUIArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: stale state, hidden partial failure, unbounded retries, ownership ambiguity, and missing observability.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock>
         <p>
           The most common pitfall is rendering too many DOM nodes. Even if data fetching is fast, thousands of rows multiplied by many columns can overwhelm layout, paint, memory, event handlers, and accessibility trees. Two-dimensional virtualization is non-negotiable for very large grids.
         </p>
@@ -198,7 +198,7 @@ export default function LargeDatasetExplorationUIArticle() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock>
         <p>
           Fraud investigation tools use large dataset exploration to inspect transactions, devices, IPs, users, and risk events. Analysts need fast filtering, grouping by entity, export for case review, and strict access controls because the data is sensitive.
         </p>
@@ -214,7 +214,7 @@ export default function LargeDatasetExplorationUIArticle() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock>
         <h3 className="mt-6 mb-3 text-lg font-semibold">1. How would you render millions of rows in a browser?</h3>
         <p>
           I would not render millions of rows. I would use two-dimensional virtualization so the DOM contains only visible rows and columns plus overscan. The grid tracks scroll position, visible ranges, pinned columns, row heights, and loaded pages. Data fetching is server-side and page-based. The browser is only a viewport into the dataset, while the server and database do computation.

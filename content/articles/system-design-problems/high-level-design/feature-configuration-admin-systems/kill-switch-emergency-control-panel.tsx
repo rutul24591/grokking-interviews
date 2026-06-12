@@ -23,7 +23,7 @@ export default function KillSwitchEmergencyControlPanelArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame Design a Kill-Switch Emergency Control Panel around system boundary, state ownership, failure handling, scalability, security, and observable recovery. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock>
         <HighlightBlock as="p" tier="important">
           A kill-switch emergency control panel is an operational control plane used by SREs, incident commanders, release managers, security operators, customer support leads, product owners, and executives watching business continuity to disable a dangerous product capability, traffic path, vendor dependency, or write operation in seconds during an incident without creating a larger outage. At staff and principal level the interview is not about drawing a form and a database. The expected answer must show how the system prevents bad changes, how it propagates safe changes, how it behaves during partial outages, and how operators prove what happened after the fact.
         </HighlightBlock>
@@ -42,7 +42,7 @@ export default function KillSwitchEmergencyControlPanelArticle() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: the design must preserve correctness under latency, concurrency, partial failure, and changing permissions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design a Kill-Switch Emergency Control Panel, the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock>
         <p>
           The first concept is a typed control-plane contract. Every key or switch needs a schema, owner, description, default behavior, allowed environments, allowed scopes, and lifecycle state. Free-form values are attractive early, but they create production ambiguity because services and clients do not know which values are legal or how to recover from invalid input.
         </p>
@@ -73,7 +73,7 @@ export default function KillSwitchEmergencyControlPanelArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: state model, API contracts, cache policy, async workflow, authorization, rollout, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock>
         <p>
           A practical architecture contains emergency UI, switch registry, authorization service, policy service, fast state store, durable event log, propagation channel, enforcement SDKs, degradation router, acknowledgment monitor, and incident timeline. The authoring surface should be thin compared with the policy, validation, versioning, and propagation services. This keeps emergency automation, APIs, and future admin surfaces aligned with the same safety model.
         </p>
@@ -122,7 +122,7 @@ export default function KillSwitchEmergencyControlPanelArticle() {
       </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           The central trade-off is speed versus governance. Emergency controls must be faster than deployments and most approval workflows, yet broad enough mistakes can stop revenue, break support, or hide a security incident. A principal-ready answer should explicitly choose where to add friction, where to optimize for speed, and where to make the consumer resilient to control-plane failure.
         </HighlightBlock>
@@ -153,7 +153,7 @@ export default function KillSwitchEmergencyControlPanelArticle() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: latency, error rate, fallback rate, conversion, stale-state duration, and rollback success.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock>
         <p>
           Use explicit ownership for every namespace, key, switch, or rule. Ownership should drive approval routing, on-call notification, stale-control cleanup, and dashboard filtering. Controls without owners should move to a deprecated state and eventually be removed.
         </p>
@@ -187,7 +187,7 @@ export default function KillSwitchEmergencyControlPanelArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: stale state, hidden partial failure, unbounded retries, ownership ambiguity, and missing observability.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock>
         <p>
           A common pitfall is treating kill-switch emergency control panel as a CRUD admin page. CRUD covers storage, but not wrong switch activation, over-broad global scope, stale service state, missed propagation, unauthorized activation, indefinite active switch, degraded path overload, unsafe restore, and incomplete incident evidence. The most important behavior appears under failure, not during a successful save.
         </p>
@@ -215,7 +215,7 @@ export default function KillSwitchEmergencyControlPanelArticle() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock>
         <p>
           For kill-switch emergency control panel, common production use cases include disable checkout writes during payment data corruption, stop a recommendation model serving bad results, block a compromised integration, force read-only mode for a region, pause a notification campaign, or protect a dependency during vendor outage. These are operational scenarios, not cosmetic admin actions, so each requires traceability, clear ownership, and a tested recovery path.
         </p>
@@ -237,7 +237,7 @@ export default function KillSwitchEmergencyControlPanelArticle() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock>
         <h3>1. How would you design the architecture for a kill-switch emergency control panel?</h3>
         <p>
           Start by separating control plane and data plane. The control plane contains the authoring UI, schema or registry service, validation, policy, approval, versioned storage, publish service, audit log, and observability. The data plane contains SDKs, edge evaluators, service guards, client caches, or local enforcement points. Writes are slower and strongly governed; reads are local, cached, and resilient. The publish path creates immutable versions, emits ordered events, and exposes propagation health. The consumer path verifies freshness and compatibility before applying a value. This framing shows interviewers that the system is more than a dashboard: it is a safety-critical runtime platform.

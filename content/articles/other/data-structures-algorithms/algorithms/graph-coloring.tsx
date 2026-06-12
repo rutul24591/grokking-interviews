@@ -21,10 +21,10 @@ export const metadata: ArticleMetadata = {
 
 export default function GraphColoringArticle() {
   return (
-    <ArticleLayout metadata={metadata}>
+    <ArticleLayout metadata={metadata}><HighlightBlock as="p" tier="crucial" className="mb-4">Interview focus: Graph Coloring &amp; Chromatic Number should be explained through a correctness invariant first, then through the implementation technique.</HighlightBlock><HighlightBlock as="p" tier="crucial" className="mb-4">Interview focus: In interviews, the decisive point is why this approach is valid under the stated constraints, not just what API or algorithm is used.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Compare the simple baseline with the optimized or production-ready approach so the trade-off is explicit.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Name the data structure, state machine, pipeline stage, or control plane that owns each decision.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Include the cost model: preprocessing cost, per-operation cost, storage cost, latency impact, and failure recovery cost.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Call out common mistakes because they are often what interviewers use to distinguish memorized answers from reasoned answers.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Tie the concept back to real systems: scale, concurrency, partial failure, security boundaries, and migration pressure.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Interview focus: Explain the test strategy: normal path, boundary path, adversarial input, regression case, and observability assertion.</HighlightBlock>
 
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Interview lens: frame Graph Coloring &amp; Chromatic Number around problem constraints, correctness proof, complexity class, data-structure choice, and degradation strategy. This is what turns the article from concept notes into interview-ready reasoning.</HighlightBlock>
         <HighlightBlock as="p" tier="crucial">
           Interview focus: graph coloring appears in compiler register allocation (variables as vertices, live-range conflicts as edges, registers as colors), scheduling problems, and as a canonical NP-complete problem. Know the greedy O(V+E) algorithm, the Δ+1 color bound, bipartite 2-coloring via BFS, and why computing the exact chromatic number is NP-hard.
         </HighlightBlock>
@@ -91,7 +91,7 @@ export default function GraphColoringArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core invariant to defend: the chosen algorithm must match the input constraints and expose why it is correct, not only why it passes sample cases.</HighlightBlock>
         <ArticleImage
           src="/diagrams/other/data-structures-algorithms/algorithms/graph-coloring-architecture.svg"
           alt="Graph Coloring Architecture — chromatic number, greedy algorithms, special graph classes, and applications"

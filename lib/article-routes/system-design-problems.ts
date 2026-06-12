@@ -7,7 +7,9 @@
  * To update: run `pnpm generate-article-routes`
  */
 
-export const systemDesignProblemsRoutes: Record<string, () => Promise<any>> = {
+import type { ArticleModule } from "./types";
+
+export const systemDesignProblemsRoutes: Record<string, () => Promise<ArticleModule>> = {
   "system-design-problems/high-level-design/ads-monetization-systems/ads-analytics-dashboard": () => import("@/content/articles/system-design-problems/high-level-design/ads-monetization-systems/ads-analytics-dashboard"),
   "system-design-problems/high-level-design/ads-monetization-systems/ads-delivery-targeting-ui": () => import("@/content/articles/system-design-problems/high-level-design/ads-monetization-systems/ads-delivery-targeting-ui"),
   "system-design-problems/high-level-design/ads-monetization-systems/creator-monetization-dashboard": () => import("@/content/articles/system-design-problems/high-level-design/ads-monetization-systems/creator-monetization-dashboard"),

@@ -1,89 +1,51 @@
-export type codeEditorComponentSignal = {
-  uploadedBytes: number;
-  checksumMismatch: number;
-  transcodeLagMs: number;
-  retryCount: number;
+export type CodeEditorComponentStage = "closed" | "loading-model" | "ready" | "applying-edit" | "analyzing" | "ready";
+
+export type CodeEditorComponentTransition = {
+  command: string;
+  from: CodeEditorComponentStage;
+  to: CodeEditorComponentStage;
+  revision: number;
 };
 
-export type codeEditorComponentEvent = {
+export type CodeEditorComponentState = {
   id: string;
-  topic: "code-editor-component";
-  actorId: string;
-  sequence: number;
-  receivedAtMs: number;
-  expectedVersion: number;
-  currentVersion: number;
-  payloadSize: number;
-  signal: codeEditorComponentSignal;
-};
-
-export type codeEditorComponentDecision = {
-  accepted: boolean;
-  action: "resume-from-checkpoint" | "verify-checksum" | "serve-lower-rendition" | "commit";
-  nextVersion: number;
-  reasons: string[];
+  stage: CodeEditorComponentStage;
+  revision: number;
   audit: string[];
 };
 
-const topicInvariant = "Large file and media operations must be resumable, verified, and safe to retry.";
-
-export function evaluateCodeEditorComponentEvent(event: codeEditorComponentEvent): codeEditorComponentDecision {
-  const reasons: string[] = [];
-
-  if (event.expectedVersion !== event.currentVersion) reasons.push("version-mismatch");
-  if (event.sequence <= 0) reasons.push("invalid-sequence");
-  if (event.payloadSize > 256_000) reasons.push("payload-too-large-for-interactive-path");
-  if (event.signal.uploadedBytes > 2_000) reasons.push("uploadedBytes-outside-slo");
-  if (event.signal.transcodeLagMs > 0.2) reasons.push("transcodeLagMs-requires-guardrail");
-
-  let action: codeEditorComponentDecision["action"] = "commit";
-  if (reasons.includes("version-mismatch")) action = "resume-from-checkpoint";
-  else if (reasons.includes("payload-too-large-for-interactive-path")) action = "verify-checksum";
-  else if (reasons.some((reason) => reason.endsWith("requires-guardrail"))) action = "serve-lower-rendition";
-
+// Apply diagnostics only when their document version matches the current model version.
+export function applyCodeEditorComponentTransition(
+  state: CodeEditorComponentState,
+  transition: CodeEditorComponentTransition,
+): CodeEditorComponentState {
+  if (transition.revision <= state.revision) return state;
+  if (transition.from !== state.stage) {
+    throw new Error(`Invalid editor document transition: ${state.stage} -> ${transition.to}`);
+  }
   return {
-    accepted: reasons.length === 0,
-    action,
-    nextVersion: reasons.length === 0 ? event.currentVersion + 1 : event.currentVersion,
-    reasons,
-    audit: [
-      "topic:Code Editor Component",
-      "subcategory:file-media-content-systems",
-      "entity:media asset",
-      "state:upload or playback session",
-      "operation:file pipeline transition",
-      "invariant:" + topicInvariant,
-      "actor:" + event.actorId,
-      "event:" + event.id,
-    ],
+    ...state,
+    stage: transition.to,
+    revision: transition.revision,
+    audit: [...state.audit, `${transition.revision}:${transition.command}`],
   };
 }
 
-export function runCodeEditorComponentContractScenario() {
-  const base = Date.parse("2026-05-29T09:00:00.000Z");
-  const accepted = evaluateCodeEditorComponentEvent({
-    id: "code-editor-component-evt-1",
-    topic: "code-editor-component",
-    actorId: "user-42",
-    sequence: 7,
-    receivedAtMs: base,
-    expectedVersion: 12,
-    currentVersion: 12,
-    payloadSize: 18_500,
-    signal: { uploadedBytes: 180, checksumMismatch: 0, transcodeLagMs: 0.01, retryCount: 1 },
+export function runCodeEditorComponentProtocolScenario() {
+  const transitions: CodeEditorComponentTransition[] = [
+  { command: "open-model", from: "closed", to: "loading-model", revision: 1 },
+  { command: "hydrate-text", from: "loading-model", to: "ready", revision: 2 },
+  { command: "apply-edit", from: "ready", to: "applying-edit", revision: 3 },
+  { command: "request-analysis", from: "applying-edit", to: "analyzing", revision: 4 },
+  { command: "publish-diagnostics", from: "analyzing", to: "ready", revision: 5 },
+  ];
+  return transitions.reduce(applyCodeEditorComponentTransition, {
+    id: "code-editor-component-case-17",
+    stage: "closed",
+    revision: 0,
+    audit: [],
   });
-
-  const guarded = evaluateCodeEditorComponentEvent({
-    id: "code-editor-component-evt-late",
-    topic: "code-editor-component",
-    actorId: "user-42",
-    sequence: 8,
-    receivedAtMs: base + 4_000,
-    expectedVersion: 12,
-    currentVersion: 14,
-    payloadSize: 310_000,
-    signal: { uploadedBytes: 2_700, checksumMismatch: 3, transcodeLagMs: 0.34, retryCount: 2 },
-  });
-
-  return { accepted, guarded };
 }
+
+export const CodeEditorComponentInvariant =
+  "Apply diagnostics only when their document version matches the current model version.";

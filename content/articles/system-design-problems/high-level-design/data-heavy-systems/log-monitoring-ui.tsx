@@ -24,7 +24,7 @@ export default function LogMonitoringUIArticle() {
   return (
     <ArticleLayout metadata={metadata}>
       <section>
-        <h2>Definition &amp; Context</h2>
+        <h2>Definition &amp; Context</h2><HighlightBlock as="p" tier="crucial" className="mb-4">System-design interview lens: frame Design a Log Monitoring UI (Datadog/Kibana-like) around system boundary, state ownership, failure handling, scalability, security, and observable recovery. This is the difference between describing a feature and designing a production system.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Clarify the product promise, the non-negotiable correctness boundary, the main actor, and the failure mode users would actually notice first.</HighlightBlock>
         <p>
           A log monitoring UI helps engineers search, filter, tail, inspect, and correlate log events during incidents and debugging workflows. A Datadog or Kibana-like interface usually includes a query bar, time picker, histogram, faceted sidebar, virtualized log list, detail panel, context expansion, saved searches, live tail, and links to traces or metrics.
         </p>
@@ -40,7 +40,7 @@ export default function LogMonitoringUIArticle() {
       </section>
 
       <section>
-        <h2>Core Concepts</h2>
+        <h2>Core Concepts</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Core interview invariant: the design must preserve correctness under latency, concurrency, partial failure, and changing permissions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Name the source of truth, derived state, speculative state, cache state, and audit or telemetry state separately; collapsing them hides most real design bugs.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">For Design a Log Monitoring UI (Datadog/Kibana-like), the interviewer is checking whether you can defend why each subsystem exists, not just list components in a diagram.</HighlightBlock>
         <p>
           The query model combines structured filters and full-text search. Structured fields such as service, level, host, region, environment, trace id, and tenant should use exact filters. Message text and arbitrary string fields use full-text search. Treating structured fields as full-text terms wastes index performance and returns surprising results.
         </p>
@@ -68,7 +68,7 @@ export default function LogMonitoringUIArticle() {
       </section>
 
       <section>
-        <h2>Architecture &amp; Flow</h2>
+        <h2>Architecture &amp; Flow</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Architecture decisions to make explicit: state model, API contracts, cache policy, async workflow, authorization, rollout, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Walk the hard path end to end: permission check, input validation, async work, timeout or partial failure, user-visible fallback, telemetry, and rollback.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Call out which path is synchronous, which path is asynchronous, which artifacts are immutable, and which updates may arrive out of order.</HighlightBlock>
         <p>
           The architecture has four planes. The ingestion plane collects, parses, enriches, and indexes logs. The search plane translates UI queries to backend search DSL, enforces tenant isolation, and returns hits plus aggregations. The live plane streams new matching logs from a message bus. The UI plane renders histogram, facets, virtualized rows, details, context, and trace links.
         </p>
@@ -111,7 +111,7 @@ export default function LogMonitoringUIArticle() {
       </section>
 
       <section>
-        <h2>Trade offs &amp; Comparison</h2>
+        <h2>Trade offs &amp; Comparison</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Trade-off lens: optimize for correctness and recoverability first, then latency, cost, developer velocity, and UX polish.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Compare centralized vs distributed ownership, server-authoritative vs client-speculative state, and strong consistency vs eventual consistency where the product allows it.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">A staff/principal answer should state what gets worse when the simpler design is chosen, and what operational burden appears when the more robust design is chosen.</HighlightBlock>
         <p>
           Elasticsearch and OpenSearch excel at full-text search with inverted indexes, flexible structured filters, and rich aggregations. They are operationally expensive at high log volume and require careful index lifecycle management. ClickHouse and similar columnar stores are often cheaper and faster for structured filters and aggregations but weaker for arbitrary full-text search unless paired with specialized indexing.
         </p>
@@ -148,7 +148,7 @@ export default function LogMonitoringUIArticle() {
       </section>
 
       <section>
-        <h2>Best practices</h2>
+        <h2>Best practices</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Best practice: make the invariant testable through explicit states, typed events, idempotent operations, scoped permissions, and observable transitions.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Instrument the system around user-visible outcomes: latency, error rate, fallback rate, conversion, stale-state duration, and rollback success.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Keep escape hatches governed. Temporary bypasses, manual overrides, and emergency controls should have owner, reason, expiry, and audit evidence.</HighlightBlock>
         <p>
           Make time range explicit and default to recent windows. Most incident searches begin with the last 15 minutes or one hour. Wide ranges should warn users about cost and may require slower background searches.
         </p>
@@ -179,7 +179,7 @@ export default function LogMonitoringUIArticle() {
       </section>
 
       <section>
-        <h2>Common Pitfalls</h2>
+        <h2>Common Pitfalls</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Most dangerous failure modes: stale state, hidden partial failure, unbounded retries, ownership ambiguity, and missing observability.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Do not present a happy-path component graph as the full design. Interviewers will push on retries, stale data, permission changes, overload, deletion, and incident recovery.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Avoid vague words like scalable, secure, and reliable unless you attach them to concrete limits, policies, SLOs, and failure handling behavior.</HighlightBlock>
         <p>
           A common pitfall is returning too many log rows to the browser. Even if the backend can search quickly, rendering thousands of complex rows and detail components will degrade the incident workflow.
         </p>
@@ -204,7 +204,7 @@ export default function LogMonitoringUIArticle() {
       </section>
 
       <section>
-        <h2>Real-world use cases</h2>
+        <h2>Real-world use cases</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Real-world relevance: the same design shows up when teams need a reusable, observable, and governable product capability rather than a one-off screen.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">Tie the article back to adoption: how multiple teams integrate, how the system rolls out gradually, how migrations happen, and how operators know the feature is healthy.</HighlightBlock>
         <p>
           Incident response teams search recent errors by service, region, deployment version, and trace id to understand failures quickly. Histogram and facets narrow the investigation before opening individual rows.
         </p>
@@ -220,7 +220,7 @@ export default function LogMonitoringUIArticle() {
       </section>
 
       <section>
-        <h2>Common interview question with detailed answer</h2>
+        <h2>Common interview question with detailed answer</h2><HighlightBlock as="p" tier="crucial" className="mb-4">Strong answer structure: define the invariant, draw the state/data flow, identify the bottleneck, handle failure, name trade-offs, and close with metrics and tests.</HighlightBlock><HighlightBlock as="p" tier="important" className="mb-4">If pressed for staff/principal depth, discuss ownership boundaries, operational runbooks, migration plan, abuse prevention, and how the design fails safely.</HighlightBlock>
         <h3 className="mt-6 mb-3 text-lg font-semibold">1. How would you design fast log search?</h3>
         <p>
           I would put a Log API between the UI and search backend. It parses the user query, validates fields, injects tenant filters, translates to backend DSL, and returns a bounded result page plus histogram and facets. Structured filters use exact keyword fields, free-text terms use full-text search, and pagination uses a stable cursor such as timestamp and id.
